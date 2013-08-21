@@ -11,3 +11,8 @@ Goals:
  * Display this with textures
  * Introduce basic vegetation (this may need to be a second project, at first)
  * See from there.
+
+Process:
+ * Write as many and as much of the header files as possible
+ * Check that all needed functions are there
+ * Write the actual code
