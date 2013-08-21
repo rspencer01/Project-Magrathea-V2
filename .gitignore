@@ -11,3 +11,14 @@
 *.lai
 *.la
 *.a
+
+# Backup files
+*.bak
+*.~
+
+# VC files
+*.vcx*
+*.sdf
+*.sln
+*.suo
+*.pui
