@@ -31,8 +31,7 @@ Game::Game()
   initialiseHeightmap();
   initialiseGraphics();
   initialiseCallbacks();
-  for (int i = 0; i<=255; i++)
-    keyDown[i] = false;
+  initialiseKeyops();
   currentGame = this;
 }
 
@@ -40,7 +39,7 @@ Game::Game()
 /// file to their relevent events.
 void Game::initialiseCallbacks()
 {
-  printf("Initialising callbacks");
+  printf("Initialising callbacks\n");
   // The display function should be called whenever possible
   glutDisplayFunc(displayCurrentGame);
   glutIdleFunc(displayCurrentGame);
@@ -80,6 +79,13 @@ void Game::display()
 
   // ..and blit it to the screen
   glutSwapBuffers();
+}
+
+void Game::initialiseKeyops()
+{
+  printf("Initialising keyops\n");
+  for (int i = 0; i<=255; i++)
+    keyDown[i] = false;
 }
 
 /// Handles the event of a key press, performing the required operations

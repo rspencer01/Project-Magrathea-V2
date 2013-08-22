@@ -18,14 +18,16 @@
 class Game
 {
   private:
+    /// The user camera that contains the fps position rotation etc.
+    Camera camera;
     /// Passes all the required functions to glut
     void initialiseCallbacks();
+    /// Resets all the keys
+    void initialiseKeyops();
     /// A list of all keys that are currently depressed
     bool keyDown [256];
     /// Called on each frame update.  Performs relevant operations, based on key positions
     void keyOperations();
-    /// The user camera that contains the fps position rotation etc.
-    Camera camera;
   public:
     /// Creates a game instance and initialises all variables
     Game();
