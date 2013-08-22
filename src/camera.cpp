@@ -35,8 +35,11 @@ void Camera::RotateY( float theta )
 void Camera::RotateX( float theta )
 {
   RotatedX += theta;
-  ViewDir = ViewDir*cos(theta) - UpVector*sin(theta);
+  Vector3 rightDir = ViewDir.cross(UpVector);
+  ViewDir = ViewDir*cos(theta) + UpVector*sin(theta);
+  UpVector = rightDir.cross(ViewDir);
   ViewDir.normalise();
+  UpVector.normalise();
 }
 
 void Camera::RotateFlat( float theta )
