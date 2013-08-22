@@ -26,13 +26,13 @@ class gameops
     void keyUp(unsigned char key, int, int);
     /// Called on each frame update.  Performs relevant operations, based on key positions
     void keyOperations();
-    /// Called each frame to show stuff on the screen
-    void display();
   public:
     /// Creates a game instance and initialises all variables
     gameops();
     /// Runs the game
     void run();
+    /// Called each frame to show stuff on the screen
+    void display();
 };
 
 #endif

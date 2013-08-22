@@ -8,7 +8,7 @@ SRCS = main.cpp gameops.cpp vector3.cpp graphics.cpp heightmap.cpp
 _OBJS = $(SRCS:.cpp=.o)
 OBJS = $(patsubst %,$(ODIR)/%,$(_OBJS))
 EXEC = magrathea
-LIBS = 
+LIBS = -lglut -lGLU 
 
 all: $(ODIR) $(OBJS) $(EXEC)
 
