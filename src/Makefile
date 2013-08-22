@@ -4,7 +4,7 @@ CC = g++
 CFLAGS = -c -Wall -Werror
 IDIR = include
 ODIR = obj
-SRCS = main.cpp
+SRCS = main.cpp gameops.cpp
 _OBJS = $(SRCS:.cpp=.o)
 OBJS = $(patsubst %,$(ODIR)/%,$(_OBJS))
 EXEC = magrathea
@@ -15,7 +15,7 @@ all: $(ODIR) $(OBJS) $(EXEC)
 $(ODIR):
 	mkdir $(ODIR)
 
-$(EXEC):
+$(EXEC): $(OBJS)
 	$(CC) $(OBJS) $(LIBS) -o $(EXEC)
 
 $(ODIR)/%.o: %.cpp $(DEPS)
