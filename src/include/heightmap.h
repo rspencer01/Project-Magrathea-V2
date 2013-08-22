@@ -9,6 +9,8 @@
 #ifndef HEIGHTMAP_H
 #define HEIGHTMAP_H
 
+/// Initialises the heightmap stuff
+void initialiseHeightmap();
 /// Returns the altitude of the ground at position <x,y>
 float getHeightmapData(int x, int y);
 
