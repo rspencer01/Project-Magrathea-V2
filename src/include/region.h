@@ -14,7 +14,7 @@ class Region;
 #include <game.h>
 
 /// The size of a region on a side
-#define REGION_SIZE 100
+#define REGION_SIZE 30
 
 /// A region class is a section of terrain covered by a single texture
 ///
@@ -23,6 +23,8 @@ class Region
 {
   private:
     Game* game;
+	int origin_x;
+	int origin_y;
   public:
 	/// Constructs the region with the given coordinates
     Region(int,int);

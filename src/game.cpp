@@ -34,6 +34,8 @@ Game::Game()
   initialiseKeyops();
   currentGame = this;
   regions.push_back(Region(0,0));
+  regions.push_back(Region(30,0));
+  regions.push_back(Region(0,30));
 }
 
 /// This function assigns the event handlers defined at the top of this
@@ -75,8 +77,9 @@ void Game::display()
   // Do the camera stuff
   camera.Render();
 
-  // A teapot.  Just for testing
-  glutWireTeapot(1);
+  // Render each region
+  for (int i = 0;i<regions.size();i++)
+	  regions[i].Render();
 
   // ..and blit it to the screen
   glutSwapBuffers();
