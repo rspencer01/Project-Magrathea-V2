@@ -11,7 +11,9 @@
 
 class Region;
 
+#include <gl\glut.h>
 #include <game.h>
+
 
 /// The size of a region on a side
 #define REGION_SIZE 30
@@ -25,6 +27,12 @@ class Region
     Game* game;
 	int origin_x;
 	int origin_y;
+	/// Vertex buffer for the position of each vertex
+	GLuint vertexVBO;
+	/// Vertex buffer for the indexes of each triangle
+	GLuint indexVBO;
+	/// Populates the VBOs
+	void initialiseTriangles();
   public:
 	/// Constructs the region with the given coordinates
     Region(int,int);
