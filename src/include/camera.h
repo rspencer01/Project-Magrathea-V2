@@ -24,42 +24,25 @@ class Camera
 
     float RotatedX, RotatedY, RotatedZ;	
 	
-public:
-	/// Initialises the camera to the <-1,0,0>, looking in the +x direction
-	Camera();				
-	/// Rotates and translates the scene to the correct position.
-	void Render ( void );							
+  public:
+	  /// Initialises the camera to the <-1,0,0>, looking in the +x direction
+  	Camera();				
+	  /// Rotates and translates the scene to the correct position.
+  	void Render ( void );							
 
-	/// Translate the camera
-	void Move ( Vector3 Direction );
-	/// Rotate around the x axis
-	void RotateX ( float Angle );
-	/// Rotate around the y axis
-	void RotateY ( float Angle );
-	/// Rotate around the z axis
-	void RotateZ ( float Angle );
-  /// Rotate in the horisontal plane
-  void RotateFlat (float Angle);
+	  /// Translate the camera
+  	void Move ( Vector3 Direction );
+	  /// Rotate around the x axis
+  	void RotateX ( float Angle );
+	  /// Rotate around the y axis
+  	void RotateY ( float Angle );
+	  /// Rotate around the z axis
+  	void RotateZ ( float Angle );
+    /// Rotate in the horisontal plane
+    void RotateFlat (float Angle);
 
-	/// Move in the direction the camera is pointing
-	void MoveForward ( float Distance );
-	/// Move in the "up" direction
-	void MoveUpward ( float Distance );
-	/// Move "right"
-	void StrafeRight ( float Distance );
-	
-	/// Accessor for camera x position
-	float getX();
-	/// Mutator for camera x position
-	void setX(float);
-	/// Accessor for camera y position
-	float getY();
-	/// Mutator for camera y position
-	void setY(float);
-	/// Accessor for camera z position
-	float getZ();
-	/// Mutator for camera z position
-	void setZ(float);
+  	/// Move in the direction the camera is pointing
+	  void MoveForward ( float Distance );
 };
 
 #endif
