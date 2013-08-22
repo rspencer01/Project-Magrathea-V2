@@ -22,3 +22,6 @@
 *.sln
 *.suo
 *.pui
+
+# Generated documentation (cluttering for now)
+*doc/*

@@ -17,5 +17,7 @@
 Vector3 getNormal3f(vector3 edgeA, vector3 edgeB);
 /// Print the given formatted string to the screen at the given position
 void writeString(int x, int y, const char* format, ... );
+/// Resize the screen and set the projection
+void resize(int width, int height);
 
 #endif

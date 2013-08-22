@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['project_2dmagrathea_2dv2',['Project-Magrathea-V2',['../md_README.html',1,'']]],
   ['page',['page',['../classpage.html',1,'']]],
   ['page_2eh',['page.h',['../page_8h.html',1,'']]],
   ['page_5fcount',['PAGE_COUNT',['../book_8h.html#a782f22e23dde7fc39ed8d5e1f4c9b141',1,'book.h']]],
