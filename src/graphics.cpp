@@ -1,3 +1,4 @@
+#include <gl/glew.h>
 #include <GL/glut.h>
 #include <stdio.h>
 
@@ -21,6 +22,8 @@ void initialiseGraphics()
 	glutInitWindowSize(500,500);
 	glutInitWindowPosition(100,100);
 	glutCreateWindow("Magrathea");
+
+	glewInit();
 	
   // Enable all the standard pipeline things we want.  This should eventually be replaced with custom shaders
   glEnable(GL_DEPTH_TEST);
