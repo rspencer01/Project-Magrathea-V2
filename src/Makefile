@@ -2,7 +2,7 @@
 CC = g++
 # Flags passed to the compiler
 CFLAGS = -c -Wall -Werror
-IDIR = src/include
+IDIR = include
 ODIR = obj
 SRCS = main.cpp
 _OBJS = $(SRCS:.cpp=.o)
@@ -19,7 +19,7 @@ $(EXEC):
 	$(CC) $(OBJS) $(LIBS) -o $(EXEC)
 
 $(ODIR)/%.o: %.cpp $(DEPS)
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) -I $(IDIR) $(CFLAGS) -o $@ $<
 
 clean:
 	rm -r $(ODIR)
