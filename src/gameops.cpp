@@ -23,16 +23,24 @@ gameops::gameops()
   initialiseHeightmap();
   initialiseGraphics();
   glutDisplayFunc(displayCurrentGame);
+  glutIdleFunc(displayCurrentGame);
+  currentGame = this;
 }
 
 /// Run the game
 void gameops::run()
 {
   printf("Running game...\n");
+  glutMainLoop();
 }
 
 /// Actually calls the functions to display stuff to the screen.
 void gameops::display()
 {
-  glClearColor(1,0,0,1);
+  // Clear the display
+  glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+  glClearColor(100,0,0,0.5);
+
+  // ..and blit it to the screen
+  glutSwapBuffers();
 }
