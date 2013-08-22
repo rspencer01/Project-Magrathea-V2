@@ -12,6 +12,14 @@ void displayCurrentGame()
 {
   currentGame->display();
 }
+void keyUpCurrentGame(unsigned char key,int x,int y)
+{
+  currentGame->keyUp(key,x,y);
+}
+void keyPressCurrentGame(unsigned char key,int x,int y)
+{
+  currentGame->keyPress(key,x,y);
+}
 
 /// The constructor for the gameops class
 ///
@@ -22,9 +30,20 @@ gameops::gameops()
   printf("New game\n");
   initialiseHeightmap();
   initialiseGraphics();
+  initialiseCallbacks();
+  currentGame = this;
+}
+
+/// This function assigns the event handlers defined at the top of this
+/// file to their relevent events.
+void gameops::initialiseCallbacks()
+{
+  // The display function should be called whenever possible
   glutDisplayFunc(displayCurrentGame);
   glutIdleFunc(displayCurrentGame);
-  currentGame = this;
+  // Log the key functions
+  glutKeyboardFunc(keyPressCurrentGame);
+  glutKeyboardUpFunc(keyUpCurrentGame);
 }
 
 /// Run the game
@@ -43,4 +62,15 @@ void gameops::display()
 
   // ..and blit it to the screen
   glutSwapBuffers();
+}
+
+/// Handles the event of a key press, performing the required operations
+void gameops::keyPress(unsigned char key, int x, int y)
+{
+  printf("Key %c pressed\n",key);
+}
+
+/// Handles the event of a key release
+void gameops::keyUp(unsigned char key, int x, int y)
+{
 }

@@ -18,12 +18,10 @@
 class gameops
 {
   private:
+    /// Passes all the required functions to glut
+    void initialiseCallbacks();
     /// A list of all keys that are currently depressed
     bool keyDown [256];
-    /// Event handler for a key press
-    void keyPress(unsigned char key, int, int);
-    /// Event handler for a key release
-    void keyUp(unsigned char key, int, int);
     /// Called on each frame update.  Performs relevant operations, based on key positions
     void keyOperations();
   public:
@@ -33,6 +31,10 @@ class gameops
     void run();
     /// Called each frame to show stuff on the screen
     void display();
+    /// Event handler for a key press
+    void keyPress(unsigned char key, int, int);
+    /// Event handler for a key release
+    void keyUp(unsigned char key, int, int);
 };
 
 #endif
