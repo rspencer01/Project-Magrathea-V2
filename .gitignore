@@ -24,4 +24,4 @@
 *.pui
 
 # Generated documentation (cluttering for now)
-*doc/*
+doc/
