@@ -38,6 +38,8 @@ public:
 	void RotateY ( float Angle );
 	/// Rotate around the z axis
 	void RotateZ ( float Angle );
+  /// Rotate in the horisontal plane
+  void RotateFlat (float Angle);
 
 	/// Move in the direction the camera is pointing
 	void MoveForward ( float Distance );

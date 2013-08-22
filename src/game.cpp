@@ -31,7 +31,7 @@ Game::Game()
   initialiseHeightmap();
   initialiseGraphics();
   initialiseCallbacks();
-  for (char i = 0; i<256; i++)
+  for (int i = 0; i<=255; i++)
     keyDown[i] = false;
   currentGame = this;
 }
@@ -40,6 +40,7 @@ Game::Game()
 /// file to their relevent events.
 void Game::initialiseCallbacks()
 {
+  printf("Initialising callbacks");
   // The display function should be called whenever possible
   glutDisplayFunc(displayCurrentGame);
   glutIdleFunc(displayCurrentGame);
@@ -102,7 +103,11 @@ void Game::keyOperations()
   if (keyDown['s'])
     camera.MoveForward(-0.1);
   if (keyDown['a'])
-    camera.RotateY(0.05);
+    camera.RotateFlat(0.05);
   if (keyDown['d'])
-    camera.RotateY(-0.05);
+    camera.RotateFlat(-0.05);
+  if (keyDown['q'])
+    camera.RotateX(0.05);
+  if (keyDown['e'])
+    camera.RotateX(-0.05);
 }
