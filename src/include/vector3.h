@@ -22,23 +22,29 @@ class Vector3
 	/// Construct a vector object with the given components
 	Vector3(float x,float y,float z);
 	/// Construct a vector with the array [x,y,z] components
-    Vector3(float*);
-	/// Construc the null vector
-    Vector3();
+  Vector3(float*);
+  /// Construc the null vector
+  Vector3();
 	/// Assigns this vector to the other vector
-    Vector3 operator=(const Vector3&);
+  Vector3 operator=(const Vector3&);
 	/// Adds a vector
-    Vector3 operator+(Vector3);
+  Vector3 operator+(Vector3);
 	/// Subtracts a vector
-    Vector3 operator-(Vector3);
+  Vector3 operator-(Vector3);
 	/// Performs a multiplication with a scalar
-    Vector3 operator*(float);
+  Vector3 operator*(float);
+	/// Performs a division with a scalar
+  Vector3 operator/(float);
 	/// Performs a dot product with the other vector
-    float dot(Vector3);
+  float dot(Vector3);
+  /// Performs a cross product
+  Vector3 cross(Vector3);
 	/// Returns the magnitude of the vector
-    float magnitude();
+  float magnitude();
+  /// Returns the normal of this vector
+  Vector3 normal();
 	/// Turns the vector into a unit vector
-    void normalise();
+  void normalise();
 };
 
 #endif
