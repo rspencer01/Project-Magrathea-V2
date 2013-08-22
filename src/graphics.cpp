@@ -3,6 +3,9 @@
 
 #include <graphics.h>
 
+/// Performs all the opengl and glut funtions to initialise the 
+/// graphics.  Sets screen size, position and title bar as well
+/// as setting up the fixed pipeline
 void initialiseGraphics()
 {
   printf("Initialising graphics\n");
@@ -22,4 +25,10 @@ void initialiseGraphics()
   // Enable all the standard pipeline things we want.  This should eventually be replaced with custom shaders
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
+}
+
+/// Called whenever the display is resized.  Redoes the projection
+/// and the display size
+void resize(int width, int height)
+{
 }

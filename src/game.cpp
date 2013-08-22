@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <GL/glut.h>
 
-#include <gameops.h>
+#include <game.h>
 #include <graphics.h>
 #include <heightmap.h>
 
 // This is necessary so that we have a static funtion to call on display updates/keyboard etc.  We store the current game, and then functions wrap the actual code.
-gameops* currentGame;
+Game* currentGame;
 // A wrapper for displaying
 void displayCurrentGame()
 {
@@ -25,7 +25,7 @@ void keyPressCurrentGame(unsigned char key,int x,int y)
 ///
 /// This function is called on the creation of a new game.  It loads
 /// all the data, initialises the screen and keyboard functions.
-gameops::gameops()
+Game::Game()
 {
   printf("New game\n");
   initialiseHeightmap();
@@ -36,7 +36,7 @@ gameops::gameops()
 
 /// This function assigns the event handlers defined at the top of this
 /// file to their relevent events.
-void gameops::initialiseCallbacks()
+void Game::initialiseCallbacks()
 {
   // The display function should be called whenever possible
   glutDisplayFunc(displayCurrentGame);
@@ -47,14 +47,14 @@ void gameops::initialiseCallbacks()
 }
 
 /// Run the game
-void gameops::run()
+void Game::run()
 {
   printf("Running game...\n");
   glutMainLoop();
 }
 
 /// Actually calls the functions to display stuff to the screen.
-void gameops::display()
+void Game::display()
 {
   // Clear the display
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -65,12 +65,12 @@ void gameops::display()
 }
 
 /// Handles the event of a key press, performing the required operations
-void gameops::keyPress(unsigned char key, int x, int y)
+void Game::keyPress(unsigned char key, int x, int y)
 {
   printf("Key %c pressed\n",key);
 }
 
 /// Handles the event of a key release
-void gameops::keyUp(unsigned char key, int x, int y)
+void Game::keyUp(unsigned char key, int x, int y)
 {
 }

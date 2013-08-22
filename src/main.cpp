@@ -1,4 +1,4 @@
-#include <gameops.h>
+#include <game.h>
 
 /// The main function, called first on execution.
 ///
@@ -7,7 +7,7 @@
 int main(int argc, char** argv)
 {
   // Construct a game and initialise it
-  gameops mainGame;
+  Game mainGame;
   // Run the game
   mainGame.run();
   return 0;
