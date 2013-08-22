@@ -9,8 +9,11 @@
 #ifndef GAMEOPS_H
 #define GAMEOPS_H
 
+class Game;
+
 #include <camera.h>
 #include <region.h>
+#include <vector>
 
 /// The gameops class contains all the methods to do with gameplay
 ///
@@ -20,6 +23,8 @@ class Game
   private:
     /// The user camera that contains the fps position rotation etc.
     Camera camera;
+	/// A list of regions in the game
+	std::vector<Region> regions;
     /// Passes all the required functions to glut
     void initialiseCallbacks();
     /// Resets all the keys

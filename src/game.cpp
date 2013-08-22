@@ -33,6 +33,7 @@ Game::Game()
   initialiseCallbacks();
   initialiseKeyops();
   currentGame = this;
+  regions.push_back(Region(0,0));
 }
 
 /// This function assigns the event handlers defined at the top of this
