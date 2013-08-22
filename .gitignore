@@ -28,3 +28,4 @@ doc/
 
 # Executable
 src/magrathea
+*.exe
