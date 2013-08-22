@@ -8,5 +8,7 @@ int main(int argc, char** argv)
 {
   // Construct a game and initialise it
   gameops mainGame;
+  // Run the game
+  mainGame.run();
   return 0;
 }

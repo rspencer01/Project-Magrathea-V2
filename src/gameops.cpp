@@ -2,6 +2,7 @@
 
 #include <gameops.h>
 #include <graphics.h>
+#include <heightmap.h>
 
 /// The constructor for the gameops class
 ///
@@ -10,5 +11,12 @@
 gameops::gameops()
 {
   printf("New game\n");
+  initialiseHeightmap();
   initialiseGraphics();
+}
+
+/// Run the game
+void gameops::run()
+{
+  printf("Running game...\n");
 }
