@@ -29,3 +29,6 @@ doc/
 # Executable
 src/magrathea
 *.exe
+
+# MSVC stuff
+src/Project Magrathea V2/
