@@ -68,9 +68,11 @@ void Game::display()
 void Game::keyPress(unsigned char key, int x, int y)
 {
   printf("Key %c pressed\n",key);
+  keyDown[key] = true;
 }
 
 /// Handles the event of a key release
 void Game::keyUp(unsigned char key, int x, int y)
 {
+  keyDown[key] = false;
 }
