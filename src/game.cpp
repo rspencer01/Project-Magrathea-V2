@@ -31,6 +31,8 @@ Game::Game()
   initialiseHeightmap();
   initialiseGraphics();
   initialiseCallbacks();
+  for (char i = 0; i<256; i++)
+    keyDown[i] = false;
   currentGame = this;
 }
 
@@ -94,8 +96,13 @@ void Game::keyUp(unsigned char key, int x, int y)
 /// Does all the things required per key
 void Game::keyOperations()
 {
+  // Camera movement
   if (keyDown['w'])
     camera.MoveForward(0.1);
   if (keyDown['s'])
     camera.MoveForward(-0.1);
+  if (keyDown['a'])
+    camera.RotateY(0.05);
+  if (keyDown['d'])
+    camera.RotateY(-0.05);
 }

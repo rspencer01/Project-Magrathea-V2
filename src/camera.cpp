@@ -1,4 +1,5 @@
 #include <GL/glut.h>
+#include <math.h>
 #include <camera.h>
 
 Camera::Camera()
@@ -21,4 +22,12 @@ void Camera::Render()
 void Camera::MoveForward( float d)
 {
   Position = Position + ViewDir*d;
+}
+
+void Camera::RotateY( float theta )
+{
+  RotatedY += theta;
+  Vector3 rightDir = ViewDir.cross(UpVector);
+  ViewDir = ViewDir*cos(theta) - rightDir*sin(theta);
+  ViewDir.normalise();
 }
