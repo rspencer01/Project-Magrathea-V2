@@ -19,14 +19,13 @@ class Camera
 {
   private:
     Vector3 ViewDir;
-    Vector3 RightVector;	
     Vector3 UpVector;
     Vector3 Position;
 
     float RotatedX, RotatedY, RotatedZ;	
 	
 public:
-	/// Initialises the camera to the origin, looking in the +x direction
+	/// Initialises the camera to the <-1,0,0>, looking in the +x direction
 	Camera();				
 	/// Rotates and translates the scene to the correct position.
 	void Render ( void );							

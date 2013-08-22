@@ -24,6 +24,8 @@ class Game
     bool keyDown [256];
     /// Called on each frame update.  Performs relevant operations, based on key positions
     void keyOperations();
+    /// The user camera that contains the fps position rotation etc.
+    Camera camera;
   public:
     /// Creates a game instance and initialises all variables
     Game();

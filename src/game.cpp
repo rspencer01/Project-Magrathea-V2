@@ -41,6 +41,8 @@ void Game::initialiseCallbacks()
   // The display function should be called whenever possible
   glutDisplayFunc(displayCurrentGame);
   glutIdleFunc(displayCurrentGame);
+  // Resize
+  glutReshapeFunc(resize);
   // Log the key functions
   glutKeyboardFunc(keyPressCurrentGame);
   glutKeyboardUpFunc(keyUpCurrentGame);
@@ -56,9 +58,22 @@ void Game::run()
 /// Actually calls the functions to display stuff to the screen.
 void Game::display()
 {
+  // Do all the key stuff
+  keyOperations();
+
   // Clear the display
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glClearColor(100,0,0,0.5);
+
+  // Load a fresh matrix
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+
+  // Do the camera stuff
+  camera.Render();
+
+  // A teapot.  Just for testing
+  glutWireTeapot(1);
 
   // ..and blit it to the screen
   glutSwapBuffers();
@@ -67,7 +82,6 @@ void Game::display()
 /// Handles the event of a key press, performing the required operations
 void Game::keyPress(unsigned char key, int x, int y)
 {
-  printf("Key %c pressed\n",key);
   keyDown[key] = true;
 }
 
@@ -75,4 +89,13 @@ void Game::keyPress(unsigned char key, int x, int y)
 void Game::keyUp(unsigned char key, int x, int y)
 {
   keyDown[key] = false;
+}
+
+/// Does all the things required per key
+void Game::keyOperations()
+{
+  if (keyDown['w'])
+    camera.MoveForward(0.1);
+  if (keyDown['s'])
+    camera.MoveForward(-0.1);
 }

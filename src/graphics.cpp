@@ -31,4 +31,10 @@ void initialiseGraphics()
 /// and the display size
 void resize(int width, int height)
 {
+  glViewport(0,0,(GLsizei)width,(GLsizei)height);
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  // Arguments are: Field of view, Aspect ratio, Near and then far plane
+  gluPerspective(60,(GLfloat)width/(GLfloat)height,1.0,1500);
+  glMatrixMode(GL_MODELVIEW);
 }
