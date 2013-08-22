@@ -25,3 +25,6 @@
 
 # Generated documentation (cluttering for now)
 doc/
+
+# Executable
+src/magrathea
