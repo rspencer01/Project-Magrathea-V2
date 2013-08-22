@@ -31,6 +31,6 @@ class gameops
   public:
     /// Creates a game instance and initialises all variables
     gameops();
-}
+};
 
 #endif
