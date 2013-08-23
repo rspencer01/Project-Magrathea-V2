@@ -25,3 +25,9 @@ The following milestones have been passed:
  * Simple paging
  * Simple system of region based rendering
  * Simple perlin noise (this will soon be replaced with real satalite data)
+
+Data
+----
+Since the input data is large (3Mb), it is not included in this repo, but can be downloaded from `http://www.ked.co.za/temp/smalldata.dat`
+
+Data is 3m resolution of a 9 square kilometers of a section of North America.  More data can be obtained from `http://viewer.nationalmap.gov/viewer/`

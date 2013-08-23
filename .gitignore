@@ -32,3 +32,6 @@ src/magrathea
 
 # MSVC stuff
 src/Project Magrathea V2/
+
+# Data
+*.dat
