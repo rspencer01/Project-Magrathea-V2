@@ -20,11 +20,13 @@ class Camera
   private:
     Vector3 ViewDir;
     Vector3 UpVector;
-    Vector3 Position;
+    
 
     float RotatedX, RotatedY, RotatedZ;	
 	
   public:
+	  /// The position of the camera
+	  Vector3 Position;
 	  /// Initialises the camera to the <-1,0,0>, looking in the +x direction
   	Camera();				
 	  /// Rotates and translates the scene to the correct position.
