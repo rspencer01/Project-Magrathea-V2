@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include <heightmap.h>
+#include <noise.h>
 
 void initialiseHeightmap()
 {
@@ -9,8 +10,6 @@ void initialiseHeightmap()
 
 float getHeightmapData(int x, int y)
 {
-  if (x>10)
-    return x-10;
-  return 0;
+  return 50*perlinNoise(x/50.0,y/50.0,8,0.5);
 }
 

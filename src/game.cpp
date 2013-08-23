@@ -37,6 +37,7 @@ Game::Game()
   regions.push_back(Region(0,0,this));
   regions.push_back(Region(30,0,this));
   regions.push_back(Region(0,30,this));
+  regions.push_back(Region(30,30,this));
 }
 
 /// This function assigns the event handlers defined at the top of this
@@ -125,5 +126,5 @@ void Game::keyOperations()
 
 float Game::getTerrainBit(int x,int y)
 {
-  return getHeightmapData(x,y); 
+  return data->getAt(x,y);
 }
