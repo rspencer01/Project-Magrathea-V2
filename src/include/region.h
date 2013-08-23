@@ -9,10 +9,10 @@
 #ifndef REGION_H
 #define REGION_H
 
-class Region;
+class Game;
 
 #include <GL/glut.h>
-#include <game.h>
+
 
 
 /// The size of a region on a side
