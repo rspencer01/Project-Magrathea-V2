@@ -11,7 +11,7 @@
 
 /// The size of the data that this page holds.  Since it is 2D, any page actually holds
 /// PAGE_SIZE*PAGE_SIZE pieces of data.  Thus this should not get too large.
-#define PAGE_SIZE 100
+#define PAGE_SIZE 20
 
 /// \brief Pages are contained in books and hold and perform operations on data.
 ///
@@ -19,11 +19,14 @@
 class Page
 {
 	private:
-		int data[PAGE_SIZE][PAGE_SIZE];
+		float data[PAGE_SIZE][PAGE_SIZE];
+    int origin_x;
+    int origin_y;
+    float(*generatingFunction)(int,int);
 	public:
-		Page();
+		Page(int,int,float(*g)(int,int));
 		/// Returns the value of the data indexed by the values (from the page origin)
-		int getAt(int,int);
+		float getAt(int,int);
 		/// Returns whether or not the page should be deleted
 		bool toBeDeleted();
 };
