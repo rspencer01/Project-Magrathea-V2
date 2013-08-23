@@ -4,11 +4,11 @@ CC = g++
 CFLAGS = -c -Wall -Werror
 IDIR = include
 ODIR = obj
-SRCS = main.cpp game.cpp vector3.cpp graphics.cpp heightmap.cpp camera.cpp
+SRCS = main.cpp game.cpp vector3.cpp graphics.cpp heightmap.cpp camera.cpp region.cpp
 _OBJS = $(SRCS:.cpp=.o)
 OBJS = $(patsubst %,$(ODIR)/%,$(_OBJS))
 EXEC = magrathea
-LIBS = -lglut -lGLU 
+LIBS = -lglut -lGLU -lGLEW
 
 all: $(ODIR) $(OBJS) $(EXEC)
 

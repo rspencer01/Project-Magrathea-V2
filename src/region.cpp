@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <gl\glew.h>
-#include <gl\glut.h>
+#include <GL/glew.h>
+#include <GL/glut.h>
 #include <region.h>
 
 Region::Region(int x, int y)
@@ -28,9 +28,9 @@ void Region::initialiseTriangles()
 			triangleData[(y*(REGION_SIZE+1)+x)*3 + 2] = (float)(origin_y+y);
 		}
 	// Now make a buffer...
-	glGenBuffers(1,&vertexVBO);
+	glGenBuffersARB(1,&vertexVBO);
 	// set it as the current one,
-	glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);
+	glBindBufferARB(GL_ARRAY_BUFFER, vertexVBO);
 	// ... and blit the data in.
 	glBufferDataARB(GL_ARRAY_BUFFER, (REGION_SIZE+1)*(REGION_SIZE+1)*3*sizeof(float), triangleData,GL_STATIC_DRAW);
 	// We are done with this data, so free it, please.
@@ -47,9 +47,9 @@ void Region::initialiseTriangles()
 			indexData[(y*REGION_SIZE+x)*3 + 2] = y*(REGION_SIZE+1) + (x+1);
 		}
 	// Make another buffer...
-	glGenBuffers(1,&indexVBO);
+	glGenBuffersARB(1,&indexVBO);
 	// an element array buffer (which we mount),
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
+	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
 	// ... and put the data in.
 	glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER, REGION_SIZE*REGION_SIZE*3*sizeof(int), indexData,GL_STATIC_DRAW);
 	// Then again, free this up
@@ -60,10 +60,10 @@ void Region::Render()
 {
 	// We are passing vertices ...
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER,vertexVBO);
+	glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
 	glVertexPointer( 3, GL_FLOAT, 0, 0);
 	// ... and indexes
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
+	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
 	// Now draw trinagles
 	glDrawElements( GL_TRIANGLES, //mode
                   REGION_SIZE*REGION_SIZE*3,  //count, ie. how many indices

@@ -78,7 +78,7 @@ void Game::display()
   camera.Render();
 
   // Render each region
-  for (int i = 0;i<regions.size();i++)
+  for (unsigned int i = 0;i<regions.size();i++)
 	  regions[i].Render();
 
   // ..and blit it to the screen

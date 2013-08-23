@@ -11,7 +11,7 @@
 
 class Region;
 
-#include <gl\glut.h>
+#include <GL/glut.h>
 #include <game.h>
 
 
