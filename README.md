@@ -5,6 +5,7 @@ The second generation realistic terrain project.
 The first version ended up dying as a result of too many changes of mind.  This will hopefully be better.
 
 Goals:
+------
  * Import a heightmap and display it.
  * Do this by caching data near the player (don't load it all at once)
  * Determine the type of terrain at each point algorithmically
@@ -13,6 +14,14 @@ Goals:
  * See from there.
 
 Process:
+--------
  * Write as many and as much of the header files as possible
  * Check that all needed functions are there
  * Write the actual code
+
+Progress:
+---------
+The following milestones have been passed:
+ * Simple paging
+ * Simple system of region based rendering
+ * Simple perlin noise (this will soon be replaced with real satalite data)
