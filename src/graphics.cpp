@@ -28,6 +28,9 @@ void initialiseGraphics()
   // Enable all the standard pipeline things we want.  This should eventually be replaced with custom shaders
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
+
+  // Lets use lines, for nicer debugging without shading and shadows
+  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 }
 
 /// Called whenever the display is resized.  Redoes the projection
