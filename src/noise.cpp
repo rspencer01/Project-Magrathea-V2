@@ -8,7 +8,7 @@ float random(int n)
 {
   n=(n<<13)^n;
   int nn=(n*(n*n*15731+789221)+1376312589)&0x7fffffff;
-  return abs(1.0-((double)nn/1073741824.0));
+  return abs(1.f-((float)nn/1073741824.f));
 }
 
 /// Generates 2D noise
@@ -28,8 +28,8 @@ inline float smoothNoise(int x, int y)
   /// The corners of the same box
   float m = (noise(x-1,y)+noise(x+1,y)+noise(x,y-1)+noise(x,y+1))/8.0f;
   /// The centre
-  float e = noise(x,y)/4.0;
-	return e+m+c;
+  float e = noise(x,y)/4.f;
+  return e+m+c;
 }
 
 /// Creates a cubic through y0, y1, y2 and y3 and finds the value x way between y1 and y2
