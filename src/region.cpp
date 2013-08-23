@@ -3,11 +3,12 @@
 #include <GL/glut.h>
 #include <region.h>
 
-Region::Region(int x, int y)
+Region::Region(int x, int y,Game* parent)
 {
 	printf("New region at %d %d\n",x,y);
 	origin_x = x;
 	origin_y = y;
+  game = parent;
 	initialiseTriangles();
 }
 
@@ -24,7 +25,7 @@ void Region::initialiseTriangles()
 		for (int x = 0; x<(REGION_SIZE+1);x++)
 		{
 			triangleData[(y*(REGION_SIZE+1)+x)*3    ] = (float)(origin_x+x);
-			triangleData[(y*(REGION_SIZE+1)+x)*3 + 1] = 0.f;
+			triangleData[(y*(REGION_SIZE+1)+x)*3 + 1] = game->getTerrainBit(x+origin_x,y+origin_y);
 			triangleData[(y*(REGION_SIZE+1)+x)*3 + 2] = (float)(origin_y+y);
 		}
 	// Now make a buffer...

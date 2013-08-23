@@ -13,6 +13,7 @@ class Game;
 
 #include <camera.h>
 #include <region.h>
+#include <book.h>
 #include <vector>
 
 /// The gameops class contains all the methods to do with gameplay
@@ -25,6 +26,8 @@ class Game
     Camera camera;
 	/// A list of regions in the game
 	std::vector<Region> regions;
+  /// The book of all terrain data
+  Book* data;
     /// Passes all the required functions to glut
     void initialiseCallbacks();
     /// Resets all the keys
@@ -44,6 +47,8 @@ class Game
     void keyPress(unsigned char key, int, int);
     /// Event handler for a key release
     void keyUp(unsigned char key, int, int);
+    /// Returns data about a single point
+    float getTerrainBit(int x, int y);
 };
 
 #endif

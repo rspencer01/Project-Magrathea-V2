@@ -35,7 +35,7 @@ class Region
 	void initialiseTriangles();
   public:
 	/// Constructs the region with the given coordinates
-    Region(int,int);
+    Region(int,int,Game*);
 	/// Destroys the region, freeing space
     ~Region();
 	/// Renders the region to the screen
