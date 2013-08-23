@@ -32,6 +32,7 @@ Game::Game()
   initialiseGraphics();
   initialiseCallbacks();
   initialiseKeyops();
+  data = new Book(getHeightmapData);
   currentGame = this;
   regions.push_back(Region(0,0,this));
   regions.push_back(Region(30,0,this));

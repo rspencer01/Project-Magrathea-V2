@@ -16,12 +16,12 @@
 /// \brief Pages are contained in books and hold and perform operations on data.
 ///
 /// Each page contains a large array of data which can be accessed at any time.
-class page
+class Page
 {
 	private:
 		int data[PAGE_SIZE][PAGE_SIZE];
 	public:
-		page();
+		Page();
 		/// Returns the value of the data indexed by the values (from the page origin)
 		int getAt(int,int);
 		/// Returns whether or not the page should be deleted
