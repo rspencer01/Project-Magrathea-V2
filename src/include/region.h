@@ -40,6 +40,9 @@ class Region
     ~Region();
 	/// Renders the region to the screen
     void Render();
+	/// Accessors for the position of this region
+	int getOriginX();
+	int getOriginY();
 };
 
 

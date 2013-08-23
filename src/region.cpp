@@ -73,3 +73,15 @@ void Region::Render()
 	// Thank you, we are done with the vbo
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
+
+/// Returns the origin coordinates (X) for this region.  Accessors only, as we do not wish to let anyone edit these variables
+int Region::getOriginX()
+{
+	return origin_x;
+}
+
+/// Returns the origin coordinates (Y) for this region.  Accessors only, as we do not wish to let anyone edit these variables
+int Region::getOriginY()
+{
+	return origin_y;
+}
