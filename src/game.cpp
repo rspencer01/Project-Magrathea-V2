@@ -81,7 +81,7 @@ void Game::display()
   // Render each region
   for (unsigned int i = 0;i<regions.size();i++)
 	  for (unsigned int j = 0;j<regions[i].size();j++)
-		regions[i][j].Render();
+		regions[i][j]->Render();
 
   // ..and blit it to the screen
   glutSwapBuffers();
@@ -136,40 +136,57 @@ void Game::constructRegions(float x,float y)
 	int ry = (int)(y /REGION_SIZE)*REGION_SIZE;
 	if (regions.size()==0)
 	{
-		regions.push_back(std::deque<Region>());
-		regions[0].push_back(Region(rx,ry,this));
+		regions.push_back(std::deque<Region*>());
+		Region* rg = new Region(rx,ry,this);
+		regions[0].push_back(rg);
 	}
 
-	if (regions.back().back().getOriginY() < ry+REGION_SIZE)
+	if (regions.back().back()->getOriginY() < ry+REGION_SIZE)
 	{
-		int oy = regions.back().back().getOriginY();
-		regions.push_back(std::deque<Region>());
-		regions.back().push_back(Region(rx,oy+REGION_SIZE,this));
+		int oy = regions.back().back()->getOriginY();
+		Region* rg = new Region(rx,oy+REGION_SIZE,this);
+		regions.push_back(std::deque<Region*>());
+		regions.back().push_back(rg);
 	}
-	if (regions.back().back().getOriginY() > ry+REGION_SIZE)
+	if (regions.back().back()->getOriginY() > ry+REGION_SIZE)
+	{
+		for (int i = 0; i <regions.back().size();i++)
+			delete regions.back()[i];
 		regions.pop_back();
-
-	if (regions.front().back().getOriginY() > ry-REGION_SIZE)
-	{
-		int oy = regions.front().back().getOriginY();
-		regions.push_front(std::deque<Region>());
-		regions.front().push_back(Region(rx,oy-REGION_SIZE,this));
 	}
-	if (regions.front().back().getOriginY() < ry-REGION_SIZE)
+
+	if (regions.front().back()->getOriginY() > ry-REGION_SIZE)
+	{
+		int oy = regions.front().back()->getOriginY();
+		Region* rg = new Region(rx,oy-REGION_SIZE,this);
+		regions.push_front(std::deque<Region*>());
+		regions.front().push_back(rg);
+	}
+	if (regions.front().back()->getOriginY() < ry-REGION_SIZE)
+	{
+		for (int i = 0; i <regions.front().size();i++)
+			delete regions.front()[i];
 		regions.pop_front();
+	}
 
-
+	
 	for (int i = 0;i<regions.size();i++)
 	{
-		if (regions[i].back().getOriginX() < rx+REGION_SIZE)
-			regions[i].push_back(Region(regions[i].back().getOriginX()+REGION_SIZE,regions[i].back().getOriginY(),this));
-		if (regions[i].back().getOriginX() > rx+REGION_SIZE)
+		if (regions[i].back()->getOriginX() < rx+REGION_SIZE)
+			regions[i].push_back(new Region(regions[i].back()->getOriginX()+REGION_SIZE,regions[i].back()->getOriginY(),this));
+		if (regions[i].back()->getOriginX() > rx+REGION_SIZE)
+		{
+			delete regions[i].back();
 			regions[i].pop_back();
-		if (regions[i].front().getOriginX() > rx-REGION_SIZE)
-			regions[i].push_front(Region(regions[i].front().getOriginX()-REGION_SIZE,regions[i].front().getOriginY(),this));
-		if (regions[i].front().getOriginX() < rx-REGION_SIZE)
+		}
+		if (regions[i].front()->getOriginX() > rx-REGION_SIZE)
+			regions[i].push_front(new Region(regions[i].front()->getOriginX()-REGION_SIZE,regions[i].front()->getOriginY(),this));
+		if (regions[i].front()->getOriginX() < rx-REGION_SIZE)
+		{
+			delete regions[i].front();
 			regions[i].pop_front();
+		}
 	}
-
+	
 
 }

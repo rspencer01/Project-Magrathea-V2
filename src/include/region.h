@@ -33,6 +33,7 @@ class Region
 	GLuint indexVBO;
 	/// Populates the VBOs
 	void initialiseTriangles();
+	bool buffersInitialised;
   public:
 	/// Constructs the region with the given coordinates
     Region(int,int,Game*);

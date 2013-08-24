@@ -9,12 +9,18 @@ Region::Region(int x, int y,Game* parent)
 	printf("New region at %d %d\n",x,y);
 	origin_x = x;
 	origin_y = y;
-  game = parent;
+    game = parent;
+    buffersInitialised = false;
 	initialiseTriangles();
 }
 
 Region::~Region()
 {
+	if (buffersInitialised)
+	{
+		glDeleteBuffersARB(1,&vertexVBO);
+		glDeleteBuffersARB(1,&indexVBO);
+	}
 }
 
 void Region::initialiseTriangles()
@@ -56,6 +62,9 @@ void Region::initialiseTriangles()
 	glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER, REGION_SIZE*REGION_SIZE*3*sizeof(int), indexData,GL_STATIC_DRAW);
 	// Then again, free this up
 	delete[] indexData;	
+
+	// Now we have initialised these things, so they can be released if required
+	buffersInitialised = true;
 }
 
 void Region::Render()

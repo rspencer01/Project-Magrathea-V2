@@ -25,7 +25,7 @@ class Game
     /// The user camera that contains the fps position rotation etc.
     Camera camera;
 	/// A list of regions in the game
-	std::deque<std::deque<Region> > regions;
+	std::deque<std::deque<Region*> > regions;
   /// The book of all terrain data
   Book* data;
     /// Passes all the required functions to glut
