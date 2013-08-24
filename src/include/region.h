@@ -12,7 +12,7 @@
 class Game;
 
 #include <GL/glut.h>
-
+#include <tree.h>
 
 
 /// The size of a region on a side
@@ -34,6 +34,8 @@ class Region
 	/// Populates the VBOs
 	void initialiseTriangles();
 	bool buffersInitialised;
+	/// A single tree.  Just for testing
+	Tree* tree;
   public:
 	/// Constructs the region with the given coordinates
     Region(int,int,Game*);
