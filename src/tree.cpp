@@ -5,12 +5,9 @@
 
 #include <tree.h>
 
-Tree::Tree(int x, int y,int z)
+Tree::Tree(int x, int y,int z,Game* g) : Object(x,y,z,g)
 {
-	printf("New region at %d %d\n",x,y);
-	origin_x = x;
-	origin_y = y;
-	origin_z = z;
+	printf("New tree at %d %d\n",x,y);
     buffersInitialised = false;
 	initialiseTriangles();
 }
@@ -32,7 +29,7 @@ void Tree::initialiseTriangles()
 	for (int y = 0; y<10;y++)
 	{
 		triangleData[y*3    ] = (float)(origin_x) + 0.5f*(float)sin(y/5.f*3.1415);
-		triangleData[y*3 + 1] = origin_z;
+		triangleData[y*3 + 1] = (float)origin_z;
 		triangleData[y*3 + 2] = (float)(origin_y) + 0.5f*(float)cos(y/5.f*3.1415);
 	}
 	triangleData[10*3] = (float)origin_x;
@@ -44,7 +41,7 @@ void Tree::initialiseTriangles()
 		for (int y = 0; y<10;y++)
 		{
 			triangleData[((i+1)*11+y)*3    ] = (float)(origin_x) + (4-i)*(float)sin(y/5.f*3.1415);
-			triangleData[((i+1)*11+y)*3 + 1] = origin_z + (i+3-0.5)*10.f/7;
+			triangleData[((i+1)*11+y)*3 + 1] = origin_z + (i+3-0.5f)*10.f/7;
 			triangleData[((i+1)*11+y)*3 + 2] = (float)(origin_y) + (4-i)*(float)cos(y/5.f*3.1415);
 		}
 		triangleData[((i+1)*11+10)*3] = (float)origin_x;

@@ -13,13 +13,11 @@ class Game;
 
 #include <GL/glut.h>
 
-class Tree
+#include <object.h>
+
+class Tree : public Object
 {
   private:
-    /// Where are we?
-	int origin_x;
-	int origin_y;
-	int origin_z;
 	/// Vertex buffer for the position of each vertex
 	GLuint vertexVBO;
 	/// Vertex buffer for the indexes of each triangle
@@ -29,7 +27,7 @@ class Tree
 	bool buffersInitialised;
   public:
 	/// Constructs the tree with the given coordinates
-    Tree(int,int,int);
+    Tree(int,int,int,Game*);
 	/// Destroys the tree, freeing space
     ~Tree();
 	/// Renders the tree to the screen
