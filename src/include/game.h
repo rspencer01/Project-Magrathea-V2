@@ -14,7 +14,7 @@ class Game;
 #include <camera.h>
 #include <region.h>
 #include <book.h>
-#include <vector>
+#include <queue>
 
 /// The gameops class contains all the methods to do with gameplay
 ///
@@ -25,7 +25,7 @@ class Game
     /// The user camera that contains the fps position rotation etc.
     Camera camera;
 	/// A list of regions in the game
-	std::vector<Region> regions;
+	std::deque<std::deque<Region> > regions;
   /// The book of all terrain data
   Book* data;
     /// Passes all the required functions to glut
@@ -36,6 +36,8 @@ class Game
     bool keyDown [256];
     /// Called on each frame update.  Performs relevant operations, based on key positions
     void keyOperations();
+    /// Constructs regions in an area about the given point.
+	void constructRegions(float,float);
   public:
     /// Creates a game instance and initialises all variables
     Game();

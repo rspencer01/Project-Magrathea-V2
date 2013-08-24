@@ -34,10 +34,6 @@ Game::Game()
   initialiseKeyops();
   data = new Book(getHeightmapData);
   currentGame = this;
-  regions.push_back(Region(0,0,this));
-  regions.push_back(Region(30,0,this));
-  regions.push_back(Region(0,30,this));
-  regions.push_back(Region(30,30,this));
 }
 
 /// This function assigns the event handlers defined at the top of this
@@ -68,6 +64,9 @@ void Game::display()
   // Do all the key stuff
   keyOperations();
 
+  // Make whatever regions are required
+  constructRegions(camera.Position.x,camera.Position.z);
+
   // Clear the display
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glClearColor(100,0,0,0.5);
@@ -81,7 +80,8 @@ void Game::display()
 
   // Render each region
   for (unsigned int i = 0;i<regions.size();i++)
-	  regions[i].Render();
+	  for (unsigned int j = 0;j<regions[i].size();j++)
+		regions[i][j].Render();
 
   // ..and blit it to the screen
   glutSwapBuffers();
@@ -111,20 +111,65 @@ void Game::keyOperations()
 {
   // Camera movement
   if (keyDown['w'])
-    camera.MoveForward(0.1);
+    camera.MoveForward(0.1f);
   if (keyDown['s'])
-    camera.MoveForward(-0.1);
+    camera.MoveForward(-0.1f);
   if (keyDown['a'])
-    camera.RotateFlat(0.05);
+    camera.RotateFlat(0.05f);
   if (keyDown['d'])
-    camera.RotateFlat(-0.05);
+    camera.RotateFlat(-0.05f);
   if (keyDown['q'])
-    camera.RotateX(0.05);
+    camera.RotateX(0.05f);
   if (keyDown['e'])
-    camera.RotateX(-0.05);
+    camera.RotateX(-0.05f);
 }
 
 float Game::getTerrainBit(int x,int y)
 {
   return data->getAt(x,y);
+}
+
+/// Constructs regions in an area around the given coordinates.  Does at most one region construction/destruction per call.
+void Game::constructRegions(float x,float y)
+{
+	int rx = (int)(x /REGION_SIZE)*REGION_SIZE;
+	int ry = (int)(y /REGION_SIZE)*REGION_SIZE;
+	if (regions.size()==0)
+	{
+		regions.push_back(std::deque<Region>());
+		regions[0].push_back(Region(rx,ry,this));
+	}
+
+	if (regions.back().back().getOriginY() < ry+REGION_SIZE)
+	{
+		int oy = regions.back().back().getOriginY();
+		regions.push_back(std::deque<Region>());
+		regions.back().push_back(Region(rx,oy+REGION_SIZE,this));
+	}
+	if (regions.back().back().getOriginY() > ry+REGION_SIZE)
+		regions.pop_back();
+
+	if (regions.front().back().getOriginY() > ry-REGION_SIZE)
+	{
+		int oy = regions.front().back().getOriginY();
+		regions.push_front(std::deque<Region>());
+		regions.front().push_back(Region(rx,oy-REGION_SIZE,this));
+	}
+	if (regions.front().back().getOriginY() < ry-REGION_SIZE)
+		regions.pop_front();
+
+
+	for (int i = 0;i<regions.size();i++)
+	{
+		if (regions[i].back().getOriginX() < rx+REGION_SIZE)
+			regions[i].push_back(Region(regions[i].back().getOriginX()+REGION_SIZE,regions[i].back().getOriginY(),this));
+		if (regions[i].back().getOriginX() > rx+REGION_SIZE)
+			regions[i].pop_back();
+		if (regions[i].front().getOriginX() > rx-REGION_SIZE)
+			regions[i].push_front(Region(regions[i].front().getOriginX()-REGION_SIZE,regions[i].front().getOriginY(),this));
+		if (regions[i].front().getOriginX() < rx-REGION_SIZE)
+			regions[i].pop_front();
+	}
+
+
 }
