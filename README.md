@@ -13,19 +13,32 @@ Goals:
  * Introduce basic vegetation (this may need to be a second project, at first)
  * See from there.
 
-Process:
---------
- * Write as many and as much of the header files as possible
- * Check that all needed functions are there
- * Write the actual code
-
 Progress:
 ---------
 The following milestones have been passed:
+
  * Simple paging
  * Simple system of region based rendering
  * Dynamic region creation based on camera position
  * Use of real data (imported)
+ * Basic trees
+
+Todo list
+---------
+These are low level things that need implimentaion
+ 
+ * Normals for each vertex
+ * Trees in more logical places
+ * Change background color (to *anything* but red) 
+
+Wishlist
+--------
+This is alist of high level things that I want to impliment at some stage.
+
+ * ~~Trees~~
+ * Birds
+ * Colors
+ * Textures
 
 Data
 ----
