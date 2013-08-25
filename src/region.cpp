@@ -12,7 +12,7 @@ Region::Region(int x, int y,Game* parent)
     game = parent;
     buffersInitialised = false;
 	initialiseTriangles();
-	tree = new Tree(origin_x,origin_y,game->getTerrainBit(origin_x,origin_y),parent);
+	tree = new Tree(origin_x,origin_y,(int)game->getTerrainBit(origin_x,origin_y),parent);
 }
 
 Region::~Region()

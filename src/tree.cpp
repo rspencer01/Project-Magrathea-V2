@@ -5,7 +5,7 @@
 
 #include <tree.h>
 
-Tree::Tree(int x, int y,int z,Game* g) : Object(Vector3(x,y,z),g)
+Tree::Tree(int x, int y,int z,Game* g) : Object(Vector3((float)x,(float)y,(float)z),g)
 {
 	printf("New tree at %d %d\n",x,y);
   buffersInitialised = false;

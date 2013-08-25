@@ -10,8 +10,8 @@ void initialiseHeightmap()
 
 float getHeightmapData(int x, int y)
 {
-  FILE* fp = fopen("../smalldata.dat","rb");
-  if (not fp)
+  FILE* fp = fopen("../../smalldata.dat","rb");
+  if (!fp)
   {
     fprintf(stderr,"ERROR: HEIGHTMAP DATA NOT FOUND!\n");
     return 0.f;
