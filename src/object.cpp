@@ -1,13 +1,18 @@
+#include <stdio.h>
 #include <object.h>
 
-Object::Object(int x, int y,int z,Game* g)
+Object::Object(Vector3 pos,Game* g)
 {
-	origin_x = x;
-	origin_y = y;
-	origin_z = z;
+  position = pos;
 	game = g;
 }
 
 Object::~Object()
 {
+  printf("DESTROED OBJECT\n");
+}
+
+Vector3 Object::getPosition()
+{
+  return position;
 }

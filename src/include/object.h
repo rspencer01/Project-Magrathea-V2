@@ -10,6 +10,8 @@
 #define OBJECT_H
 
 class Game;
+#include <vector3.h>
+#include <GL/glut.h>
 
 
 /// An object is anything that occurs in the game space
@@ -17,21 +19,22 @@ class Object
 {
   protected:
     /// Where is this thing?
-	int origin_x;
-	int origin_y;
-	int origin_z;
-	Game* game;
-	/// Vertex buffer for the position of each vertex
-	//GLuint vertexVBO;
+    Vector3 position;
+	  Game* game;
+  	/// Vertex buffer for the position of each vertex
+	  GLuint vertexVBO;
 	/// Vertex buffer for the indexes of each triangle
-	//GLuint indexVBO;
+	  GLuint indexVBO;
+  /// Have these things been initialised (can I destroy them?)
+    bool buffersInitialised;
   public:
 	/// Constructs the object with the given coordinates and in the given game
-    Object(int,int,int,Game*);
+    Object(Vector3,Game*);
 	/// Destroys the Object, freeing space
     ~Object();
 	/// Renders the Object to the screen
     //void Render();
+    Vector3 getPosition();
 };
 
 

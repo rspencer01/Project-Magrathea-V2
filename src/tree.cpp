@@ -5,10 +5,10 @@
 
 #include <tree.h>
 
-Tree::Tree(int x, int y,int z,Game* g) : Object(x,y,z,g)
+Tree::Tree(int x, int y,int z,Game* g) : Object(Vector3(x,y,z),g)
 {
 	printf("New tree at %d %d\n",x,y);
-    buffersInitialised = false;
+  buffersInitialised = false;
 	initialiseTriangles();
 }
 
@@ -28,25 +28,25 @@ void Tree::initialiseTriangles()
 	// There are (size+1)^2 vertices.  Bring in the data
 	for (int y = 0; y<10;y++)
 	{
-		triangleData[y*3    ] = (float)(origin_x) + 0.5f*(float)sin(y/5.f*3.1415);
-		triangleData[y*3 + 1] = (float)origin_z;
-		triangleData[y*3 + 2] = (float)(origin_y) + 0.5f*(float)cos(y/5.f*3.1415);
+		triangleData[y*3    ] = position.x + 0.5f*(float)sin(y/5.f*3.1415);
+		triangleData[y*3 + 1] = position.z;
+		triangleData[y*3 + 2] = position.y + 0.5f*(float)cos(y/5.f*3.1415);
 	}
-	triangleData[10*3] = (float)origin_x;
-	triangleData[10*3+1] = origin_z + 10.f;
-	triangleData[10*3+2] = (float)origin_y;
+	triangleData[10*3  ] = position.x;
+	triangleData[10*3+1] = position.z + 10.f;
+	triangleData[10*3+2] = position.y;
 
 	for (int i = 0; i<4;i++)
 	{
 		for (int y = 0; y<10;y++)
 		{
-			triangleData[((i+1)*11+y)*3    ] = (float)(origin_x) + (4-i)*(float)sin(y/5.f*3.1415);
-			triangleData[((i+1)*11+y)*3 + 1] = origin_z + (i+3-0.5f)*10.f/7;
-			triangleData[((i+1)*11+y)*3 + 2] = (float)(origin_y) + (4-i)*(float)cos(y/5.f*3.1415);
+			triangleData[((i+1)*11+y)*3    ] = position.x + (4-i)*(float)sin(y/5.f*3.1415);
+			triangleData[((i+1)*11+y)*3 + 1] = position.z + (i+3-0.5f)*10.f/7;
+			triangleData[((i+1)*11+y)*3 + 2] = position.y + (4-i)*(float)cos(y/5.f*3.1415);
 		}
-		triangleData[((i+1)*11+10)*3] = (float)origin_x;
-		triangleData[((i+1)*11+10)*3+1] = origin_z + (i+3)*10.f/7;
-		triangleData[((i+1)*11+10)*3+2] = (float)origin_y;
+		triangleData[((i+1)*11+10)*3] = position.x;
+		triangleData[((i+1)*11+10)*3+1] = position.z + (i+3)*10.f/7;
+		triangleData[((i+1)*11+10)*3+2] = position.y;
 	}
 
 	// Now make a buffer...
@@ -99,15 +99,3 @@ void Tree::Render()
 	// Thank you, we are done with the vbo
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
-
-/// Returns the origin coordinates (X) for this region.  Accessors only, as we do not wish to let anyone edit these variables
-/*int Tree::getOriginX()
-{
-	return origin_x;
-}
-
-/// Returns the origin coordinates (Y) for this region.  Accessors only, as we do not wish to let anyone edit these variables
-int Tree::getOriginY()
-{
-	return origin_y;
-}*/

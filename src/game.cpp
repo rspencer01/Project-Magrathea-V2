@@ -140,7 +140,6 @@ void Game::constructRegions(float x,float y)
 		Region* rg = new Region(rx,ry,this);
 		regions[0].push_back(rg);
 	}
-
 	if (regions.back().back()->getOriginY() < ry+REGION_SIZE)
 	{
 		int oy = regions.back().back()->getOriginY();
@@ -150,7 +149,7 @@ void Game::constructRegions(float x,float y)
 	}
 	if (regions.back().back()->getOriginY() > ry+REGION_SIZE)
 	{
-		for (int i = 0; i <regions.back().size();i++)
+		for (unsigned int i = 0; i <regions.back().size();i++)
 			delete regions.back()[i];
 		regions.pop_back();
 	}
@@ -164,13 +163,13 @@ void Game::constructRegions(float x,float y)
 	}
 	if (regions.front().back()->getOriginY() < ry-REGION_SIZE)
 	{
-		for (int i = 0; i <regions.front().size();i++)
+		for (unsigned int i = 0; i <regions.front().size();i++)
 			delete regions.front()[i];
 		regions.pop_front();
 	}
 
 	
-	for (int i = 0;i<regions.size();i++)
+	for (unsigned int i = 0;i<regions.size();i++)
 	{
 		if (regions[i].back()->getOriginX() < rx+REGION_SIZE)
 			regions[i].push_back(new Region(regions[i].back()->getOriginX()+REGION_SIZE,regions[i].back()->getOriginY(),this));
