@@ -8,17 +8,7 @@
 Tree::Tree(int x, int y,int z,Game* g) : Object(Vector3((float)x,(float)y,(float)z),g)
 {
 	printf("New tree at %d %d\n",x,y);
-  buffersInitialised = false;
-	initialiseTriangles();
-}
-
-Tree::~Tree()
-{
-	if (buffersInitialised)
-	{
-		glDeleteBuffersARB(1,&vertexVBO);
-		glDeleteBuffersARB(1,&indexVBO);
-	}
+    initialiseTriangles();
 }
 
 void Tree::initialiseTriangles()

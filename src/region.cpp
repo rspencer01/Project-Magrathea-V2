@@ -22,6 +22,7 @@ Region::~Region()
 		glDeleteBuffersARB(1,&vertexVBO);
 		glDeleteBuffersARB(1,&indexVBO);
 	}
+	delete tree;
 }
 
 void Region::initialiseTriangles()

@@ -20,7 +20,7 @@ class Object
   protected:
     /// Where is this thing?
     Vector3 position;
-	  Game* game;
+    Game* game;
   	/// Vertex buffer for the position of each vertex
 	  GLuint vertexVBO;
 	/// Vertex buffer for the indexes of each triangle
