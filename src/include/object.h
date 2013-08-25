@@ -12,6 +12,7 @@
 class Game;
 #include <vector3.h>
 #include <GL/glut.h>
+#include <vector>
 
 
 /// An object is anything that occurs in the game space
@@ -22,12 +23,20 @@ class Object
     Vector3 position;
     Game* game;
   	/// Vertex buffer for the position of each vertex
-	  GLuint vertexVBO;
+	GLuint vertexVBO;
 	/// Vertex buffer for the indexes of each triangle
-	  GLuint indexVBO;
-  /// Have these things been initialised (can I destroy them?)
+	GLuint indexVBO;
+	/// Have these things been initialised (can I destroy them?)
     bool buffersInitialised;
+	/// How many triangles in this thing?
 	int numberOfTriangles;
+	///
+	std::vector<int> triDat;
+	std::vector<float> posDat;
+	void clearTriangleData();
+	void addPoint(Vector3);
+	void addTriangle(int,int,int);
+	void pushTriangleData();
   public:
 	/// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*);
@@ -35,6 +44,7 @@ class Object
     ~Object();
 	/// Renders the Object to the screen
     void Render();
+	/// Accessor for the item position
     Vector3 getPosition();
 };
 
