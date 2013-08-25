@@ -27,13 +27,14 @@ class Object
 	  GLuint indexVBO;
   /// Have these things been initialised (can I destroy them?)
     bool buffersInitialised;
+	int numberOfTriangles;
   public:
 	/// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*);
 	/// Destroys the Object, freeing space
     ~Object();
 	/// Renders the Object to the screen
-    //void Render();
+    void Render();
     Vector3 getPosition();
 };
 

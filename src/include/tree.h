@@ -22,8 +22,6 @@ class Tree : public Object
   public:
 	/// Constructs the tree with the given coordinates
     Tree(int,int,int,Game*);
-	/// Renders the tree to the screen
-    void Render();
 };
 
 

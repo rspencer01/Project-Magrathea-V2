@@ -71,21 +71,5 @@ void Tree::initialiseTriangles()
 
 	// Now we have initialised these things, so they can be released if required
 	buffersInitialised = true;
-}
-
-void Tree::Render()
-{
-	// We are passing vertices ...
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
-	glVertexPointer( 3, GL_FLOAT, 0, 0);
-	// ... and indexes
-	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
-	// Now draw trinagles
-	glDrawElements( GL_TRIANGLES, //mode
-                  50*3,  //count, ie. how many indices
-                  GL_UNSIGNED_INT, //type of the index array
-                  0);
-	// Thank you, we are done with the vbo
-	glDisableClientState(GL_VERTEX_ARRAY);
+	numberOfTriangles = 50;
 }
