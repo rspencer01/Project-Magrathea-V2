@@ -13,9 +13,10 @@ Tree::Tree(int x, int y,int z,Game* g) : Object(Vector3((float)x,(float)y,(float
 
 void Tree::initialiseTriangles()
 {
+	// Begin the operation of setting up triangles
 	clearTriangleData();
-	// This will hold the vertex position data
-	// There are (size+1)^2 vertices.  Bring in the data
+	
+	// Add the trunk.  10 points in a circle, and one on top
 	for (int y = 0; y<10;y++)
 	{
 		addPoint(Vector3(0.5f*(float)sin(y/5.f*3.1415),
@@ -24,6 +25,7 @@ void Tree::initialiseTriangles()
 	}
 	addPoint(Vector3(0.f,10.f,0.f));
 
+	// Add 4 leaf things
 	for (int i = 0; i<4;i++)
 	{
 		for (int y = 0; y<10;y++)
@@ -34,12 +36,12 @@ void Tree::initialiseTriangles()
 		}
 		addPoint(Vector3(0.f,(i+3)*10.f/7,0.f));
 	}
-
-
-	// Populate one triangle (for now) per block
+	
+	// Add in all the triangles
 	for (int i = 0;i<5;i++)
 		for (int y = 0; y<10;y++)
 			addTriangle(11*i + y,11*i + (y+1)%10,11*i + 10);
 
+	// And save
 	pushTriangleData();
 }

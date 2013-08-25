@@ -48,7 +48,7 @@ void Object::Render()
 
 void Object::clearTriangleData()
 {
-  printf("Object data cleared\n");
+  // Clear all the data and the buffers (if required)
   triDat.clear();
   posDat.clear();
   if (buffersInitialised)
@@ -60,7 +60,7 @@ void Object::clearTriangleData()
 
 void Object::addPoint(Vector3 pt)
 {
-	printf("Added point %f %f %f\n",pt.x,pt.y,pt.z);
+	// Point is relative to the position of the object
 	pt = pt + position;
 	posDat.push_back(pt.x);
 	posDat.push_back(pt.y);
@@ -69,7 +69,6 @@ void Object::addPoint(Vector3 pt)
 
 void Object::addTriangle(int a,int b, int c)
 {
-	printf("Added triangle %d %d %d\n",a,b,c);
 	triDat.push_back(a);
 	triDat.push_back(b);
 	triDat.push_back(c);
@@ -77,7 +76,7 @@ void Object::addTriangle(int a,int b, int c)
 
 void Object::pushTriangleData()
 {
-	printf("Object data pushed\n");
+	// Load in the data for points
 	float* a = new float[posDat.size()];
 	for (unsigned int i = 0; i<posDat.size();i++)
 		a[i] = posDat[i];
@@ -90,6 +89,7 @@ void Object::pushTriangleData()
 	// We are done with this data, so free it, please.
 	delete a;
 
+	//Load in the data for triangles
 	int* b = new int[triDat.size()];
 	for (unsigned int i = 0; i<triDat.size();i++)
 		b[i] = triDat[i];
@@ -101,6 +101,8 @@ void Object::pushTriangleData()
 	glBufferDataARB(GL_ARRAY_BUFFER, triDat.size()*sizeof(float),b,GL_STATIC_DRAW);
 	// We are done with this data, so free it, please.
 	delete b;
+
+	// Finally set the variables that need setting
 	buffersInitialised = true;
 	numberOfTriangles = triDat.size()/3;
 }
