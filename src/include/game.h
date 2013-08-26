@@ -37,7 +37,9 @@ class Game
     /// Called on each frame update.  Performs relevant operations, based on key positions
     void keyOperations();
     /// Constructs regions in an area about the given point.
-	void constructRegions(float,float);
+	  void constructRegions(float,float);
+    /// The camera speed
+    float speed;
   public:
     /// Creates a game instance and initialises all variables
     Game();

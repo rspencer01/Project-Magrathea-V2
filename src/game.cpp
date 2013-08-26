@@ -34,6 +34,7 @@ Game::Game()
   initialiseKeyops();
   data = new Book(getHeightmapData);
   currentGame = this;
+  speed = 0.1;
 }
 
 /// This function assigns the event handlers defined at the top of this
@@ -109,6 +110,10 @@ void Game::initialiseKeyops()
 void Game::keyPress(unsigned char key, int x, int y)
 {
   keyDown[key] = true;
+  if (key=='x')
+    speed *=2;
+  if (key=='z')
+    speed/=2;
 }
 
 /// Handles the event of a key release
@@ -122,9 +127,9 @@ void Game::keyOperations()
 {
   // Camera movement
   if (keyDown['w'])
-    camera.MoveForward(0.1f);
+    camera.MoveForward(speed);
   if (keyDown['s'])
-    camera.MoveForward(-0.1f);
+    camera.MoveForward(-speed);
   if (keyDown['a'])
     camera.RotateFlat(0.05f);
   if (keyDown['d'])
