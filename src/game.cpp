@@ -161,11 +161,14 @@ void Game::keyUp(unsigned char key, int x, int y)
 /// Does all the things required per key
 void Game::keyOperations()
 {
-  // Camera movement
-  if (keyDown['w'])
-    camera.MoveForward(speed);
-  if (keyDown['s'])
-    camera.MoveForward(-speed);
+  // Camera movement (if playing
+  if (!showMenu)
+  {
+	  if (keyDown['w'])
+		camera.MoveForward(speed);
+	  if (keyDown['s'])
+		camera.MoveForward(-speed);
+  }
   if (keyDown['a'])
     camera.RotateFlat(0.05f);
   if (keyDown['d'])
