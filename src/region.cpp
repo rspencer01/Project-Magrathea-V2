@@ -4,6 +4,10 @@
 #include <region.h>
 #include <game.h>
 
+/// Constructs a new region at the given position
+/// @param x The x coordinate of the origin
+/// @param y The y coordinate of the origin
+/// @param parent The game that this region is in.
 Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
 {
 	printf("New region at %d %d\n",x,y);
@@ -11,6 +15,7 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
 	tree = new Tree(x,(int)game->getTerrainBit(x,y),y,parent);
 }
 
+/// Constructs the triangles
 void Region::initialiseTriangles()
 {
   clearTriangleData();
@@ -34,16 +39,19 @@ void Region::initialiseTriangles()
   pushTriangleData();
 }
 
+/// Render this region and the trees
 void Region::Render()
 {
   Object::Render();
 	tree->Render();
 }
 
+/// Returns the x coordinate
 float Region::getOriginX()
 {
   return position.x;
 }
+/// Returns the y coordinate (z in gamespace)
 float Region::getOriginY()
 {
   return position.z;
