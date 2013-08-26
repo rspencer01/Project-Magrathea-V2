@@ -13,12 +13,10 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
 {
 	printf("New region at %d %d\n",x,y);
 	initialiseTriangles();
-  for (int i = 0;i<10;i++)
-  {
-    int tx = x + noise(x,y+i)*REGION_SIZE;
-    int ty = y + noise(x,y+i+11)*REGION_SIZE;
-  	trees.push_back(new Tree(tx,(int)game->getTerrainBit(tx,ty).position->y,ty,parent));
-  }
+  for (int ty = 0;y<REGION_SIZE;y++)
+    for (int tx = 0;x<REGION_SIZE;x++)
+      if (game->getTerrainBit(tx+x,ty+y).isTree)
+      	trees.push_back(new Tree(tx+x,(int)game->getTerrainBit(tx,ty).position->y,ty+y,parent));
 }
 
 /// Constructs the triangles
