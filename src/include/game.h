@@ -44,6 +44,10 @@ class Game
     float speed;
 	/// Are we in FPS mode?
 	bool fpsOn;
+	/// Are we showing the game (not the menu)
+	bool inGame;
+	/// Do the menu
+	void renderMenu();
   public:
     /// Creates a game instance and initialises all variables
     Game();

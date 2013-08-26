@@ -43,6 +43,7 @@ Game::Game()
   currentGame = this;
   speed = 0.1;
   fpsOn = true;
+  inGame = true;
 }
 
 /// This function assigns the event handlers defined at the top of this
@@ -86,24 +87,31 @@ void Game::display()
   // Load a fresh matrix
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+  
+  if (inGame)
+  {
+	  // Do the camera stuff
+	  camera.Render();
 
-  // Do the camera stuff
-  camera.Render();
+	  glColor4f(0,0,0,0);
 
-  glColor4f(0,0,0,0);
-
-  glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-  // Render each region
-  for (unsigned int i = 0;i<regions.size();i++)
-	  for (unsigned int j = 0;j<regions[i].size();j++)
-		regions[i][j]->Render();
-  glColor4f(100,100,100,0);
-  glLineWidth(2);
-  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-  // Render each region
-  for (unsigned int i = 0;i<regions.size();i++)
-	  for (unsigned int j = 0;j<regions[i].size();j++)
-		regions[i][j]->Render();
+	  glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	  // Render each region
+	  for (unsigned int i = 0;i<regions.size();i++)
+		  for (unsigned int j = 0;j<regions[i].size();j++)
+			regions[i][j]->Render();
+	  glColor4f(100,100,100,0);
+	  glLineWidth(2);
+	  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	  // Render each region
+	  for (unsigned int i = 0;i<regions.size();i++)
+		  for (unsigned int j = 0;j<regions[i].size();j++)
+			regions[i][j]->Render();
+  }
+  else
+  {
+	  renderMenu();
+  }
 
 
   // ..and blit it to the screen
@@ -142,6 +150,8 @@ void Game::keyPress(unsigned char key, int x, int y)
     speed/=2;
   if (key=='o')
     fpsOn = !fpsOn;
+  if (key=='m')
+	inGame = !inGame;
 }
 
 /// Handles the event of a key release
@@ -232,4 +242,10 @@ void Game::constructRegions(float x,float y)
 	}
 	
 
+}
+
+void Game::renderMenu()
+{
+  writeString(3,95,"PROJECT MAGRATHEA V2");
+  writeString(3,91, "====================");
 }
