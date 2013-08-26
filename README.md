@@ -22,15 +22,16 @@ The following milestones have been passed:
  * Dynamic region creation based on camera position
  * Use of real data (imported)
  * Basic trees
+ * Nice menu
 
 Todo list
 ---------
 These are low level things that need implimentaion
  
- * Normals for each vertex
- * Trees in more logical places
+ * ~~Normals for each vertex~~
+ * ~~Trees in more logical places~~
  * ~~Change background color (to *anything* but red) ~~
- * Sensical tree placement
+ * ~~Sensical tree placement~~
  * Move away from wireframe
 
 Wishlist
