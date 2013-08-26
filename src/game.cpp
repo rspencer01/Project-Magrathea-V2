@@ -42,6 +42,7 @@ Game::Game()
   data = new Book(getHeightmapData);
   currentGame = this;
   speed = 0.1;
+  fpsOn = true;
 }
 
 /// This function assigns the event handlers defined at the top of this
@@ -72,7 +73,8 @@ void Game::display()
   // Do all the key stuff
   keyOperations();
 
-  setCameraFPS();
+  if (fpsOn)
+	setCameraFPS();
 
   // Make whatever regions are required
   constructRegions(camera.Position.x,camera.Position.z);
@@ -122,6 +124,7 @@ void Game::setCameraFPS()
 						fy) + 0.63;
 }
 
+
 void Game::initialiseKeyops()
 {
   printf("Initialising keyops\n");
@@ -137,6 +140,8 @@ void Game::keyPress(unsigned char key, int x, int y)
     speed *=2;
   if (key=='z')
     speed/=2;
+  if (key=='o')
+    fpsOn = !fpsOn;
 }
 
 /// Handles the event of a key release
