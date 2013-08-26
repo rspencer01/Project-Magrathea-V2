@@ -8,6 +8,7 @@ typedef
 struct terrainBit_t
 {
   Vector3* position;
+  Vector3* normal;
   bool isTree;
 } terrainBit;
 
