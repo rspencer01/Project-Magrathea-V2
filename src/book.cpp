@@ -22,15 +22,21 @@ Book::~Book()
 }
 
 /// Actually does the accessing of the data
-float Book::getAt(int x, int y)
+terrainBit Book::getAt(int x, int y)
 {
+  terrainBit nullBit;
+  nullBit.altitude = 0.f;
+  // Check that this is a valid point to enquire about.  If not, return a nothing.
   if ((x > PAGE_COUNT * PAGE_SIZE) || (x<0))
-    return 0.f;
+    return nullBit;
   if ((y > PAGE_COUNT * PAGE_SIZE) || (y<0))
-    return 0.f;
+    return nullBit;
+  // Get the page coordinates
   int px = x/PAGE_SIZE;
   int py = y/PAGE_SIZE;
+  // If the page does not exist, create it.
   if (pages[px][py]==NULL)
     pages[px][py] = new Page(px*PAGE_SIZE,py*PAGE_SIZE,generatingFunction);
+  // Ask the page for the terrainBit
   return pages[px][py]->getAt(x%PAGE_SIZE,y%PAGE_SIZE);
 }

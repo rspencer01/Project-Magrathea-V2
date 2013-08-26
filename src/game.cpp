@@ -124,7 +124,7 @@ void Game::keyOperations()
     camera.RotateX(-0.05f);
 }
 
-float Game::getTerrainBit(int x,int y)
+terrainBit Game::getTerrainBit(int x,int y)
 {
   return data->getAt(x,y);
 }

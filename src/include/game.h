@@ -50,7 +50,7 @@ class Game
     /// Event handler for a key release
     void keyUp(unsigned char key, int, int);
     /// Returns data about a single point
-    float getTerrainBit(int x, int y);
+    terrainBit getTerrainBit(int x, int y);
 };
 
 #endif

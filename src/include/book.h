@@ -35,7 +35,7 @@ class Book
 		Book(float (*g)(int,int));
     ~Book();
     /// The function called to get the data
-    float getAt(int,int);
+    terrainBit getAt(int,int);
 		/// Returns the number of pages that are currently initialised and ready in memory.
 		int getNumberOfInitialisedPages();
 		/// Runs through all the pages, deleting those that are too old to matter much.
