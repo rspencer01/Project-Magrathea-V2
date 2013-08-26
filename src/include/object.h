@@ -14,37 +14,41 @@ class Game;
 #include <GL/glut.h>
 #include <vector>
 
-
 /// An object is anything that occurs in the game space
 class Object
 {
+  private:
   protected:
+    /// Two vectors to hold the triangle and position data while we collect them
+	  std::vector<int> triDat;
+  	std::vector<float> posDat;
     /// Where is this thing?
     Vector3 position;
     Game* game;
   	/// Vertex buffer for the position of each vertex
-	GLuint vertexVBO;
-	/// Vertex buffer for the indexes of each triangle
-	GLuint indexVBO;
-	/// Have these things been initialised (can I destroy them?)
+    GLuint vertexVBO;
+    /// Vertex buffer for the indexes of each triangle
+    GLuint indexVBO;
+    /// Have these things been initialised (can I destroy them?)
     bool buffersInitialised;
-	/// How many triangles in this thing?
-	int numberOfTriangles;
-	///
-	std::vector<int> triDat;
-	std::vector<float> posDat;
-	void clearTriangleData();
-	void addPoint(Vector3);
-	void addTriangle(int,int,int);
-	void pushTriangleData();
+    /// How many triangles in this thing?
+    int numberOfTriangles;
+    /// Initialise the triangle and position datas
+    void clearTriangleData();
+    /// Adds a new vertex to the shape of this thing
+    void addPoint(Vector3);
+    /// Constructs a triangle with given points
+  	void addTriangle(int,int,int);
+    /// Pushes the triangle data to the graphics card
+	  void pushTriangleData();
   public:
-	/// Constructs the object with the given coordinates and in the given game
+	  /// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*);
-	/// Destroys the Object, freeing space
+  	/// Destroys the Object, freeing space
     ~Object();
-	/// Renders the Object to the screen
+  	/// Renders the Object to the screen
     void Render();
-	/// Accessor for the item position
+  	/// Accessor for the item position
     Vector3 getPosition();
 };
 

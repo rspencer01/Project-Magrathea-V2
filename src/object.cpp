@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <object.h>
 
+/// @param pos The position of this object in gamespace
+/// @param g   The game to which this object belongs
 Object::Object(Vector3 pos,Game* g)
 {
   position = pos;
@@ -11,23 +13,28 @@ Object::Object(Vector3 pos,Game* g)
   buffersInitialised = false;
 }
 
+/// Frees the data used by this object (esp the buffers in the GPU)
 Object::~Object()
 {
   if (buffersInitialised)
   {
-	glDeleteBuffersARB(1,&vertexVBO);
-	glDeleteBuffersARB(1,&indexVBO);
+  	glDeleteBuffersARB(1,&vertexVBO);
+  	glDeleteBuffersARB(1,&indexVBO);
   }
 }
 
+/// Accesses the position of this object
 Vector3 Object::getPosition()
 {
   return position;
 }
 
+/// Renders this object to the screen, using the VBOs that were 
+/// initialised using the addPoint, addTriangle and pushTriangleData
+/// functions
 void Object::Render()
 {
-	
+  // Only do something if we have data	
 	if (buffersInitialised)
 	{
 		// We are passing vertices ...
@@ -46,6 +53,7 @@ void Object::Render()
 	}
 }
 
+/// Reset the data.  Clear the internal arrays, and the GPU arrays
 void Object::clearTriangleData()
 {
   // Clear all the data and the buffers (if required)
@@ -53,27 +61,36 @@ void Object::clearTriangleData()
   posDat.clear();
   if (buffersInitialised)
   {
-	glDeleteBuffersARB(1,&vertexVBO);
-	glDeleteBuffersARB(1,&indexVBO);
+  	glDeleteBuffersARB(1,&vertexVBO);
+	  glDeleteBuffersARB(1,&indexVBO);
+//    buffersInitialised = false;
   }
 }
-
-void Object::addPoint(Vector3 pt)
+/// Add a new point to the object.  All points are taken relative to the origin of the object
+/// @param point The position of this point, relative to the object origin
+void Object::addPoint(Vector3 point)
 {
 	// Point is relative to the position of the object
-	pt = pt + position;
-	posDat.push_back(pt.x);
-	posDat.push_back(pt.y);
-	posDat.push_back(pt.z);
+	point = point + position;
+  // Add it to the internal array
+	posDat.push_back(point.x);
+	posDat.push_back(point.y);
+	posDat.push_back(point.z);
 }
 
+/// Adds a new triangle to the object.  Indexes are the same as the order the points were added
+/// @param a The index of the first point
+/// @param b The index of the second point
+/// @param c The index of the third point
 void Object::addTriangle(int a,int b, int c)
 {
+  // Add it to the internal array
 	triDat.push_back(a);
 	triDat.push_back(b);
 	triDat.push_back(c);
 }
 
+/// Constructs new VBOs and pushes all the data to the GPU
 void Object::pushTriangleData()
 {
 	// Load in the data for points
