@@ -30,6 +30,8 @@ These are low level things that need implimentaion
  * Normals for each vertex
  * Trees in more logical places
  * Change background color (to *anything* but red) 
+ * Sensical tree placement
+ * Move away from wireframe
 
 Wishlist
 --------
