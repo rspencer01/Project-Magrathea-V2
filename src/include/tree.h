@@ -21,7 +21,7 @@ class Tree : public Object
 	void initialiseTriangles();
   public:
 	/// Constructs the tree with the given coordinates
-    Tree(int,int,int,Game*);
+    Tree(Vector3,Game*);
 };
 
 

@@ -5,10 +5,10 @@
 
 #include <tree.h>
 
-Tree::Tree(int x, int y,int z,Game* g) : Object(Vector3((float)x,(float)y,(float)z),g)
+Tree::Tree(Vector3 pos,Game* g) : Object(pos,g)
 {
-	printf("New tree at %d %d\n",x,y);
-    initialiseTriangles();
+  printf("New tree at %f %f %f\n",pos.x,pos.y,pos.z);
+  initialiseTriangles();
 }
 
 void Tree::initialiseTriangles()

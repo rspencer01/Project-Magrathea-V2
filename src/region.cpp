@@ -3,7 +3,6 @@
 #include <GL/glut.h>
 #include <region.h>
 #include <game.h>
-#include <noise.h>
 
 /// Constructs a new region at the given position
 /// @param x The x coordinate of the origin
@@ -13,10 +12,13 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
 {
 	printf("New region at %d %d\n",x,y);
 	initialiseTriangles();
-  for (int ty = 0;y<REGION_SIZE;y++)
-    for (int tx = 0;x<REGION_SIZE;x++)
-      if (game->getTerrainBit(tx+x,ty+y).isTree)
-      	trees.push_back(new Tree(tx+x,(int)game->getTerrainBit(tx,ty).position->y,ty+y,parent));
+  for (int ty = 0;ty<REGION_SIZE;ty++)
+    for (int tx = 0;tx<REGION_SIZE;tx++)
+    {
+      terrainBit here = game->getTerrainBit(tx+x,ty+y);
+      if (here.isTree)
+      	trees.push_back(new Tree(*(here.position),parent));
+    }
 }
 
 /// Constructs the triangles

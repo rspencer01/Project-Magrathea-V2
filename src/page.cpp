@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <page.h>
+#include <noise.h>
 
 Page::Page(int x,int y,float(*g)(int,int))
 {
@@ -10,8 +11,8 @@ Page::Page(int x,int y,float(*g)(int,int))
   for (int i = 0;i<PAGE_SIZE;i++)
     for (int j = 0;j<PAGE_SIZE;j++)
     {
-      data[i][j].position = new Vector3(x+i,generatingFunction(origin_x+i,origin_y+j),y+i);
-      data[i][j].isTree = (i*17+j)%100<=20;
+      data[i][j].position = new Vector3(origin_x+i,generatingFunction(origin_x+i,origin_y+j),origin_y+j);
+      data[i][j].isTree = noise(x+i,y+j)<0.02;
     }
 }
 
