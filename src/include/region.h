@@ -21,31 +21,22 @@ class Game;
 /// A region class is a section of terrain covered by a single texture
 ///
 /// Each region is rendered in turn.  Regions are not related to pages in size.
-class Region
+class Region : public Object
 {
   private:
-    Game* game;
-	int origin_x;
-	int origin_y;
-	/// Vertex buffer for the position of each vertex
-	GLuint vertexVBO;
-	/// Vertex buffer for the indexes of each triangle
-	GLuint indexVBO;
 	/// Populates the VBOs
 	void initialiseTriangles();
-	bool buffersInitialised;
 	/// A single tree.  Just for testing
 	Tree* tree;
   public:
 	/// Constructs the region with the given coordinates
-    Region(int,int,Game*);
-	/// Destroys the region, freeing space
-    ~Region();
-	/// Renders the region to the screen
-    void Render();
-	/// Accessors for the position of this region
-	int getOriginX();
-	int getOriginY();
+  Region(int,int,Game*);
+	/// Renders the region to the screen (and all the trees here)
+  void Render();
+  /// Returns the X coordinate of the origin of this region
+  float getOriginX();
+  /// Returns the Y coordinate of the origin of this region.  This is its z coordinate in gamespace
+  float getOriginY();
 };
 
 
