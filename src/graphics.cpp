@@ -29,6 +29,10 @@ void initialiseGraphics()
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
 
+  // Lets enable alpha blending
+  glEnable (GL_BLEND);
+  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
   // Lets use lines, for nicer debugging without shading and shadows
   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 

@@ -44,8 +44,8 @@ class Game
     float speed;
 	/// Are we in FPS mode?
 	bool fpsOn;
-	/// Are we showing the game (not the menu)
-	bool inGame;
+	/// Are we showing the menu?
+	bool showMenu;
 	/// Do the menu
 	void renderMenu();
   public:
