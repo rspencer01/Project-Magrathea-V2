@@ -32,6 +32,8 @@ class Game
     void initialiseCallbacks();
     /// Resets all the keys
     void initialiseKeyops();
+	/// Sets the camera vertical position, based on the terrain
+	void setCameraFPS();
     /// A list of all keys that are currently depressed
     bool keyDown [256];
     /// Called on each frame update.  Performs relevant operations, based on key positions

@@ -21,6 +21,13 @@ void keyPressCurrentGame(unsigned char key,int x,int y)
   currentGame->keyPress(key,x,y);
 }
 
+// TODO Move this somewhere better
+inline float interpolate(float a, float b, float t)
+{
+	return a*(1-t) + b*t;
+}
+
+
 /// The constructor for the gameops class
 ///
 /// This function is called on the creation of a new game.  It loads
@@ -65,6 +72,8 @@ void Game::display()
   // Do all the key stuff
   keyOperations();
 
+  setCameraFPS();
+
   // Make whatever regions are required
   constructRegions(camera.Position.x,camera.Position.z);
 
@@ -97,6 +106,20 @@ void Game::display()
 
   // ..and blit it to the screen
   glutSwapBuffers();
+}
+
+void Game::setCameraFPS()
+{
+	float fx = camera.Position.x - (int)camera.Position.x;
+	float fy = camera.Position.z - (int)camera.Position.z;
+	camera.Position.y = interpolate(
+						interpolate(getTerrainBit((int)camera.Position.x,(int)camera.Position.z).position->y,
+									getTerrainBit((int)camera.Position.x+1,(int)camera.Position.z).position->y,
+									fx),
+						interpolate(getTerrainBit((int)camera.Position.x,(int)camera.Position.z+1).position->y,
+									getTerrainBit((int)camera.Position.x+1,(int)camera.Position.z+1).position->y,
+									fx),
+						fy) + 0.63;
 }
 
 void Game::initialiseKeyops()
