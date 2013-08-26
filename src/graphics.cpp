@@ -45,3 +45,48 @@ void resize(int width, int height)
   gluPerspective(60,(GLfloat)width/(GLfloat)height,0.1,1500);
   glMatrixMode(GL_MODELVIEW);
 }
+
+
+/// Draws a string. x and y are percentages from the bottom left
+
+void writeString(int x, int y, const char* format, ... )
+{
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  // Arguments are: Field of view, Aspect ratio, Near and then far plane
+  glOrtho(-1,1,-1,1,0.1,10);
+  glMatrixMode(GL_MODELVIEW);
+
+
+  //Format the string 
+  va_list args;
+  char buffer[200], *p;
+
+  va_start(args, format);
+  vsprintf(buffer, format, args);
+  va_end(args);
+  // Get the right looking at point
+  glLoadIdentity();
+  gluLookAt(0.f,0.f,1.732f,0.f,0.f,0.f,0.f,1.f,0.f);
+
+  //How far should we move it?
+  float fx = (x-50)/50.f;
+  float fy = (y-50)/50.f;
+
+  glTranslatef(fx,fy,0);
+  
+  // Scale it to the right text size
+  glScalef(0.0005,0.0005,1);
+  
+	
+  int lenghOfQuote = 10;
+  for (int i = 0; buffer[i]; i++)
+  {
+     glColor3f(1,1,1);
+	 glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, buffer[i]);
+  }
+
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+}
