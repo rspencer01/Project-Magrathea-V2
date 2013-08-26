@@ -17,7 +17,7 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
   {
     int tx = x + noise(x,y+i)*REGION_SIZE;
     int ty = y + noise(x,y+i+11)*REGION_SIZE;
-  	trees.push_back(new Tree(tx,(int)game->getTerrainBit(tx,ty).altitude,ty,parent));
+  	trees.push_back(new Tree(tx,(int)game->getTerrainBit(tx,ty).position->y,ty,parent));
   }
 }
 
@@ -30,7 +30,7 @@ void Region::initialiseTriangles()
 		for (int x = 0; x<(REGION_SIZE+1);x++)
 		{
       addPoint(Vector3(x,
-			                 game->getTerrainBit(x+position.x,y+position.z).altitude,
+			                 game->getTerrainBit(x+position.x,y+position.z).position->y,
 			                 y));
 		}
 	

@@ -25,7 +25,7 @@ Book::~Book()
 terrainBit Book::getAt(int x, int y)
 {
   terrainBit nullBit;
-  nullBit.altitude = 0.f;
+  nullBit.position = new Vector3((float)x,0.f,(float)y);
   // Check that this is a valid point to enquire about.  If not, return a nothing.
   if ((x > PAGE_COUNT * PAGE_SIZE) || (x<0))
     return nullBit;

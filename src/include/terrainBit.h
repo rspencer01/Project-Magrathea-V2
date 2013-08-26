@@ -1,11 +1,13 @@
 #ifndef TERRAIN_BIT_H
 #define TERRAIN_BIT_H
 
+#include <vector3.h>
+
 /// The terrain bit is a representation of stuff at some point
 typedef 
 struct terrainBit_t
 {
-  float altitude;
+  Vector3* position;
 } terrainBit;
 
 #endif
