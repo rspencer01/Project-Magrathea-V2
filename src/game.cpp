@@ -69,7 +69,7 @@ void Game::display()
 
   // Clear the display
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-  glClearColor(100,0,0,0.5);
+  glClearColor(0,0,0,0.5);
 
   // Load a fresh matrix
   glMatrixMode(GL_MODELVIEW);
@@ -78,10 +78,21 @@ void Game::display()
   // Do the camera stuff
   camera.Render();
 
+  glColor4f(0,0,0,0);
+
+  glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
   // Render each region
   for (unsigned int i = 0;i<regions.size();i++)
 	  for (unsigned int j = 0;j<regions[i].size();j++)
 		regions[i][j]->Render();
+  glColor4f(100,100,100,0);
+  glLineWidth(2);
+  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+  // Render each region
+  for (unsigned int i = 0;i<regions.size();i++)
+	  for (unsigned int j = 0;j<regions[i].size();j++)
+		regions[i][j]->Render();
+
 
   // ..and blit it to the screen
   glutSwapBuffers();

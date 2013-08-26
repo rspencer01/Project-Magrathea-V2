@@ -31,6 +31,7 @@ void initialiseGraphics()
 
   // Lets use lines, for nicer debugging without shading and shadows
   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+
 }
 
 /// Called whenever the display is resized.  Redoes the projection

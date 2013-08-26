@@ -41,6 +41,9 @@ void Region::initialiseTriangles()
       addTriangle(y*(REGION_SIZE+1) + x,
 			            (y+1)*(REGION_SIZE+1) + x,
 			            y*(REGION_SIZE+1) + (x+1));
+      addTriangle(y*(REGION_SIZE+1) + x+1,
+			            (y+1)*(REGION_SIZE+1) + x,
+			            (y+1)*(REGION_SIZE+1) + (x+1));
 		}
   pushTriangleData();
 }
