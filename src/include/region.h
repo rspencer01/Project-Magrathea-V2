@@ -13,6 +13,7 @@ class Game;
 
 #include <GL/glut.h>
 #include <tree.h>
+#include <vector>
 
 
 /// The size of a region on a side
@@ -24,19 +25,19 @@ class Game;
 class Region : public Object
 {
   private:
-	/// Populates the VBOs
-	void initialiseTriangles();
-	/// A single tree.  Just for testing
-	Tree* tree;
+  	/// Populates the VBOs
+	  void initialiseTriangles();
+  	/// All the trees in this region
+    std::vector<Tree*> trees;
   public:
-	/// Constructs the region with the given coordinates
-  Region(int,int,Game*);
-	/// Renders the region to the screen (and all the trees here)
-  void Render();
-  /// Returns the X coordinate of the origin of this region
-  float getOriginX();
-  /// Returns the Y coordinate of the origin of this region.  This is its z coordinate in gamespace
-  float getOriginY();
+  	/// Constructs the region with the given coordinates
+    Region(int,int,Game*);
+  	/// Renders the region to the screen (and all the trees here)
+    void Render();
+    /// Returns the X coordinate of the origin of this region
+    float getOriginX();
+    /// Returns the Y coordinate of the origin of this region.  This is its z coordinate in gamespace
+    float getOriginY();
 };
 
 
