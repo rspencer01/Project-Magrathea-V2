@@ -21,7 +21,7 @@ void Tree::initialiseTriangles()
 	{
 		addPoint(y,
              Vector3(0.5f*(float)sin(y/5.f*3.1415),
-						 0.f,
+						 -1.f,
 						 0.5f*(float)cos(y/5.f*3.1415)),0.58f,0.35f,0.09f);
 	}
 	addPoint(10,Vector3(0.f,10.f,0.f),0.58f,0.35f,0.09f);
