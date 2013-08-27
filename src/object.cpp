@@ -13,6 +13,7 @@ Object::Object(Vector3 pos,Game* g)
   buffersInitialised = false;
   vertexData = NULL;
   triDat = NULL;
+  textureNumber = -1;
 }
 
 /// Frees the data used by this object (esp the buffers in the GPU)
@@ -43,12 +44,19 @@ void Object::Render()
   // Only do something if we have data	
 	if (buffersInitialised)
 	{
+
 		// We are passing vertices ...
 		glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
+        glEnableClientState(GL_COLOR_ARRAY);
+		if (textureNumber!=-1)
+		{
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glBindTexture(GL_TEXTURE_2D,textureNumber);
+		}
 		glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
 		glVertexPointer( 3, GL_FLOAT, sizeof(VertexDatum), 0);
-    glColorPointer( 3, GL_FLOAT, sizeof(VertexDatum), (void*)(6*sizeof(float)));
+        glColorPointer( 3, GL_FLOAT, sizeof(VertexDatum), (void*)(6*sizeof(float)));
+		glTexCoordPointer(2,GL_FLOAT,sizeof(VertexDatum),(void*)(9*sizeof(float)));
 		// ... and indexes
 		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
 		// Now draw trinagles
@@ -59,6 +67,7 @@ void Object::Render()
 		// Thank you, we are done with the vbo
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_COLOR_ARRAY);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	}
 }
 
@@ -100,9 +109,11 @@ void Object::addPoint(int i,Vector3 point,Vector3 normal, float r, float g, floa
 	vertexData[i].nx = normal.x;
 	vertexData[i].ny = normal.y;
 	vertexData[i].nz = normal.z;
-  vertexData[i].red = r * normal.dot(Vector3(1,1,0));
-  vertexData[i].green = g * normal.dot(Vector3(1,1,0));
-  vertexData[i].blue = b * normal.dot(Vector3(1,1,0));
+	vertexData[i].red = r * (normal.dot(Vector3(1,1,0))*0.5+0.5);
+	vertexData[i].green = g * (normal.dot(Vector3(1,1,0))*0.5+0.5);
+	vertexData[i].blue = b * (normal.dot(Vector3(1,1,0))*0.5+0.5);
+	vertexData[i].texx = 0;
+	vertexData[i].texy = 0;
 //  vertexData[i].alpha = 0.5f;
 
 }
@@ -128,7 +139,7 @@ void Object::pushTriangleData()
 	// set it as the current one,
 	glBindBufferARB(GL_ARRAY_BUFFER, vertexVBO);
 	// ... and blit the data in.
-	glBufferDataARB(GL_ARRAY_BUFFER, numberOfPoints*sizeof(VertexDatum),&vertexData[0].px,GL_STATIC_DRAW);
+	glBufferDataARB(GL_ARRAY_BUFFER, numberOfPoints*sizeof(VertexDatum),vertexData,GL_STATIC_DRAW);
 
 	// Now make a buffer...
 	glGenBuffersARB(1,&indexVBO);
@@ -139,4 +150,10 @@ void Object::pushTriangleData()
 
 	// Finally set the variables that need setting
 	buffersInitialised = true;
+}
+
+void Object::editTextureCoord(int i, float u, float v)
+{
+	vertexData[i].texx = u;
+	vertexData[i].texy = v;
 }

@@ -18,6 +18,7 @@ typedef struct
   float px,py,pz;
   float nx,ny,nz;
   float red,green,blue;
+  float texx,texy;
 }/* __attribute__((packed)) */ VertexDatum;
 
 /// An object is anything that occurs in the game space
@@ -47,7 +48,11 @@ class Object
     /// Constructs a triangle with given points
   	void addTriangle(int,int,int,int);
     /// Pushes the triangle data to the graphics card
-	  void pushTriangleData();
+	void pushTriangleData();
+	/// Texture number.  -1 if there is no texture
+	GLuint textureNumber;
+	/// Setting uv coordinates
+	void editTextureCoord(int, float, float);
   public:
 	  /// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*);

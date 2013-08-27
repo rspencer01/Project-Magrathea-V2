@@ -4,20 +4,26 @@
 #include <GL/glut.h>
 
 #include <tree.h>
+#include <images.h>
+
+GLuint treeTextureNumber = -1;
 
 Tree::Tree(Vector3 pos,Game* g) : Object(pos,g)
 {
-  printf("New tree at %f %f %f\n",pos.x,pos.y,pos.z);
   initialiseTriangles();
+  if (treeTextureNumber == -1)
+	  treeTextureNumber = textureFromBMP("../../assets/BasicTree2.bmp");
+  textureNumber = treeTextureNumber;
 }
 
 void Tree::initialiseTriangles()
 {
 	// Begin the operation of setting up triangles
-	clearTriangleData(55,50);
+	clearTriangleData(12*5,10*5);
 	
 	// Add the trunk.  10 points in a circle, and one on top
-	for (int y = 0; y<10;y++)
+	// We do one point twice so that the texture is nice
+	for (int y = 0; y<11;y++)
 	{
 		addPoint(y,
              Vector3(0.5f*(float)sin(y/5.f*3.1415),
@@ -25,28 +31,32 @@ void Tree::initialiseTriangles()
 						 0.5f*(float)cos(y/5.f*3.1415)),
              Vector3(sin(y/5.f*3.1415),0,cos(y/5.f*3.1415)),
              0.58f,0.35f,0.09f);
+		editTextureCoord(y,y*0.0345,0);
 	}
-	addPoint(10,Vector3(0.f,10.f,0.f),Vector3(0,1,0),0.58f,0.35f,0.09f);
-
+	addPoint(11,Vector3(0.f,10.f,0.f),Vector3(0,1,0),0.58f,0.35f,0.09f);
+	editTextureCoord(11,0.019,1);
+	
 	// Add 4 leaf things
 	for (int i = 0; i<4;i++)
 	{
-		for (int y = 0; y<10;y++)
+		for (int y = 0; y<11;y++)
 		{
-			addPoint(11+i*11+y,
+			addPoint(12+i*12+y,
                Vector3((4-i)*(float)sin(y/5.f*3.1415),
 							 (i+3-0.5f)*10.f/7,
 							 (4-i)*(float)cos(y/5.f*3.1415)),
                Vector3(sin(y/5.f*3.1415),0.7,cos(y/5.f*3.1415)).normal()
-               ,0,0.4f,0);
+               ,0.25f,0.5f,0.15f);
+			editTextureCoord(12+i*12+y,0.77+0.23*sin(y/5.f*3.1415),0.5+0.23*cos(y/5.f*3.1415));
 		}
-		addPoint(11+i*11+10,Vector3(0.f,(i+3)*10.f/7,0.f),Vector3(0,1,0),0,0.4f,0);
+		addPoint(12+i*12+11,Vector3(0.f,(i+3)*10.f/7,0.f),Vector3(0,1,0),0.25f,0.5f,0.15f);
+		editTextureCoord(12+i*12+11,0.77,0.5);
 	}
 	
 	// Add in all the triangles
 	for (int i = 0;i<5;i++)
 		for (int y = 0; y<10;y++)
-			addTriangle(i*10+y,11*i + y,11*i + (y+1)%10,11*i + 10);
+			addTriangle(i*10+y,12*i + y,12*i + (y+1),12*i + 11);
 
 	// And save
 	pushTriangleData();
