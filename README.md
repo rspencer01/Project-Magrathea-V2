@@ -10,7 +10,7 @@ Goals:
  * Do this by caching data near the player (don't load it all at once)
  * Determine the type of terrain at each point algorithmically
  * Display this with textures
- * Introduce basic vegetation (this may need to be a second project, at first)
+ * Introduce basic vegetation and wildlife 
  * See from there.
 
 Progress:
@@ -30,9 +30,11 @@ These are low level things that need implimentaion
  
  * ~~Normals for each vertex~~
  * ~~Trees in more logical places~~
- * ~~Change background color (to anything but red) ~~
+ * ~~Change background color to anything but red~~
  * ~~Sensical tree placement~~
  * Move away from wireframe
+ * Moving points in objects easily
+ * Render timestep, for moving objects
 
 Wishlist
 --------
