@@ -16,6 +16,7 @@ class Game;
 typedef struct
 {
   float px,py,pz;
+  float red,green,blue;
 }__attribute__((packed)) VertexDatum;
 
 /// An object is anything that occurs in the game space
@@ -41,7 +42,7 @@ class Object
     /// Initialise the triangle and position datas
     void clearTriangleData(int,int);
     /// Adds a new vertex to the shape of this thing
-    void addPoint(int,Vector3);
+    void addPoint(int,Vector3,float,float,float);
     /// Constructs a triangle with given points
   	void addTriangle(int,int,int,int);
     /// Pushes the triangle data to the graphics card

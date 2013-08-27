@@ -45,8 +45,10 @@ void Object::Render()
 	{
 		// We are passing vertices ...
 		glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
 		glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
-		glVertexPointer( 3, GL_FLOAT, 0, 0);
+		glVertexPointer( 3, GL_FLOAT, sizeof(VertexDatum), 0);
+    glColorPointer( 3, GL_FLOAT, sizeof(VertexDatum), (void*)(3*sizeof(float)));
 		// ... and indexes
 		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
 		// Now draw trinagles
@@ -56,6 +58,7 @@ void Object::Render()
 					  0);
 		// Thank you, we are done with the vbo
 		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
 	}
 }
 
@@ -81,8 +84,12 @@ void Object::clearTriangleData(int p, int t)
   numberOfPoints = p;
 }
 /// Add a new point to the object.  All points are taken relative to the origin of the object
+/// @param i The index of the vertex to change
 /// @param point The position of this point, relative to the object origin
-void Object::addPoint(int i,Vector3 point)
+/// @param r The red component of the colour
+/// @param b The blue component of the colour
+/// @param g The green component of the colour
+void Object::addPoint(int i,Vector3 point, float r, float g, float b)
 {
 	// Point is relative to the position of the object
 	point = point + position;
@@ -90,6 +97,11 @@ void Object::addPoint(int i,Vector3 point)
 	vertexData[i].px = point.x;
 	vertexData[i].py = point.y;
 	vertexData[i].pz = point.z;
+  vertexData[i].red = r;
+  vertexData[i].green = g;
+  vertexData[i].blue = b;
+//  vertexData[i].alpha = 0.5f;
+
 }
 
 /// Adds a new triangle to the object.  Indexes are the same as the order the points were added

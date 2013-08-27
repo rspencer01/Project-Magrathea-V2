@@ -36,7 +36,7 @@ void Region::initialiseTriangles()
       addPoint(y*(REGION_SIZE+1)+x,
                Vector3(x,
 			                 game->getTerrainBit(x+position.x,y+position.z).position->y,
-			                 y));
+			                 y),1,1,1);
 		}
 	
   // Populate one triangle (for now) per block

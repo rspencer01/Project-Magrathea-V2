@@ -22,9 +22,9 @@ void Tree::initialiseTriangles()
 		addPoint(y,
              Vector3(0.5f*(float)sin(y/5.f*3.1415),
 						 0.f,
-						 0.5f*(float)cos(y/5.f*3.1415)));
+						 0.5f*(float)cos(y/5.f*3.1415)),0.58f,0.35f,0.09f);
 	}
-	addPoint(10,Vector3(0.f,10.f,0.f));
+	addPoint(10,Vector3(0.f,10.f,0.f),0.58f,0.35f,0.09f);
 
 	// Add 4 leaf things
 	for (int i = 0; i<4;i++)
@@ -34,9 +34,9 @@ void Tree::initialiseTriangles()
 			addPoint(11+i*11+y,
                Vector3((4-i)*(float)sin(y/5.f*3.1415),
 							 (i+3-0.5f)*10.f/7,
-							 (4-i)*(float)cos(y/5.f*3.1415)));
+							 (4-i)*(float)cos(y/5.f*3.1415)),0,0.4f,0);
 		}
-		addPoint(11+i*11+10,Vector3(0.f,(i+3)*10.f/7,0.f));
+		addPoint(11+i*11+10,Vector3(0.f,(i+3)*10.f/7,0.f),0,0.4f,0);
 	}
 	
 	// Add in all the triangles
