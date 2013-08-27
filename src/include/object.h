@@ -13,6 +13,11 @@ class Game;
 #include <vector3.h>
 #include <GL/glut.h>
 
+typedef struct
+{
+  float px,py,pz;
+}__attribute__((packed)) VertexDatum;
+
 /// An object is anything that occurs in the game space
 class Object
 {
@@ -20,7 +25,7 @@ class Object
   protected:
     /// Two arrays to hold the triangle and position data
 	  int* triDat;
-  	float* posDat;
+  	VertexDatum* vertexData;
     /// Where is this thing?
     Vector3 position;
     Game* game;

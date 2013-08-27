@@ -11,15 +11,15 @@ Object::Object(Vector3 pos,Game* g)
   position = pos;
   game = g;
   buffersInitialised = false;
-  posDat = NULL;
+  vertexData = NULL;
   triDat = NULL;
 }
 
 /// Frees the data used by this object (esp the buffers in the GPU)
 Object::~Object()
 {
-  if (posDat!=NULL)
-    delete posDat;
+  if (vertexData!=NULL)
+    delete vertexData;
   if (triDat!=NULL)
     delete triDat;
   if (buffersInitialised)
@@ -68,10 +68,10 @@ void Object::clearTriangleData(int p, int t)
   // Clear all the data and the buffers (if required)
   if (triDat!=NULL)
     delete triDat;
-  if (posDat!=NULL)
-    delete posDat;
+  if (vertexData!=NULL)
+    delete vertexData;
   triDat = new int[t*3];
-  posDat = new float[p*3];
+  vertexData = new VertexDatum[p*3];
   if (buffersInitialised)
   {
   	glDeleteBuffersARB(1,&vertexVBO);
@@ -87,9 +87,9 @@ void Object::addPoint(int i,Vector3 point)
 	// Point is relative to the position of the object
 	point = point + position;
   // Add it to the internal array
-	posDat[i*3] = point.x;
-	posDat[i*3+1] = point.y;
-	posDat[i*3+2] = point.z;
+	vertexData[i].px = point.x;
+	vertexData[i].py = point.y;
+	vertexData[i].pz = point.z;
 }
 
 /// Adds a new triangle to the object.  Indexes are the same as the order the points were added
@@ -113,7 +113,7 @@ void Object::pushTriangleData()
 	// set it as the current one,
 	glBindBufferARB(GL_ARRAY_BUFFER, vertexVBO);
 	// ... and blit the data in.
-	glBufferDataARB(GL_ARRAY_BUFFER, numberOfPoints*3*sizeof(float), posDat,GL_STATIC_DRAW);
+	glBufferDataARB(GL_ARRAY_BUFFER, numberOfPoints*3*sizeof(float), vertexData,GL_STATIC_DRAW);
 
 	// Now make a buffer...
 	glGenBuffersARB(1,&indexVBO);
