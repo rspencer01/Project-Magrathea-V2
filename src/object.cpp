@@ -50,13 +50,14 @@ void Object::Render()
         glEnableClientState(GL_COLOR_ARRAY);
 		if (textureNumber!=-1)
 		{
+			glEnable( GL_TEXTURE_2D );
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glBindTexture(GL_TEXTURE_2D,textureNumber);
 		}
 		glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
 		glVertexPointer( 3, GL_FLOAT, sizeof(VertexDatum), 0);
-        glColorPointer( 3, GL_FLOAT, sizeof(VertexDatum), (void*)(6*sizeof(float)));
-		glTexCoordPointer(2,GL_FLOAT,sizeof(VertexDatum),(void*)(9*sizeof(float)));
+        glColorPointer( 4, GL_FLOAT, sizeof(VertexDatum), (void*)(6*sizeof(float)));
+		glTexCoordPointer(2,GL_FLOAT,sizeof(VertexDatum),(void*)(10*sizeof(float)));
 		// ... and indexes
 		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
 		// Now draw trinagles
@@ -68,6 +69,7 @@ void Object::Render()
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_COLOR_ARRAY);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisable( GL_TEXTURE_2D );
 	}
 }
 
@@ -109,12 +111,12 @@ void Object::addPoint(int i,Vector3 point,Vector3 normal, float r, float g, floa
 	vertexData[i].nx = normal.x;
 	vertexData[i].ny = normal.y;
 	vertexData[i].nz = normal.z;
-	vertexData[i].red = r * (normal.dot(Vector3(1,1,0))*0.5+0.5);
-	vertexData[i].green = g * (normal.dot(Vector3(1,1,0))*0.5+0.5);
-	vertexData[i].blue = b * (normal.dot(Vector3(1,1,0))*0.5+0.5);
+	vertexData[i].red = r * (normal.dot(Vector3(1,1,0))*0.7+0.3);
+	vertexData[i].green = g * (normal.dot(Vector3(1,1,0))*0.7+0.3);
+	vertexData[i].blue = b * (normal.dot(Vector3(1,1,0))*0.7+0.3);
 	vertexData[i].texx = 0;
 	vertexData[i].texy = 0;
-//  vertexData[i].alpha = 0.5f;
+  vertexData[i].alpha = 1.f;
 
 }
 

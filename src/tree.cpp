@@ -12,7 +12,7 @@ Tree::Tree(Vector3 pos,Game* g) : Object(pos,g)
 {
   initialiseTriangles();
   if (treeTextureNumber == -1)
-	  treeTextureNumber = textureFromBMP("../../assets/BasicTree2.bmp");
+	  treeTextureNumber = textureFromBMP("../../assets/BasicTree3.bmp");
   textureNumber = treeTextureNumber;
 }
 

@@ -17,7 +17,7 @@ typedef struct
 {
   float px,py,pz;
   float nx,ny,nz;
-  float red,green,blue;
+  float red,green,blue,alpha;
   float texx,texy;
 }/* __attribute__((packed)) */ VertexDatum;
 
