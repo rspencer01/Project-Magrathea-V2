@@ -48,7 +48,7 @@ void Object::Render()
     glEnableClientState(GL_COLOR_ARRAY);
 		glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
 		glVertexPointer( 3, GL_FLOAT, sizeof(VertexDatum), 0);
-    glColorPointer( 3, GL_FLOAT, sizeof(VertexDatum), (void*)(3*sizeof(float)));
+    glColorPointer( 3, GL_FLOAT, sizeof(VertexDatum), (void*)(6*sizeof(float)));
 		// ... and indexes
 		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
 		// Now draw trinagles
@@ -74,7 +74,7 @@ void Object::clearTriangleData(int p, int t)
   if (vertexData!=NULL)
     delete vertexData;
   triDat = new int[t*3];
-  vertexData = new VertexDatum[p*3];
+  vertexData = new VertexDatum[p];
   if (buffersInitialised)
   {
   	glDeleteBuffersARB(1,&vertexVBO);
@@ -89,7 +89,7 @@ void Object::clearTriangleData(int p, int t)
 /// @param r The red component of the colour
 /// @param b The blue component of the colour
 /// @param g The green component of the colour
-void Object::addPoint(int i,Vector3 point, float r, float g, float b)
+void Object::addPoint(int i,Vector3 point,Vector3 normal, float r, float g, float b)
 {
 	// Point is relative to the position of the object
 	point = point + position;
@@ -97,9 +97,12 @@ void Object::addPoint(int i,Vector3 point, float r, float g, float b)
 	vertexData[i].px = point.x;
 	vertexData[i].py = point.y;
 	vertexData[i].pz = point.z;
-  vertexData[i].red = r;
-  vertexData[i].green = g;
-  vertexData[i].blue = b;
+	vertexData[i].nx = normal.x;
+	vertexData[i].ny = normal.y;
+	vertexData[i].nz = normal.z;
+  vertexData[i].red = r * normal.dot(Vector3(1,1,0));
+  vertexData[i].green = g * normal.dot(Vector3(1,1,0));
+  vertexData[i].blue = b * normal.dot(Vector3(1,1,0));
 //  vertexData[i].alpha = 0.5f;
 
 }

@@ -14,7 +14,7 @@
 
 /// The size of the data that this page holds.  Since it is 2D, any page actually holds
 /// PAGE_SIZE*PAGE_SIZE pieces of data.  Thus this should not get too large.
-#define PAGE_SIZE 20
+#define PAGE_SIZE 5
 
 /// \brief Pages are contained in books and hold and perform operations on data.
 ///
