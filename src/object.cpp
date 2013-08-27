@@ -53,41 +53,46 @@ void Object::Render()
 	}
 }
 
-/// Reset the data.  Clear the internal arrays, and the GPU arrays
-void Object::clearTriangleData()
+/// Reset the data.  Clear the internal arrays, and the GPU arrays.
+/// Reserve space for p point and t triangles
+/// @param p Number of points
+/// @param t Number of triangles
+void Object::clearTriangleData(int p, int t)
 {
   // Clear all the data and the buffers (if required)
   triDat.clear();
+  triDat.resize(t*3);
   posDat.clear();
+  posDat.resize(p*3);
   if (buffersInitialised)
   {
   	glDeleteBuffersARB(1,&vertexVBO);
 	  glDeleteBuffersARB(1,&indexVBO);
-//    buffersInitialised = false;
   }
 }
 /// Add a new point to the object.  All points are taken relative to the origin of the object
 /// @param point The position of this point, relative to the object origin
-void Object::addPoint(Vector3 point)
+void Object::addPoint(int i,Vector3 point)
 {
 	// Point is relative to the position of the object
 	point = point + position;
   // Add it to the internal array
-	posDat.push_back(point.x);
-	posDat.push_back(point.y);
-	posDat.push_back(point.z);
+	posDat[i*3] = point.x;
+	posDat[i*3+1] = point.y;
+	posDat[i*3+2] = point.z;
 }
 
 /// Adds a new triangle to the object.  Indexes are the same as the order the points were added
+/// @param i The index of the triangle to edit
 /// @param a The index of the first point
 /// @param b The index of the second point
 /// @param c The index of the third point
-void Object::addTriangle(int a,int b, int c)
+void Object::addTriangle(int i, int a,int b, int c)
 {
   // Add it to the internal array
-	triDat.push_back(a);
-	triDat.push_back(b);
-	triDat.push_back(c);
+	triDat[i*3] = a;
+	triDat[i*3+1] = b;
+	triDat[i*3+2] = c;
 }
 
 /// Constructs new VBOs and pushes all the data to the GPU

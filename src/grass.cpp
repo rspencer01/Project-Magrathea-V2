@@ -8,20 +8,20 @@ Grass::Grass(Vector3 pos, Vector3 norm, Game* parent) : Object(pos,parent)
   Vector3 rnd = Vector3(random((int)pos.x)-0.5f,0,random((int)pos.z)-0.5f);
   rnd.normalise();
 
-  clearTriangleData();
-  addPoint(rnd.cross(norm));
-  addPoint(rnd.cross(norm)+norm/3);
-  addPoint(rnd.cross(norm)*-1);
-  addPoint(rnd.cross(norm)*-1+norm/3);
-  addTriangle(0,1,2);
-  addTriangle(1,2,3);
+  clearTriangleData(8,4);
+  addPoint(0,rnd.cross(norm));
+  addPoint(1,rnd.cross(norm)+norm/3);
+  addPoint(2,rnd.cross(norm)*-1);
+  addPoint(3,rnd.cross(norm)*-1+norm/3);
+  addTriangle(0,0,1,2);
+  addTriangle(1,1,2,3);
   rnd = rnd.cross(norm);
-  addPoint(rnd.cross(norm));
-  addPoint(rnd.cross(norm)+norm/3);
-  addPoint(rnd.cross(norm)*-1);
-  addPoint(rnd.cross(norm)*-1+norm/3);
-  addTriangle(4,5,6);
-  addTriangle(5,6,7);
+  addPoint(4,rnd.cross(norm));
+  addPoint(5,rnd.cross(norm)+norm/3);
+  addPoint(6,rnd.cross(norm)*-1);
+  addPoint(7,rnd.cross(norm)*-1+norm/3);
+  addTriangle(2,4,5,6);
+  addTriangle(3,5,6,7);
  
   pushTriangleData();
 }

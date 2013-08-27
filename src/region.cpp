@@ -28,12 +28,13 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
 /// Constructs the triangles
 void Region::initialiseTriangles()
 {
-  clearTriangleData();
+  clearTriangleData((REGION_SIZE+1)*(REGION_SIZE+1),REGION_SIZE*REGION_SIZE*2);
 	// There are (size+1)^2 vertices.  Bring in the data
 	for (int y = 0; y<(REGION_SIZE+1);y++)
 		for (int x = 0; x<(REGION_SIZE+1);x++)
 		{
-      addPoint(Vector3(x,
+      addPoint(y*(REGION_SIZE+1)+x,
+               Vector3(x,
 			                 game->getTerrainBit(x+position.x,y+position.z).position->y,
 			                 y));
 		}
@@ -42,10 +43,12 @@ void Region::initialiseTriangles()
 	for (int y = 0; y<REGION_SIZE;y++)
 		for (int x = 0; x<REGION_SIZE;x++)
 		{
-      addTriangle(y*(REGION_SIZE+1) + x,
+      addTriangle((y*REGION_SIZE+x)*2,
+                  y*(REGION_SIZE+1) + x,
 			            (y+1)*(REGION_SIZE+1) + x,
 			            y*(REGION_SIZE+1) + (x+1));
-      addTriangle(y*(REGION_SIZE+1) + x+1,
+      addTriangle((y*REGION_SIZE+x)*2+1,
+                  y*(REGION_SIZE+1) + x+1,
 			            (y+1)*(REGION_SIZE+1) + x,
 			            (y+1)*(REGION_SIZE+1) + (x+1));
 		}

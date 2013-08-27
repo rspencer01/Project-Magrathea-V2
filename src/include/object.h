@@ -34,11 +34,11 @@ class Object
     /// How many triangles in this thing?
     int numberOfTriangles;
     /// Initialise the triangle and position datas
-    void clearTriangleData();
+    void clearTriangleData(int,int);
     /// Adds a new vertex to the shape of this thing
-    void addPoint(Vector3);
+    void addPoint(int,Vector3);
     /// Constructs a triangle with given points
-  	void addTriangle(int,int,int);
+  	void addTriangle(int,int,int,int);
     /// Pushes the triangle data to the graphics card
 	  void pushTriangleData();
   public:
