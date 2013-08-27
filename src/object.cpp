@@ -113,7 +113,7 @@ void Object::pushTriangleData()
 	// set it as the current one,
 	glBindBufferARB(GL_ARRAY_BUFFER, vertexVBO);
 	// ... and blit the data in.
-	glBufferDataARB(GL_ARRAY_BUFFER, numberOfPoints*3*sizeof(float), vertexData,GL_STATIC_DRAW);
+	glBufferDataARB(GL_ARRAY_BUFFER, numberOfPoints*sizeof(VertexDatum),&vertexData[0].px,GL_STATIC_DRAW);
 
 	// Now make a buffer...
 	glGenBuffersARB(1,&indexVBO);
