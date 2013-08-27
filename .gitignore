@@ -14,7 +14,7 @@
 
 # Backup files
 *.bak
-*.~
+*~
 
 # VC files
 *.vcx*
