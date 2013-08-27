@@ -39,8 +39,6 @@ Page::Page(int x,int y,float(*g)(int,int))
         data[i][j].isTree = noise(origin_x+i,origin_y+j)<0.05;
       else
         data[i][j].isTree = false;
-
- 
 }
 
 /// Returns the data at *internal coordinate* x,y
