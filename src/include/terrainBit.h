@@ -5,7 +5,7 @@
 
 /// The terrain bit is a representation of stuff at some point
 typedef 
-struct terrainBit_t
+struct
 {
   Vector3* position;
   Vector3* normal;
