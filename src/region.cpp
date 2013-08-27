@@ -3,6 +3,8 @@
 #include <GL/glut.h>
 #include <region.h>
 #include <game.h>
+#include <tree.h>
+#include <grass.h>
 
 /// Constructs a new region at the given position
 /// @param x The x coordinate of the origin
@@ -17,7 +19,9 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
     {
       terrainBit here = game->getTerrainBit(tx+x,ty+y);
       if (here.isTree)
-      	trees.push_back(new Tree(*(here.position),parent));
+      	foliage.push_back(new Tree(*(here.position),parent));
+      if ((tx+ty*3)%10==0)
+        foliage.push_back(new Grass(*(here.position),*(here.normal),parent));
     }
 }
 
@@ -52,8 +56,8 @@ void Region::initialiseTriangles()
 void Region::Render()
 {
   Object::Render();
-  for (unsigned int i = 0; i<trees.size();i++)
-  	trees[i]->Render();
+  for (unsigned int i = 0; i<foliage.size();i++)
+  	foliage[i]->Render();
 }
 
 /// Returns the x coordinate

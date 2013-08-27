@@ -28,7 +28,7 @@ class Region : public Object
   	/// Populates the VBOs
 	  void initialiseTriangles();
   	/// All the trees in this region
-    std::vector<Tree*> trees;
+    std::vector<Object*> foliage;
   public:
   	/// Constructs the region with the given coordinates
     Region(int,int,Game*);

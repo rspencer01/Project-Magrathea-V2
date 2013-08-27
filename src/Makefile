@@ -1,10 +1,10 @@
 # The g++ compiler.
 CC = g++
 # Flags passed to the compiler
-CFLAGS = -c -Wall -Werror
+CFLAGS = -c -Wall -Werror -g
 IDIR = include
 ODIR = obj
-SRCS = main.cpp game.cpp vector3.cpp graphics.cpp heightmap.cpp camera.cpp region.cpp book.cpp page.cpp noise.cpp tree.cpp object.cpp
+SRCS = main.cpp game.cpp vector3.cpp graphics.cpp heightmap.cpp camera.cpp region.cpp book.cpp page.cpp noise.cpp tree.cpp object.cpp grass.cpp
 _OBJS = $(SRCS:.cpp=.o)
 OBJS = $(patsubst %,$(ODIR)/%,$(_OBJS))
 EXEC = magrathea
