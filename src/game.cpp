@@ -94,7 +94,7 @@ void Game::display()
   glColor4f(0,0,0,1);
 
   glLineWidth(2);
-  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+  glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
   // Render each region
   for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)
