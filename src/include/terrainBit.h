@@ -10,6 +10,7 @@ struct
   Vector3* position;
   Vector3* normal;
   bool isTree;
+  bool isGrass;
 } terrainBit;
 
 #endif

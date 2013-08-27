@@ -35,10 +35,16 @@ Page::Page(int x,int y,float(*g)(int,int))
     }
   for (int i = 0;i<PAGE_SIZE;i++)
     for (int j = 0;j<PAGE_SIZE;j++)
+    {
+      if (data[i][j].normal->y>0.85)
+        data[i][j].isGrass = noise(origin_x-i,origin_y-j)<0.10;
+      else
+        data[i][j].isGrass = false;
       if (data[i][j].normal->y>0.9)
-        data[i][j].isTree = noise(origin_x+i,origin_y+j)<0.05;
+        data[i][j].isTree = !data[i][j].isGrass && noise(origin_x+i,origin_y+j)<0.05;
       else
         data[i][j].isTree = false;
+    }
 }
 
 /// Returns the data at *internal coordinate* x,y

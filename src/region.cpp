@@ -20,7 +20,7 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
       terrainBit here = game->getTerrainBit(tx+x,ty+y);
       if (here.isTree)
       	foliage.push_back(new Tree(*(here.position),parent));
-      if ((tx+ty*3)%10==0)
+      if (here.isGrass)
         foliage.push_back(new Grass(*(here.position),*(here.normal),parent));
     }
 }
