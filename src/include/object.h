@@ -18,7 +18,7 @@ typedef struct
   float px,py,pz;
   float nx,ny,nz;
   float red,green,blue;
-}__attribute__((packed)) VertexDatum;
+}/* __attribute__((packed)) */ VertexDatum;
 
 /// An object is anything that occurs in the game space
 class Object

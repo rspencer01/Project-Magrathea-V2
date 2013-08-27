@@ -82,7 +82,7 @@ void Game::display()
 
   // Clear the display
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-  glClearColor(0,0,0,0.5);
+  glClearColor(0.51,0.70,0.75,0.5);
 
   // Load a fresh matrix
   glMatrixMode(GL_MODELVIEW);
