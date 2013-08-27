@@ -65,7 +65,7 @@ void writeString(int x, int y, const char* format, ... )
 
   //Format the string 
   va_list args;
-  char buffer[200], *p;
+  char buffer[200];
 
   va_start(args, format);
   vsprintf(buffer, format, args);
@@ -84,7 +84,6 @@ void writeString(int x, int y, const char* format, ... )
   glScalef(0.0005,0.0005,1);
   
 	
-  int lenghOfQuote = 10;
   for (int i = 0; buffer[i]; i++)
   {
      glColor3f(1,1,1);
