@@ -12,16 +12,15 @@
 class Game;
 #include <vector3.h>
 #include <GL/glut.h>
-#include <vector>
 
 /// An object is anything that occurs in the game space
 class Object
 {
   private:
   protected:
-    /// Two vectors to hold the triangle and position data while we collect them
-	  std::vector<int> triDat;
-  	std::vector<float> posDat;
+    /// Two arrays to hold the triangle and position data
+	  int* triDat;
+  	float* posDat;
     /// Where is this thing?
     Vector3 position;
     Game* game;
@@ -33,6 +32,7 @@ class Object
     bool buffersInitialised;
     /// How many triangles in this thing?
     int numberOfTriangles;
+    int numberOfPoints;
     /// Initialise the triangle and position datas
     void clearTriangleData(int,int);
     /// Adds a new vertex to the shape of this thing

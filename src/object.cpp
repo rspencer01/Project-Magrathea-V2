@@ -11,11 +11,17 @@ Object::Object(Vector3 pos,Game* g)
   position = pos;
   game = g;
   buffersInitialised = false;
+  posDat = NULL;
+  triDat = NULL;
 }
 
 /// Frees the data used by this object (esp the buffers in the GPU)
 Object::~Object()
 {
+  if (posDat!=NULL)
+    delete posDat;
+  if (triDat!=NULL)
+    delete triDat;
   if (buffersInitialised)
   {
   	glDeleteBuffersARB(1,&vertexVBO);
@@ -60,15 +66,19 @@ void Object::Render()
 void Object::clearTriangleData(int p, int t)
 {
   // Clear all the data and the buffers (if required)
-  triDat.clear();
-  triDat.resize(t*3);
-  posDat.clear();
-  posDat.resize(p*3);
+  if (triDat!=NULL)
+    delete triDat;
+  if (posDat!=NULL)
+    delete posDat;
+  triDat = new int[t*3];
+  posDat = new float[p*3];
   if (buffersInitialised)
   {
   	glDeleteBuffersARB(1,&vertexVBO);
 	  glDeleteBuffersARB(1,&indexVBO);
   }
+  numberOfTriangles = t;
+  numberOfPoints = p;
 }
 /// Add a new point to the object.  All points are taken relative to the origin of the object
 /// @param point The position of this point, relative to the object origin
@@ -98,33 +108,20 @@ void Object::addTriangle(int i, int a,int b, int c)
 /// Constructs new VBOs and pushes all the data to the GPU
 void Object::pushTriangleData()
 {
-	// Load in the data for points
-	float* a = new float[posDat.size()];
-	for (unsigned int i = 0; i<posDat.size();i++)
-		a[i] = posDat[i];
 	// Now make a buffer...
 	glGenBuffersARB(1,&vertexVBO);
 	// set it as the current one,
 	glBindBufferARB(GL_ARRAY_BUFFER, vertexVBO);
 	// ... and blit the data in.
-	glBufferDataARB(GL_ARRAY_BUFFER, posDat.size()*sizeof(float), a,GL_STATIC_DRAW);
-	// We are done with this data, so free it, please.
-	delete a;
+	glBufferDataARB(GL_ARRAY_BUFFER, numberOfPoints*3*sizeof(float), posDat,GL_STATIC_DRAW);
 
-	//Load in the data for triangles
-	int* b = new int[triDat.size()];
-	for (unsigned int i = 0; i<triDat.size();i++)
-		b[i] = triDat[i];
 	// Now make a buffer...
 	glGenBuffersARB(1,&indexVBO);
 	// set it as the current one,
 	glBindBufferARB(GL_ARRAY_BUFFER, indexVBO);
 	// ... and blit the data in.
-	glBufferDataARB(GL_ARRAY_BUFFER, triDat.size()*sizeof(float),b,GL_STATIC_DRAW);
-	// We are done with this data, so free it, please.
-	delete b;
+	glBufferDataARB(GL_ARRAY_BUFFER, numberOfTriangles*3*sizeof(float),triDat,GL_STATIC_DRAW);
 
 	// Finally set the variables that need setting
 	buffersInitialised = true;
-	numberOfTriangles = triDat.size()/3;
 }
