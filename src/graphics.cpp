@@ -51,8 +51,11 @@ void resize(int width, int height)
 }
 
 
-/// Draws a string. x and y are percentages from the bottom left
-
+/// Draws a formatted string. x and y are percentages from the bottom left
+/// @param x Coordinate from the left
+/// @param y Coordinate from the bottom
+/// @param format The format of the string
+/// @param ... Arguments
 void writeString(int x, int y, const char* format, ... )
 {
   glMatrixMode(GL_PROJECTION);
@@ -61,7 +64,6 @@ void writeString(int x, int y, const char* format, ... )
   // Arguments are: Field of view, Aspect ratio, Near and then far plane
   glOrtho(-1,1,-1,1,0.1,10);
   glMatrixMode(GL_MODELVIEW);
-
 
   //Format the string 
   va_list args;
