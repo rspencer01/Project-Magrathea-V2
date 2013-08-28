@@ -36,6 +36,12 @@ Vector3 Object::getPosition()
   return position;
 }
 
+void Object::setPosition(Vector3 pos)
+{
+  position = pos;
+}
+
+
 /// Renders this object to the screen, using the VBOs that were 
 /// initialised using the addPoint, addTriangle and pushTriangleData
 /// functions

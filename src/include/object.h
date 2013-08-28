@@ -62,6 +62,7 @@ class Object
     void Render();
   	/// Accessor for the item position
     Vector3 getPosition();
+    void setPosition(Vector3);
 };
 
 
