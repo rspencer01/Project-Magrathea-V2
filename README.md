@@ -38,7 +38,7 @@ These are low level things that need implimentaion
 
 Wishlist
 --------
-This is alist of high level things that I want to impliment at some stage.
+This is alist of high level things that I want to impliment at some stage.  Low level stuff to do is found in `TODO.md`.
 
  * ~~Trees~~
  * Birds
