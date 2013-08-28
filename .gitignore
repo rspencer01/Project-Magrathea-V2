@@ -35,3 +35,6 @@ src/Project Magrathea V2/
 
 # Data
 *.dat
+
+# Stupid MSVC builds in really the wrong place.  Ignore data in weird places
+src/assets/
