@@ -24,18 +24,6 @@ The following milestones have been passed:
  * Basic trees
  * Nice menu
 
-Todo list
----------
-These are low level things that need implimentaion
- 
- * ~~Normals for each vertex~~
- * ~~Trees in more logical places~~
- * ~~Change background color to anything but red~~
- * ~~Sensical tree placement~~
- * ~~Move away from wireframe~~
- * Moving points in objects easily
- * Render timestep, for moving objects
-
 Wishlist
 --------
 This is alist of high level things that I want to impliment at some stage.  Low level stuff to do is found in `TODO.md`.
@@ -43,8 +31,9 @@ This is alist of high level things that I want to impliment at some stage.  Low 
  * ~~Trees~~
  * Birds
  * ~~Colors~~
- * Textures
+ * ~~Textures~~
  * Sun and sky
+ * Sensical terrain types
 
 Textures
 --------
