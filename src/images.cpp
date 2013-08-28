@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <images.h>
 
-GLuint textureFromBMP(char* filePath)
+GLuint textureFromBMP(const char* filePath)
 {
 	printf("Loading texture %s\n",filePath);
 	FILE* fp = fopen(filePath,"rb");

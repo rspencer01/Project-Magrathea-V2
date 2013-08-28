@@ -6,13 +6,14 @@
 #include <tree.h>
 #include <images.h>
 
-GLuint treeTextureNumber = -1;
+GLuint treeTextureNumber = (GLuint)-1;
+const char* textureNames[3] = {"../../assets/BasicTree1.bmp","../../assets/BasicTree2.bmp","../../assets/BasicTree3.bmp"};
 
 Tree::Tree(Vector3 pos,Game* g) : Object(pos,g)
 {
   initialiseTriangles();
-  if (treeTextureNumber == -1)
-	  treeTextureNumber = textureFromBMP("../../assets/BasicTree3.bmp");
+  if (treeTextureNumber == (GLuint)-1)
+	  treeTextureNumber = textureFromBMP(textureNames[2]);
   textureNumber = treeTextureNumber;
 }
 
