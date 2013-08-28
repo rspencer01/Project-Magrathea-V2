@@ -199,14 +199,14 @@ void Game::constructRegions(float x,float y)
 		regions.pop_back();
 	}
 
-	if (regions.front().back()->getOriginY() > ry-REGION_SIZE)
+	if (regions.front().back()->getOriginY() > ry-REGION_SIZE*2)
 	{
 		int oy = regions.front().back()->getOriginY();
 		Region* rg = new Region(rx,oy-REGION_SIZE,this);
 		regions.push_front(std::deque<Region*>());
 		regions.front().push_back(rg);
 	}
-	if (regions.front().back()->getOriginY() < ry-REGION_SIZE)
+	if (regions.front().back()->getOriginY() < ry-REGION_SIZE*2)
 	{
 		for (unsigned int i = 0; i <regions.front().size();i++)
 			delete regions.front()[i];
@@ -216,16 +216,16 @@ void Game::constructRegions(float x,float y)
 	
 	for (unsigned int i = 0;i<regions.size();i++)
 	{
-		if (regions[i].back()->getOriginX() < rx+REGION_SIZE)
+		if (regions[i].back()->getOriginX() < rx+REGION_SIZE*2)
 			regions[i].push_back(new Region(regions[i].back()->getOriginX()+REGION_SIZE,regions[i].back()->getOriginY(),this));
-		if (regions[i].back()->getOriginX() > rx+REGION_SIZE)
+		if (regions[i].back()->getOriginX() > rx+REGION_SIZE*2)
 		{
 			delete regions[i].back();
 			regions[i].pop_back();
 		}
-		if (regions[i].front()->getOriginX() > rx-REGION_SIZE)
+		if (regions[i].front()->getOriginX() > rx-REGION_SIZE*2)
 			regions[i].push_front(new Region(regions[i].front()->getOriginX()-REGION_SIZE,regions[i].front()->getOriginY(),this));
-		if (regions[i].front()->getOriginX() < rx-REGION_SIZE)
+		if (regions[i].front()->getOriginX() < rx-REGION_SIZE*2)
 		{
 			delete regions[i].front();
 			regions[i].pop_front();
