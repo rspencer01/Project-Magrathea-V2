@@ -16,6 +16,7 @@ class Game;
 #include <book.h>
 #include <sky.h>
 #include <queue>
+#include <testobj.h>
 
 /// The gameops class contains all the methods to do with gameplay
 ///
@@ -51,6 +52,8 @@ class Game
 	bool showMenu;
 	/// Do the menu
 	void renderMenu();
+	/// A test on .obj based objects
+	TestObj* test;
   public:
     /// Creates a game instance and initialises all variables
     Game();

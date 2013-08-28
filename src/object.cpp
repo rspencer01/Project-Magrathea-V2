@@ -1,6 +1,12 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 
+#include <fstream>
+#include <string>
+#include <vector>
+#include <sstream>
+
+
 #include <stdio.h>
 #include <object.h>
 
@@ -152,7 +158,7 @@ void Object::pushTriangleData()
 	// set it as the current one,
 	glBindBufferARB(GL_ARRAY_BUFFER, indexVBO);
 	// ... and blit the data in.
-	glBufferDataARB(GL_ARRAY_BUFFER, numberOfTriangles*3*sizeof(float),triDat,GL_STATIC_DRAW);
+	glBufferDataARB(GL_ARRAY_BUFFER, numberOfTriangles*3*sizeof(int),triDat,GL_STATIC_DRAW);
 
 	// Finally set the variables that need setting
 	buffersInitialised = true;
@@ -168,4 +174,142 @@ void Object::editTextureCoord(int i, float u, float v)
 {
 	vertexData[i].texx = u;
 	vertexData[i].texy = v;
+}
+
+
+void Object::loadFromOBJFile(const char* filePath)
+{
+  // Let the user know what we are doing
+  printf("Loading model from \"%s\"\n",filePath);
+  // Do all the stuff to set this up as new
+  if (triDat!=NULL)
+    delete triDat;
+  if (vertexData!=NULL)
+    delete vertexData;
+  if (buffersInitialised)
+  {
+  	glDeleteBuffersARB(1,&vertexVBO);
+    glDeleteBuffersARB(1,&indexVBO);
+  }
+  
+  // Get the input stream
+  std::ifstream infile(filePath);
+  std::string line;
+  // Count the vertices to allocate enough space
+  numberOfPoints = 0;
+  while (std::getline(infile, line))
+  {
+    if (line.length()>2)
+    {
+	    if (line[0]=='v' && line[1]==' ')
+		    numberOfPoints++;
+    }
+  }
+  // Allocate the vertex space
+  vertexData = new VertexDatum[numberOfPoints];
+  // Vectors of vectors to hold triangles and normals
+  std::vector<std::vector<int> > tri;
+  std::vector<std::vector<int> > norm;
+  std::vector<std::pair<float,float> > textures;
+  // What vertex are we on now
+  int vertexCount = 0;
+  // Now iterate through the file
+  infile.close();
+  infile.open(filePath);
+  infile.seekg(0,infile.beg);
+  while (std::getline(infile, line))
+  {
+    // Not a valid line
+    if (line.length()<3)
+      continue;
+    // A vertex line
+    if (line[0]=='v' && line[1]==' ')
+    {
+      // Parse this string
+      std::istringstream iss(line.substr(2,100));
+      // x,y,z space separated
+      iss>>vertexData[vertexCount].px>>vertexData[vertexCount].py>>vertexData[vertexCount].pz;
+      // Make this thing coloured
+      vertexData[vertexCount].red = vertexData[vertexCount].blue = vertexData[vertexCount].green = vertexData[vertexCount].alpha = 1.f; 
+      vertexCount++;
+    }
+    // A normal
+    if (line[0]=='v' && line[1]=='n')
+    {
+      // Parse this string
+      std::istringstream iss(line.substr(3,100));
+      float fx,fy,fz;
+      // x,y,z space separated
+      iss>>fx>>fy>>fz;
+      std::vector<int> tmp;tmp.push_back(fx);tmp.push_back(fy);tmp.push_back(fz);
+      norm.push_back(tmp);
+    }
+    // Texture coords
+    if (line[0]=='v' && line[1]=='t')
+    {
+      // Parse this string
+      std::istringstream iss(line.substr(2,100));
+      float fx,fy;
+      // x,y,z space separated
+      iss>>fx>>fy;
+      textures.push_back(std::make_pair(fx,fy));
+    }
+    if (line[0]=='f' && line[1]==' ')
+    {
+			line = line.substr(2,100);
+			int a = -1;
+			int b = -1;
+			int c = -1;
+      int ta,tb,tc;
+			while (line.length()>0)
+			{
+				int nsp = line.find(' ',0);
+				std::string t = line.substr(0,nsp);
+				if (a==-1)
+				{
+					a = atoi(t.substr(0,t.find('\\')).c_str());
+          ta = atoi(t.substr(t.find('\\')+1,t.find('\\')).c_str());
+				}
+				else
+				{
+					if (b==-1)
+					{
+						b = atoi(t.substr(0,t.find('\\')).c_str());
+            tb = atoi(t.substr(t.find('\\')+1,t.find('\\')).c_str());
+					}
+					else
+					{
+						if (c==-1)
+						{
+							c = atoi(t.substr(0,t.find('\\')).c_str());
+              tc = atoi(t.substr(t.find('\\')+1,t.find('\\')).c_str());
+						}
+						else
+						{
+							b = c;
+              tb = c;
+							c = atoi(t.substr(0,t.find('\\')).c_str());
+              tc = atoi(t.substr(t.find('\\')+1,t.find('\\')).c_str());
+						}
+						std::vector<int> p;p.push_back(a);p.push_back(b);p.push_back(c);
+//            editTextureCoord(a,textures[ta].first,textures[ta].second);
+//            editTextureCoord(b,textures[tb].first,textures[tb].second);
+//            editTextureCoord(c,textures[tc].first,textures[tc].second);
+						tri.push_back(p);
+					}
+				}
+				if (nsp==-1)
+					break;
+				line = line.substr(nsp+1,100);
+			}
+
+    }
+
+  }
+  numberOfTriangles = tri.size();
+  printf("File has %d vertices and %d triangles\n",numberOfPoints,numberOfTriangles);
+	triDat = new int[numberOfTriangles*3];
+	for (unsigned int i = 0; i<numberOfTriangles;i++)
+		addTriangle(i,tri[i][0]-1,tri[i][1]-1,tri[i][2]-1);
+	pushTriangleData();
 }
