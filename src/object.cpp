@@ -120,8 +120,6 @@ void Object::addPoint(int i,Vector3 point,Vector3 normal, float r, float g, floa
 	vertexData[i].red = r * (normal.dot(Vector3(1,1,0))*0.7+0.3);
 	vertexData[i].green = g * (normal.dot(Vector3(1,1,0))*0.7+0.3);
 	vertexData[i].blue = b * (normal.dot(Vector3(1,1,0))*0.7+0.3);
-	vertexData[i].texx = 0;
-	vertexData[i].texy = 0;
   vertexData[i].alpha = 1.f;
 
 }
@@ -142,7 +140,7 @@ void Object::addTriangle(int i, int a,int b, int c)
 /// Constructs new VBOs and pushes all the data to the GPU
 void Object::pushTriangleData()
 {
-	// Now make a buffer...
+	// Now make a buffers
 	glGenBuffersARB(1,&vertexVBO);
 	// set it as the current one,
 	glBindBufferARB(GL_ARRAY_BUFFER, vertexVBO);
@@ -158,6 +156,12 @@ void Object::pushTriangleData()
 
 	// Finally set the variables that need setting
 	buffersInitialised = true;
+}
+
+void Object::updateTriangleData()
+{
+  glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
+  glBufferSubDataARB(GL_ARRAY_BUFFER,0,numberOfPoints*sizeof(VertexDatum),vertexData);
 }
 
 void Object::editTextureCoord(int i, float u, float v)

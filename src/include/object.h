@@ -53,6 +53,8 @@ class Object
 	GLuint textureNumber;
 	/// Setting uv coordinates
 	void editTextureCoord(int, float, float);
+
+  void updateTriangleData();
   public:
 	  /// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*);
