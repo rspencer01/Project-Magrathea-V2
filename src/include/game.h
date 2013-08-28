@@ -14,6 +14,7 @@ class Game;
 #include <camera.h>
 #include <region.h>
 #include <book.h>
+#include <sky.h>
 #include <queue>
 
 /// The gameops class contains all the methods to do with gameplay
@@ -24,10 +25,12 @@ class Game
   private:
     /// The user camera that contains the fps position rotation etc.
     Camera camera;
-	/// A list of regions in the game
-	std::deque<std::deque<Region*> > regions;
-  /// The book of all terrain data
-  Book* data;
+    /// A list of regions in the game
+    std::deque<std::deque<Region*> > regions;
+    /// The sku above our heads
+    Sky* sky;
+    /// The book of all terrain data
+    Book* data;
     /// Passes all the required functions to glut
     void initialiseCallbacks();
     /// Resets all the keys

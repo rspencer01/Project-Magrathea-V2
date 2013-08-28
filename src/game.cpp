@@ -44,6 +44,7 @@ Game::Game()
   speed = 0.1;
   fpsOn = true;
   showMenu = true;
+  sky = new Sky(this);
 }
 
 /// This function assigns the event handlers defined at the top of this
@@ -82,7 +83,7 @@ void Game::display()
 
   // Clear the display
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-  glClearColor(0.51,0.70,0.75,0.5);
+  glClearColor(0.f,0.f,0.f,1.f);
 
   // Load a fresh matrix
   glMatrixMode(GL_MODELVIEW);
@@ -90,6 +91,10 @@ void Game::display()
   
   // Do the camera stuff
   camera.Render();
+
+  // Make the sky
+  sky->setPosition(camera.Position);
+  sky->Render();
 
   // Render each region
   for (unsigned int i = 0;i<regions.size();i++)
