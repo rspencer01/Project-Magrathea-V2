@@ -53,7 +53,7 @@ void Object::Render()
 
 		// We are passing vertices ...
 		glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_COLOR_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
 		if (textureNumber!=(GLuint)-1)
 		{
 			glEnable( GL_TEXTURE_2D );

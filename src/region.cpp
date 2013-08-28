@@ -5,6 +5,7 @@
 #include <game.h>
 #include <tree.h>
 #include <grass.h>
+#include <images.h>
 
 /// Constructs a new region at the given position
 /// @param x The x coordinate of the origin
@@ -23,6 +24,7 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
       if (here.isGrass)
         foliage.push_back(new Grass(*(here.position),*(here.normal),parent));
     }
+  textureNumber = textureFromBMP("../assets/BigGrass.bmp");
 }
 
 /// Constructs the triangles
@@ -38,7 +40,8 @@ void Region::initialiseTriangles()
 			                 game->getTerrainBit(x+position.x,y+position.z).position->y,
 			                 y),
                        *(game->getTerrainBit(x+position.x,y+position.z).normal),
-                       0.61,0.41,0.34);
+                       0.41,0.61,0.24);
+      editTextureCoord(y*(REGION_SIZE+1)+x,2.0*x/(REGION_SIZE+1),2.0*y/(REGION_SIZE+1));
 		}
 	
   // Populate one triangle (for now) per block
@@ -62,7 +65,7 @@ void Region::Render()
 {
   Object::Render();
   for (unsigned int i = 0; i<foliage.size();i++)
-  	foliage[i]->Render();
+    foliage[i]->Render();
 }
 
 /// Returns the x coordinate
