@@ -33,10 +33,8 @@ void initialiseGraphics()
   glEnable (GL_BLEND);
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  
-
   // Lets use lines, for nicer debugging without shading and shadows
-  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+  glPolygonMode( GL_FRONT, GL_FILL );
 
 }
 
@@ -44,11 +42,14 @@ void initialiseGraphics()
 /// and the display size
 void resize(int width, int height)
 {
+  // Set the size of the viewport
   glViewport(0,0,(GLsizei)width,(GLsizei)height);
+  // Set us up to change the perspective
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   // Arguments are: Field of view, Aspect ratio, Near and then far plane
   gluPerspective(60,(GLfloat)width/(GLfloat)height,0.1,1500);
+  // Done, thanks.  Go back to editing models
   glMatrixMode(GL_MODELVIEW);
 }
 
@@ -60,20 +61,22 @@ void resize(int width, int height)
 /// @param ... Arguments
 void writeString(int x, int y, const char* format, ... )
 {
+  //Format the string 
+  va_list args;
+  char buffer[200];
+  va_start(args, format);
+  vsprintf(buffer, format, args);
+  va_end(args);
+ 
+  // Save the current projection
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
   // Arguments are: Field of view, Aspect ratio, Near and then far plane
   glOrtho(-1,1,-1,1,0.1,10);
+  // Now we will be drawing
   glMatrixMode(GL_MODELVIEW);
 
-  //Format the string 
-  va_list args;
-  char buffer[200];
-
-  va_start(args, format);
-  vsprintf(buffer, format, args);
-  va_end(args);
   // Get the right looking at point
   glLoadIdentity();
   gluLookAt(0.f,0.f,1.732f,0.f,0.f,0.f,0.f,1.f,0.f);
@@ -81,19 +84,21 @@ void writeString(int x, int y, const char* format, ... )
   //How far should we move it?
   float fx = (x-50)/50.f;
   float fy = (y-50)/50.f;
-
   glTranslatef(fx,fy,0);
   
   // Scale it to the right text size
   glScalef(0.0005,0.0005,1);
-  
-	
-  for (int i = 0; buffer[i]; i++)
-  {
-     glColor3f(1,1,1);
-	 glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, buffer[i]);
-  }
 
+  // Some nice white text, please
+  glColor4f(1.f,1.f,1.f,1.f);
+
+  // Now create the characters
+  for (int i = 0; buffer[i]; i++)
+	  glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, buffer[i]);
+
+  // Now we are done, get the projection matrix back
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
+  // And get back into model mode
+  glMatrixMode(GL_MODELVIEW);
 }

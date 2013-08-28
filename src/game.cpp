@@ -75,7 +75,7 @@ void Game::display()
   keyOperations();
 
   if (fpsOn)
-	setCameraFPS();
+    setCameraFPS();
 
   // Make whatever regions are required
   constructRegions(camera.Position.x,camera.Position.z);
@@ -91,10 +91,6 @@ void Game::display()
   // Do the camera stuff
   camera.Render();
 
-  glColor4f(0,0,0,1);
-
-  glLineWidth(2);
-  glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
   // Render each region
   for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)

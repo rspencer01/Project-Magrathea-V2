@@ -7,6 +7,7 @@ Book::Book(float (*g)(int,int))
 {
   printf("Initialising book\n");
   generatingFunction = g;
+  // Initialise all the pages to nothingness
   for (int i = 0;i<PAGE_COUNT;i++)
     for (int j = 0;j<PAGE_COUNT;j++)
       pages[i][j] = NULL;
@@ -15,6 +16,7 @@ Book::Book(float (*g)(int,int))
 /// Frees up all used space
 Book::~Book()
 {
+  // Destroy all pages
   for (int i = 0;i<PAGE_COUNT;i++)
     for (int j = 0;j<PAGE_COUNT;j++)
       if (pages[i][j])
@@ -24,10 +26,12 @@ Book::~Book()
 /// Actually does the accessing of the data
 terrainBit Book::getAt(int x, int y)
 {
+  // The nullBit is used for areas that are not in the terrain
   terrainBit nullBit;
   nullBit.position = new Vector3((float)x,0.f,(float)y);
   nullBit.normal = new Vector3(0.f,1.f,0.f);
   nullBit.isTree = false;
+  nullBit.isGrass = false;
   // Check that this is a valid point to enquire about.  If not, return a nothing.
   if ((x > PAGE_COUNT * PAGE_SIZE) || (x<0))
     return nullBit;
