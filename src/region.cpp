@@ -23,8 +23,7 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
       terrainBit here = game->getTerrainBit(tx+x,ty+y);
       if (here.isTree)
       {
-      	foliage.push_back(new DynoTree(Vector3(0,0,0),parent));
-        return;
+        foliage.push_back(new DynoTree(*(here.position),parent));
       }
       //if (here.isGrass)
       //  foliage.push_back(new Grass(*(here.position),*(here.normal),parent));
@@ -70,7 +69,7 @@ void Region::initialiseTriangles()
 /// Render this region and the trees
 void Region::Render()
 {
-  //Object::Render();
+  Object::Render();
   for (unsigned int i = 0; i<foliage.size();i++)
     foliage[i]->Render();
 }

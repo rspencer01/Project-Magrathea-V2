@@ -41,7 +41,7 @@ Page::Page(int x,int y,float(*g)(int,int))
       else
         data[i][j].isGrass = false;
       if (data[i][j].normal->y>0.9)
-        data[i][j].isTree = !data[i][j].isGrass && noise(origin_x+i,origin_y+j)<0.05;
+        data[i][j].isTree = !data[i][j].isGrass && noise(origin_x+i,origin_y+j)<0.01;
       else
         data[i][j].isTree = false;
     }
