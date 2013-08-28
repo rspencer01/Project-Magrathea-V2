@@ -7,6 +7,8 @@
 #include <grass.h>
 #include <images.h>
 
+GLuint texture = (GLuint)-1;
+
 /// Constructs a new region at the given position
 /// @param x The x coordinate of the origin
 /// @param y The y coordinate of the origin
@@ -24,7 +26,9 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
       if (here.isGrass)
         foliage.push_back(new Grass(*(here.position),*(here.normal),parent));
     }
-  textureNumber = textureFromBMP("../assets/BigGrass.bmp");
+  if (texture == (GLuint)-1)
+	  texture = textureFromBMP("../assets/BigGrass.bmp");
+  textureNumber = texture;
 }
 
 /// Constructs the triangles
