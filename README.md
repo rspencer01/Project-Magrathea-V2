@@ -32,7 +32,7 @@ These are low level things that need implimentaion
  * ~~Trees in more logical places~~
  * ~~Change background color to anything but red~~
  * ~~Sensical tree placement~~
- * Move away from wireframe
+ * ~~Move away from wireframe~~
  * Moving points in objects easily
  * Render timestep, for moving objects
 
@@ -42,12 +42,17 @@ This is alist of high level things that I want to impliment at some stage.
 
  * ~~Trees~~
  * Birds
- * Colors
+ * ~~Colors~~
  * Textures
+ * Sun and sky
+
+Textures
+--------
+The textures are (currently) 1000 by 1000 BMP files and can be found in `assets`.  Feel free to chop and change these to improve them.  If you develop a better texture, please let me know (or submit a pull request).
 
 Data
 ----
-Since the input data is large (3Mb), it is not included in this repo, but can be downloaded from [here][1].
+Since the input data is large (3Mb), it is not included in this repo, but can be downloaded from [here][1].  It should be placed in the `assets` folder.
 
 Data is 3m resolution of a 9 square kilometers of a section of North America.  More data can be obtained from [here][2].
 
