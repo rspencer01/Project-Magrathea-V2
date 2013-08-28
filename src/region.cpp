@@ -3,7 +3,7 @@
 #include <GL/glut.h>
 #include <region.h>
 #include <game.h>
-#include <tree.h>
+#include <dynotree.h>
 #include <grass.h>
 #include <images.h>
 
@@ -22,7 +22,7 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
     {
       terrainBit here = game->getTerrainBit(tx+x,ty+y);
       if (here.isTree)
-      	foliage.push_back(new Tree(*(here.position),parent));
+      	foliage.push_back(new DynoTree(*(here.position),parent));
       if (here.isGrass)
         foliage.push_back(new Grass(*(here.position),*(here.normal),parent));
     }
