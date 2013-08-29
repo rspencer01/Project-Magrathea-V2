@@ -22,11 +22,11 @@ void DynoTree::initialiseTriangles()
 {
 	// Begin the operation of setting up triangles
   // Reserve far too many than we actually need
-	clearTriangleData(10000,6000);
+	clearTriangleData(5000,5000);
   // Now set these to 0 so that we don't pass too many
   numberOfPoints = 0;
   numberOfTriangles = 0;
-  makeBranch(Vector3(0,-1,0),Vector3(0,1,0),10,1);
+  makeBranch(Vector3(0,-1,0),Vector3(0,1,0),3,1);
 	
 	// And save
 	pushTriangleData();
@@ -53,8 +53,8 @@ void DynoTree::makeBranch(Vector3 pos, Vector3 dir, float len, float width)
 	{
 		addPoint(numberOfPoints,
              pos+
-             basisA*width*sin(3.1415*y/5.f)*0.5+
-             basisB*width*cos(3.1415*y/5.f)*0.5+dir*len,
+             basisA*width*sin(3.1415*y/5.f)*0.66+
+             basisB*width*cos(3.1415*y/5.f)*0.66+dir*len,
              Vector3(sin(y/5.f*3.1415),0,cos(y/5.f*3.1415)),
              0.58f	,0.35f,0.09f);
     editTextureCoord(numberOfPoints,y*0.0345,1);
@@ -62,24 +62,67 @@ void DynoTree::makeBranch(Vector3 pos, Vector3 dir, float len, float width)
 	}
 		
 	// Add in all the triangles
-	for (int y = 0; y<10;y++)
+	
+  for (int y = 0; y<10;y++)
   {
 		addTriangle(numberOfTriangles,numberOfPoints-22+y,numberOfPoints-22+(y+1),numberOfPoints-11+y);
     numberOfTriangles++;
 		addTriangle(numberOfTriangles,numberOfPoints-22+y+1,numberOfPoints-10+y,numberOfPoints-11+y);
     numberOfTriangles++;
-}
+  }
   
   if (width>0.1)
   {
-    for (int i = 0; i <3 ;i++)
-    {
-      float p = random((int)(position+pos).x*1000*+i+numberOfTriangles*numberOfPoints);
-      float q = random(20+(int)(position+pos).x*1000+i+numberOfPoints)-0.5;
-      float r = random(40+(int)(position+pos).x*1000+i+numberOfTriangles)-0.5;
-      Vector3 d = dir + basisA*q*3+basisB*r*3;
-      makeBranch(pos+dir*len*(0.5+0.4*p),d.normal(),len/1.7,width/2.5);
-    }
+    Vector3 d = randomVector();
+    Vector3 newDirection = dir + d/1.2;
+    makeBranch(pos+dir*len,newDirection.normal(),len/1.2,width*2.0/5.0);
+    d = randomVector();
+    newDirection = dir + d/1.2;
+    makeBranch(pos+dir*len,newDirection.normal(),len/1.2,width*3.0/5.0);
   }
-  
+  if (width<0.3)
+    makeLeaves(pos,dir,len);
 }
+
+void DynoTree::makeLeaves(Vector3 pos, Vector3 dir, float len)
+{
+  printf("pos %f %f %f | dir %f %f %f | len %f\n",pos.x,pos.y,pos.z,dir.x,dir.y,dir.z,len);
+  for (int i = 1;i<6;i++)
+  {
+    Vector3 leafDir = dir.normal() * 0.5 + randomVector()*0.5;
+    Vector3 leafCross = leafDir.cross(Vector3(random(i+pos.x*1000),0,random(i+pos.y*1000))).normal()*0.5;
+    Vector3 leafPos = pos + dir*len/6.0*i + leafDir*0.3;
+
+  	addPoint(numberOfPoints,
+             leafPos,
+             Vector3(0,1,0),
+             0.f,0.7f,0.0f);
+    editTextureCoord(numberOfPoints,0.5,0.5);
+    numberOfPoints++;
+   	addPoint(numberOfPoints,
+             leafPos+leafDir/2.0+leafCross,
+             Vector3(0,1,0),
+             0.f	,0.7f,0.f);
+    editTextureCoord(numberOfPoints,0.6,0.5);
+    numberOfPoints++;
+   	addPoint(numberOfPoints,
+             leafPos+leafDir,
+             Vector3(0,1,0),
+             0.f,0.7f,0.f);
+    editTextureCoord(numberOfPoints,0.6,0.6);
+    numberOfPoints++;
+    addTriangle(numberOfTriangles,numberOfPoints-2,numberOfPoints-1,numberOfPoints-3);
+    numberOfTriangles++;
+
+   	addPoint(numberOfPoints,
+             leafPos+leafDir/2.0-leafCross,
+             Vector3(0,1,0),
+             0.f	,0.7f,0.f);
+    editTextureCoord(numberOfPoints,0.5,0.6);
+    numberOfPoints++;
+    addTriangle(numberOfTriangles,numberOfPoints-2,numberOfPoints-1,numberOfPoints-4);
+    numberOfTriangles++;
+  
+  }
+}
+
