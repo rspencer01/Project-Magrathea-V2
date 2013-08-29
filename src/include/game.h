@@ -16,6 +16,7 @@ class Game;
 #include <book.h>
 #include <sky.h>
 #include <queue>
+#include <testobj.h>
 
 /// The gameops class contains all the methods to do with gameplay
 ///

@@ -53,8 +53,10 @@ class Object
 	GLuint textureNumber;
 	/// Setting uv coordinates
 	void editTextureCoord(int, float, float);
-
-  void updateTriangleData();
+	/// Repushes the vertexes to the GPU
+    void updateTriangleData();
+	/// Loads the object from an .obj file
+	void loadFromOBJFile(const char*);
   public:
 	  /// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*);
