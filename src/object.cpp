@@ -292,9 +292,9 @@ void Object::loadFromOBJFile(const char* filePath)
               tc = atoi(t.substr(t.find('\\')+1,t.find('\\')).c_str());
 						}
 						std::vector<int> p;p.push_back(a);p.push_back(b);p.push_back(c);
-//            editTextureCoord(a,textures[ta].first,textures[ta].second);
-//            editTextureCoord(b,textures[tb].first,textures[tb].second);
-//            editTextureCoord(c,textures[tc].first,textures[tc].second);
+            editTextureCoord(a,textures[ta].first,textures[ta].second);
+            editTextureCoord(b,textures[tb].first,textures[tb].second);
+            editTextureCoord(c,textures[tc].first,textures[tc].second);
 						tri.push_back(p);
 					}
 				}
@@ -309,7 +309,7 @@ void Object::loadFromOBJFile(const char* filePath)
   numberOfTriangles = tri.size();
   printf("File has %d vertices and %d triangles\n",numberOfPoints,numberOfTriangles);
 	triDat = new int[numberOfTriangles*3];
-	for (unsigned int i = 0; i<numberOfTriangles;i++)
+	for (int i = 0; i<numberOfTriangles;i++)
 		addTriangle(i,tri[i][0]-1,tri[i][1]-1,tri[i][2]-1);
 	pushTriangleData();
 }

@@ -52,8 +52,6 @@ class Game
 	bool showMenu;
 	/// Do the menu
 	void renderMenu();
-	/// A test on .obj based objects
-	TestObj* test;
   public:
     /// Creates a game instance and initialises all variables
     Game();

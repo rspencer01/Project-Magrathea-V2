@@ -45,7 +45,6 @@ Game::Game()
   fpsOn = false;
   showMenu = false;
   sky = new Sky(this);
-  test = new TestObj(this);
 }
 
 /// This function assigns the event handlers defined at the top of this
@@ -93,8 +92,6 @@ void Game::display()
   // Do the camera stuff
   camera.Render();
 
-  test->Render();
-  /*
   // Make the sky
   sky->setPosition(camera.Position);
   sky->Render();
@@ -103,7 +100,7 @@ void Game::display()
   for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)
       regions[i][j]->Render();
-  */
+  
   if (showMenu)
   {
 	  renderMenu();
