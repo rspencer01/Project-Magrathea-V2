@@ -21,20 +21,8 @@ The following milestones have been passed:
  * Simple system of region based rendering
  * Dynamic region creation based on camera position
  * Use of real data (imported)
- * Basic trees
+ * Nice trees
  * Nice menu
-
-Todo list
----------
-These are low level things that need implimentaion
- 
- * ~~Normals for each vertex~~
- * ~~Trees in more logical places~~
- * ~~Change background color to anything but red~~
- * ~~Sensical tree placement~~
- * ~~Move away from wireframe~~
- * Moving points in objects easily
- * Render timestep, for moving objects
 
 Wishlist
 --------
@@ -43,8 +31,9 @@ This is alist of high level things that I want to impliment at some stage.  Low 
  * ~~Trees~~
  * Birds
  * ~~Colors~~
- * Textures
+ * ~~Textures~~
  * Sun and sky
+ * Sensical terrain types
 
 Textures
 --------
@@ -52,9 +41,10 @@ The textures are (currently) 1000 by 1000 BMP files and can be found in `assets`
 
 Data
 ----
-Since the input data is large (3Mb), it is not included in this repo, but can be downloaded from [here][1].  It should be placed in the `assets` folder.
+Since the input data is large (>3Mb), it is not included in this repo, but can be downloaded from [here][1] and [here][3].  It should be placed in the `assets` folder.
 
 Data is 3m resolution of a 9 square kilometers of a section of North America.  More data can be obtained from [here][2].
 
 [1]: http://www.ked.co.za/temp/smalldata.dat "Sample formatted data obtainable here"
 [2]: http://viewer.nationalmap.gov/viewer/ "More raw data obtainable here"
+[3]: http://www.ked.co.za/temp/full019.dat "Sample tree"

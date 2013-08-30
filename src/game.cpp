@@ -42,8 +42,8 @@ Game::Game()
   data = new Book(getHeightmapData);
   currentGame = this;
   speed = 0.1;
-  fpsOn = true;
-  showMenu = true;
+  fpsOn = false;
+  showMenu = false;
   sky = new Sky(this);
 }
 
@@ -100,7 +100,7 @@ void Game::display()
   for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)
       regions[i][j]->Render();
-
+  
   if (showMenu)
   {
 	  renderMenu();
@@ -190,6 +190,7 @@ void Game::constructRegions(float x,float y)
 		Region* rg = new Region(rx,ry,this);
 		regions[0].push_back(rg);
 	}
+  
 	if (regions.back().back()->getOriginY() < ry+REGION_SIZE)
 	{
 		int oy = regions.back().back()->getOriginY();
@@ -237,7 +238,7 @@ void Game::constructRegions(float x,float y)
 		}
 	}
 	
-
+  
 }
 
 void Game::renderMenu()

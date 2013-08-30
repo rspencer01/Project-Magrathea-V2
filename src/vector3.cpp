@@ -1,6 +1,7 @@
 #include <math.h>
 
 #include <vector3.h>
+#include <noise.h>
 
 // Construct a vector with the components passed.
 /// @param x The x component
@@ -102,3 +103,15 @@ void Vector3::normalise()
 {
   (*this) = normal();
 }
+
+int seed = 1;
+Vector3 randomVector()
+{
+  float x,y,z;
+  x = random(seed++)-0.5;
+  y = random(seed++)-0.5;
+  z = random(seed++)-0.5;
+  return Vector3(x,y,z).normal();
+}
+
+

@@ -47,4 +47,7 @@ class Vector3
   void normalise();
 };
 
+/// Returns a random unit vector
+Vector3 randomVector();
+
 #endif
