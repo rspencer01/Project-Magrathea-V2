@@ -190,7 +190,6 @@ void Game::constructRegions(float x,float y)
 		Region* rg = new Region(rx,ry,this);
 		regions[0].push_back(rg);
 	}
-  return;
   
 	if (regions.back().back()->getOriginY() < ry+REGION_SIZE)
 	{
