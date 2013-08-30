@@ -49,21 +49,25 @@ void DynoTree::makeBranch(branchStruct branch)
   int lastRingIndex  = branch.basePointsIndex;
   bool swapTex = branch.reverseTexture;
 
+  Vector3 startPoint = *(branch.pos);
+  Vector3 endPoint = startPoint + *(branch.direction)*branch.len;
+
   // Add the trunk.  10 points in a circle, and one on top
 	// We do one point twice so that the texture is nice
   // Get the two basis: two vector perpendicular to the direction of the branch
   Vector3 basisA = branch.direction->cross(Vector3(1,0,1)).normal();
   Vector3 basisB = branch.direction->cross(basisA).normal();
-  if (lastRingIndex==-1)
+  if (branch.basePointsIndex == -1)
   {
     lastRingIndex = numberOfPoints;
+    branch.basePointsIndex = numberOfPoints;
     for (int y = 0; y<11;y++)
     {
+      float theta = 3.1415 * 2.0 * y / 10.0;
+      Vector3 displacement = (basisA*sin(theta)+basisB*cos(theta)) * branch.width;
  	  	addPoint(numberOfPoints,
-                pos+
-                basisA*width*sin(3.1415*y/5.f)+
-                basisB*width*cos(3.1415*y/5.f),
-                Vector3(sin(y/5.f*3.1415),0,cos(y/5.f*3.1415)),
+                pos+displacement,
+                displacement,
                 0.58f	,0.35f,0.09f);
        editTextureCoord(numberOfPoints,y*0.0345,0);
        numberOfPoints++;
@@ -73,9 +77,9 @@ void DynoTree::makeBranch(branchStruct branch)
  	for (int y = 0; y<11;y++)
 	{
 		addPoint(numberOfPoints,
-             pos+
+             endPoint+
              basisA*width*sin(3.1415*y/5.f)*0.66+
-             basisB*width*cos(3.1415*y/5.f)*0.66+dir*len,
+             basisB*width*cos(3.1415*y/5.f)*0.66,
              Vector3(sin(y/5.f*3.1415),0,cos(y/5.f*3.1415)),
              0.58f	,0.35f,0.09f);
     if (swapTex)
@@ -99,7 +103,7 @@ void DynoTree::makeBranch(branchStruct branch)
   if (width>0.05)
   {
     Vector3 d = randomVector();
-    Vector3 newDirection = dir + d/1.8;
+    Vector3 newDirection = *(branch.direction) + d/1.8;
     branchStruct subBranch;
     subBranch.pos = new Vector3(pos+dir*len);
     subBranch.direction = new Vector3(newDirection.normal());
