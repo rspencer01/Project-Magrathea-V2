@@ -88,7 +88,6 @@ void DynoTree::makeBranch(Vector3 pos, Vector3 dir, float len, float width)
 
 void DynoTree::makeLeaves(Vector3 pos, Vector3 dir, float len)
 {
-  printf("pos %f %f %f | dir %f %f %f | len %f\n",pos.x,pos.y,pos.z,dir.x,dir.y,dir.z,len);
   for (int i = 1;i<6;i++)
   {
     Vector3 leafDir = dir.normal() * 0.5 + randomVector()*0.5;
