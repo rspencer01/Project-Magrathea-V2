@@ -26,18 +26,34 @@ void DynoTree::initialiseTriangles()
   // Now set these to 0 so that we don't pass too many
   numberOfPoints = 0;
   numberOfTriangles = 0;
-  makeBranch(Vector3(0,-1,0),Vector3(0,1,0),3,1,-1,false);
+  // Make a branch
+  branchStruct trunk;
+  trunk.pos = new Vector3(0,-1,0);
+  trunk.direction = new Vector3(0,1,0);
+  trunk.len = 3;
+  trunk.width = 1;
+  trunk.reverseTexture = false;
+  trunk.basePointsIndex = -1;
+  makeBranch(trunk);
 	
 	// And save
 	pushTriangleData();
 }
 
-void DynoTree::makeBranch(Vector3 pos, Vector3 dir, float len, float width, int lastRingIndex,bool swapTex)
+void DynoTree::makeBranch(branchStruct branch)
 {
+  Vector3 pos = *(branch.pos);
+  Vector3 dir = *(branch.direction);
+  float len = branch.len;
+  float width = branch.width;
+  int lastRingIndex  = branch.basePointsIndex;
+  bool swapTex = branch.reverseTexture;
+
   // Add the trunk.  10 points in a circle, and one on top
 	// We do one point twice so that the texture is nice
-  Vector3 basisA = dir.cross(Vector3(1,0,1)).normal();
-  Vector3 basisB = dir.cross(basisA).normal();
+  // Get the two basis: two vector perpendicular to the direction of the branch
+  Vector3 basisA = branch.direction->cross(Vector3(1,0,1)).normal();
+  Vector3 basisB = branch.direction->cross(basisA).normal();
   if (lastRingIndex==-1)
   {
     lastRingIndex = numberOfPoints;
@@ -84,13 +100,31 @@ void DynoTree::makeBranch(Vector3 pos, Vector3 dir, float len, float width, int 
   {
     Vector3 d = randomVector();
     Vector3 newDirection = dir + d/1.8;
-    makeBranch(pos+dir*len,newDirection.normal(),len/1.2,width*2.0/5.0,-1,false);
+    branchStruct subBranch;
+    subBranch.pos = new Vector3(pos+dir*len);
+    subBranch.direction = new Vector3(newDirection.normal());
+    subBranch.len = len / 1.2;
+    subBranch.width = width * 0.4;
+    subBranch.reverseTexture = !swapTex;
+    subBranch.basePointsIndex = tRIng;
+    makeBranch(subBranch);
+    
     d = randomVector();
     newDirection = dir + d/2.8;
-    makeBranch(pos+dir*len,newDirection.normal(),len/1.2,width*3.0/5.0,tRIng,!swapTex);
+    subBranch.pos = new Vector3(pos+dir*len);
+    subBranch.direction = new Vector3(newDirection.normal());
+    subBranch.len = len / 1.2;
+    subBranch.width = width * 0.6;
+    subBranch.reverseTexture = !swapTex;
+    subBranch.basePointsIndex = tRIng;
+
+
+    makeBranch(subBranch);//pos+dir*len,newDirection.normal(),len/1.2,width*3.0/5.0,tRIng,!swapTex);
   }
   if (width<0.3)
     makeLeaves(pos,dir,len);
+  delete branch.pos;
+  delete branch.direction;
 }
 
 void DynoTree::makeLeaves(Vector3 pos, Vector3 dir, float len)

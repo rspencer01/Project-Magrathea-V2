@@ -15,11 +15,21 @@ class Game;
 
 #include <object.h>
 
+typedef struct
+{
+  Vector3* pos;
+  Vector3* direction;
+  float len;
+  float width;
+  bool reverseTexture;
+  int basePointsIndex;
+} branchStruct;
+
 class DynoTree : public Object
 {
   private:
     // Make new branch with start pos and direction dir of length len
-    void makeBranch(Vector3 pos,Vector3 dir,float len,float width,int,bool);
+    void makeBranch(branchStruct branch);
     void makeLeaves(Vector3 pos,Vector3 dir,float length);
 	  void initialiseTriangles();
   public:
