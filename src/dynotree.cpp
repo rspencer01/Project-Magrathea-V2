@@ -158,6 +158,8 @@ void DynoTree::makeLeaves(Vector3 pos, Vector3 dir, float len)
   for (int i = 1;i<6;i++)
   {
     Vector3 leafDir = dir.normal() * 0.5 + randomVector()*0.5;
+    leafDir.y /= 2;
+    leafDir.normalise();
     Vector3 leafCross = leafDir.cross(Vector3(random(i+pos.x*1000),0,random(i+pos.y*1000))).normal()*0.5;
     Vector3 leafPos = pos + dir*len/6.0*i + leafDir*0.3;
     leafDir = leafDir*2;
