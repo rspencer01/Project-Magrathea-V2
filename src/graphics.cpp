@@ -32,7 +32,7 @@ void initialiseGraphics()
   // Lets enable alpha blending
   glEnable (GL_BLEND);
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-glAlphaFunc ( GL_GREATER, (GLclampf)0.1 ) ;
+glAlphaFunc ( GL_GREATER, (GLclampf)0.9 ) ;
     glEnable ( GL_ALPHA_TEST ) ;
 
   // Lets use lines, for nicer debugging without shading and shadows

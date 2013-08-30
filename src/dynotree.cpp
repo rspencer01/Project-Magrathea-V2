@@ -22,56 +22,84 @@ void DynoTree::initialiseTriangles()
 {
 	// Begin the operation of setting up triangles
   // Reserve far too many than we actually need
-	clearTriangleData(5000,5000);
+	clearTriangleData(3000,2000);
   // Now set these to 0 so that we don't pass too many
   numberOfPoints = 0;
   numberOfTriangles = 0;
-  makeBranch(Vector3(0,-1,0),Vector3(0,1,0),3,1,-1,false);
+  // Make a branch
+  branchStruct trunk;
+  trunk.pos = new Vector3(0,-1,0);
+  trunk.direction = new Vector3(0,1,0);
+  trunk.len = 3;
+  trunk.width = 1;
+  trunk.reverseTexture = false;
+  trunk.basePointsIndex = -1;
+  makeBranch(trunk);
 	
 	// And save
 	pushTriangleData();
 }
 
-void DynoTree::makeBranch(Vector3 pos, Vector3 dir, float len, float width, int lastRingIndex,bool swapTex)
+void DynoTree::makeBranch(branchStruct branch)
 {
-  // Add the trunk.  10 points in a circle, and one on top
-	// We do one point twice so that the texture is nice
-  Vector3 basisA = dir.cross(Vector3(1,0,1)).normal();
-  Vector3 basisB = dir.cross(basisA).normal();
-  if (lastRingIndex==-1)
+  int lastRingIndex  = branch.basePointsIndex;
+  
+  // What is the centre of the start of the branch
+  Vector3 startPoint = *(branch.pos);
+  // What is the centre of the end of the branch
+  Vector3 endPoint = startPoint + *(branch.direction)*branch.len;
+
+  // Get the two basis: two vector perpendicular to the direction of the branch
+  Vector3 basisA = branch.direction->cross(Vector3(1,0,1)).normal();
+  Vector3 basisB = branch.direction->cross(basisA).normal();
+  // In the case that we need ot start an entirely new branch (no starting ring already)
+  if (branch.basePointsIndex == -1)
   {
+    // State that the last ring is this one
     lastRingIndex = numberOfPoints;
+    branch.basePointsIndex = numberOfPoints;
+    // Construct 11 points (for the 10 triangles)
     for (int y = 0; y<11;y++)
     {
+      // Equally spaced around the trunk
+      float theta = 3.1415 * 2.0 * y / 10.0;
+      // Calculate the offset from the trunk centre
+      Vector3 displacement = (basisA*sin(theta)+basisB*cos(theta)) * branch.width/0.6;
+      // Add this point
  	  	addPoint(numberOfPoints,
-                pos+
-                basisA*width*sin(3.1415*y/5.f)+
-                basisB*width*cos(3.1415*y/5.f),
-                Vector3(sin(y/5.f*3.1415),0,cos(y/5.f*3.1415)),
-                0.58f	,0.35f,0.09f);
-       editTextureCoord(numberOfPoints,y*0.0345,0);
-       numberOfPoints++;
+               startPoint+displacement,
+               displacement,
+               0.58f	,0.35f,0.09f);
+      // The texture coordinate
+      editTextureCoord(numberOfPoints,y*0.0345,0);
+      // We have added a point.  Reflect this
+      numberOfPoints++;
  	  }
+    branch.reverseTexture = false;
   }
-  int tRIng = numberOfPoints;
+  // Record the starting index of the top ring
+  int topRingIndex = numberOfPoints;
+  // Now add a ring of points at the top, in basically the same way
  	for (int y = 0; y<11;y++)
 	{
+    // Calculate the angle
+    float theta = 3.1415 * 2.0 * y / 10.0;
+    // Calculate the offset from the trunk centre
+    Vector3 displacement = (basisA*sin(theta)+basisB*cos(theta)) * branch.width;
 		addPoint(numberOfPoints,
-             pos+
-             basisA*width*sin(3.1415*y/5.f)*0.66+
-             basisB*width*cos(3.1415*y/5.f)*0.66+dir*len,
-             Vector3(sin(y/5.f*3.1415),0,cos(y/5.f*3.1415)),
+             endPoint+displacement,
+             displacement,
              0.58f	,0.35f,0.09f);
-    if (swapTex)
+    // If we need to revese the texture, do so
+    if (branch.reverseTexture)
       editTextureCoord(numberOfPoints,y*0.0345,0);
     else
       editTextureCoord(numberOfPoints,y*0.0345,1);
-
+    // Record this point
     numberOfPoints++;
 	}
 		
-	// Add in all the triangles
-	
+	// Add in all the triangles for this branch. There are 20 as this is a cylinder
   for (int y = 0; y<10;y++)
   {
 		addTriangle(numberOfTriangles,lastRingIndex+y,lastRingIndex+(y+1),numberOfPoints-11+y);
@@ -79,18 +107,46 @@ void DynoTree::makeBranch(Vector3 pos, Vector3 dir, float len, float width, int 
 		addTriangle(numberOfTriangles,lastRingIndex+y+1,numberOfPoints-10+y,numberOfPoints-11+y);
     numberOfTriangles++;
   }
-  
-  if (width>0.05)
+
+  // If the branch is thick enough, we can split into two
+  if (branch.width>0.05)
   {
+    // Get a random vector...
     Vector3 d = randomVector();
-    Vector3 newDirection = dir + d/1.8;
-    makeBranch(pos+dir*len,newDirection.normal(),len/1.2,width*2.0/5.0,-1,false);
+    // And add it (scaled) to the current direction.  Get the new direction in normal form
+    Vector3 newDirection = *(branch.direction) + d/1.8;
+    newDirection.normalise();
+    // Now reserve some space for the new branch data
+    branchStruct subBranch;
+    // Both branches start from the same point: the top of this branch
+    subBranch.pos = new Vector3(endPoint);
+    subBranch.direction = new Vector3(newDirection);
+    // Shorten the branch, and make it smaller
+    subBranch.len = branch.len / 1.2;
+    subBranch.width = branch.width * 0.4;
+    // Swap the texture output
+    subBranch.reverseTexture = !branch.reverseTexture;
+    // Tell this branch to start on this ring
+    subBranch.basePointsIndex = -1;
+    makeBranch(subBranch);
+    
     d = randomVector();
-    newDirection = dir + d/2.8;
-    makeBranch(pos+dir*len,newDirection.normal(),len/1.2,width*3.0/5.0,tRIng,!swapTex);
+    newDirection = *(branch.direction) + d/2.8;
+    subBranch.pos = new Vector3(endPoint);
+    subBranch.direction = new Vector3(newDirection.normal());
+    subBranch.width = branch.width * 0.6;
+    subBranch.basePointsIndex = topRingIndex;
+
+
+    makeBranch(subBranch);
   }
-  if (width<0.3)
-    makeLeaves(pos,dir,len);
+  
+  // If the width is less than a certain limit, populate this branch with leaves
+  if (branch.width<0.3)
+    makeLeaves(startPoint,*(branch.direction),branch.len);
+  // Clean up the dyncamic variables passed to this function
+  delete branch.pos;
+  delete branch.direction;
 }
 
 void DynoTree::makeLeaves(Vector3 pos, Vector3 dir, float len)
@@ -98,7 +154,9 @@ void DynoTree::makeLeaves(Vector3 pos, Vector3 dir, float len)
   for (int i = 1;i<6;i++)
   {
     Vector3 leafDir = dir.normal() * 0.5 + randomVector()*0.5;
-    Vector3 leafCross = leafDir.cross(Vector3(random(i+pos.x*1000),0,random(i+pos.y*1000))).normal()*0.5;
+    leafDir.y /= 2;
+    leafDir.normalise();
+    Vector3 leafCross = leafDir.cross(randomVector()).normal()*0.5;
     Vector3 leafPos = pos + dir*len/6.0*i + leafDir*0.3;
     leafDir = leafDir*2;
     leafCross = leafCross*2;
