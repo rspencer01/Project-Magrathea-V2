@@ -3,11 +3,11 @@ Todo list
 
 These are low level things that need implimentaion
  
- * Moving points in objects easily
  * Render timestep, for moving objects
  * Updating shadows on objects
  * Remove artifacts of misrendering regions
- * Make an obj importer for objects
+ * ~~Moving points in objects easily~~
+ * ~~Make an obj importer for objects~~
  * ~~Easily change vertex positions~~
  * ~~Normals for each vertex~~
  * ~~Trees in more logical places~~

@@ -21,7 +21,7 @@ The following milestones have been passed:
  * Simple system of region based rendering
  * Dynamic region creation based on camera position
  * Use of real data (imported)
- * Basic trees
+ * Nice trees
  * Nice menu
 
 Wishlist
@@ -39,9 +39,9 @@ Textures
 --------
 The textures are (currently) 1000 by 1000 BMP files and can be found in `assets`.  Feel free to chop and change these to improve them.  If you develop a better texture, please let me know (or submit a pull request).
 
-Data and Trees
---------------
-Since the input data and trees are large (>3Mb), and are not included in this repo, but can be downloaded from [here][1] and [here][3].  They should be placed in the `assets` folder.  Trees are in obj format.  This may soon dissapear as better tree generation occurs.
+Data
+----
+Since the input data is large (>3Mb), it is not included in this repo, but can be downloaded from [here][1] and [here][3].  It should be placed in the `assets` folder.
 
 Data is 3m resolution of a 9 square kilometers of a section of North America.  More data can be obtained from [here][2].
 
