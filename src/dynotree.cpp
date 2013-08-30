@@ -47,7 +47,6 @@ void DynoTree::makeBranch(branchStruct branch)
   float len = branch.len;
   float width = branch.width;
   int lastRingIndex  = branch.basePointsIndex;
-  bool swapTex = branch.reverseTexture;
   
   // What is the centre of the start of the branch
   Vector3 startPoint = *(branch.pos);
@@ -69,7 +68,7 @@ void DynoTree::makeBranch(branchStruct branch)
       // Equally spaced around the trunk
       float theta = 3.1415 * 2.0 * y / 10.0;
       // Calculate the offset from the trunk centre
-      Vector3 displacement = (basisA*sin(theta)+basisB*cos(theta)) * branch.width;
+      Vector3 displacement = (basisA*sin(theta)+basisB*cos(theta)) * branch.width/0.6;
       // Add this point
  	  	addPoint(numberOfPoints,
                pos+displacement,
@@ -80,6 +79,7 @@ void DynoTree::makeBranch(branchStruct branch)
       // We have added a point.  Reflect this
       numberOfPoints++;
  	  }
+    branch.reverseTexture = false;
   }
   // Record the starting index of the top ring
   int topRingIndex = numberOfPoints;
@@ -95,7 +95,7 @@ void DynoTree::makeBranch(branchStruct branch)
              displacement,
              0.58f	,0.35f,0.09f);
     // If we need to revese the texture, do so
-    if (swapTex)
+    if (branch.reverseTexture)
       editTextureCoord(numberOfPoints,y*0.0345,0);
     else
       editTextureCoord(numberOfPoints,y*0.0345,1);
@@ -129,9 +129,9 @@ void DynoTree::makeBranch(branchStruct branch)
     subBranch.len = len / 1.2;
     subBranch.width = width * 0.4;
     // Swap the texture output
-    subBranch.reverseTexture = !swapTex;
+    subBranch.reverseTexture = !branch.reverseTexture;
     // Tell this branch to start on this ring
-    subBranch.basePointsIndex = topRingIndex;
+    subBranch.basePointsIndex = -1;
     makeBranch(subBranch);
     
     d = randomVector();
@@ -139,6 +139,7 @@ void DynoTree::makeBranch(branchStruct branch)
     subBranch.pos = new Vector3(pos+dir*len);
     subBranch.direction = new Vector3(newDirection.normal());
     subBranch.width = width * 0.6;
+    subBranch.basePointsIndex = topRingIndex;
 
 
     makeBranch(subBranch);
