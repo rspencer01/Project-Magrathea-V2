@@ -23,7 +23,13 @@ void initialiseGraphics()
 	glutInitWindowPosition(100,100);
 	glutCreateWindow("Magrathea");
 
-	glewInit();
+  // Initialise glew.  If there is an error, report it
+  GLenum res = glewInit();
+  if (res != GLEW_OK)
+  {
+    fprintf(stderr, "Error: '%s'\n", glewGetErrorString(res));
+    return;
+  }
 	
   // Enable all the standard pipeline things we want.  This should eventually be replaced with custom shaders
   glEnable(GL_DEPTH_TEST);
