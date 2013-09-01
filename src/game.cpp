@@ -44,7 +44,7 @@ Game::Game()
   speed = 0.1;
   fpsOn = false;
   showMenu = false;
-  sky = new Sky(this);
+  //sky = new Sky(this);
   test = new TestObj(this);
 }
 
