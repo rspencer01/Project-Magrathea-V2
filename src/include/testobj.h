@@ -1,9 +1,6 @@
 /**
  * @file tree.h
  * @author  Robert Spencer <robert.spencer94@gmail.com>
- * @section DESCRIPTION
- *
- * This file describes trees
  */
 
 #ifndef TEST_OBJ
@@ -15,12 +12,13 @@ class Game;
 
 #include <object.h>
 
+/// A test object used for all kinds of feature testing
 class TestObj : public Object
 {
   private:
-	void initialiseTriangles();
+	  void initialiseTriangles();
   public:
-	/// Constructs the tree with the given coordinates
+	  /// Constructs the object
     TestObj(Game*);
 };
 

@@ -56,7 +56,7 @@ void resize(int width, int height)
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   // Arguments are: Field of view, Aspect ratio, Near and then far plane
-  gluPerspective(60,(GLfloat)width/(GLfloat)height,0.1,1500);
+  //gluPerspective(60,(GLfloat)width/(GLfloat)height,0.1,1500);
   // Done, thanks.  Go back to editing models
   glMatrixMode(GL_MODELVIEW);
 }
