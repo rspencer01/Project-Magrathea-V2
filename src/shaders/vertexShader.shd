@@ -1,11 +1,14 @@
 #version 330
 layout (location = 0) in vec3 inPosition;
 layout (location = 1) in vec4 inColour;
+layout (location = 2) in vec2 inTex;
 uniform mat4 gWorld;
 uniform mat4 gProj;
 out vec4 Color;
+out vec2 TexCoord0;
 void main()
 {
   Color = inColour;
+  TexCoord0 = inTex;
   gl_Position = gProj * gWorld* vec4(inPosition, 1.0);
 }

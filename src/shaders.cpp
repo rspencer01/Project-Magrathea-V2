@@ -6,6 +6,7 @@
 
 GLuint glTransformationMatrixLocation;
 GLuint glProjectionMatrixLocation;
+GLuint gSampler;
 
 static void LoadShader(GLuint ShaderProgram, const char* shaderPath, GLenum ShaderType)
 {
@@ -77,6 +78,9 @@ static void CompileShaders()
    glUseProgram(ShaderProgram);
    glTransformationMatrixLocation = glGetUniformLocation(ShaderProgram, "gWorld");
    glProjectionMatrixLocation = glGetUniformLocation(ShaderProgram, "gProj");
+   gSampler = glGetUniformLocation(ShaderProgram, "gSampler");
+   glUniform1i(gSampler, 0);
+   assert(gSampler != 0xFFFFFFFF);
    assert(glTransformationMatrixLocation != 0xFFFFFFFF);
    assert(glProjectionMatrixLocation != 0xFFFFFFFF);
 }  

@@ -57,17 +57,23 @@ void Object::Render()
   // Only do something if we have data	
 	if (buffersInitialised)
 	{
+    glEnable(GL_TEXTURE_2D);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D,textureNumber);
     glEnableVertexAttribArrayARB(0);
     glEnableVertexAttribArrayARB(1);
+    glEnableVertexAttribArrayARB(2);
 
     glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
     // Get the position data
     glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
     glVertexAttribPointerARB(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));
+    glVertexAttribPointerARB(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
     glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
     glDrawElements(GL_TRIANGLES,numberOfTriangles*3,GL_UNSIGNED_INT,0);
     glDisableVertexAttribArrayARB(0);
     glDisableVertexAttribArrayARB(1);
+    glDisableVertexAttribArrayARB(2);
 	}
 }
 
@@ -158,8 +164,8 @@ void Object::updateTriangleData()
 
 void Object::editTextureCoord(int i, float u, float v)
 {
-//	vertexData[i].texx = u;
-//	vertexData[i].texy = v;
+	vertexData[i].texx = u;
+	vertexData[i].texy = v;
 }
 
 
