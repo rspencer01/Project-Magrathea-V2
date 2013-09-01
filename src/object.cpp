@@ -56,32 +56,13 @@ void Object::Render()
   // Only do something if we have data	
 	if (buffersInitialised)
 	{
-
-		// We are passing vertices ...
-		glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-		if (textureNumber!=(GLuint)-1)
-		{
-			glEnable( GL_TEXTURE_2D );
-			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-			glBindTexture(GL_TEXTURE_2D,textureNumber);
-		}
-		glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
-		glVertexPointer( 3, GL_FLOAT, sizeof(VertexDatum), 0);
-        glColorPointer( 4, GL_FLOAT, sizeof(VertexDatum), (void*)(6*sizeof(float)));
-		glTexCoordPointer(2,GL_FLOAT,sizeof(VertexDatum),(void*)(10*sizeof(float)));
-		// ... and indexes
-		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
-		// Now draw trinagles
-		glDrawElements( GL_TRIANGLES, //mode
-					  numberOfTriangles*3,  //count, ie. how many indices
-					  GL_UNSIGNED_INT, //type of the index array
-					  0);
-		// Thank you, we are done with the vbo
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisable( GL_TEXTURE_2D );
+    glEnableVertexAttribArrayARB(0);
+    glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
+    glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,0,0);
+    //glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
+    //glDrawElements(GL_TRIANGLES,numberOfTriangles*3,GL_UNSIGNED_INT,0);
+    glDrawArrays(GL_TRIANGLES,0,3);
+    glDisableVertexAttribArrayARB(0);
 	}
 }
 
@@ -120,13 +101,13 @@ void Object::addPoint(int i,Vector3 point,Vector3 normal, float r, float g, floa
 	vertexData[i].px = point.x;
 	vertexData[i].py = point.y;
 	vertexData[i].pz = point.z;
-	vertexData[i].nx = normal.x;
+	/*vertexData[i].nx = normal.x;
 	vertexData[i].ny = normal.y;
 	vertexData[i].nz = normal.z;
 	vertexData[i].red = r * (normal.dot(Vector3(1,1,0))*0.7+0.3);
 	vertexData[i].green = g * (normal.dot(Vector3(1,1,0))*0.7+0.3);
 	vertexData[i].blue = b * (normal.dot(Vector3(1,1,0))*0.7+0.3);
-  vertexData[i].alpha = 1.f;
+  vertexData[i].alpha = 1.f;*/
 
 }
 
@@ -172,13 +153,14 @@ void Object::updateTriangleData()
 
 void Object::editTextureCoord(int i, float u, float v)
 {
-	vertexData[i].texx = u;
-	vertexData[i].texy = v;
+//	vertexData[i].texx = u;
+//	vertexData[i].texy = v;
 }
 
 
 void Object::loadFromOBJFile(const char* filePath)
 {
+  /*
   // Let the user know what we are doing
   printf("Loading model from \"%s\"\n",filePath);
   // Do all the stuff to set this up as new
@@ -312,4 +294,5 @@ void Object::loadFromOBJFile(const char* filePath)
 	for (int i = 0; i<numberOfTriangles;i++)
 		addTriangle(i,tri[i][0]-1,tri[i][1]-1,tri[i][2]-1);
 	pushTriangleData();
+  */
 }

@@ -16,9 +16,9 @@ class Game;
 typedef struct
 {
   float px,py,pz;
-  float nx,ny,nz;
-  float red,green,blue,alpha;
-  float texx,texy;
+  //float nx,ny,nz;
+  //float red,green,blue,alpha;
+  //float texx,texy;
 }/* __attribute__((packed)) */ VertexDatum;
 
 /// An object is anything that occurs in the game space
