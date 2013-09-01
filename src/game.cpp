@@ -46,7 +46,7 @@ Game::Game()
   speed = 0.1;
   fpsOn = false;
   showMenu = false;
-  //sky = new Sky(this);
+  sky = new Sky(this);
   camera = new Camera(this);
   test = new TestObj(this);
 }
@@ -83,7 +83,7 @@ void Game::display()
     setCameraFPS();
 
   // Make whatever regions are required
-  //constructRegions(camera.Position.x,camera.Position.z);
+  constructRegions(camera->Position.x,camera->Position.z);
 
   // Clear the display
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -97,14 +97,14 @@ void Game::display()
   camera->Render();
   test->Render();
   // Make the sky
-  //sky->setPosition(camera.Position);
-  //sky->Render();
+  sky->setPosition(camera->Position);
+  sky->Render();
 
   // Render each region
-  /*for (unsigned int i = 0;i<regions.size();i++)
+  for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)
       regions[i][j]->Render();
-  
+  /*
   if (showMenu)
   {
 	  renderMenu();
