@@ -44,10 +44,12 @@ Game::Game()
   data = new Book(getHeightmapData);
   currentGame = this;
   speed = 0.1;
-  fpsOn = false;
+  fpsOn = true;
   showMenu = false;
   sky = new Sky(this);
   camera = new Camera(this);
+  camera->Position.x = 5;
+  camera->Position.z = 5;
   test = new TestObj(this);
 }
 
@@ -214,10 +216,13 @@ void Game::constructRegions(float x,float y)
 
 	if (regions.front().back()->getOriginY() > ry-REGION_SIZE*2)
 	{
-		int oy = regions.front().back()->getOriginY();
-		Region* rg = new Region(rx,oy-REGION_SIZE,this);
-		regions.push_front(std::deque<Region*>());
-		regions.front().push_back(rg);
+    int oy = regions.front().back()->getOriginY();
+    if (oy-REGION_SIZE>=0)
+    {
+		  Region* rg = new Region(rx,oy-REGION_SIZE,this);
+		  regions.push_front(std::deque<Region*>());
+		  regions.front().push_back(rg);
+    }
 	}
 	if (regions.front().back()->getOriginY() < ry-REGION_SIZE*2)
 	{
@@ -237,7 +242,8 @@ void Game::constructRegions(float x,float y)
 			regions[i].pop_back();
 		}
 		if (regions[i].front()->getOriginX() > rx-REGION_SIZE*2)
-			regions[i].push_front(new Region(regions[i].front()->getOriginX()-REGION_SIZE,regions[i].front()->getOriginY(),this));
+      if (regions[i].front()->getOriginX()-REGION_SIZE>=0)
+			  regions[i].push_front(new Region(regions[i].front()->getOriginX()-REGION_SIZE,regions[i].front()->getOriginY(),this));
 		if (regions[i].front()->getOriginX() < rx-REGION_SIZE*2)
 		{
 			delete regions[i].front();
