@@ -6,6 +6,7 @@
 #include <heightmap.h>
 #include <shaders.h>
 
+#include <fpscounter.h>
 // This is necessary so that we have a static funtion to call on display updates/keyboard etc.  We store the current game, and then functions wrap the actual code.
 Game* currentGame;
 // A wrapper for displaying
@@ -112,6 +113,9 @@ void Game::display()
 
   // ..and blit it to the screen
   glutSwapBuffers();
+
+  // log this frame in the framecount
+  logFrame();
 }
 
 void Game::setCameraFPS()
