@@ -10,5 +10,6 @@
 #define FPSCOUNTER_H
 
 void logFrame();
+float getFrameDiff();
 
 #endif

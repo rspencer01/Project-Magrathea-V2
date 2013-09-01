@@ -167,13 +167,13 @@ void Game::keyOperations()
 		camera.MoveForward(-speed);
   }
   if (keyDown['a'])
-    camera.RotateFlat(0.05f);
+    camera.RotateFlat(1.f * getFrameDiff());
   if (keyDown['d'])
-    camera.RotateFlat(-0.05f);
+    camera.RotateFlat(-1.f * getFrameDiff());
   if (keyDown['q'])
-    camera.RotateX(0.05f);
+    camera.RotateX(3.5f * getFrameDiff());
   if (keyDown['e'])
-    camera.RotateX(-0.05f);
+    camera.RotateX(-3.5f * getFrameDiff());
 }
 
 terrainBit Game::getTerrainBit(int x,int y)
