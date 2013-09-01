@@ -7,8 +7,9 @@
  */
 #ifndef CAMERA_H
 #define CAMERA_H
-
+class Camera;
 #include <vector3.h>
+#include <game.h>
 
 /// A helper class that renders the scene according to some camera position and rotation
 ///
@@ -20,7 +21,7 @@ class Camera
   private:
     Vector3 ViewDir;
     Vector3 UpVector;
-    
+    Game* game;
 
     float RotatedX, RotatedY, RotatedZ;	
 	
@@ -28,7 +29,7 @@ class Camera
 	  /// The position of the camera
 	  Vector3 Position;
 	  /// Initialises the camera to the <-1,0,0>, looking in the +x direction
-  	Camera();				
+  	Camera(Game*);				
 	  /// Rotates and translates the scene to the correct position.
   	void Render ( void );							
 

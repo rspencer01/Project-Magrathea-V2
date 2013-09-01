@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <object.h>
 
+
 /// @param pos The position of this object in gamespace
 /// @param g   The game to which this object belongs
 Object::Object(Vector3 pos,Game* g)

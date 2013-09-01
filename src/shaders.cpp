@@ -2,16 +2,9 @@
 #include <gl\glut.h>
 #include <stdio.h>
 #include <shaders.h>
+#include <assert.h>
 
-static const char* pFS = "                                                    \n\
-#version 330                                                                  \n\
-                                                                              \n\
-out vec4 FragColor;                                                           \n\
-                                                                              \n\
-void main()                                                                   \n\
-{                                                                             \n\
-    FragColor = vec4(1.0, 0.0, 0.0, 1.0);                                     \n\
-}";
+GLuint gWorldLocation;
 
 static void LoadShader(GLuint ShaderProgram, const char* shaderPath, GLenum ShaderType)
 {
@@ -80,7 +73,9 @@ static void CompileShaders()
         while(1);
     }
 
-    glUseProgram(ShaderProgram);
+   glUseProgram(ShaderProgram);
+   gWorldLocation = glGetUniformLocation(ShaderProgram, "gWorld");
+   assert(gWorldLocation != 0xFFFFFFFF);
 }  
 
 
@@ -88,4 +83,9 @@ void loadShaders()
 {
   printf("Initialising shaders\n");
   CompileShaders();
+}
+
+void setTrans(float* mat)
+{
+  glUniformMatrix4fv(gWorldLocation,1,GL_TRUE,mat);
 }

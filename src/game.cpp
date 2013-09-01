@@ -4,6 +4,7 @@
 #include <game.h>
 #include <graphics.h>
 #include <heightmap.h>
+#include <shaders.h>
 
 // This is necessary so that we have a static funtion to call on display updates/keyboard etc.  We store the current game, and then functions wrap the actual code.
 Game* currentGame;
@@ -45,6 +46,7 @@ Game::Game()
   fpsOn = false;
   showMenu = false;
   //sky = new Sky(this);
+  camera = new Camera(this);
   test = new TestObj(this);
 }
 
@@ -90,10 +92,8 @@ void Game::display()
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   
-  
-
   // Do the camera stuff
-  //camera.Render();
+  camera->Render();
   test->Render();
   // Make the sky
   //sky->setPosition(camera.Position);
@@ -116,14 +116,14 @@ void Game::display()
 
 void Game::setCameraFPS()
 {
-	float fx = camera.Position.x - (int)camera.Position.x;
-	float fy = camera.Position.z - (int)camera.Position.z;
-	camera.Position.y = interpolate(
-						interpolate(getTerrainBit((int)camera.Position.x,(int)camera.Position.z).position->y,
-									getTerrainBit((int)camera.Position.x+1,(int)camera.Position.z).position->y,
+	float fx = camera->Position.x - (int)camera->Position.x;
+	float fy = camera->Position.z - (int)camera->Position.z;
+	camera->Position.y = interpolate(
+						interpolate(getTerrainBit((int)camera->Position.x,(int)camera->Position.z).position->y,
+									getTerrainBit((int)camera->Position.x+1,(int)camera->Position.z).position->y,
 									fx),
-						interpolate(getTerrainBit((int)camera.Position.x,(int)camera.Position.z+1).position->y,
-									getTerrainBit((int)camera.Position.x+1,(int)camera.Position.z+1).position->y,
+						interpolate(getTerrainBit((int)camera->Position.x,(int)camera->Position.z+1).position->y,
+									getTerrainBit((int)camera->Position.x+1,(int)camera->Position.z+1).position->y,
 									fx),
 						fy) + 0.63;
 }
@@ -163,18 +163,18 @@ void Game::keyOperations()
   if (!showMenu)
   {
 	  if (keyDown['w'])
-		camera.MoveForward(speed);
+		camera->MoveForward(speed);
 	  if (keyDown['s'])
-		camera.MoveForward(-speed);
+		camera->MoveForward(-speed);
   }
   if (keyDown['a'])
-    camera.RotateFlat(0.05f);
+    camera->RotateFlat(0.05f);
   if (keyDown['d'])
-    camera.RotateFlat(-0.05f);
+    camera->RotateFlat(-0.05f);
   if (keyDown['q'])
-    camera.RotateX(0.05f);
+    camera->RotateX(0.05f);
   if (keyDown['e'])
-    camera.RotateX(-0.05f);
+    camera->RotateX(-0.05f);
 }
 
 terrainBit Game::getTerrainBit(int x,int y)
@@ -249,7 +249,7 @@ void Game::renderMenu()
   glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
   glColor4f(0,0,0,0.85);
-  glTranslatef(camera.Position.x,camera.Position.y,camera.Position.z);
+  glTranslatef(camera->Position.x,camera->Position.y,camera->Position.z);
   glutSolidSphere(0.25,10,10);
   writeString(3,95,"PROJECT MAGRATHEA V2");
   writeString(3,91, "====================");

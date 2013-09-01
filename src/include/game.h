@@ -25,7 +25,7 @@ class Game
 {
   private:
     /// The user camera that contains the fps position rotation etc.
-    Camera camera;
+    Camera* camera;
     /// A list of regions in the game
     std::deque<std::deque<Region*> > regions;
     /// The sku above our heads
@@ -66,6 +66,8 @@ class Game
     void keyUp(unsigned char key, int, int);
     /// Returns data about a single point
     terrainBit getTerrainBit(int x, int y);
+    /// The matrix by which the world should be tranformed (for this camera)
+    float transMatrix[16];
 };
 
 #endif

@@ -10,5 +10,6 @@
 #define SHADERS_H
 
 void loadShaders();
+void setTrans(float*);
 
 #endif
