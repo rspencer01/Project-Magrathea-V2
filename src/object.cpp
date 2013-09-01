@@ -58,11 +58,16 @@ void Object::Render()
 	if (buffersInitialised)
 	{
     glEnableVertexAttribArrayARB(0);
+    glEnableVertexAttribArrayARB(1);
+
     glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
-    glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,0,0);
+    // Get the position data
+    glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
+    glVertexAttribPointerARB(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));
     glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
     glDrawElements(GL_TRIANGLES,numberOfTriangles*3,GL_UNSIGNED_INT,0);
     glDisableVertexAttribArrayARB(0);
+    glDisableVertexAttribArrayARB(1);
 	}
 }
 
@@ -101,13 +106,13 @@ void Object::addPoint(int i,Vector3 point,Vector3 normal, float r, float g, floa
 	vertexData[i].px = point.x;
 	vertexData[i].py = point.y;
 	vertexData[i].pz = point.z;
-	/*vertexData[i].nx = normal.x;
+	vertexData[i].nx = normal.x;
 	vertexData[i].ny = normal.y;
 	vertexData[i].nz = normal.z;
-	vertexData[i].red = r * (normal.dot(Vector3(1,1,0))*0.7+0.3);
-	vertexData[i].green = g * (normal.dot(Vector3(1,1,0))*0.7+0.3);
-	vertexData[i].blue = b * (normal.dot(Vector3(1,1,0))*0.7+0.3);
-  vertexData[i].alpha = 1.f;*/
+	vertexData[i].red = r;
+	vertexData[i].green = g;
+	vertexData[i].blue = b;
+  vertexData[i].alpha = 1.f;
 
 }
 

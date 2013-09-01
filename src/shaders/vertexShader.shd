@@ -1,10 +1,11 @@
 #version 330
-layout (location = 0) in vec3 Position;
+layout (location = 0) in vec3 inPosition;
+layout (location = 1) in vec4 inColour;
 uniform mat4 gWorld;
 uniform mat4 gProj;
 out vec4 Color;
 void main()
 {
-  Color = vec4(clamp(Position,0.0,1.0),1.0);
-  gl_Position = gProj * gWorld* vec4(Position, 1.0);
+  Color = inColour;
+  gl_Position = gProj * gWorld* vec4(inPosition, 1.0);
 }
