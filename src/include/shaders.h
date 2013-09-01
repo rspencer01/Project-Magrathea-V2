@@ -11,5 +11,5 @@
 
 void loadShaders();
 void setTrans(float*);
-
+void setProj(float*);
 #endif
