@@ -59,9 +59,8 @@ void Object::Render()
     glEnableVertexAttribArrayARB(0);
     glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
     glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,0,0);
-    //glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
-    //glDrawElements(GL_TRIANGLES,numberOfTriangles*3,GL_UNSIGNED_INT,0);
-    glDrawArrays(GL_TRIANGLES,0,3);
+    glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
+    glDrawElements(GL_TRIANGLES,numberOfTriangles*3,GL_UNSIGNED_INT,0);
     glDisableVertexAttribArrayARB(0);
 	}
 }
