@@ -15,11 +15,16 @@ void logFrame()
   frameCount++;
   currentTime = glutGet(GLUT_ELAPSED_TIME);
   int timeInterval = currentTime - previousTime;
-  if(timeInterval > 1000)
+  if(timeInterval > 100)
   {
     fps = frameCount / (timeInterval / 1000.0f);
     previousTime = currentTime;
     frameCount = 0;
     printf("Frame rate: %f\n",fps);
   }
+}
+
+float getFrameDiff()
+{
+  return 1.0/fps;
 }
