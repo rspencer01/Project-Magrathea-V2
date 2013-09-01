@@ -2,47 +2,39 @@
 #include <gl\glut.h>
 #include <stdio.h>
 #include <shaders.h>
-static const char* pVS = "                                                          \n\
-#version 330                                                                        \n\
-                                                                                    \n\
-layout (location = 0) in vec3 Position;                                             \n\
-                                                                                    \n\
-uniform mat4 gWorld;                                                                \n\
-                                                                                    \n\
-out vec4 Color;                                                                     \n\
-                                                                                    \n\
-void main()                                                                         \n\
-{                                                                                   \n\
-    gl_Position = gWorld * vec4(Position, 1.0);                                     \n\
-    Color = vec4(clamp(Position, 0.0, 1.0), 1.0);                                   \n\
+
+static const char* pFS = "                                                    \n\
+#version 330                                                                  \n\
+                                                                              \n\
+out vec4 FragColor;                                                           \n\
+                                                                              \n\
+void main()                                                                   \n\
+{                                                                             \n\
+    FragColor = vec4(1.0, 0.0, 0.0, 1.0);                                     \n\
 }";
 
-static const char* pFS = "                                                          \n\
-#version 330                                                                        \n\
-                                                                                    \n\
-in vec4 Color;                                                                      \n\
-                                                                                    \n\
-out vec4 FragColor;                                                                 \n\
-                                                                                    \n\
-void main()                                                                         \n\
-{                                                                                   \n\
-    FragColor = Color;                                                              \n\
-}";  
-
-static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
+static void LoadShader(GLuint ShaderProgram, const char* shaderPath, GLenum ShaderType)
 {
     GLuint ShaderObj = glCreateShader(ShaderType);
 
-    if (ShaderObj == 0) {
+    if (ShaderObj == 0) 
+    {
         fprintf(stderr, "Error creating shader type %d\n", ShaderType);
-        exit(0);
+        while(1);
     }
 
-    const GLchar* p[1];
-    p[0] = pShaderText;
+    FILE* fp = fopen(shaderPath,"r");
+    fseek(fp,0,SEEK_END);
+    int fileSize = ftell(fp);
+    rewind(fp);
+
+    const GLchar* p = new GLchar[fileSize];
+    fread((void*)p,fileSize,1,fp);
     GLint Lengths[1];
-    Lengths[0]= strlen(pShaderText);
-    glShaderSource(ShaderObj, 1, p, Lengths);
+    Lengths[0]= fileSize;
+    glShaderSource(ShaderObj, 1, &p, Lengths);
+    delete p;
+    fclose(fp);
     glCompileShader(ShaderObj);
     GLint success;
     glGetShaderiv(ShaderObj, GL_COMPILE_STATUS, &success);
@@ -50,10 +42,11 @@ static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum Shad
         GLchar InfoLog[1024];
         glGetShaderInfoLog(ShaderObj, 1024, NULL, InfoLog);
         fprintf(stderr, "Error compiling shader type %d: '%s'\n", ShaderType, InfoLog);
-        exit(1);
+        while(1);
     }
 
     glAttachShader(ShaderProgram, ShaderObj);
+    
 }
 
 static void CompileShaders()
@@ -65,8 +58,8 @@ static void CompileShaders()
         exit(1);
     }
 
-    AddShader(ShaderProgram, pVS, GL_VERTEX_SHADER);
-    AddShader(ShaderProgram, pFS, GL_FRAGMENT_SHADER);
+    LoadShader(ShaderProgram, "../shaders/vertexShader.shd", GL_VERTEX_SHADER);
+    LoadShader(ShaderProgram, "../shaders/fragmentShader.shd", GL_FRAGMENT_SHADER);
 
     GLint Success = 0;
     GLchar ErrorLog[1024] = { 0 };
@@ -76,7 +69,7 @@ static void CompileShaders()
 	if (Success == 0) {
 		glGetProgramInfoLog(ShaderProgram, sizeof(ErrorLog), NULL, ErrorLog);
 		fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
-        exit(1);
+        while(1);
 	}
 
     glValidateProgram(ShaderProgram);
@@ -84,7 +77,7 @@ static void CompileShaders()
     if (!Success) {
         glGetProgramInfoLog(ShaderProgram, sizeof(ErrorLog), NULL, ErrorLog);
         fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
-        exit(1);
+        while(1);
     }
 
     glUseProgram(ShaderProgram);
