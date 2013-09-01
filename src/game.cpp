@@ -80,7 +80,7 @@ void Game::display()
     setCameraFPS();
 
   // Make whatever regions are required
-  constructRegions(camera.Position.x,camera.Position.z);
+  //constructRegions(camera.Position.x,camera.Position.z);
 
   // Clear the display
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);

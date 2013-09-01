@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include <graphics.h>
+#include <shaders.h>
 
 /// Performs all the opengl and glut funtions to initialise the 
 /// graphics.  Sets screen size, position and title bar as well
@@ -43,6 +44,8 @@ glAlphaFunc ( GL_GREATER, (GLclampf)0.7 ) ;
 
   // Lets use lines, for nicer debugging without shading and shadows
   glPolygonMode( GL_FRONT, GL_FILL );
+
+  loadShaders();
 
 }
 
