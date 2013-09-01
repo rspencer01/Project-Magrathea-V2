@@ -1,9 +1,12 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <stdio.h>
+#include <math.h>
 
 #include <graphics.h>
 #include <shaders.h>
+
+float projMatrix[16];
 
 /// Performs all the opengl and glut funtions to initialise the 
 /// graphics.  Sets screen size, position and title bar as well
@@ -49,19 +52,56 @@ glAlphaFunc ( GL_GREATER, (GLclampf)0.7 ) ;
 
 }
 
+/// Builds a projection matrix
+void BuildPerspProjMat(float *m, float fov, float aspect, float znear, float zfar)
+{
+  float ymax = znear * tan(fov * 3.141592/360.0);
+  float ymin = -ymax;
+  float xmax = ymax * aspect;
+  float xmin = ymin * aspect;
+
+  float width = xmax - xmin;
+  float height = ymax - ymin;
+
+  float depth = zfar - znear;
+  float q = -(zfar + znear) / depth;
+  float qn = -2 * (zfar * znear) / depth;
+
+  float w = 2 * znear / width;
+  w = w / aspect;
+  float h = 2 * znear / height;
+
+  m[0]  = w;
+  m[1]  = 0;
+  m[2]  = 0;
+  m[3]  = 0;
+
+  m[4]  = 0;
+  m[5]  = h;
+  m[6]  = 0;
+  m[7]  = 0;
+
+  m[8]  = 0;
+  m[9]  = 0;
+  m[10] = q;
+  m[11] = -1;
+
+  m[12] = 0;
+  m[13] = 0;
+  m[14] = qn;
+  m[15] = 0;
+}
+
 /// Called whenever the display is resized.  Redoes the projection
 /// and the display size
 void resize(int width, int height)
 {
   // Set the size of the viewport
   glViewport(0,0,(GLsizei)width,(GLsizei)height);
-  // Set us up to change the perspective
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  // Arguments are: Field of view, Aspect ratio, Near and then far plane
-  //gluPerspective(60,(GLfloat)width/(GLfloat)height,0.1,1500);
-  // Done, thanks.  Go back to editing models
-  glMatrixMode(GL_MODELVIEW);
+  // Construct the projection matrix ...
+  BuildPerspProjMat(projMatrix,60.f, float(width)/height, 1.0f, 100.0f);
+  // ... and push it to the shaders
+  setProjectionMatrix(&projMatrix[0]);
 }
 
 

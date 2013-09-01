@@ -4,9 +4,8 @@
 #include <shaders.h>
 #include <assert.h>
 
-GLuint gWorldLocation;
-
-GLuint gProjLocation;
+GLuint glTransformationMatrixLocation;
+GLuint glProjectionMatrixLocation;
 
 static void LoadShader(GLuint ShaderProgram, const char* shaderPath, GLenum ShaderType)
 {
@@ -76,10 +75,10 @@ static void CompileShaders()
     }
 
    glUseProgram(ShaderProgram);
-   gWorldLocation = glGetUniformLocation(ShaderProgram, "gWorld");
-   gProjLocation = glGetUniformLocation(ShaderProgram, "gProj");
-   assert(gWorldLocation != 0xFFFFFFFF);
-   assert(gProjLocation != 0xFFFFFFFF);
+   glTransformationMatrixLocation = glGetUniformLocation(ShaderProgram, "gWorld");
+   glProjectionMatrixLocation = glGetUniformLocation(ShaderProgram, "gProj");
+   assert(glTransformationMatrixLocation != 0xFFFFFFFF);
+   assert(glProjectionMatrixLocation != 0xFFFFFFFF);
 }  
 
 
@@ -89,11 +88,11 @@ void loadShaders()
   CompileShaders();
 }
 
-void setTrans(float* mat)
+void setTransformationMatrix(float* mat)
 {
-  glUniformMatrix4fv(gWorldLocation,1,GL_TRUE,mat);
+  glUniformMatrix4fv(glTransformationMatrixLocation,1,GL_TRUE,mat);
 }
-void setProj(float* mat)
+void setProjectionMatrix(float* mat)
 {
-  glUniformMatrix4fv(gProjLocation,1,GL_TRUE,mat);
+  glUniformMatrix4fv(glProjectionMatrixLocation,1,GL_TRUE,mat);
 }

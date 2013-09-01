@@ -10,6 +10,6 @@
 #define SHADERS_H
 
 void loadShaders();
-void setTrans(float*);
-void setProj(float*);
+void setTransformationMatrix(float*);
+void setProjectionMatrix(float*);
 #endif
