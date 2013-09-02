@@ -5,6 +5,7 @@ out vec4 FragColor;
 uniform sampler2D gSampler;
 void main()
 {
+	
   FragColor = texture2D(gSampler, TexCoord0.xy);
-  FragColor = vec4(FragColor.x * Color.x, FragColor.y * Color.y, FragColor.z * Color.z, FragColor.w * Color.w);
+  FragColor = FragColor * Color * vec4(vec3(1.0,1.0,1.0)*0.1,1.0);
 }
