@@ -54,7 +54,7 @@ class Game
 	/// Do the menu
 	void renderMenu();
     TestObj* test;
-    ShaderProgram* mainShader;
+    
   public:
     /// Creates a game instance and initialises all variables
     Game();
@@ -68,8 +68,7 @@ class Game
     void keyUp(unsigned char key, int, int);
     /// Returns data about a single point
     terrainBit getTerrainBit(int x, int y);
-    /// The matrix by which the world should be tranformed (for this camera)
-    float transMatrix[16];
+    ShaderProgram* mainShader;
 };
 
 #endif

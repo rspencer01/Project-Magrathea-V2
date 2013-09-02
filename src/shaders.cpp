@@ -4,21 +4,11 @@
 #include <shaders.h>
 #include <assert.h>
 
-GLuint glTransformationMatrixLocation;
-GLuint glProjectionMatrixLocation;
 GLuint gSampler;
-
-void setTransformationMatrix(float* mat)
-{
-  glUniformMatrix4fv(glTransformationMatrixLocation,1,GL_TRUE,mat);
-}
-void setProjectionMatrix(float* mat)
-{
-  glUniformMatrix4fv(glProjectionMatrixLocation,1,GL_TRUE,mat);
-}
 
 ShaderProgram::ShaderProgram()
 {
+  // Make us a new program*
   constructProgram();
   // Now load the two shaders
   LoadShader("../shaders/vertexShader.shd", GL_VERTEX_SHADER);
@@ -113,11 +103,22 @@ void ShaderProgram::Load()
   // Now load this program
   glUseProgram(ShaderProgramID);
   // Get all the locations of the variables we want
-  glTransformationMatrixLocation = glGetUniformLocation(ShaderProgramID, "gWorld");
-  glProjectionMatrixLocation = glGetUniformLocation(ShaderProgramID, "gProj");
   gSampler = glGetUniformLocation(ShaderProgramID, "gSampler");
   glUniform1i(gSampler, 0);
   assert(gSampler != 0xFFFFFFFF);
-  assert(glTransformationMatrixLocation != 0xFFFFFFFF);
-  assert(glProjectionMatrixLocation != 0xFFFFFFFF);
+}
+
+void ShaderProgram::setMatrix(const char* varName, float* value)
+{
+  std::string vName (varName);
+  if (! variableLocations.count(vName)>0)
+  {
+    variableLocations[vName] = glGetUniformLocation(ShaderProgramID, varName);
+  }
+  if (variableLocations[vName]==0xFFFFFFFF)
+  {
+    printf("ERROR: Cannot find variable '%s' in shader\n",varName);
+    return;
+  }
+  glUniformMatrix4fv(variableLocations[vName],1,GL_TRUE,value);
 }

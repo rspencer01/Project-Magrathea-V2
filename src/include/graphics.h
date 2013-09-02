@@ -12,9 +12,10 @@
 
 #include <stdarg.h>
 #include <vector3.h>
+#include <game.h>
 
 /// Initialises the opengl and glut environment.
-void initialiseGraphics();
+void initialiseGraphics(Game*);
 /// Find the normal of a triangle described by two vectors
 Vector3 getNormal3f(Vector3 edgeA, Vector3 edgeB);
 /// Print the given formatted string to the screen at the given position

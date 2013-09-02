@@ -6,13 +6,15 @@
 #include <graphics.h>
 #include <shaders.h>
 
+Game* game;
 float projMatrix[16];
 
 /// Performs all the opengl and glut funtions to initialise the 
 /// graphics.  Sets screen size, position and title bar as well
 /// as setting up the fixed pipeline
-void initialiseGraphics()
+void initialiseGraphics(Game* sh)
 {
+  game = sh;
   printf("Initialising graphics\n");
   // Initialise false command line parameters
   int argc = 0;
@@ -99,7 +101,7 @@ void resize(int width, int height)
   // Construct the projection matrix ...
   BuildPerspProjMat(projMatrix,10.f, 1.f, 1.0f, 100.0f);
   // ... and push it to the shaders
-  setProjectionMatrix(&projMatrix[0]);
+  game->mainShader->setMatrix("projectionMatrix",&projMatrix[0]);
 }
 
 

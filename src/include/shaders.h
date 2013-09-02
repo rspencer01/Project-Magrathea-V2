@@ -10,6 +10,8 @@
 #define SHADERS_H
 
 #include <gl\glut.h>
+#include <map>
+#include <string>
 
 
 class ShaderProgram
@@ -17,6 +19,7 @@ class ShaderProgram
   private:
     void constructProgram();
     GLuint ShaderProgramID;
+    std::map<std::string,GLuint> variableLocations;
   public:
     ShaderProgram();
     /// Add an object
@@ -25,10 +28,8 @@ class ShaderProgram
     void CompileAll();
     /// Actually use this shader
     void Load();
+    /// Set some variable
+    void setMatrix(const char*,float*);
 };
 
-
-void loadShaders();
-void setTransformationMatrix(float*);
-void setProjectionMatrix(float*);
 #endif

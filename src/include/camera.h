@@ -10,6 +10,7 @@
 class Camera;
 #include <vector3.h>
 #include <game.h>
+#include <shaders.h>
 
 /// A helper class that renders the scene according to some camera position and rotation
 ///
@@ -22,14 +23,14 @@ class Camera
     Vector3 ViewDir;
     Vector3 UpVector;
     Game* game;
-
+    ShaderProgram* shader;
     float RotatedX, RotatedY, RotatedZ;	
 	
   public:
 	  /// The position of the camera
 	  Vector3 Position;
 	  /// Initialises the camera to the <-1,0,0>, looking in the +x direction
-  	Camera(Game*);				
+  	Camera(Game*,ShaderProgram*);				
 	  /// Rotates and translates the scene to the correct position.
   	void Render ( void );							
 
@@ -43,7 +44,6 @@ class Camera
   	void RotateZ ( float Angle );
     /// Rotate in the horisontal plane
     void RotateFlat (float Angle);
-
   	/// Move in the direction the camera is pointing
 	  void MoveForward ( float Distance );
 };

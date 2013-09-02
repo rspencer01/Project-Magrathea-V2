@@ -7,18 +7,15 @@
 
 float viewMatrix[16];
 
-
-
-
-Camera::Camera(Game* gm)
+Camera::Camera(Game* gm, ShaderProgram* sp)
 {
   Position = Vector3(0,0,1);
   ViewDir = Vector3(0,0,-1);
   UpVector = Vector3(0,1,0);
   RotatedX = RotatedY = RotatedZ = 0;
   game = gm;
+  shader = sp;
 }
-
 
 /// Modifys the game world transform to reflect the postion of the camera
 void Camera::Render()
@@ -48,9 +45,7 @@ void Camera::Render()
   viewMatrix[11] = ViewDir.dot(Position);
   viewMatrix[15] = 1.0;
 
-
-  setTransformationMatrix(&viewMatrix[0]);
-
+  shader->setMatrix("transformationMatrix",&viewMatrix[0]);
 }
 
 void Camera::MoveForward( float d)
