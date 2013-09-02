@@ -185,13 +185,13 @@ void Game::keyOperations()
 		camera->MoveForward(-speed);
   }
   if (keyDown['a'])
-    camera->RotateFlat(0.5f * getFrameDiff());
+    camera->RotateFlat(0.01f);
   if (keyDown['d'])
-    camera->RotateFlat(-0.5f * getFrameDiff());
+    camera->RotateFlat(-0.01f);
   if (keyDown['q'])
-    camera->RotateX(1.0f * getFrameDiff());
+    camera->RotateX(0.01f);
   if (keyDown['e'])
-    camera->RotateX(-1.0f * getFrameDiff());
+    camera->RotateX(-0.01f);
 }
 
 terrainBit Game::getTerrainBit(int x,int y)
@@ -211,21 +211,21 @@ void Game::constructRegions(float x,float y)
 		regions[0].push_back(rg);
 	}
   
-	if (regions.back().back()->getOriginY() < ry+REGION_SIZE)
+	if (regions.back().back()->getOriginY() < ry+REGION_SIZE*3)
 	{
 		int oy = regions.back().back()->getOriginY();
 		Region* rg = new Region(rx,oy+REGION_SIZE,this);
 		regions.push_back(std::deque<Region*>());
 		regions.back().push_back(rg);
 	}
-	if (regions.back().back()->getOriginY() > ry+REGION_SIZE)
+	if (regions.back().back()->getOriginY() > ry+REGION_SIZE*3)
 	{
 		for (unsigned int i = 0; i <regions.back().size();i++)
 			delete regions.back()[i];
 		regions.pop_back();
 	}
 
-	if (regions.front().back()->getOriginY() > ry-REGION_SIZE*2)
+	if (regions.front().back()->getOriginY() > ry-REGION_SIZE*3)
 	{
     int oy = regions.front().back()->getOriginY();
     if (oy-REGION_SIZE>=0)
@@ -235,7 +235,7 @@ void Game::constructRegions(float x,float y)
 		  regions.front().push_back(rg);
     }
 	}
-	if (regions.front().back()->getOriginY() < ry-REGION_SIZE*2)
+	if (regions.front().back()->getOriginY() < ry-REGION_SIZE*3)
 	{
 		for (unsigned int i = 0; i <regions.front().size();i++)
 			delete regions.front()[i];
@@ -245,17 +245,17 @@ void Game::constructRegions(float x,float y)
 	
 	for (unsigned int i = 0;i<regions.size();i++)
 	{
-		if (regions[i].back()->getOriginX() < rx+REGION_SIZE*2)
+		if (regions[i].back()->getOriginX() < rx+REGION_SIZE*3)
 			regions[i].push_back(new Region(regions[i].back()->getOriginX()+REGION_SIZE,regions[i].back()->getOriginY(),this));
-		if (regions[i].back()->getOriginX() > rx+REGION_SIZE*2)
+		if (regions[i].back()->getOriginX() > rx+REGION_SIZE*3)
 		{
 			delete regions[i].back();
 			regions[i].pop_back();
 		}
-		if (regions[i].front()->getOriginX() > rx-REGION_SIZE*2)
+		if (regions[i].front()->getOriginX() > rx-REGION_SIZE*3)
       if (regions[i].front()->getOriginX()-REGION_SIZE>=0)
 			  regions[i].push_front(new Region(regions[i].front()->getOriginX()-REGION_SIZE,regions[i].front()->getOriginY(),this));
-		if (regions[i].front()->getOriginX() < rx-REGION_SIZE*2)
+		if (regions[i].front()->getOriginX() < rx-REGION_SIZE*3)
 		{
 			delete regions[i].front();
 			regions[i].pop_front();
