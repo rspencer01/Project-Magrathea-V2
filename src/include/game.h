@@ -17,6 +17,7 @@ class Game;
 #include <sky.h>
 #include <queue>
 #include <testobj.h>
+#include <shaders.h>
 
 /// The gameops class contains all the methods to do with gameplay
 ///
@@ -53,6 +54,7 @@ class Game
 	/// Do the menu
 	void renderMenu();
     TestObj* test;
+    ShaderProgram* mainShader;
   public:
     /// Creates a game instance and initialises all variables
     Game();

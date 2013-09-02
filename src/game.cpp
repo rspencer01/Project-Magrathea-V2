@@ -51,6 +51,7 @@ Game::Game()
   camera->Position.x = 5;
   camera->Position.z = 5;
   test = new TestObj(this);
+  mainShader = new ShaderProgram();
 }
 
 /// This function assigns the event handlers defined at the top of this

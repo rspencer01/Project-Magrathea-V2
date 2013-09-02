@@ -8,11 +8,60 @@ GLuint glTransformationMatrixLocation;
 GLuint glProjectionMatrixLocation;
 GLuint gSampler;
 
+/*
 /// Loads a shader into the given shader program
 /// @param ShaderProgram The program to compile this shader into
 /// @param shaderPath The path to the file containing the shader source code
 /// @param ShaderType The type of shader (fragment/vertex)
 void LoadShader(GLuint ShaderProgram, const char* shaderPath, GLenum ShaderType)
+{
+
+}
+
+static void CompileShaders()
+{
+
+}  
+
+*/
+void loadShaders()
+{
+  printf("Initialising shaders\n");
+  //CompileShaders();
+}
+
+void setTransformationMatrix(float* mat)
+{
+  glUniformMatrix4fv(glTransformationMatrixLocation,1,GL_TRUE,mat);
+}
+void setProjectionMatrix(float* mat)
+{
+  glUniformMatrix4fv(glProjectionMatrixLocation,1,GL_TRUE,mat);
+}
+
+ShaderProgram::ShaderProgram()
+{
+  constructProgram();
+  // Now load the two shaders
+  LoadShader("../shaders/vertexShader.shd", GL_VERTEX_SHADER);
+  LoadShader("../shaders/fragmentShader.shd", GL_FRAGMENT_SHADER);
+  // Compile...
+  CompileAll();
+}
+
+void ShaderProgram::constructProgram()
+{
+  // Construct the program we are going to use
+  ShaderProgramID = glCreateProgram();
+  // If there was an error, let us know
+  if (ShaderProgramID == 0) 
+  {
+    fprintf(stderr, "Error creating shader program\n");
+    while(1);
+  }
+}
+
+void ShaderProgram::LoadShader(const char* shaderPath, GLenum ShaderType)
 {
   // Create us a new shader
   GLuint ShaderObj = glCreateShader(ShaderType);
@@ -49,69 +98,42 @@ void LoadShader(GLuint ShaderProgram, const char* shaderPath, GLenum ShaderType)
     while(1);
   }
   // Attach the compiled object to the program
-  glAttachShader(ShaderProgram, ShaderObj);
+  glAttachShader(ShaderProgramID, ShaderObj);
 }
 
-static void CompileShaders()
+void ShaderProgram::CompileAll()
 {
-  // Construct the program we are going to use
-  GLuint ShaderProgram = glCreateProgram();
-  // If there was an error, let us know
-  if (ShaderProgram == 0) 
-  {
-    fprintf(stderr, "Error creating shader program\n");
-    while(1);
-  }
-  // Now load the two shaders
-  LoadShader(ShaderProgram, "../shaders/vertexShader.shd", GL_VERTEX_SHADER);
-  LoadShader(ShaderProgram, "../shaders/fragmentShader.shd", GL_FRAGMENT_SHADER);
   // Link them
-  glLinkProgram(ShaderProgram);
+  glLinkProgram(ShaderProgramID);
   // If there is an error...
   GLint Success = 0;
-  glGetProgramiv(ShaderProgram, GL_LINK_STATUS, &Success);
+  glGetProgramiv(ShaderProgramID, GL_LINK_STATUS, &Success);
 	if (Success == 0) 
   {
     GLchar ErrorLog[1024] = { 0 };
-		glGetProgramInfoLog(ShaderProgram, sizeof(ErrorLog), NULL, ErrorLog);
+		glGetProgramInfoLog(ShaderProgramID, sizeof(ErrorLog), NULL, ErrorLog);
 		fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
     while(1);
 	}
   // Confirm that this is valid
-  glValidateProgram(ShaderProgram);
+  glValidateProgram(ShaderProgramID);
   // Again witht the error
-  glGetProgramiv(ShaderProgram, GL_VALIDATE_STATUS, &Success);
+  glGetProgramiv(ShaderProgramID, GL_VALIDATE_STATUS, &Success);
   if (!Success) 
   {
     GLchar ErrorLog[1024] = { 0 };
-    glGetProgramInfoLog(ShaderProgram, sizeof(ErrorLog), NULL, ErrorLog);
+    glGetProgramInfoLog(ShaderProgramID, sizeof(ErrorLog), NULL, ErrorLog);
     fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
     while(1);
   }
   // Now load this program
-  glUseProgram(ShaderProgram);
+  glUseProgram(ShaderProgramID);
   // Get all the locations of the variables we want
-  glTransformationMatrixLocation = glGetUniformLocation(ShaderProgram, "gWorld");
-  glProjectionMatrixLocation = glGetUniformLocation(ShaderProgram, "gProj");
-  gSampler = glGetUniformLocation(ShaderProgram, "gSampler");
+  glTransformationMatrixLocation = glGetUniformLocation(ShaderProgramID, "gWorld");
+  glProjectionMatrixLocation = glGetUniformLocation(ShaderProgramID, "gProj");
+  gSampler = glGetUniformLocation(ShaderProgramID, "gSampler");
   glUniform1i(gSampler, 0);
   assert(gSampler != 0xFFFFFFFF);
   assert(glTransformationMatrixLocation != 0xFFFFFFFF);
   assert(glProjectionMatrixLocation != 0xFFFFFFFF);
-}  
-
-
-void loadShaders()
-{
-  printf("Initialising shaders\n");
-  CompileShaders();
-}
-
-void setTransformationMatrix(float* mat)
-{
-  glUniformMatrix4fv(glTransformationMatrixLocation,1,GL_TRUE,mat);
-}
-void setProjectionMatrix(float* mat)
-{
-  glUniformMatrix4fv(glProjectionMatrixLocation,1,GL_TRUE,mat);
 }
