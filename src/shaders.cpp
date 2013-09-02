@@ -8,28 +8,6 @@ GLuint glTransformationMatrixLocation;
 GLuint glProjectionMatrixLocation;
 GLuint gSampler;
 
-/*
-/// Loads a shader into the given shader program
-/// @param ShaderProgram The program to compile this shader into
-/// @param shaderPath The path to the file containing the shader source code
-/// @param ShaderType The type of shader (fragment/vertex)
-void LoadShader(GLuint ShaderProgram, const char* shaderPath, GLenum ShaderType)
-{
-
-}
-
-static void CompileShaders()
-{
-
-}  
-
-*/
-void loadShaders()
-{
-  printf("Initialising shaders\n");
-  //CompileShaders();
-}
-
 void setTransformationMatrix(float* mat)
 {
   glUniformMatrix4fv(glTransformationMatrixLocation,1,GL_TRUE,mat);
@@ -47,6 +25,8 @@ ShaderProgram::ShaderProgram()
   LoadShader("../shaders/fragmentShader.shd", GL_FRAGMENT_SHADER);
   // Compile...
   CompileAll();
+  // And load
+  Load();
 }
 
 void ShaderProgram::constructProgram()
@@ -126,6 +106,10 @@ void ShaderProgram::CompileAll()
     fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
     while(1);
   }
+}
+
+void ShaderProgram::Load()
+{
   // Now load this program
   glUseProgram(ShaderProgramID);
   // Get all the locations of the variables we want

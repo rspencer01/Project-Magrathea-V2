@@ -48,8 +48,6 @@ glAlphaFunc ( GL_GREATER, (GLclampf)0.7 ) ;
   // Lets use lines, for nicer debugging without shading and shadows
   glPolygonMode( GL_FRONT, GL_FILL );
 
-  loadShaders();
-
 }
 
 /// Builds a projection matrix
