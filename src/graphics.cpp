@@ -55,40 +55,24 @@ glAlphaFunc ( GL_GREATER, (GLclampf)0.7 ) ;
 /// Builds a projection matrix
 void BuildPerspProjMat(float *m, float fov, float aspect, float znear, float zfar)
 {
-  float ymax = znear * tan(fov * 3.141592/360.0);
-  float ymin = -ymax;
-  float xmax = ymax * aspect;
-  float xmin = ymin * aspect;
-
-  float width = xmax - xmin;
-  float height = ymax - ymin;
-
-  float depth = zfar - znear;
-  float q = -(zfar + znear) / depth;
-  float qn = -2 * (zfar * znear) / depth;
-
-  float w = 2 * znear / width;
-  w = w / aspect;
-  float h = 2 * znear / height;
-
-  m[0]  = w;
+  m[0]  = 1.0/(aspect * tan(fov*3.141592/360.0));
   m[1]  = 0;
   m[2]  = 0;
   m[3]  = 0;
 
   m[4]  = 0;
-  m[5]  = h;
+  m[5]  = 1.0/tan(fov*3.141592/360.0);
   m[6]  = 0;
   m[7]  = 0;
 
   m[8]  = 0;
   m[9]  = 0;
-  m[10] = q;
+  m[10] = (-znear-zfar)/(znear-zfar);
   m[11] = -1;
 
   m[12] = 0;
   m[13] = 0;
-  m[14] = qn;
+  m[14] = 2*zfar*znear/(znear-zfar);
   m[15] = 0;
 }
 
