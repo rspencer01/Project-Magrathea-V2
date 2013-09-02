@@ -6,6 +6,7 @@ out vec4 FragColor;
 uniform sampler2D gSampler;
 void main()
 {
+  float lightingCoeff = 0.2 + 0.8 * lighting;
 	FragColor = texture2D(gSampler, TexCoord0.xy);
-  FragColor = FragColor * Color * vec4(vec3(1.0,1.0,1.0)*0.3 * lighting,1.0);
+  FragColor = FragColor * Color * vec4(vec3(1.0,1.0,1.0) * lightingCoeff,1.0);
 }

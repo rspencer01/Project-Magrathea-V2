@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <gl/glew.h>
 #include <GL/glut.h>
 
 #include <game.h>
@@ -48,6 +49,14 @@ Game::Game()
   showMenu = false;
   sky = new Sky(this);
   mainShader = new ShaderProgram();
+  // Now load the two shaders
+  mainShader->LoadShader("../shaders/vertexShader.shd", GL_VERTEX_SHADER);
+  mainShader->LoadShader("../shaders/fragmentShader.shd", GL_FRAGMENT_SHADER);
+  // Compile...
+  mainShader->CompileAll();
+  // And load
+  mainShader->Load();
+
   camera = new Camera(this,mainShader);
   camera->Position.x = 5;
   camera->Position.z = 5;

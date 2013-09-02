@@ -10,13 +10,6 @@ ShaderProgram::ShaderProgram()
 {
   // Make us a new program*
   constructProgram();
-  // Now load the two shaders
-  LoadShader("../shaders/vertexShader.shd", GL_VERTEX_SHADER);
-  LoadShader("../shaders/fragmentShader.shd", GL_FRAGMENT_SHADER);
-  // Compile...
-  CompileAll();
-  // And load
-  Load();
 }
 
 void ShaderProgram::constructProgram()
