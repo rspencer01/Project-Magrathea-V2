@@ -62,18 +62,18 @@ void generateShadowFBO()
 	
 	
 	// No need to force GL_DEPTH_COMPONENT24, drivers usually give you the max precision if available 
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, shadowMapWidth, shadowMapHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, shadowMapWidth, shadowMapHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	
 	// create a framebuffer object
 	glGenFramebuffersEXT(1, &fboId);
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fboId);
 	
-	// Instruct openGL that we won't bind a color texture with the currently binded FBO
-	//glDrawBuffer(GL_NONE);
 
 	// attach the texture to FBO depth attachment point
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, depthTextureId, 0);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTextureId, 0);
+	// Instruct openGL that we won't bind a color texture with the currently binded FBO
+	glDrawBuffer(GL_NONE);
 	
 	// check FBO status
 	FBOstatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -182,10 +182,19 @@ void Game::RenderScene()
       
 }
   
+float t = 0.0;
+float d = 0.01;
 
 /// Actually calls the functions to display stuff to the screen.
 void Game::display()
 {
+  t+=d;
+  if (t<-1)
+    d = 0.01;
+
+  if (t>1)
+    d = -0.01;
+  lightCamera->Position.x = t-1;
     // Do all the key stuff
   keyOperations();
 
