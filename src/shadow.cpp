@@ -4,6 +4,10 @@
 
 ShadowManager::ShadowManager(Game* gm)
 {
+  maxShadowDistance = 500;
+  minShadowDistance = 300;
+  shadowBoxSize = 20;
+
 	GLenum FBOstatus;
 	
 	// Try to use a texture depth component
@@ -41,20 +45,22 @@ ShadowManager::ShadowManager(Game* gm)
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
   //BuildPerspProjMat(projMatrix,10,1,3,100);
-  projMatrix[0] = 0.5;
+  projMatrix[0] = 1.0/shadowBoxSize;
   projMatrix[1] = 0;
   projMatrix[2] = 0;
   projMatrix[3] = 0;
 
   projMatrix[4] = 0;
-  projMatrix[5] = 0.5;
+  projMatrix[5] = 1.0/shadowBoxSize;
   projMatrix[6] = 0;
   projMatrix[7] = 0;
 
   projMatrix[8] = 0;
   projMatrix[9] = 0;
-  projMatrix[10] = -0.01;
-  projMatrix[11] = 0;
+  // 4096 is the maximum distance
+  projMatrix[10] = -1.0/(maxShadowDistance-minShadowDistance);
+
+  projMatrix[11] = -minShadowDistance/(maxShadowDistance-minShadowDistance);
 
   projMatrix[12] = 0;
   projMatrix[13] = 0;
@@ -68,7 +74,7 @@ ShadowManager::ShadowManager(Game* gm)
   shader->CompileAll();
   shader->setMatrix("projectionMatrix",&projMatrix[0]);
   camera = new Camera(gm,shader);
-  camera->Position = Vector3(-1,1,10);
+  camera->Position = Vector3(-1,1,400);
 }
 
 void ShadowManager::readyForWriting()

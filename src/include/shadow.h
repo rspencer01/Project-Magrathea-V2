@@ -15,6 +15,9 @@ class ShadowManager
     GLuint fboID;
     GLuint texID;
     static const int TEXTURE_SIZE = 4096;
+    float maxShadowDistance;
+    float minShadowDistance;
+    float shadowBoxSize;
     float projMatrix[16];
   public:
     ShadowManager(Game*);
