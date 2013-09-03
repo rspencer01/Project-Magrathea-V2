@@ -20,7 +20,7 @@ class ShadowManager
     ShadowManager(Game*);
     Camera* camera;
     void readyForWriting();
-    void readyForReading();
+    void readyForReading(ShaderProgram*);
     ShaderProgram* shader;
 };
 

@@ -121,12 +121,10 @@ void Game::display()
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glClearColor(0.0,0.0,0.0,1);
   // Prepare the shadow texture
-  shadows->readyForReading();
-
   mainShader->Load();
+  shadows->readyForReading(mainShader);
   resize(500,500);
   mainShader->setInt("shadowTexture",7);
-  mainShader->setMatrix("lightProjectionMatrix",shadows->camera->viewMatrix);
   camera->Render();
   // Gogogo!
   RenderScene();

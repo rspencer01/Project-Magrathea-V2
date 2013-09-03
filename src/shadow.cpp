@@ -64,9 +64,10 @@ void ShadowManager::readyForWriting()
   
 }
 
-void ShadowManager::readyForReading()
+void ShadowManager::readyForReading(ShaderProgram* mainShader)
 {
   glEnable(GL_TEXTURE_2D);
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
+  mainShader->setMatrix("lightProjectionMatrix",camera->viewMatrix);
 }
