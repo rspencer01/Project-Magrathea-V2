@@ -2,7 +2,9 @@
 in vec4 ShadowCoord;
 in vec4 col;
 out vec4 FragColor;
+in vec2 tex;
 uniform sampler2D shadowTexture;
+uniform sampler2D otherTexture;
 void main()
 { 
   float vis = 1.0;
@@ -21,5 +23,6 @@ void main()
   	alph = 0.0;
   }
   
-  FragColor =  vec4(vis*vec3(col.xyz),alph); 
+  FragColor =  vec4(vis*vec3(col.xyz)*texture(otherTexture,tex).xyz,alph); 
+  //FragColor = col*texture(otherTexture,tex);
 }

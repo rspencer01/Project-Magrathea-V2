@@ -9,6 +9,7 @@ uniform mat4 lightTransformMatrix;
 uniform mat4 lightProjectionMatrix;
 out vec4 ShadowCoord;
 out vec4 col;
+out vec2 tex;
 void main()
 {
   gl_Position = projectionMatrix * transformationMatrix * vec4(inPosition, 1.0);
@@ -18,5 +19,7 @@ void main()
   ShadowCoord.y = ShadowCoord.y*0.5/ShadowCoord.w+0.5;
   ShadowCoord.z = ShadowCoord.z*0.5/ShadowCoord.w+0.5;
   
-  col = inColour;
+  col = inColour * (dot(inNorm,vec3(0,1,0))*0.8+0.2);
+  
+  tex = inTex;
 }

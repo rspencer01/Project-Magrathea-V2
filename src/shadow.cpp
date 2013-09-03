@@ -85,8 +85,7 @@ void ShadowManager::readyForWriting()
   shader->setMatrix("projectionMatrix",&projMatrix[0]);
   camera->Render();
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,fboID);	//Rendering offscreen
-  glEnable(GL_TEXTURE_2D);
-  glActiveTexture(GL_TEXTURE0);
+  glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   
@@ -94,7 +93,6 @@ void ShadowManager::readyForWriting()
 
 void ShadowManager::readyForReading(ShaderProgram* mainShader)
 {
-  glEnable(GL_TEXTURE_2D);
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
   mainShader->setMatrix("lightTransformMatrix",camera->viewMatrix);

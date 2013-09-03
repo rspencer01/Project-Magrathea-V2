@@ -125,5 +125,5 @@ void ShaderProgram::setInt(const char* varName, unsigned int value)
     printf("ERROR: Cannot find variable '%s' in shader\n",varName);
     return;
   }
-  glUniform1d(variableLocations[vName],value);
+  glUniform1i(variableLocations[vName],value);
 }

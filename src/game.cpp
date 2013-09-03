@@ -124,6 +124,7 @@ void Game::display()
   shadows->readyForReading(mainShader);
   resize(500,500);
   mainShader->setInt("shadowTexture",7);
+  mainShader->setInt("otherTexture",3);
   camera->Render();
   // Gogogo!
   RenderScene();
