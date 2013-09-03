@@ -4,9 +4,6 @@
 
 ShadowManager::ShadowManager(Game* gm)
 {
-	int shadowMapWidth = 1024;
-	int shadowMapHeight = 1024;
-	
 	GLenum FBOstatus;
 	
 	// Try to use a texture depth component
@@ -21,18 +18,13 @@ ShadowManager::ShadowManager(Game* gm)
 	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
 	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
 	
-	//glTexParameterfv( GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor );
-	
-	
-	
 	// No need to force GL_DEPTH_COMPONENT24, drivers usually give you the max precision if available 
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, shadowMapWidth, shadowMapHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, TEXTURE_SIZE, TEXTURE_SIZE, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	
 	// create a framebuffer object
 	glGenFramebuffersEXT(1, &fboID);
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fboID);
-	
 
 	// attach the texture to FBO depth attachment point
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texID, 0);
@@ -47,10 +39,13 @@ ShadowManager::ShadowManager(Game* gm)
 	// switch back to window-system-provided framebuffer
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
+  BuildPerspProjMat(projMatrix,10,1,1,100.f);
+
   shader = new ShaderProgram();
   shader->LoadShader("../shaders/vertexShadowShader.shd", GL_VERTEX_SHADER);
   shader->LoadShader("../shaders/fragmentShadowShader.shd", GL_FRAGMENT_SHADER);
   shader->CompileAll();
+  shader->setMatrix("projectionMatrix",&projMatrix[0]);
   camera = new Camera(gm,shader);
   camera->Position = Vector3(-1,1,10);
 }
@@ -58,7 +53,8 @@ ShadowManager::ShadowManager(Game* gm)
 void ShadowManager::readyForWriting()
 {
   shader->Load();
-  resize(TEXTURE_SIZE,TEXTURE_SIZE);
+  glViewport(0,0,TEXTURE_SIZE,TEXTURE_SIZE);
+  shader->setMatrix("projectionMatrix",&projMatrix[0]);
   camera->Render();
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,fboID);	//Rendering offscreen
   glEnable(GL_TEXTURE_2D);

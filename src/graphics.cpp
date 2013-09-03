@@ -86,7 +86,6 @@ void resize(int width, int height)
   BuildPerspProjMat(projMatrix,10.f, float(width)/height, 1.0f, 100.0f);
   // ... and push it to the shaders
   game->mainShader->setMatrix("projectionMatrix",&projMatrix[0]);
-  game->shadows->shader->setMatrix("projectionMatrix",&projMatrix[0]);
 }
 
 

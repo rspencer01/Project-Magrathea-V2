@@ -22,5 +22,7 @@ Vector3 getNormal3f(Vector3 edgeA, Vector3 edgeB);
 void writeString(int x, int y, const char* format, ... );
 /// Resize the screen and set the projection
 void resize(int width, int height);
+/// Creates a perspective projection matrix in m
+void BuildPerspProjMat(float *m, float fov, float aspect, float znear, float zfar);
 
 #endif
