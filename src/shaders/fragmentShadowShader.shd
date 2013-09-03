@@ -2,9 +2,15 @@
 // Ouput data
 out vec4 FragColor;
 //layout(location = 0) out float fragmentdepth;
+uniform sampler2D otherTexture;
  
-void main(){
+in vec2 tex;
+void main()
+{
+float alph = 1.0;
     // Not really needed, OpenGL does it anyway
  //   fragmentdepth = gl_FragCoord.z;
-   FragColor = vec4(vec3(gl_FragCoord.z),1.0);
+ if ((texture(otherTexture,tex).x>0.9)&&(texture(otherTexture,tex).z>0.9))
+  	alph = 0.0;
+   FragColor = vec4(vec3(gl_FragCoord.z),alph);
 }

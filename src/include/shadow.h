@@ -14,7 +14,7 @@ class ShadowManager
   private:
     GLuint fboID;
     GLuint texID;
-    static const int TEXTURE_SIZE = 4096;
+    static const int TEXTURE_SIZE = 8192;
     float maxShadowDistance;
     float minShadowDistance;
     float shadowBoxSize;

@@ -83,6 +83,7 @@ void ShadowManager::readyForWriting()
   shader->Load();
   glViewport(0,0,TEXTURE_SIZE,TEXTURE_SIZE);
   shader->setMatrix("projectionMatrix",&projMatrix[0]);
+  shader->setInt("otherTexture",3);
   camera->Render();
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,fboID);	//Rendering offscreen
   glActiveTexture(GL_TEXTURE7);

@@ -22,7 +22,8 @@ void main()
   	vis = 0.0;
   	alph = 0.0;
   }
-  
+  if ((texture(otherTexture,tex).x>0.9)&&(texture(otherTexture,tex).z>0.9))
+  	alph = 0.0;
   FragColor =  vec4(vis*vec3(col.xyz)*texture(otherTexture,tex).xyz,alph); 
   //FragColor = col*texture(otherTexture,tex);
 }
