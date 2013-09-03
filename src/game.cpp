@@ -93,10 +93,7 @@ void Game::run()
 
 void Game::RenderScene()
 {
-
-  
   test->Render();
-      
 }
   
 /// Actually calls the functions to display stuff to the screen.

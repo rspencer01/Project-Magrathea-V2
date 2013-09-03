@@ -67,12 +67,12 @@ void BuildPerspProjMat(float *m, float fov, float aspect, float znear, float zfa
 
   m[8]  = 0;
   m[9]  = 0;
-  m[10] = (-znear-zfar)/(znear-zfar);
+  m[10] = (-zfar)/(zfar-znear);
   m[11] = -1;
 
   m[12] = 0;
   m[13] = 0;
-  m[14] = 2*zfar*znear/(znear-zfar);
+  m[14] = -zfar*znear/(zfar-znear);
   m[15] = 0;
 }
 

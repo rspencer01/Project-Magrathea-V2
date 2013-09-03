@@ -14,7 +14,7 @@ class ShadowManager
   private:
     GLuint fboID;
     GLuint texID;
-    static const int TEXTURE_SIZE = 1024;
+    static const int TEXTURE_SIZE = 4096;
     float projMatrix[16];
   public:
     ShadowManager(Game*);

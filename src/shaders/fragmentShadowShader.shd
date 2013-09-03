@@ -5,6 +5,6 @@ out vec4 FragColor;
  
 void main(){
     // Not really needed, OpenGL does it anyway
-    //fragmentdepth = gl_FragCoord.z;
-    FragColor = vec4(vec3(gl_FragCoord.z),1.0);
+ //   fragmentdepth = gl_FragCoord.z;
+   FragColor = vec4(vec3(gl_FragCoord.z),1.0);
 }
