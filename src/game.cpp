@@ -11,8 +11,6 @@
 #include <fpscounter.h>
 // This is necessary so that we have a static funtion to call on display updates/keyboard etc.  We store the current game, and then functions wrap the actual code.
 Game* currentGame;
-
-GLuint temp;
 // A wrapper for displaying
 void displayCurrentGame()
 {
@@ -33,56 +31,6 @@ inline float interpolate(float a, float b, float t)
 	return a*(1-t) + b*t;
 }
 
-GLuint fboId;
-GLuint depthTextureId;
-
-void generateShadowFBO()
-{
-	int shadowMapWidth = 500 * 1;
-	int shadowMapHeight = 500 * 1;
-	
-	//GLfloat borderColor[4] = {0,0,0,0};
-	
-	GLenum FBOstatus;
-	
-	// Try to use a texture depth component
-	glGenTextures(1, &depthTextureId);
-	glBindTexture(GL_TEXTURE_2D, depthTextureId);
-	
-	// GL_LINEAR does not make sense for depth texture. However, next tutorial shows usage of GL_LINEAR and PCF
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	
-	// Remove artefact on the edges of the shadowmap
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-	
-	//glTexParameterfv( GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor );
-	
-	
-	
-	// No need to force GL_DEPTH_COMPONENT24, drivers usually give you the max precision if available 
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, shadowMapWidth, shadowMapHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	
-	// create a framebuffer object
-	glGenFramebuffersEXT(1, &fboId);
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fboId);
-	
-
-	// attach the texture to FBO depth attachment point
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTextureId, 0);
-	// Instruct openGL that we won't bind a color texture with the currently binded FBO
-	glDrawBuffer(GL_NONE);
-	
-	// check FBO status
-	FBOstatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if(FBOstatus != GL_FRAMEBUFFER_COMPLETE)
-		printf("GL_FRAMEBUFFER_COMPLETE_EXT failed, CANNOT use FBO\n");
-	
-	// switch back to window-system-provided framebuffer
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-}
 
 /// The constructor for the gameops class
 ///
@@ -109,26 +57,16 @@ Game::Game()
   mainShader->CompileAll();
   // And load
   mainShader->Load();
-  //mainShader->setInt("gSampler",0);
-  shadowShader = new ShaderProgram();
-  // Now load the two shaders
-  shadowShader->LoadShader("../shaders/vertexShadowShader.shd", GL_VERTEX_SHADER);
-  shadowShader->LoadShader("../shaders/fragmentShadowShader.shd", GL_FRAGMENT_SHADER);
-  
-  // Compile...
-  shadowShader->CompileAll();
+
   // And load
   //shadowShader->Load();
   
   //shadowShader->setInt("gSampler",0);
   camera = new Camera(this,mainShader);
-    lightCamera = new Camera(this,shadowShader);
-  lightCamera->Position = Vector3(-1,1,10);
   camera->Position = Vector3(-1,1,10);
   test = new TestObj(this); 
   mainShader->Load();
-  generateShadowFBO();
-  temp = textureFromBMP("../assets/BigGrass.bmp");
+  shadows = new ShadowManager(this);
 }
 
 /// This function assigns the event handlers defined at the top of this
@@ -155,9 +93,6 @@ void Game::run()
 
 void Game::RenderShadow()
 {
-  shadowShader->Load();
-  resize(500,500);
-  lightCamera->Render();
   /*for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)
       regions[i][j]->Render();
@@ -168,33 +103,20 @@ void Game::RenderShadow()
 
 void Game::RenderScene()
 {
-  glEnable(GL_TEXTURE_2D);
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D,depthTextureId);
   mainShader->Load();
   resize(500,500);
   //mainShader->setInt("gSampler",0);
   //mainShader->setInt("heightmapTexture",0);
-  mainShader->setMatrix("lightProjectionMatrix",lightCamera->viewMatrix);
+  mainShader->setMatrix("lightProjectionMatrix",shadows->camera->viewMatrix);
   camera->Render();
   
   test->Render();
       
 }
   
-float t = 0.0;
-float d = 0.01;
-
 /// Actually calls the functions to display stuff to the screen.
 void Game::display()
 {
-  t+=d;
-  if (t<-1)
-    d = 0.01;
-
-  if (t>1)
-    d = -0.01;
-  lightCamera->Position.x = t-1;
     // Do all the key stuff
   keyOperations();
 
@@ -208,18 +130,14 @@ void Game::display()
   /*glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);	//Rendering offscreen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glClearColor(0.0,0.0,0.0,1);*/
-  
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,fboId);	//Rendering offscreen
-  glEnable(GL_TEXTURE_2D);
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D,depthTextureId);
-  glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+  shadows->readyForWriting();
   RenderShadow();
   
   
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);	//Rendering offscreen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glClearColor(0.0,0.0,0.0,1);
+  shadows->readyForReading();
   RenderScene();
   
 

@@ -8,6 +8,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 class Camera;
+#include <gl\glew.h>
+#include <gl\glut.h>
 #include <vector3.h>
 #include <game.h>
 #include <shaders.h>

@@ -10,6 +10,8 @@
 #define GAMEOPS_H
 
 class Game;
+class ShadowManager;
+#include <gl\glew.h>
 
 #include <camera.h>
 #include <region.h>
@@ -18,6 +20,7 @@ class Game;
 #include <queue>
 #include <testobj.h>
 #include <shaders.h>
+#include <shadow.h>
 
 /// The gameops class contains all the methods to do with gameplay
 ///
@@ -57,8 +60,9 @@ class Game
     TestObj* test;
     void RenderShadow();
     void RenderScene();
-
+    
   public:
+    ShadowManager* shadows;
     /// Creates a game instance and initialises all variables
     Game();
     /// Runs the game
