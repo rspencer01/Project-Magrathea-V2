@@ -67,6 +67,6 @@ void ShadowManager::readyForWriting()
 void ShadowManager::readyForReading()
 {
   glEnable(GL_TEXTURE_2D);
-  glActiveTexture(GL_TEXTURE0);
+  glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
 }

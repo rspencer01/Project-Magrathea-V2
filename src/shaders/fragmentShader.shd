@@ -1,7 +1,7 @@
 #version 330
 in vec4 ShadowCoord;
 out vec4 FragColor;
-uniform sampler2D heightmapTexture;
+uniform sampler2D shadowTexture;
 void main()
 { 
   float vis = 1.0;
@@ -9,7 +9,7 @@ void main()
   if ((ShadowCoord.x>0  && ShadowCoord.x<1)&&
   	   (ShadowCoord.y>0  && ShadowCoord.y<1))
   {
-  	if (texture(heightmapTexture,ShadowCoord.xy).z < ShadowCoord.z-0.005)
+  	if (texture(shadowTexture,ShadowCoord.xy).z < ShadowCoord.z-0.005)
   	{
   		vis = 0.5;
   	}

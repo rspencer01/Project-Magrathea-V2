@@ -58,7 +58,6 @@ class Game
 	/// Do the menu
 	void renderMenu();
     TestObj* test;
-    void RenderShadow();
     void RenderScene();
     
   public:

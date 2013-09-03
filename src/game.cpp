@@ -91,24 +91,9 @@ void Game::run()
   glutMainLoop();
 }
 
-void Game::RenderShadow()
-{
-  /*for (unsigned int i = 0;i<regions.size();i++)
-    for (unsigned int j = 0;j<regions[i].size();j++)
-      regions[i][j]->Render();
-      */
-  test->Render();
-}
-
-
 void Game::RenderScene()
 {
-  mainShader->Load();
-  resize(500,500);
-  //mainShader->setInt("gSampler",0);
-  //mainShader->setInt("heightmapTexture",0);
-  mainShader->setMatrix("lightProjectionMatrix",shadows->camera->viewMatrix);
-  camera->Render();
+
   
   test->Render();
       
@@ -117,7 +102,7 @@ void Game::RenderScene()
 /// Actually calls the functions to display stuff to the screen.
 void Game::display()
 {
-    // Do all the key stuff
+  // Do all the key stuff
   keyOperations();
 
   if (fpsOn)
@@ -125,19 +110,25 @@ void Game::display()
 
   // Make whatever regions are required
   constructRegions(camera->Position.x,camera->Position.z);
-
-  // Clear the display
-  /*glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);	//Rendering offscreen
-  glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-  glClearColor(0.0,0.0,0.0,1);*/
+  
+  // Create the shadow texture
   shadows->readyForWriting();
-  RenderShadow();
-  
-  
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);	//Rendering offscreen
+  RenderScene();
+   
+  // Render to the screen
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+  // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glClearColor(0.0,0.0,0.0,1);
+  // Prepare the shadow texture
   shadows->readyForReading();
+
+  mainShader->Load();
+  resize(500,500);
+  mainShader->setInt("shadowTexture",7);
+  mainShader->setMatrix("lightProjectionMatrix",shadows->camera->viewMatrix);
+  camera->Render();
+  // Gogogo!
   RenderScene();
   
 
