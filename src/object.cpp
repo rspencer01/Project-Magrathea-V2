@@ -57,9 +57,9 @@ void Object::Render()
   // Only do something if we have data	
 	if (buffersInitialised)
 	{
-    glEnable(GL_TEXTURE_2D);
+   /* glEnable(GL_TEXTURE_2D);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D,textureNumber);
+    glBindTexture(GL_TEXTURE_2D,textureNumber);*/
     glEnableVertexAttribArrayARB(0);
     glEnableVertexAttribArrayARB(1);
     glEnableVertexAttribArrayARB(2);

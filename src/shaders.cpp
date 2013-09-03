@@ -95,10 +95,7 @@ void ShaderProgram::Load()
 {
   // Now load this program
   glUseProgram(ShaderProgramID);
-  // Get all the locations of the variables we want
-  gSampler = glGetUniformLocation(ShaderProgramID, "gSampler");
-  glUniform1i(gSampler, 0);
-  assert(gSampler != 0xFFFFFFFF);
+  variableLocations.clear();
 }
 
 void ShaderProgram::setMatrix(const char* varName, float* value)
@@ -114,4 +111,19 @@ void ShaderProgram::setMatrix(const char* varName, float* value)
     return;
   }
   glUniformMatrix4fv(variableLocations[vName],1,GL_TRUE,value);
+}
+
+void ShaderProgram::setInt(const char* varName, unsigned int value)
+{
+  std::string vName (varName);
+  if (! variableLocations.count(vName)>0)
+  {
+    variableLocations[vName] = glGetUniformLocation(ShaderProgramID, varName);
+  }
+  if (variableLocations[vName]==0xFFFFFFFF)
+  {
+    printf("ERROR: Cannot find variable '%s' in shader\n",varName);
+    return;
+  }
+  glUniform1d(variableLocations[vName],value);
 }

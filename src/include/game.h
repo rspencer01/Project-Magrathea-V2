@@ -27,6 +27,7 @@ class Game
   private:
     /// The user camera that contains the fps position rotation etc.
     Camera* camera;
+    Camera* lightCamera;
     /// A list of regions in the game
     std::deque<std::deque<Region*> > regions;
     /// The sku above our heads
@@ -54,7 +55,9 @@ class Game
 	/// Do the menu
 	void renderMenu();
     TestObj* test;
-    
+    void RenderShadow();
+    void RenderScene();
+
   public:
     /// Creates a game instance and initialises all variables
     Game();
@@ -69,6 +72,7 @@ class Game
     /// Returns data about a single point
     terrainBit getTerrainBit(int x, int y);
     ShaderProgram* mainShader;
+    ShaderProgram* shadowShader;
 };
 
 #endif

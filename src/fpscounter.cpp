@@ -20,7 +20,7 @@ void logFrame()
     fps = frameCount / (timeInterval / 1000.0f);
     previousTime = currentTime;
     frameCount = 0;
-    printf("Frame rate: %f\n",fps);
+   // printf("Frame rate: %f\n",fps);
   }
 }
 

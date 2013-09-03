@@ -46,6 +46,8 @@ class Camera
     void RotateFlat (float Angle);
   	/// Move in the direction the camera is pointing
 	  void MoveForward ( float Distance );
+
+    float viewMatrix[16];
 };
 
 #endif

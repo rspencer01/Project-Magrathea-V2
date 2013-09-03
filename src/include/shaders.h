@@ -30,6 +30,7 @@ class ShaderProgram
     void Load();
     /// Set some variable
     void setMatrix(const char*,float*);
+    void setInt(const char* varName, unsigned int value);
 };
 
 #endif

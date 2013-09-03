@@ -5,7 +5,7 @@
 
 // storage for Matrices
 
-float viewMatrix[16];
+
 
 Camera::Camera(Game* gm, ShaderProgram* sp)
 {
@@ -44,7 +44,6 @@ void Camera::Render()
   viewMatrix[7] = -(UpVector.dot(Position));
   viewMatrix[11] = ViewDir.dot(Position);
   viewMatrix[15] = 1.0;
-
   shader->setMatrix("transformationMatrix",&viewMatrix[0]);
 }
 
