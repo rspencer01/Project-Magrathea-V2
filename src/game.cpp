@@ -46,7 +46,7 @@ Game::Game()
   data = new Book(getHeightmapData);
   currentGame = this;
   speed = 0.1;
-  fpsOn = false;
+  fpsOn = true;
   showMenu = false;
   sky = new Sky(this);
   mainShader = new ShaderProgram();
@@ -63,7 +63,7 @@ Game::Game()
   
   //shadowShader->setInt("gSampler",0);
   camera = new Camera(this,mainShader);
-  camera->Position = Vector3(-1,1,10);
+  camera->Position = Vector3(5,1,5);
   test = new TestObj(this); 
   mainShader->Load();
   shadows = new ShadowManager(this);
@@ -93,7 +93,9 @@ void Game::run()
 
 void Game::RenderScene()
 {
-  test->Render();
+  for (unsigned int i = 0;i<regions.size();i++)
+    for (unsigned int j = 0;j<regions[i].size();j++)
+      regions[i][j]->Render();
 }
   
 /// Actually calls the functions to display stuff to the screen.
