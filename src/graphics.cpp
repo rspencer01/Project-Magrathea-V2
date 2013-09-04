@@ -67,12 +67,12 @@ void BuildPerspProjMat(float *m, float fov, float aspect, float znear, float zfa
 
   m[8]  = 0;
   m[9]  = 0;
-  m[10] = (-zfar)/(zfar-znear);
+  m[10] = (-zfar-znear)/(zfar-znear);
   m[11] = -1;
 
   m[12] = 0;
   m[13] = 0;
-  m[14] = -zfar*znear/(zfar-znear);
+  m[14] = -2*zfar*znear/(zfar-znear);
   m[15] = 0;
 }
 
@@ -83,7 +83,7 @@ void resize(int width, int height)
   // Set the size of the viewport
   glViewport(0,0,(GLsizei)width,(GLsizei)height);
   // Construct the projection matrix ...
-  BuildPerspProjMat(projMatrix,30.f, float(width)/height, 2.0f, 100.0f);
+  BuildPerspProjMat(projMatrix,10.f, float(width)/height, 2.0f, 100.0f);
   // ... and push it to the shaders
   game->setProjectionMatrix(&projMatrix[0]);
 }

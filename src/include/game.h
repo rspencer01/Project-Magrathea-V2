@@ -63,7 +63,6 @@ class Game
     /// The shadow manager.  Handles all the shadow shader stuff
     ShadowManager* shadows;
     ShaderProgram* mainShader;
-    float* projectionMatrix;
   public:
     /// Creates a game instance and initialises all variables
     Game();

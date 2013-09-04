@@ -135,9 +135,7 @@ void Game::display()
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glClearColor(0.0,0.0,0.0,1);
-  // Prepare the shadow texture
-
-
+  
   camera->Render();
   // Gogogo!
   RenderScene();
@@ -302,6 +300,5 @@ void Game::renderMenu()
 
 void Game::setProjectionMatrix(float* mat)
 {
-  projectionMatrix = mat;
-  mainShader->setMatrix("projectionMatrix",&projectionMatrix[0]);
+  mainShader->setMatrix("projectionMatrix",mat);
 }
