@@ -8,5 +8,6 @@
 
 #include <object.h>
 #include <noise.h>
+#include <fpsCounter.h>
 
 #endif
