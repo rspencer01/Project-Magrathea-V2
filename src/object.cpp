@@ -43,8 +43,21 @@ Vector3 Object::getPosition()
   return position;
 }
 
+/// Changes the position of the object, updating it in game space.
+/// Eventually, each object will pass a variable to the shader telling it what to draw relative to
 void Object::setPosition(Vector3 pos)
 {
+  if (buffersInitialised)
+  {
+    Vector3 delta = pos - position;
+    for (int i = 0;i<numberOfPoints;i++)
+    {
+      vertexData[i].px += delta.x;
+      vertexData[i].py += delta.y;
+      vertexData[i].pz += delta.z;
+    }
+    updateTriangleData();
+  }
   position = pos;
 }
 
@@ -173,7 +186,6 @@ void Object::editTextureCoord(int i, float u, float v)
 
 void Object::loadFromOBJFile(const char* filePath)
 {
-  /*
   // Let the user know what we are doing
   printf("Loading model from \"%s\"\n",filePath);
   // Do all the stuff to set this up as new
@@ -307,5 +319,4 @@ void Object::loadFromOBJFile(const char* filePath)
 	for (int i = 0; i<numberOfTriangles;i++)
 		addTriangle(i,tri[i][0]-1,tri[i][1]-1,tri[i][2]-1);
 	pushTriangleData();
-  */
 }
