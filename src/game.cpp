@@ -37,20 +37,25 @@ inline float interpolate(float a, float b, float t)
 ///
 /// This function is called on the creation of a new game.  It loads
 /// all the data, initialises the screen and keyboard functions.
-Game::Game()
+/// @param doGraphics Should this game initialise graphics?
+Game::Game(bool doGraphics)
 {
   printf("New game\n");
   initialiseHeightmap();
-  initialiseGraphics(this);
-  initialiseCallbacks();
-  initialiseKeyops();
-  initialisePipeline();
+  if (doGraphics)
+  {
+    initialiseGraphics(this);
+    initialiseCallbacks();
+    initialiseKeyops();
+    initialisePipeline();
+  }
   data = new Book(getHeightmapData);
   currentGame = this;
   speed = 0.1;
   fpsOn = true;
   showMenu = false;
-  sky = new Sky(this); 
+  if (doGraphics)
+    sky = new Sky(this); 
 }
 
 /// Initialises all the shaders and cameras and shadows associated with this game

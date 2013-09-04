@@ -64,8 +64,8 @@ class Game
     ShadowManager* shadows;
     ShaderProgram* mainShader;
   public:
-    /// Creates a game instance and initialises all variables
-    Game();
+    /// Creates a game instance and initialises all variables.  If false is passed as a paramter, the game initialises no graphics
+    Game(bool);
     /// Runs the game
     void run();
     /// Called each frame to show stuff on the screen
