@@ -104,7 +104,8 @@ void Game::RenderScene()
     for (unsigned int j = 0;j<regions[i].size();j++)
       regions[i][j]->Render();
 }
-  
+
+bool shadowsDone = false;
 /// Actually calls the functions to display stuff to the screen.
 void Game::display()
 {
@@ -117,9 +118,17 @@ void Game::display()
   // Make whatever regions are required
   constructRegions(camera->Position.x,camera->Position.z);
   
-  // Create the shadow texture
-  shadows->readyForWriting();
-  RenderScene();
+  if (shadowsDone == false)
+  {
+    // Create the shadow texture
+    shadows->readyForWriting();
+    RenderScene();
+    mainShader->Load();
+    shadows->readyForReading(mainShader);
+    mainShader->setInt("shadowTexture",7);
+    mainShader->setInt("otherTexture",3);
+    shadowsDone = true;
+  }
    
   // Render to the screen
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
@@ -127,11 +136,8 @@ void Game::display()
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glClearColor(0.0,0.0,0.0,1);
   // Prepare the shadow texture
-  mainShader->Load();
-  shadows->readyForReading(mainShader);
-  resize(500,500);
-  mainShader->setInt("shadowTexture",7);
-  mainShader->setInt("otherTexture",3);
+
+
   camera->Render();
   // Gogogo!
   RenderScene();
@@ -296,5 +302,6 @@ void Game::renderMenu()
 
 void Game::setProjectionMatrix(float* mat)
 {
-  mainShader->setMatrix("projectionMatrix",mat);
+  projectionMatrix = mat;
+  mainShader->setMatrix("projectionMatrix",&projectionMatrix[0]);
 }

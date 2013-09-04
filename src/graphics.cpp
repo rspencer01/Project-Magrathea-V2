@@ -44,11 +44,11 @@ void initialiseGraphics(Game* sh)
   // Lets enable alpha blending
   glEnable (GL_BLEND);
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-glAlphaFunc ( GL_GREATER, (GLclampf)0.7 ) ;
-    glEnable ( GL_ALPHA_TEST ) ;
+  glAlphaFunc ( GL_GREATER, (GLclampf)0.7 ) ;
+  glEnable ( GL_ALPHA_TEST ) ;
 
-  // Lets use lines, for nicer debugging without shading and shadows
-  glPolygonMode( GL_FRONT, GL_FILL );
+  // Fill the polygons, please
+  glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
 }
 
@@ -83,7 +83,7 @@ void resize(int width, int height)
   // Set the size of the viewport
   glViewport(0,0,(GLsizei)width,(GLsizei)height);
   // Construct the projection matrix ...
-  BuildPerspProjMat(projMatrix,10.f, float(width)/height, 2.0f, 100.0f);
+  BuildPerspProjMat(projMatrix,30.f, float(width)/height, 2.0f, 100.0f);
   // ... and push it to the shaders
   game->setProjectionMatrix(&projMatrix[0]);
 }
