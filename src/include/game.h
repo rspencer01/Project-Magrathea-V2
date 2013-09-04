@@ -11,7 +11,7 @@
 
 class Game;
 class ShadowManager;
-#include <gl\glew.h>
+#include <magrathea.h>
 
 #include <camera.h>
 #include <region.h>

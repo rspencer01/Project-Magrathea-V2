@@ -4,6 +4,8 @@
 class Game;
 class Sky;
 
+#include <magrathea.h>
+
 #include <game.h>
 #include <object.h>
 

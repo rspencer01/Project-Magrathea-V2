@@ -3,8 +3,7 @@
 
 class Game;
 
-#include <GL\glew.h>
-#include <GL\glut.h>
+#include <magrathea.h>
 
 #include <shaders.h>
 #include <camera.h>
@@ -14,7 +13,7 @@ class ShadowManager
   private:
     GLuint fboID;
     GLuint texID;
-    static const int TEXTURE_SIZE = 8192;
+    static const int TEXTURE_SIZE = 2048;
     float maxShadowDistance;
     float minShadowDistance;
     float shadowBoxSize;

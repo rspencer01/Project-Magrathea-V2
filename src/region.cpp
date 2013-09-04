@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include <GL/glew.h>
-#include <GL/glut.h>
+#include <magrathea.h>
 #include <region.h>
 #include <game.h>
 #include <dynotree.h>

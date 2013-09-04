@@ -1,6 +1,8 @@
 #ifndef GRASS_H
 #define GRASS_H 
 
+#include <magrathea.h>
+
 #include <vector3.h>
 #include <object.h>
 

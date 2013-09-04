@@ -11,7 +11,7 @@
 
 class Game;
 
-#include <GL/glut.h>
+#include <magrathea.h>
 
 #include <object.h>
 

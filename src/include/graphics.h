@@ -10,6 +10,8 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#include <magrathea.h>
+
 #include <stdarg.h>
 #include <vector3.h>
 #include <game.h>

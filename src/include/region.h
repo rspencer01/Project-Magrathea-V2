@@ -11,7 +11,8 @@
 
 class Game;
 
-#include <GL/glut.h>
+#include <magrathea.h>
+
 #include <tree.h>
 #include <vector>
 

@@ -10,9 +10,9 @@
 #define OBJECT_H
 
 class Game;
-#include <vector3.h>
-#include <GL/glut.h>
 
+#include <magrathea.h>
+#include <vector3.h>
 typedef struct
 {
   float px,py,pz;
