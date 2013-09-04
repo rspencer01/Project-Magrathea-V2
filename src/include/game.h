@@ -9,8 +9,6 @@
 #ifndef GAMEOPS_H
 #define GAMEOPS_H
 
-class Game;
-class ShadowManager;
 #include <magrathea.h>
 
 #include <camera.h>
@@ -25,43 +23,48 @@ class ShadowManager;
 /// The gameops class contains all the methods to do with gameplay
 ///
 /// This class interacts with glut graphics and keyboard handlers, and contains all the objects assiciated with a game instance.
+/// It handles the render sequence (shadows) and all interactions with the user go through here.
 class Game
 {
   private:
     /// The user camera that contains the fps position rotation etc.
     Camera* camera;
-    Camera* lightCamera;
     /// A list of regions in the game
     std::deque<std::deque<Region*> > regions;
-    /// The sku above our heads
+    /// The sky above our heads
     Sky* sky;
-    /// The book of all terrain data
+    /// The book of all terrain data.
     Book* data;
     /// Passes all the required functions to glut
     void initialiseCallbacks();
     /// Resets all the keys
     void initialiseKeyops();
-	/// Sets the camera vertical position, based on the terrain
-	void setCameraFPS();
-    /// A list of all keys that are currently depressed
+    /// Initialise the shaders and camera
+    void initialisePipeline();
+	  /// Sets the camera's vertical position, based on the terrain.
+	  void setCameraFPS();
+    /// A list of all keys that are currently depressed.
     bool keyDown [256];
-    /// Called on each frame update.  Performs relevant operations, based on key positions
+    /// Called on each frame update.  Performs relevant operations, based on key positions.
     void keyOperations();
     /// Constructs regions in an area about the given point.
     void constructRegions(float,float);
     /// The camera speed
     float speed;
-	/// Are we in FPS mode?
-	bool fpsOn;
-	/// Are we showing the menu?
-	bool showMenu;
-	/// Do the menu
-	void renderMenu();
-    TestObj* test;
+	  /// Are we in FPS mode?
+	  bool fpsOn;
+	  /// Are we showing the menu?
+	  bool showMenu;
+	  /// Function to show the menu
+    // TODO : fixme, wrt shaders
+	  void renderMenu();
+    /// Draws all the things in the world
     void RenderScene();
-    
-  public:
+    /// The shadow manager.  Handles all the shadow shader stuff
     ShadowManager* shadows;
+    ShaderProgram* mainShader;
+    float* projectionMatrix;
+  public:
     /// Creates a game instance and initialises all variables
     Game();
     /// Runs the game
@@ -74,8 +77,8 @@ class Game
     void keyUp(unsigned char key, int, int);
     /// Returns data about a single point
     terrainBit getTerrainBit(int x, int y);
-    ShaderProgram* mainShader;
-    ShaderProgram* shadowShader;
+    /// Set the projection matrix.  Called by the resize function
+    void setProjectionMatrix(float*);
 };
 
 #endif

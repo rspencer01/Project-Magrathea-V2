@@ -9,9 +9,10 @@
 #include <images.h>
 
 #include <fpscounter.h>
-// This is necessary so that we have a static funtion to call on display updates/keyboard etc.  We store the current game, and then functions wrap the actual code.
+// This is necessary so that we have a static funtion to call on display updates/keyboard etc.  
+// We store the current game, and then functions wrap the actual code.
 Game* currentGame;
-// A wrapper for displaying
+// A static wrapper for displaying
 void displayCurrentGame()
 {
   currentGame->display();
@@ -43,30 +44,33 @@ Game::Game()
   initialiseGraphics(this);
   initialiseCallbacks();
   initialiseKeyops();
+  initialisePipeline();
   data = new Book(getHeightmapData);
   currentGame = this;
   speed = 0.1;
   fpsOn = true;
   showMenu = false;
-  sky = new Sky(this);
+  sky = new Sky(this); 
+}
+
+/// Initialises all the shaders and cameras and shadows associated with this game
+void Game::initialisePipeline()
+{
+  printf("Initialising pipeline\n");
+  // Construct the main shader program
   mainShader = new ShaderProgram();
-  // Now load the two shaders
+  // Load in our shaders
   mainShader->LoadShader("../shaders/vertexShader.shd", GL_VERTEX_SHADER);
   mainShader->LoadShader("../shaders/fragmentShader.shd", GL_FRAGMENT_SHADER);
-  // Compile...
+  // Compile and load them
   mainShader->CompileAll();
-  // And load
   mainShader->Load();
-
-  // And load
-  //shadowShader->Load();
-  
-  //shadowShader->setInt("gSampler",0);
+  // Construct a new camera, linking to the transformationMatrix of the above shader
   camera = new Camera(mainShader,"transformationMatrix");
+  // Put it somewhere nice to start with
   camera->Position = Vector3(5,1,5);
   camera->RotateY(-3.1415/2);
-  test = new TestObj(this); 
-  mainShader->Load();
+  // Initialise the shadows
   shadows = new ShadowManager();
 }
 
@@ -92,8 +96,10 @@ void Game::run()
   glutMainLoop();
 }
 
+/// Draws the entire game
 void Game::RenderScene()
 {
+  // Run through the rectangle of regions, and draw each one
   for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)
       regions[i][j]->Render();
@@ -130,17 +136,19 @@ void Game::display()
   // Gogogo!
   RenderScene();
   
-
+  // Push this to the screen
   glutSwapBuffers();
-
   // log this frame in the framecount
   logFrame();
 }
 
+/// Create a first person scene with the camera
 void Game::setCameraFPS()
 {
+  // Get the integer coordinates of the camera position
 	float fx = camera->Position.x - (int)camera->Position.x;
 	float fy = camera->Position.z - (int)camera->Position.z;
+  // Now do the horrible interpolating to get the altitude of the camera
 	camera->Position.y = interpolate(
 						interpolate(getTerrainBit((int)camera->Position.x,(int)camera->Position.z).position->y,
 									getTerrainBit((int)camera->Position.x+1,(int)camera->Position.z).position->y,
@@ -150,7 +158,6 @@ void Game::setCameraFPS()
 									fx),
 						fy) + 0.63;
 }
-
 
 void Game::initialiseKeyops()
 {
@@ -285,4 +292,9 @@ void Game::renderMenu()
   writeString(3,79,"  <o> Toggle first person");
   writeString(3,75,"  <x> Speed up");
   writeString(3,71,"  <z> Slow down");
+}
+
+void Game::setProjectionMatrix(float* mat)
+{
+  mainShader->setMatrix("projectionMatrix",mat);
 }

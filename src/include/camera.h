@@ -10,9 +10,6 @@
 class Camera;
 #include <magrathea.h>
 
-#include <game.h>
-#include <shaders.h>
-
 /// A helper class that renders the scene according to some camera position and rotation
 ///
 /// The camera class creates a matrix to move the scene so that it is that of one

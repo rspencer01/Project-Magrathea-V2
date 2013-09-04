@@ -13,14 +13,11 @@
 #include <magrathea.h>
 
 #include <stdarg.h>
-#include <vector3.h>
-#include <game.h>
 
-/// Initialises the opengl and glut environment.
+/// Initialises the opengl and glut and glew environments.
 void initialiseGraphics(Game*);
-/// Find the normal of a triangle described by two vectors
-Vector3 getNormal3f(Vector3 edgeA, Vector3 edgeB);
 /// Print the given formatted string to the screen at the given position
+// TODO fix me wrt shaderss
 void writeString(int x, int y, const char* format, ... );
 /// Resize the screen and set the projection
 void resize(int width, int height);

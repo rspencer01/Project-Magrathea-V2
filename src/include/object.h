@@ -11,8 +11,10 @@
 
 class Game;
 
-#include <magrathea.h>
+#include <gl\glew.h>
+#include <gl\glut.h>
 #include <vector3.h>
+
 typedef struct
 {
   float px,py,pz;
