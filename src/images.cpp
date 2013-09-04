@@ -37,11 +37,11 @@ GLuint textureFromBMP(const char* filePath)
   char* rgbaData = new char[width*height*4];
   for (int i = 0;i<width*height;i++)
   {
-    rgbaData[i*4 ] = data[i*3];
+    rgbaData[i*4 ]   = data[i*3];
     rgbaData[i*4 +1] = data[i*3+1];
     rgbaData[i*4 +2] = data[i*3+2];
     rgbaData[i*4 +3] = 255;
-    if ((rgbaData[i*4]==-1) && (rgbaData[i*4+2]==-1))
+    if ((rgbaData[i*4]==-1) && (rgbaData[i*4+2]==-1) &&(rgbaData[i*4+2]==0))
       rgbaData[i*4+3] = 0;
   }
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgbaData);
