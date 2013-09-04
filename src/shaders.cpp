@@ -1,5 +1,5 @@
-#include <gl\glew.h>
-#include <gl\glut.h>
+#include <GL/glew.h>
+#include <GL/glut.h>
 #include <stdio.h>
 #include <shaders.h>
 #include <assert.h>
@@ -15,7 +15,7 @@ ShaderProgram::ShaderProgram()
 void ShaderProgram::constructProgram()
 {
   // Construct the program we are going to use
-  ShaderProgramID = glCreateProgram();
+  ShaderProgramID = glCreateProgramObjectARB();
   // If there was an error, let us know
   if (ShaderProgramID == 0) 
   {
@@ -27,7 +27,7 @@ void ShaderProgram::constructProgram()
 void ShaderProgram::LoadShader(const char* shaderPath, GLenum ShaderType)
 {
   // Create us a new shader
-  GLuint ShaderObj = glCreateShader(ShaderType);
+  GLuint ShaderObj = glCreateShaderObjectARB(ShaderType);
   // If something went wrong, tell us about it
   if (ShaderObj == 0) 
   {
@@ -44,19 +44,19 @@ void ShaderProgram::LoadShader(const char* shaderPath, GLenum ShaderType)
   const GLchar* p = new GLchar[fileSize];
   fread((void*)p,fileSize,1,fp);
   // And tell opengl that it is the source code
-  glShaderSource(ShaderObj, 1, &p, &fileSize);
+  glShaderSourceARB(ShaderObj, 1, &p, &fileSize);
   // Now we are done with these, get rid of them
   delete p;
   fclose(fp);
   // Attempt to compile the shader
-  glCompileShader(ShaderObj);
+  glCompileShaderARB(ShaderObj);
   // If there is an error, tell us about it
   GLint success;
-  glGetShaderiv(ShaderObj, GL_COMPILE_STATUS, &success);
-  if (!success) 
+  glGetObjectParameterivARB(ShaderObj, GL_OBJECT_COMPILE_STATUS_ARB, &success);
+  if (success==0) 
   {
     GLchar InfoLog[1024];
-    glGetShaderInfoLog(ShaderObj, 1024, NULL, InfoLog);
+    glGetInfoLogARB(ShaderObj, 1024, NULL, InfoLog);
     fprintf(stderr, "Error compiling shader type %d: '%s'\n", ShaderType, InfoLog);
     while(1);
   }

@@ -1,8 +1,8 @@
 #ifndef MAGRATHEA_H
 #define MAGRATHEA_H
 
-#include <gl/glew.h>
-#include <gl/glut.h>
+#include <GL/glew.h>
+#include <GL/glut.h>
 
 class Game;
 class ShadowManager;
@@ -14,7 +14,7 @@ class Object;
 
 #include <object.h>
 #include <noise.h>
-#include <fpsCounter.h>
+#include <fpscounter.h>
 
 #include <game.h>
 

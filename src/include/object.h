@@ -11,8 +11,8 @@
 
 class Game;
 
-#include <gl\glew.h>
-#include <gl\glut.h>
+#include <GL/glew.h>
+#include <GL/glut.h>
 #include <vector3.h>
 
 typedef struct
