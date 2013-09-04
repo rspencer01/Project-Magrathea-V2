@@ -62,11 +62,11 @@ Game::Game()
   //shadowShader->Load();
   
   //shadowShader->setInt("gSampler",0);
-  camera = new Camera(this,mainShader);
+  camera = new Camera(mainShader,"transformationMatrix");
   camera->Position = Vector3(5,1,5);
   test = new TestObj(this); 
   mainShader->Load();
-  shadows = new ShadowManager(this);
+  shadows = new ShadowManager();
 }
 
 /// This function assigns the event handlers defined at the top of this

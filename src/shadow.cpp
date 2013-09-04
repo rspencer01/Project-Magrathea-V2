@@ -2,7 +2,7 @@
 #include <shadow.h>
 #include <graphics.h>
 
-ShadowManager::ShadowManager(Game* gm)
+ShadowManager::ShadowManager()
 {
   maxShadowDistance = 500;
   minShadowDistance = 10;
@@ -73,7 +73,7 @@ ShadowManager::ShadowManager(Game* gm)
   shader->LoadShader("../shaders/fragmentShadowShader.shd", GL_FRAGMENT_SHADER);
   shader->CompileAll();
   shader->setMatrix("projectionMatrix",&projMatrix[0]);
-  camera = new Camera(gm,shader);
+  camera = new Camera(shader,"transformationMatrix");
   camera->Position = Vector3(0,100,0);
   camera->RotateX(-3.1415/2);
 }
@@ -96,6 +96,6 @@ void ShadowManager::readyForReading(ShaderProgram* mainShader)
 {
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
-  mainShader->setMatrix("lightTransformMatrix",camera->viewMatrix);
+  mainShader->setMatrix("lightTransformMatrix",camera->getTransformationMatrix());
   mainShader->setMatrix("lightProjectionMatrix",&projMatrix[0]);
 }

@@ -19,7 +19,7 @@ class ShadowManager
     float shadowBoxSize;
     float projMatrix[16];
   public:
-    ShadowManager(Game*);
+    ShadowManager();
     Camera* camera;
     void readyForWriting();
     void readyForReading(ShaderProgram*);

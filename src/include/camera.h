@@ -9,13 +9,13 @@
 #define CAMERA_H
 class Camera;
 #include <magrathea.h>
-#include <vector3.h>
+
 #include <game.h>
 #include <shaders.h>
 
 /// A helper class that renders the scene according to some camera position and rotation
 ///
-/// The camera class invokes opengl operations to move the scene so that it is that of one
+/// The camera class creates a matrix to move the scene so that it is that of one
 /// rendered by a camera a the given position and orientation.  It also supports basic
 /// fps movement (walk, up and straffe) for easy 3D world interaction
 class Camera
@@ -23,18 +23,17 @@ class Camera
   private:
     Vector3 ViewDir;
     Vector3 UpVector;
-    Game* game;
     ShaderProgram* shader;
     float RotatedX, RotatedY, RotatedZ;	
-	
+	  const char* matrixName;
+    float viewMatrix[16];
   public:
 	  /// The position of the camera
 	  Vector3 Position;
-	  /// Initialises the camera to the <-1,0,0>, looking in the +x direction
-  	Camera(Game*,ShaderProgram*);				
+	  /// Initialises the camera
+  	Camera(ShaderProgram*,const char*);				
 	  /// Rotates and translates the scene to the correct position.
   	void Render ( void );							
-
 	  /// Translate the camera
   	void Move ( Vector3 Direction );
 	  /// Rotate around the x axis
@@ -47,8 +46,9 @@ class Camera
     void RotateFlat (float Angle);
   	/// Move in the direction the camera is pointing
 	  void MoveForward ( float Distance );
+    /// Return a pointer to the transformation matrix
+    float* getTransformationMatrix();
 
-    float viewMatrix[16];
 };
 
 #endif
