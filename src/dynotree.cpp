@@ -38,63 +38,73 @@ void DynoTree::initialiseTriangles()
 	pushTriangleData();
 }
 
-void DynoTree::makeBranch(Vector3 pos, Vector3 dir, float len, float width, int lastRingIndex,bool swapTex)
+int DynoTree::makeRing(Vector3 pos, Vector3 basisA, Vector3 basisB, float width,bool swapTex)
 {
-  // Add the trunk.  10 points in a circle, and one on top
-	// We do one point twice so that the texture is nice
-  Vector3 basisA = dir.cross(Vector3(1,0,1)).normal();
-  Vector3 basisB = dir.cross(basisA).normal();
-  if (lastRingIndex==-1)
+  // Record the index of the beginning, to return
+  int lastRingIndex = numberOfPoints;
+  // We will make 11 points
+  for (int y = 0; y<11;y++)
   {
-    lastRingIndex = numberOfPoints;
-    for (int y = 0; y<11;y++)
-    {
- 	  	addPoint(numberOfPoints,
-                pos+
-                basisA*width*sin(3.1415*y/5.f)+
-                basisB*width*cos(3.1415*y/5.f),
-                Vector3(sin(y/5.f*3.1415),0,cos(y/5.f*3.1415)),
-                0.58f	,0.35f,0.09f);
-       editTextureCoord(numberOfPoints,y*0.0345,0);
-       numberOfPoints++;
- 	  }
-  }
-  int tRIng = numberOfPoints;
- 	for (int y = 0; y<11;y++)
-	{
-		addPoint(numberOfPoints,
-             pos+
-             basisA*width*sin(3.1415*y/5.f)*0.66+
-             basisB*width*cos(3.1415*y/5.f)*0.66+dir*len,
-             Vector3(sin(y/5.f*3.1415),0,cos(y/5.f*3.1415)),
-             0.58f	,0.35f,0.09f);
-    if (swapTex)
-      editTextureCoord(numberOfPoints,y*0.0345,0);
-    else
-      editTextureCoord(numberOfPoints,y*0.0345,1);
-
+    // Calculate the angle
+    float theta = 3.1415*2.0*y/10.f;
+    // And add this point
+ 		addPoint(numberOfPoints,
+              pos+
+              basisA*width*sin(theta)+
+              basisB*width*cos(theta),
+              basisA*sin(theta)+
+              basisB*cos(theta),
+              0.58f	,0.35f,0.09f);
+    // Add the texture coordinate, inverting if required
+    editTextureCoord(numberOfPoints,y*0.0345,swapTex?1:0);
+    // Log that we added a point
     numberOfPoints++;
-	}
-		
-	// Add in all the triangles
-	
+ 	}
+  // Return the index of the first point
+  return lastRingIndex;
+}
+
+/// Construct the triangles that make up the branch
+void DynoTree::makeTriangles(int beginning,int end)
+{
+  // Ten rectangles
   for (int y = 0; y<10;y++)
   {
-		addTriangle(numberOfTriangles,lastRingIndex+y,lastRingIndex+(y+1),numberOfPoints-11+y);
-    numberOfTriangles++;
-		addTriangle(numberOfTriangles,lastRingIndex+y+1,numberOfPoints-10+y,numberOfPoints-11+y);
-    numberOfTriangles++;
+    // Add the two triangles
+		addTriangle(numberOfTriangles  ,beginning+y,beginning+(y+1),end+y);
+		addTriangle(numberOfTriangles+1,beginning+y+1,end+y,end+y+1);
+    numberOfTriangles += 2;
   }
-  
+}
+
+void DynoTree::makeBranch(Vector3 pos, Vector3 dir, float len, float width, int lastRingIndex,bool swapTex)
+{
+  // Construct the two basis vectors for construction of points
+  Vector3 basisA = dir.cross(Vector3(1,0,1)).normal();
+  Vector3 basisB = dir.cross(basisA).normal();
+  // If we need to make a bottom ring, do so
+  if (lastRingIndex==-1)
+    lastRingIndex = makeRing(pos,basisA,basisB,width,true);
+  // Otherwise, and in addition, create the top ring
+  int topRingIndex = makeRing(pos+dir*len,basisA,basisB,width*0.66,swapTex);
+	// Add in all the triangles
+	makeTriangles(lastRingIndex,topRingIndex);
+  // If the branch is thick enough, we can branch into two others
   if (width>0.05)
   {
+    // Get a random direction
     Vector3 d = randomVector();
+    // Add it to this direction
     Vector3 newDirection = dir + d/1.8;
+    // Make a sub branch in that direction
     makeBranch(pos+dir*len,newDirection.normal(),len/1.2,width*2.0/5.0,-1,false);
+    // Do it again
     d = randomVector();
     newDirection = dir + d/2.8;
-    makeBranch(pos+dir*len,newDirection.normal(),len/1.2,width*3.0/5.0,tRIng,!swapTex);
+    // Continue this branch
+    makeBranch(pos+dir*len,newDirection.normal(),len/1.2,width*3.0/5.0,topRingIndex,!swapTex);
   }
+  // If we are small enough, we can put leaves here
   if (width<0.3)
     makeLeaves(pos,dir,len);
 }
