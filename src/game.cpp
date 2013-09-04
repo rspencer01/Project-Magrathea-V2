@@ -64,6 +64,7 @@ Game::Game()
   //shadowShader->setInt("gSampler",0);
   camera = new Camera(mainShader,"transformationMatrix");
   camera->Position = Vector3(5,1,5);
+  camera->RotateY(-3.1415/2);
   test = new TestObj(this); 
   mainShader->Load();
   shadows = new ShadowManager();

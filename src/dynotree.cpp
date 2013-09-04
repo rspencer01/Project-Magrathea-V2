@@ -1,33 +1,39 @@
 #include <stdio.h>
 #include <math.h>
-#include <GL/glew.h>
-#include <GL/glut.h>
+#include <magrathea.h>
 
 #include <dynotree.h>
 #include <images.h>
-#include <noise.h>
 
+// We only want to load this texture once, if we can reload.  Remember the handle for it.
 GLuint dtreeTextureNumber = (GLuint)-1;
+// Where is the texture actually stored?
 const char* dtextureName = "../assets/BasicTreeTrans1.bmp";
 
+/// Construct a dynoTree at the given location
 DynoTree::DynoTree(Vector3 pos,Game* g) : Object(pos,g)
 {
+  // Actually construct the triangles
   initialiseTriangles();
+  // If we have yet to load the texture, do it
   if (dtreeTextureNumber == (GLuint)-1)
 	  dtreeTextureNumber = textureFromBMP(dtextureName);
+  // And set it as this object's texture
   textureNumber = dtreeTextureNumber;
 }
 
+/// Construct the triangles
 void DynoTree::initialiseTriangles()
 {
 	// Begin the operation of setting up triangles
-  // Reserve far too many than we actually need
-	clearTriangleData(5000,5000);
-  // Now set these to 0 so that we don't pass too many
+  // Reserve this many (experimentation showed these as good values
+	clearTriangleData(3000,2000);
+  // Now set these to 0 so that we don't pass too many to th object class.
+  // These values will be incrimented by the makeBranch and makeLeaves methods
   numberOfPoints = 0;
   numberOfTriangles = 0;
+  // Construct the trunk, 1m below the ground, going up.
   makeBranch(Vector3(0,-1,0),Vector3(0,1,0),3,1,-1,false);
-	
 	// And save
 	pushTriangleData();
 }

@@ -24,7 +24,7 @@ class Camera
     Vector3 ViewDir;
     Vector3 UpVector;
     ShaderProgram* shader;
-    float RotatedX, RotatedY, RotatedZ;	
+    float RotatedX;	
 	  const char* matrixName;
     float viewMatrix[16];
   public:

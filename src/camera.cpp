@@ -14,7 +14,7 @@ Camera::Camera(ShaderProgram* sp, const char* transName)
   ViewDir = Vector3(0,0,-1);
   UpVector = Vector3(0,1,0);
   // No rotation yet
-  RotatedX = RotatedY = RotatedZ = 0;
+  RotatedX = 0;
   // Remember the environment
   shader = sp;
   matrixName = transName;
@@ -71,8 +71,6 @@ void Camera::RotateY( float theta )
   Vector3 rightDir = ViewDir.cross(UpVector).normal();
   ViewDir = ViewDir*cos(theta) - rightDir*sin(theta);
   ViewDir.normalise();
-  // Log this rotation
-  RotatedY += theta;
 }
 
 /// Rotates the camera about the X axis (vertical)

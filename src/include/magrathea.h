@@ -6,4 +6,7 @@
 
 #include <vector3.h>
 
+#include <object.h>
+#include <noise.h>
+
 #endif
