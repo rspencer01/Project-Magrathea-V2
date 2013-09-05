@@ -134,10 +134,11 @@ void Game::display()
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-  glClearColor(0.0,0.0,0.0,1);
+  glClearColor(0.813,0.957,0.99,1);
   
   camera->Render();
   // Gogogo!
+  sky->Render();
   RenderScene();
   
   // Push this to the screen
