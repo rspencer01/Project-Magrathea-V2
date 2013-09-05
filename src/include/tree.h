@@ -9,18 +9,15 @@
 #ifndef TREE_H
 #define TREE_H
 
-class Game;
-
 #include <magrathea.h>
 
-#include <object.h>
-
+/// A cartoonish tree, made of a number of cones.  Excellent for testing.
 class Tree : public Object
 {
   private:
-	void initialiseTriangles();
+	  void initialiseTriangles();
   public:
-	/// Constructs the tree with the given coordinates
+	  /// Constructs a cartoon tree with the given coordinates
     Tree(Vector3,Game*);
 };
 

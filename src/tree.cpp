@@ -1,19 +1,18 @@
 #include <stdio.h>
 #include <math.h>
-#include <GL/glew.h>
-#include <GL/glut.h>
-
 #include <tree.h>
-#include <images.h>
 
 GLuint treeTextureNumber = (GLuint)-1;
-const char* textureNames[3] = {"../assets/BasicTree1.bmp","../assets/BasicTree2.bmp","../assets/BasicTree3.bmp"};
+const char* textureName = "../assets/BasicTree3.bmp";
 
+/// Initialises the tree at the position, and constructs it
 Tree::Tree(Vector3 pos,Game* g) : Object(pos,g)
 {
   initialiseTriangles();
+  // If we have yet to load the texture, do so
   if (treeTextureNumber == (GLuint)-1)
-	  treeTextureNumber = textureFromBMP(textureNames[2]);
+	  treeTextureNumber = textureFromBMP(textureName);
+  // And set the texture as ours
   textureNumber = treeTextureNumber;
 }
 

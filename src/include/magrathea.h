@@ -15,6 +15,7 @@ class Object;
 #include <object.h>
 #include <noise.h>
 #include <fpsCounter.h>
+#include <images.h>
 
 #include <game.h>
 
