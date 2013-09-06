@@ -3,7 +3,7 @@
 #include <fern.h>
 
 GLuint fernTextureNumber = (GLuint)-1;
-const char* fernTextureName = "../assets/BasicTree3.bmp";
+const char* fernTextureName = "../assets/fern.bmp";
 
 /// Initialises the tree at the position, and constructs it
 Fern::Fern(Vector3 pos,Game* g) : Object(pos,g)
@@ -19,45 +19,48 @@ Fern::Fern(Vector3 pos,Game* g) : Object(pos,g)
 void Fern::initialiseTriangles()
 {
 	// Begin the operation of setting up triangles
-	clearTriangleData(12*5,10*5);
-	
-	// Add the trunk.  10 points in a circle, and one on top
-	// We do one point twice so that the texture is nice
-	for (int y = 0; y<11;y++)
-	{
-		addPoint(y,
-             Vector3(0.5f*(float)sin(y/5.f*3.1415),
-						 -1.f,
-						 0.5f*(float)cos(y/5.f*3.1415)),
-             Vector3(sin(y/5.f*3.1415),0,cos(y/5.f*3.1415)),
-             0.58f,0.35f,0.09f);
-		editTextureCoord(y,y*0.0345,0);
-	}
-	addPoint(11,Vector3(0.f,10.f,0.f),Vector3(0,1,0),0.58f,0.35f,0.09f);
-	editTextureCoord(11,0.019,1);
-	
-	// Add 4 leaf things
-	for (int i = 0; i<4;i++)
-	{
-		for (int y = 0; y<11;y++)
-		{
-			addPoint(12+i*12+y,
-               Vector3((4-i)*(float)sin(y/5.f*3.1415),
-							 (i+3-0.5f)*10.f/7,
-							 (4-i)*(float)cos(y/5.f*3.1415)),
-               Vector3(sin(y/5.f*3.1415),0.7,cos(y/5.f*3.1415)).normal()
-               ,0.25f,0.5f,0.15f);
-			editTextureCoord(12+i*12+y,0.77+0.23*sin(y/5.f*3.1415),0.5+0.23*cos(y/5.f*3.1415));
-		}
-		addPoint(12+i*12+11,Vector3(0.f,(i+3)*10.f/7,0.f),Vector3(0,1,0),0.25f,0.5f,0.15f);
-		editTextureCoord(12+i*12+11,0.77,0.5);
-	}
-	
-	// Add in all the triangles
-	for (int i = 0;i<5;i++)
-		for (int y = 0; y<10;y++)
-			addTriangle(i*10+y,12*i + y,12*i + (y+1),12*i + 11);
+	clearTriangleData(60,30);
+  numberOfPoints = 0;
+  numberOfTriangles = 0;
+  makeLeaf(Vector3(),Vector3(1,1.2,0)/2.5,1.f);
+  makeLeaf(Vector3(),Vector3(-0.5,1.2,0.866)/2.5,1.f);
+  makeLeaf(Vector3(),Vector3(-0.5,1.2,-0.866)/2.5,1.f);
+  pushTriangleData();
+}
 
-	// And save
-	pushTriangleData();
+void Fern::makeLeaf(Vector3 pos, Vector3 dir, float width)
+{
+  int t = numberOfPoints;
+  Vector3 cross = dir.cross(Vector3(dir.x,0,dir.z)).normal()*width/2;
+  Vector3 diff = (cross*-1)/5+Vector3(0.01,0,0);
+  addPoint(numberOfPoints,pos+cross,Vector3(0,1,0),0.7f,0.7f,0.7f);
+  editTextureCoord(numberOfPoints,0,0);
+  numberOfPoints++;
+  addPoint(numberOfPoints,pos-cross,Vector3(0,1,0),0.7f,0.7f,0.7f);
+  editTextureCoord(numberOfPoints,1,0);
+  numberOfPoints++;
+  for (int i = 0;i<5;i++)
+  {
+    // This is not completely accurate...
+    Vector3 norm = pos + cross;
+    dir = dir - Vector3(0,0.07,0);
+    cross = cross+diff;
+    pos = pos+dir;
+    norm = (pos+cross - norm).cross(pos-cross - norm)*-1;
+    norm.normalise();
+    
+    addPoint(numberOfPoints,pos+cross,
+      norm,0.7f,0.7f,0.7f);
+    editTextureCoord(numberOfPoints,0.5*((i+1)/5.f),((i+1)/5.f));
+    numberOfPoints++;
+    addPoint(numberOfPoints,pos-cross,
+      norm,0.7f,0.7f,0.7f);
+    editTextureCoord(numberOfPoints,1.f-0.5*((i+1)/5.f),((i+1)/5.f));
+    numberOfPoints++;
+    addTriangle(numberOfTriangles,numberOfPoints-4,numberOfPoints-3,numberOfPoints-2);
+    numberOfTriangles++;
+    addTriangle(numberOfTriangles,numberOfPoints-3,numberOfPoints-2,numberOfPoints-1);
+    numberOfTriangles++;
+  }
+
 }
