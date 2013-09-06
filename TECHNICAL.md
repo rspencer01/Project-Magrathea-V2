@@ -26,3 +26,20 @@ The `Page` class holds a 2D array of `terrainBits`.  It is responsible for their
 DynoTrees and Their Generation
 ------------------------------
 `DynoTree` is the class that handles the generation of cool looking trees.
+
+    MORE DETAILS HERE
+
+Shadows
+-------
+Oooh.  Shadows.  Both a headache and very neat.  The rendering of shadows required a complete rewrite of the rendering process of Magrathea.  For starters, shaders (4 of them) had to be written.  Then data had to be passed with Vertex attribute arrays and `glVertexAttribPointerARB`.  Much of their development was done in the dark (literally!) with little to no feedback on what was working and what was not.  The reason I say this, is as a warning to changing stuff.  It works.  I offer no guarantee that tinkering with it will not break it.
+
+Having said that, the entire shadow production is quite cool (in my opinion).  Firstly we requre a new `Camera` (most of what follows is folded into the `ShadowManager` class).  Then we require a completely different projection matrix (this is to avoid z-fighting).   We use an orthographic matrix.  Before rendering (or in this case, at the first frame) we render the entire scene from the point of view of the sun *to a texture*.  In that texture we store, not a colour, but only the depth.
+
+Then we pass the texture, during every subsequent render pass to the fragment shader (in sampler number 7).  The vertex shader for each point determines its position, not only from the POV of the player, but also from the sun.  It passes this to the fragment shader which compares whether or not the fragment is further from the sun than the value in the depth buffer
+
+    if (texture(shadowTexture,ShadowCoord.xy).z < ShadowCoord.z-0.002)
+      ...
+
+The `0.002` is a small offset to prevent items from throwing a shadow on themselves (acne, I think it is called).  If it fails this check, it is darkened.
+
+**NOTE** The shadow system is still in development, and is fairly buggy.  This will soon get better (I hope).
