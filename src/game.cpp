@@ -105,7 +105,7 @@ void Game::RenderScene()
       regions[i][j]->Render();
 }
 
-bool shadowsDone = false;
+int shadowsDone = 0;
 /// Actually calls the functions to display stuff to the screen.
 void Game::display()
 {
@@ -118,7 +118,7 @@ void Game::display()
   // Make whatever regions are required
   constructRegions(camera->Position.x,camera->Position.z);
   
-  if (shadowsDone == false)
+  if (shadowsDone <20 )
   {
     // Create the shadow texture
     shadows->readyForWriting();
@@ -127,7 +127,7 @@ void Game::display()
     shadows->readyForReading(mainShader);
     mainShader->setInt("shadowTexture",7);
     mainShader->setInt("otherTexture",3);
-    shadowsDone = true;
+    shadowsDone++;
   }
    
   // Render to the screen
@@ -135,7 +135,6 @@ void Game::display()
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glClearColor(0.813,0.957,0.99,1);
-  
   camera->Render();
   // Gogogo!
   sky->Render();
@@ -229,21 +228,21 @@ void Game::constructRegions(float x,float y)
 		regions[0].push_back(rg);
 	}
   
-	if (regions.back().back()->getOriginY() < ry+REGION_SIZE*3)
+	if (regions.back().back()->getOriginY() < ry+REGION_SIZE*7)
 	{
 		int oy = regions.back().back()->getOriginY();
 		Region* rg = new Region(rx,oy+REGION_SIZE,this);
 		regions.push_back(std::deque<Region*>());
 		regions.back().push_back(rg);
 	}
-	if (regions.back().back()->getOriginY() > ry+REGION_SIZE*3)
+	if (regions.back().back()->getOriginY() > ry+REGION_SIZE*7)
 	{
 		for (unsigned int i = 0; i <regions.back().size();i++)
 			delete regions.back()[i];
 		regions.pop_back();
 	}
 
-	if (regions.front().back()->getOriginY() > ry-REGION_SIZE*3)
+	if (regions.front().back()->getOriginY() > ry-REGION_SIZE*7)
 	{
     int oy = regions.front().back()->getOriginY();
     if (oy-REGION_SIZE>=0)
@@ -253,7 +252,7 @@ void Game::constructRegions(float x,float y)
 		  regions.front().push_back(rg);
     }
 	}
-	if (regions.front().back()->getOriginY() < ry-REGION_SIZE*3)
+	if (regions.front().back()->getOriginY() < ry-REGION_SIZE*7)
 	{
 		for (unsigned int i = 0; i <regions.front().size();i++)
 			delete regions.front()[i];
@@ -263,17 +262,17 @@ void Game::constructRegions(float x,float y)
 	
 	for (unsigned int i = 0;i<regions.size();i++)
 	{
-		if (regions[i].back()->getOriginX() < rx+REGION_SIZE*3)
+		if (regions[i].back()->getOriginX() < rx+REGION_SIZE*7)
 			regions[i].push_back(new Region(regions[i].back()->getOriginX()+REGION_SIZE,regions[i].back()->getOriginY(),this));
-		if (regions[i].back()->getOriginX() > rx+REGION_SIZE*3)
+		if (regions[i].back()->getOriginX() > rx+REGION_SIZE*7)
 		{
 			delete regions[i].back();
 			regions[i].pop_back();
 		}
-		if (regions[i].front()->getOriginX() > rx-REGION_SIZE*3)
+		if (regions[i].front()->getOriginX() > rx-REGION_SIZE*7)
       if (regions[i].front()->getOriginX()-REGION_SIZE>=0)
 			  regions[i].push_front(new Region(regions[i].front()->getOriginX()-REGION_SIZE,regions[i].front()->getOriginY(),this));
-		if (regions[i].front()->getOriginX() < rx-REGION_SIZE*3)
+		if (regions[i].front()->getOriginX() < rx-REGION_SIZE*7)
 		{
 			delete regions[i].front();
 			regions[i].pop_front();

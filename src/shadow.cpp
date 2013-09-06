@@ -4,9 +4,9 @@
 
 ShadowManager::ShadowManager()
 {
-  maxShadowDistance = 60;
+  maxShadowDistance = 200;
   minShadowDistance = 10;
-  shadowBoxSize = 100;
+  shadowBoxSize = 300;
 
 	GLenum FBOstatus;
 	
@@ -74,7 +74,7 @@ ShadowManager::ShadowManager()
   shader->CompileAll();
   shader->setMatrix("projectionMatrix",&projMatrix[0]);
   camera = new Camera(shader,"transformationMatrix");
-  camera->Position = Vector3(0,60,0);
+  camera->Position = Vector3(0,200,0);
   camera->RotateX(-3.1415/2);
 }
 
