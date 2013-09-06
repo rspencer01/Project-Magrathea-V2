@@ -26,7 +26,7 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
       //if (here.isGrass)
       //  foliage.push_back(new Grass(*(here.position),*(here.normal),parent));
       if (here.isFern)
-        foliage.push_back(new Fern(*(here.position),parent));
+        foliage.push_back(new Fern(*(here.position),*(here.normal),parent));
     }
   if (texture == (GLuint)-1)
 	  texture = textureFromBMP("../assets/BigGrass.bmp");

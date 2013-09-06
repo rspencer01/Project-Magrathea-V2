@@ -17,9 +17,10 @@ class Fern : public Object
   private:
 	  void initialiseTriangles();
     void makeLeaf(Vector3 pos, Vector3 dir, float width);
+    Vector3 normal;
   public:
 	  /// Constructs
-    Fern(Vector3,Game*);
+    Fern(Vector3,Vector3,Game*);
 };
 
 

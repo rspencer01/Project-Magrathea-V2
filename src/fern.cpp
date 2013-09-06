@@ -6,14 +6,16 @@ GLuint fernTextureNumber = (GLuint)-1;
 const char* fernTextureName = "../assets/fern.bmp";
 
 /// Initialises the tree at the position, and constructs it
-Fern::Fern(Vector3 pos,Game* g) : Object(pos,g)
+Fern::Fern(Vector3 pos,Vector3 norm,Game* g) : Object(pos,g)
 {
+  normal = norm;
   initialiseTriangles();
   // If we have yet to load the texture, do so
   if (fernTextureNumber == (GLuint)-1)
 	  fernTextureNumber = textureFromBMP(fernTextureName);
   // And set the texture as ours
   textureNumber = fernTextureNumber;
+  
 }
 
 void Fern::initialiseTriangles()
@@ -25,6 +27,9 @@ void Fern::initialiseTriangles()
   makeLeaf(Vector3(),Vector3(1,1.2,0)/2.5,1.f);
   makeLeaf(Vector3(),Vector3(-0.5,1.2,0.866)/2.5,1.f);
   makeLeaf(Vector3(),Vector3(-0.5,1.2,-0.866)/2.5,1.f);
+
+  rotate(randomVector().cross(normal).normal(),normal.normal());
+
   pushTriangleData();
 }
 
