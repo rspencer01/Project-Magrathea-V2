@@ -14,6 +14,8 @@ typedef struct
   bool isTree;
   /// Is this point a grass piece?
   bool isGrass;
+  /// Is this point fern plant?
+  bool isFern;
 } terrainBit;
 
 #endif
