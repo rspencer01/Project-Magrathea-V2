@@ -92,6 +92,8 @@ class Object
     void loadFromOBJFile(const char*);
     /// Mutator for the item position
     void setPosition(Vector3);
+    /// Rotates the object so that it matches the new axis
+    void rotate(Vector3,Vector3);
   public:
 	  /// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*);

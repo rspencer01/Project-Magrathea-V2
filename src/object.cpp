@@ -183,6 +183,29 @@ void Object::editTextureCoord(int i, float u, float v)
 	vertexData[i].texy = v;
 }
 
+/// Rotates the object to match the given new axis
+/// @param basisX The new X axis
+/// @param basisY The new Y axis
+void Object::rotate(Vector3 basisX,Vector3 basisY)
+{
+  Vector3 basisZ = basisX.cross(basisY);
+  for (int i = 0;i<numberOfPoints;i++)
+  {
+    Vector3 newPos = basisX * (vertexData[i].px - position.x) + 
+                     basisY * (vertexData[i].py - position.y)  + 
+                     basisZ * (vertexData[i].pz - position.z) ;
+    Vector3 newNrm = basisX * vertexData[i].nx + 
+                     basisY * vertexData[i].ny + 
+                     basisZ * vertexData[i].nz;
+    vertexData[i].px = (position+newPos).x;
+    vertexData[i].py = (position+newPos).y;
+    vertexData[i].pz = (position+newPos).z;
+    vertexData[i].nx = newNrm.x;
+    vertexData[i].ny = newNrm.y;
+    vertexData[i].nz = newNrm.z;
+  }
+}
+
 
 void Object::loadFromOBJFile(const char* filePath)
 {
