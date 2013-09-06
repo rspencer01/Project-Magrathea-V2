@@ -4,8 +4,10 @@ Todo list
 These are low level things that need implimentaion
  
  * Render timestep, for moving objects
+ * Fix shadows not appearing
  * Updating shadows on objects
  * Remove artifacts of misrendering regions
+ * Fix BMP reading bug.
  * ~~Moving points in objects easily~~
  * ~~Make an obj importer for objects~~
  * ~~Easily change vertex positions~~
