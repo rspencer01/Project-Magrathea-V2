@@ -191,7 +191,7 @@ void Object::editTextureCoord(int i, float u, float v)
 /// @param basisY The new Y axis
 void Object::rotate(Vector3 basisX,Vector3 basisY)
 {
-  Vector3 basisZ = basisX.cross(basisY);
+  Vector3 basisZ = basisX.cross(basisY).normal();
   for (int i = 0;i<numberOfPoints;i++)
   {
     Vector3 newPos = basisX * (vertexData[i].px - position.x) + 
