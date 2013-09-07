@@ -72,6 +72,8 @@ void Game::initialisePipeline()
   camera->RotateY(-3.1415/2);
   // Initialise the shadows
   shadows = new ShadowManager();
+
+  bird = new Bird(Vector3(10,60,10),this);
 }
 
 /// This function assigns the event handlers defined at the top of this
@@ -103,6 +105,7 @@ void Game::RenderScene(int refreshTime)
   for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)
       regions[i][j]->Render(refreshTime);
+  bird->Render(refreshTime);
 }
 
 int shadowsDone = 0;

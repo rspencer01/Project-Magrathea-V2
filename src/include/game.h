@@ -19,6 +19,7 @@
 #include <testobj.h>
 #include <shaders.h>
 #include <shadow.h>
+#include <bird.h>
 
 /// The gameops class contains all the methods to do with gameplay
 ///
@@ -63,6 +64,8 @@ class Game
     /// The shadow manager.  Handles all the shadow shader stuff
     ShadowManager* shadows;
     ShaderProgram* mainShader;
+    /// A test bird
+    Bird* bird;
   public:
     /// Creates a game instance and initialises all variables
     Game();
