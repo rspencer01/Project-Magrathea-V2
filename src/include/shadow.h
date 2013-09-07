@@ -18,10 +18,11 @@ class ShadowManager
     float minShadowDistance;
     float shadowBoxSize;
     float projMatrix[16];
+    int sinceLastRefresh;
   public:
     ShadowManager();
     Camera* camera;
-    void readyForWriting();
+    bool readyForWriting(int);
     void readyForReading(ShaderProgram*);
     ShaderProgram* shader;
 };
