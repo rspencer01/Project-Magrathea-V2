@@ -6,7 +6,7 @@
 Sky::Sky(Game* parent) : Object(Vector3(0,0,0),parent)
 {
   textureNumber = textureFromRAW("../assets/Sky7.raw");
-  clearTriangleData(22,20);
+  clearTriangleData(22,21);
 	for (int y = 0; y<21;y++)
 	{
 		addPoint(y,
@@ -23,8 +23,40 @@ Sky::Sky(Game* parent) : Object(Vector3(0,0,0),parent)
 	for (int y = 0; y<20;y++)
 		addTriangle(y,y,(y+1),21);
 
-	// And save
+  // And save
 	pushTriangleData();
 
+  sun = new Sun(Vector3(0,0,0),parent);
 }
 
+void Sky::Render(int refreshTime)
+{
+  Object::Render(refreshTime);
+  sun->Render(refreshTime);
+}
+
+Sun::Sun(Vector3 pos,Game* parent) : Object(pos,parent)
+{
+  centre = pos;
+  theta = 0;
+
+  clearTriangleData(20,20);
+  for(int i = 0;i<20;i++)
+  {
+    addPoint(i,Vector3(50*sin(i*3.1415*2/20),500,50*cos(i*3.1415*2/20)),
+      Vector3(0,1,0),1,1,1);
+    editTextureCoord(i,0.1+0.05*sin(i*3.1415*2/20),0.1+0.05*cos(i*3.1415*2/20));
+  }
+  for(int i = 1;i<19;i++)
+    addTriangle(i,0,i,i+1);
+  pushTriangleData();
+}
+
+void Sun::Render(int refreshTime)
+{
+  theta += refreshTime / 1000.0 *3.1415*2*2.0/600.0;
+/*  rotate(Vector3(cos(refreshTime / 1000.0 *3.1415*2*2.0/600.0),sin(refreshTime / 1000.0 *3.1415*2*2.0/600.0),0),
+         Vector3(sin(refreshTime / 1000.0 *3.1415*2*2.0/600.0),cos(refreshTime / 1000.0 *3.1415*2*2.0/600.0),0));
+  updateTriangleData();*/
+  Object::Render(refreshTime);
+}

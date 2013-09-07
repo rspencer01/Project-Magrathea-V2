@@ -139,7 +139,7 @@ void Game::display()
   glClearColor(0.813,0.957,0.99,1);
   camera->Render();
   // Gogogo!
-  sky->Render(0);
+  sky->Render(refreshTime);
   RenderScene(refreshTime);
   
   // Push this to the screen
