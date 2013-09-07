@@ -173,8 +173,11 @@ void Object::pushTriangleData()
 
 void Object::updateTriangleData()
 {
+  glDeleteBuffersARB(1,&vertexVBO);
+  glGenBuffersARB(1,&vertexVBO);
   glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
-  glBufferSubDataARB(GL_ARRAY_BUFFER,0,numberOfPoints*sizeof(VertexDatum),vertexData);
+  //glBufferSubDataARB(GL_ARRAY_BUFFER,0,numberOfPoints*sizeof(VertexDatum),vertexData);
+  glBufferDataARB(GL_ARRAY_BUFFER, numberOfPoints*sizeof(VertexDatum),vertexData,GL_STATIC_DRAW);
 }
 
 void Object::editTextureCoord(int i, float u, float v)
