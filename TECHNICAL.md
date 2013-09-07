@@ -25,9 +25,15 @@ The `Page` class holds a 2D array of `terrainBits`.  It is responsible for their
 
 DynoTrees and Their Generation
 ------------------------------
-`DynoTree` is the class that handles the generation of cool looking trees.
+`DynoTree` is the class that handles the generation of cool looking trees.  These trees are (currently) binary, ie each branch divides into two.
 
     MORE DETAILS HERE
+
+Graphics and `Object`s
+----------------------
+Project Magrathea stores all the visible things as `Object`s.  This class has the functions `addPoint`, `addTriangle` which, when used with the initialiser `clearTriangleData` and the `pushTriangleData` function construct 3d objects and push the data to the GPU for it to handle.  A copy of the data is kept in CPU memory, for easy mutation, for when animation is introduced.
+
+Another funciton, not fully tested, but seeming to work, is the `loadFromOBJFile` function.  This loads `obj` files.
 
 Shadows
 -------
@@ -42,4 +48,4 @@ Then we pass the texture, during every subsequent render pass to the fragment sh
 
 The `0.002` is a small offset to prevent items from throwing a shadow on themselves (acne, I think it is called).  If it fails this check, it is darkened.
 
-**NOTE** The shadow system is still in development, and is fairly buggy.  This will soon get better (I hope).
+Still to be implemented is the functionality of moving the shadow source around, to follow the player.
