@@ -59,7 +59,7 @@ class Game
     // TODO : fixme, wrt shaders
 	  void renderMenu();
     /// Draws all the things in the world
-    void RenderScene();
+    void RenderScene(int);
     /// The shadow manager.  Handles all the shadow shader stuff
     ShadowManager* shadows;
     ShaderProgram* mainShader;

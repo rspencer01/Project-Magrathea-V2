@@ -65,7 +65,7 @@ void Object::setPosition(Vector3 pos)
 /// Renders this object to the screen, using the VBOs that were 
 /// initialised using the addPoint, addTriangle and pushTriangleData
 /// functions
-void Object::Render()
+void Object::Render(int refreshTime)
 {
   // Only do something if we have data	
 	if (buffersInitialised)

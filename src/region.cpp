@@ -67,11 +67,11 @@ void Region::initialiseTriangles()
 }
 
 /// Render this region and the trees
-void Region::Render()
+void Region::Render(int refreshTime)
 {
-  Object::Render();
+  Object::Render(refreshTime);
   for (unsigned int i = 0; i<foliage.size();i++)
-    foliage[i]->Render();
+    foliage[i]->Render(refreshTime);
 }
 
 /// Returns the x coordinate

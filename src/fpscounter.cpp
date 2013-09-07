@@ -4,6 +4,7 @@ float fps = 0.0;
 int currentTime;
 int previousTime;
 int frameCount;
+int previousFrame;
 
 /// Registers the passing of a frame into the frame rate counter
 void logFrame()
@@ -22,9 +23,16 @@ void logFrame()
     previousTime = currentTime;
     frameCount = 0;
   }
+  previousFrame = currentTime;
 }
 
-/// Gets the time (in seconds) since the last frame
+/// Returns the absolute time (in milliseconds) since last frame
+int getFrameTime()
+{
+  return glutGet(GLUT_ELAPSED_TIME)-previousFrame;
+}
+
+/// Gets the time (in seconds) since the last frame, averaged over a number of frames
 float getFrameDiff()
 {
   return 1.0/fps;

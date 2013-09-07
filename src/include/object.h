@@ -100,7 +100,7 @@ class Object
   	/// Destroys the Object, freeing space
     ~Object();
   	/// Renders the Object to the screen
-    void Render();
+    void Render(int refreshTime);
   	/// Accessor for the item position
     Vector3 getPosition();
 };
