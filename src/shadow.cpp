@@ -6,7 +6,7 @@ ShadowManager::ShadowManager()
 {
   maxShadowDistance = 200;
   minShadowDistance = 10;
-  shadowBoxSize = 300;
+  shadowBoxSize = 100;
 
 	GLenum FBOstatus;
 	
