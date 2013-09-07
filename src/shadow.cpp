@@ -84,7 +84,7 @@ int oldViewport[4];
 bool ShadowManager::readyForWriting(int refreshTime)
 {
   sinceLastRefresh += refreshTime;
-  if (sinceLastRefresh<1000)
+  if (sinceLastRefresh<5000)
     return false;
   shader->Load();
   glGetIntegerv(GL_VIEWPORT,oldViewport);
