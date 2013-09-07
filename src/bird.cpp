@@ -56,7 +56,5 @@ void Bird::Render(int refreshTime)
 
   setPosition(position + velocity * refreshTime/1000.0);
 
-  printf("%f %f %f\n",velocity.x,velocity.y,velocity.z);
-
   updateTriangleData();
 }

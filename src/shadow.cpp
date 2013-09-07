@@ -120,5 +120,4 @@ void ShadowManager::relocate(Vector3 newPos, int refreshTime)
   camera->Position.y = newPos.y + 1000*cos(theta);
   camera->Position.z = newPos.z;
   camera->ViewDir = (newPos-camera->Position).normal();
-  printf("%f %f %f\n",camera->Position.x,camera->Position.y,camera->Position.z);
 }
