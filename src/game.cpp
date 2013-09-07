@@ -121,6 +121,8 @@ void Game::display()
   // Make whatever regions are required
   constructRegions(camera->Position.x,camera->Position.z);
   
+  shadows->camera->Position.x = camera->Position.x;
+  shadows->camera->Position.z = camera->Position.z;
   if (shadows->readyForWriting(refreshTime))
   {
     // Create the shadow texture
