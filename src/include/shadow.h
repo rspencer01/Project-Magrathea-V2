@@ -19,12 +19,14 @@ class ShadowManager
     float shadowBoxSize;
     float projMatrix[16];
     int sinceLastRefresh;
+    float theta;
   public:
     ShadowManager();
     Camera* camera;
     bool readyForWriting(int);
     void readyForReading(ShaderProgram*);
     ShaderProgram* shader;
+    void relocate(Vector3,int);
 };
 
 #endif

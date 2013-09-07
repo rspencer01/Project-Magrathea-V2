@@ -12,7 +12,7 @@ void main()
   if ((ShadowCoord.x>0  && ShadowCoord.x<1)&&
   	   (ShadowCoord.y>0  && ShadowCoord.y<1))
   {
-  	if (texture(shadowTexture,ShadowCoord.xy).z < ShadowCoord.z-0.0005)
+  	if (texture(shadowTexture,ShadowCoord.xy).z < ShadowCoord.z-0.0001)
   	{
   		vis = 0.5;
   	}
