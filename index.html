@@ -18,3 +18,13 @@ was to be as realistic as possible.  Things went fairly well (considering the au
 </code></pre>
 
 <p> There is a lot more documentation in the repo, but that also, will move to this site as well. </p>
+
+<h3> Blog posts</h3>
+    This is a list of blog posts.  There are also some tutorials scattered in between them
+    <ul>
+      {% for post in site.posts %}
+      <li>
+	<span>{{ post.date | date: "%B %e, %Y" }}</span> <a href="http://rspencer01.github.io/Project-Magrathea-V2{{ post.url }}">{{ post.title }}</a>
+      </li>
+      {% endfor %}
+    </ul>
