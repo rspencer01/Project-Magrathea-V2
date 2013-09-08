@@ -49,3 +49,7 @@ Then we pass the texture, during every subsequent render pass to the fragment sh
 The `0.002` is a small offset to prevent items from throwing a shadow on themselves (acne, I think it is called).  If it fails this check, it is darkened.
 
 Still to be implemented is the functionality of moving the shadow source around, to follow the player.
+
+Birds
+-----
+Birds are a pair of triangles with a texture.  They are kinematic (use velocity/acceleration etc) and fly fairly well.  The flapping pattern is not sinusoidal, but rather the sum of sin functions, giving a rounded triangular shape.
