@@ -4,7 +4,7 @@
 // We only want to load this texture once, if we can reload.  Remember the handle for it.
 GLuint birdTextureNumber = (GLuint)-1;
 // Where is the texture actually stored?
-const char* birdtextureName = "../assets/bird.bmp";
+const char* birdtextureName = "../assets/bird2.bmp";
 
 Bird::Bird(Vector3 position, Game* game) : Object(position,game)
 {
