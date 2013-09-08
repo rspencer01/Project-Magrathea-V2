@@ -25,6 +25,7 @@ was to be as realistic as possible.  Things went fairly well (considering the au
       {% for post in site.posts %}
       <li>
 	<span>{{ post.date | date: "%B %e, %Y" }}</span> <a href="http://rspencer01.github.io/Project-Magrathea-V2{{ post.url }}">{{ post.title }}</a>
+	  <p> {{post.exerpt }}<br>...</p>
       </li>
       {% endfor %}
     </ul>
