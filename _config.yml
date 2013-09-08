@@ -3,3 +3,4 @@ markdown: rdiscount
 permalink: /:year/:month/:day/:title
 rdiscount extensions: [smart]
 baseurl: Project-Magrathea-V2/
+excerpt_separator: .
