@@ -55,7 +55,10 @@ Game::Game(bool doGraphics)
   fpsOn = true;
   showMenu = false;
   if (doGraphics)
+  {
     sky = new Sky(this); 
+    bird = new Bird(Vector3(10,60,10),this);
+  }
 }
 
 /// Initialises all the shaders and cameras and shadows associated with this game
@@ -77,8 +80,6 @@ void Game::initialisePipeline()
   camera->RotateY(-3.1415/2);
   // Initialise the shadows
   shadows = new ShadowManager();
-
-  bird = new Bird(Vector3(10,60,10),this);
 }
 
 /// This function assigns the event handlers defined at the top of this
