@@ -350,6 +350,11 @@ footer .owner p a {
 	font-size: 10px;
 }
 
+code
+{
+  color : #606060; 
+}
+
 /* Markdown */
 .markdown-body h1,
 .markdown-body h2,
