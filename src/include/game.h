@@ -16,6 +16,7 @@
 #include <book.h>
 #include <sky.h>
 #include <queue>
+#include <vector>
 #include <testobj.h>
 #include <shaders.h>
 #include <shadow.h>
@@ -64,8 +65,8 @@ class Game
     /// The shadow manager.  Handles all the shadow shader stuff
     ShadowManager* shadows;
     ShaderProgram* mainShader;
-    /// A test bird
-    Bird* bird;
+    /// Some test birds
+    std::vector<Bird*> birds;
   public:
     /// Creates a game instance and initialises all variables.  If false is passed as a paramter, the game initialises no graphics
     Game(bool);

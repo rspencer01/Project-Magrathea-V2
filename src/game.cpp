@@ -57,7 +57,12 @@ Game::Game(bool doGraphics)
   if (doGraphics)
   {
     sky = new Sky(this); 
-    bird = new Bird(Vector3(10,60,10),this);
+    for (int i = 0; i<300;i++)
+    {
+      Vector3 t = randomVector()*100;
+      t.y = 0;
+      birds.push_back(new Bird(Vector3(100,60,100)+t,this));
+    }
   }
 }
 
@@ -111,7 +116,8 @@ void Game::RenderScene(int refreshTime)
   for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)
       regions[i][j]->Render(refreshTime);
-  bird->Render(refreshTime);
+  for (unsigned int i = 0;i<birds.size();i++)
+    birds[i]->Render(refreshTime);
 }
 
 int shadowsDone = 0;
