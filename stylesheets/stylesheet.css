@@ -356,6 +356,7 @@ code
   font-family : "Lucida Console", Monaco, monospace;
   font-size : 12px;
   background-color : #3B3B3B; 
+  border-radius : 2px;
 }
 
 strong
