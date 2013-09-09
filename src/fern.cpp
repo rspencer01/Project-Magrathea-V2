@@ -35,7 +35,6 @@ void Fern::initialiseTriangles()
 
 void Fern::makeLeaf(Vector3 pos, Vector3 dir, float width)
 {
-  int t = numberOfPoints;
   Vector3 cross = dir.cross(Vector3(dir.x,0,dir.z)).normal()*width/2;
   Vector3 diff = (cross*-1)/5+Vector3(0.01,0,0);
   addPoint(numberOfPoints,pos+cross,Vector3(0,1,0),0.7f,0.7f,0.7f);

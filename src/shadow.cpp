@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include <shadow.h>
 #include <graphics.h>
 
