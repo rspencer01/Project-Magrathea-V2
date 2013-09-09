@@ -354,7 +354,8 @@ code
 {
   color : #a0a0a0; 
   font-family : "Lucida Console", Monaco, monospace;
-  background-color : #101010; 
+  font-size : 12px;
+  background-color : #3B3B3B; 
 }
 
 strong
