@@ -352,7 +352,14 @@ footer .owner p a {
 
 code
 {
-  color : #606060; 
+  color : #a0a0a0; 
+  font-family : "Lucida Console", Monaco, monospace;
+  background-color : #101010; 
+}
+
+strong
+{
+  font-weight: bold;
 }
 
 /* Markdown */
