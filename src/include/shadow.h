@@ -13,17 +13,20 @@ class ShadowManager
   private:
     GLuint fboID;
     GLuint texID;
-    static const int TEXTURE_SIZE = 2048;
+    static const int TEXTURE_SIZE = 8192;
     float maxShadowDistance;
     float minShadowDistance;
     float shadowBoxSize;
     float projMatrix[16];
+    int sinceLastRefresh;
+    float theta;
   public:
     ShadowManager();
     Camera* camera;
-    void readyForWriting();
+    bool readyForWriting(int);
     void readyForReading(ShaderProgram*);
     ShaderProgram* shader;
+    void relocate(Vector3,int);
 };
 
 #endif

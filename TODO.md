@@ -2,15 +2,17 @@ Todo list
 =========
 
 These are low level things that need implimentaion
- 
- * Render timestep, for moving objects
- * Updating shadows on objects
- * Remove artifacts of misrendering regions
- * ~~Moving points in objects easily~~
- * ~~Make an obj importer for objects~~
- * ~~Easily change vertex positions~~
- * ~~Normals for each vertex~~
- * ~~Trees in more logical places~~
- * ~~Change background color to anything but red~~
- * ~~Sensical tree placement~~
- * ~~Move away from wireframe~~
+
+- [ ] Remove artifacts of misrendering regions
+- [ ] Fix BMP reading bug.
+- [x] Render timestep, for moving objects
+- [x] Fix shadows not appearing
+- [x] Updating shadows on objects
+- [x] Moving points in objects easily
+- [x] Make an obj importer for objects
+- [x] Easily change vertex positions
+- [x] Normals for each vertex
+- [x] Trees in more logical places
+- [x] Change background color to anything but red
+- [x] Sensical tree placement
+- [x] Move away from wireframe

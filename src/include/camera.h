@@ -18,13 +18,13 @@ class Camera;
 class Camera
 {
   private:
-    Vector3 ViewDir;
     Vector3 UpVector;
     ShaderProgram* shader;
     float RotatedX;	
 	  const char* matrixName;
     float viewMatrix[16];
   public:
+    Vector3 ViewDir;
 	  /// The position of the camera
 	  Vector3 Position;
 	  /// Initialises the camera

@@ -5,6 +5,7 @@
 #include <dynotree.h>
 #include <grass.h>
 #include <images.h>
+#include <fern.h>
 
 GLuint texture = (GLuint)-1;
 
@@ -24,6 +25,8 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
       	foliage.push_back(new DynoTree(*(here.position),parent));
       //if (here.isGrass)
       //  foliage.push_back(new Grass(*(here.position),*(here.normal),parent));
+      if (here.isFern)
+        foliage.push_back(new Fern(*(here.position),*(here.normal),parent));
     }
   if (texture == (GLuint)-1)
 	  texture = textureFromBMP("../assets/BigGrass.bmp");
@@ -64,11 +67,11 @@ void Region::initialiseTriangles()
 }
 
 /// Render this region and the trees
-void Region::Render()
+void Region::Render(int refreshTime)
 {
-  Object::Render();
+  Object::Render(refreshTime);
   for (unsigned int i = 0; i<foliage.size();i++)
-    foliage[i]->Render();
+    foliage[i]->Render(refreshTime);
 }
 
 /// Returns the x coordinate

@@ -4,8 +4,8 @@
 
 ShadowManager::ShadowManager()
 {
-  maxShadowDistance = 500;
-  minShadowDistance = 10;
+  maxShadowDistance = 1200;
+  minShadowDistance = 800;
   shadowBoxSize = 100;
 
 	GLenum FBOstatus;
@@ -74,13 +74,21 @@ ShadowManager::ShadowManager()
   shader->CompileAll();
   shader->setMatrix("projectionMatrix",&projMatrix[0]);
   camera = new Camera(shader,"transformationMatrix");
-  camera->Position = Vector3(0,100,0);
+  camera->Position = Vector3(0,200,0);
   camera->RotateX(-3.1415/2);
+  sinceLastRefresh = 10000;
+  theta = 0;
 }
 
-void ShadowManager::readyForWriting()
+int oldViewport[4];
+
+bool ShadowManager::readyForWriting(int refreshTime)
 {
+  sinceLastRefresh += refreshTime;
+  if (sinceLastRefresh<2000)
+    return false;
   shader->Load();
+  glGetIntegerv(GL_VIEWPORT,oldViewport);
   glViewport(0,0,TEXTURE_SIZE,TEXTURE_SIZE);
   shader->setMatrix("projectionMatrix",&projMatrix[0]);
   shader->setInt("otherTexture",3);
@@ -89,13 +97,27 @@ void ShadowManager::readyForWriting()
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-  
+  sinceLastRefresh = 0;
+  return true;
 }
 
 void ShadowManager::readyForReading(ShaderProgram* mainShader)
 {
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
+  mainShader->Load();
   mainShader->setMatrix("lightTransformMatrix",camera->getTransformationMatrix());
   mainShader->setMatrix("lightProjectionMatrix",&projMatrix[0]);
+  mainShader->setInt("shadowTexture",7);
+  mainShader->setInt("otherTexture",3);
+  glViewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
+}
+
+void ShadowManager::relocate(Vector3 newPos, int refreshTime)
+{
+  theta += refreshTime / 1000.0 *3.1415*2*2.0/600.0;
+  camera->Position.x = newPos.x + 1000*sin(theta);
+  camera->Position.y = newPos.y + 1000*cos(theta);
+  camera->Position.z = newPos.z;
+  camera->ViewDir = (newPos-camera->Position).normal();
 }

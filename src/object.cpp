@@ -43,8 +43,21 @@ Vector3 Object::getPosition()
   return position;
 }
 
+/// Changes the position of the object, updating it in game space.
+/// Eventually, each object will pass a variable to the shader telling it what to draw relative to
 void Object::setPosition(Vector3 pos)
 {
+  if (buffersInitialised)
+  {
+    Vector3 delta = pos - position;
+    for (int i = 0;i<numberOfPoints;i++)
+    {
+      vertexData[i].px += delta.x;
+      vertexData[i].py += delta.y;
+      vertexData[i].pz += delta.z;
+    }
+    updateTriangleData();
+  }
   position = pos;
 }
 
@@ -52,7 +65,7 @@ void Object::setPosition(Vector3 pos)
 /// Renders this object to the screen, using the VBOs that were 
 /// initialised using the addPoint, addTriangle and pushTriangleData
 /// functions
-void Object::Render()
+void Object::Render(int refreshTime)
 {
   // Only do something if we have data	
 	if (buffersInitialised)
@@ -160,8 +173,11 @@ void Object::pushTriangleData()
 
 void Object::updateTriangleData()
 {
+  glDeleteBuffersARB(1,&vertexVBO);
+  glGenBuffersARB(1,&vertexVBO);
   glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
-  glBufferSubDataARB(GL_ARRAY_BUFFER,0,numberOfPoints*sizeof(VertexDatum),vertexData);
+  //glBufferSubDataARB(GL_ARRAY_BUFFER,0,numberOfPoints*sizeof(VertexDatum),vertexData);
+  glBufferDataARB(GL_ARRAY_BUFFER, numberOfPoints*sizeof(VertexDatum),vertexData,GL_STATIC_DRAW);
 }
 
 void Object::editTextureCoord(int i, float u, float v)
@@ -170,10 +186,32 @@ void Object::editTextureCoord(int i, float u, float v)
 	vertexData[i].texy = v;
 }
 
+/// Rotates the object to match the given new axis
+/// @param basisX The new X axis
+/// @param basisY The new Y axis
+void Object::rotate(Vector3 basisX,Vector3 basisY)
+{
+  Vector3 basisZ = basisX.cross(basisY).normal();
+  for (int i = 0;i<numberOfPoints;i++)
+  {
+    Vector3 newPos = basisX * (vertexData[i].px - position.x) + 
+                     basisY * (vertexData[i].py - position.y)  + 
+                     basisZ * (vertexData[i].pz - position.z) ;
+    Vector3 newNrm = basisX * vertexData[i].nx + 
+                     basisY * vertexData[i].ny + 
+                     basisZ * vertexData[i].nz;
+    vertexData[i].px = (position+newPos).x;
+    vertexData[i].py = (position+newPos).y;
+    vertexData[i].pz = (position+newPos).z;
+    vertexData[i].nx = newNrm.x;
+    vertexData[i].ny = newNrm.y;
+    vertexData[i].nz = newNrm.z;
+  }
+}
+
 
 void Object::loadFromOBJFile(const char* filePath)
 {
-  /*
   // Let the user know what we are doing
   printf("Loading model from \"%s\"\n",filePath);
   // Do all the stuff to set this up as new
@@ -307,5 +345,4 @@ void Object::loadFromOBJFile(const char* filePath)
 	for (int i = 0; i<numberOfTriangles;i++)
 		addTriangle(i,tri[i][0]-1,tri[i][1]-1,tri[i][2]-1);
 	pushTriangleData();
-  */
 }

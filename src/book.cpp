@@ -38,6 +38,7 @@ terrainBit Book::getAt(int x, int y)
   nullBit.normal = new Vector3(0.f,1.f,0.f);
   nullBit.isTree = false;
   nullBit.isGrass = false;
+  nullBit.isFern = false;
   // Check that this is a valid point to enquire about.  If not, return a nothing.
   if ((x > PAGE_COUNT * PAGE_SIZE) || (x<0))
     return nullBit;

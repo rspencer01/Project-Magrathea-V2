@@ -16,4 +16,6 @@ float getFrameDiff();
 /// Returns the number of frames per second
 float getFrameRate();
 
+int getFrameTime();
+
 #endif

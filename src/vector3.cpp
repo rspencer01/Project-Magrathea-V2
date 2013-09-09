@@ -23,7 +23,7 @@ Vector3::Vector3(float* data)
   this->z = data[2];
 }
 
-// Constructs a vector with 0 components
+/// Constructs a vector with 0 as all its components
 Vector3::Vector3()
 {
   x = y = z = 0;
@@ -104,7 +104,10 @@ void Vector3::normalise()
   (*this) = normal();
 }
 
+
 int seed = 1;
+/// Constructs a random vector of magnitude 1.  Vector will be different each time of calling.
+/// Not recommended for reusable content (trees etc).
 Vector3 randomVector()
 {
   float x,y,z;

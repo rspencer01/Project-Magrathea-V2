@@ -12,13 +12,13 @@ void main()
   if ((ShadowCoord.x>0  && ShadowCoord.x<1)&&
   	   (ShadowCoord.y>0  && ShadowCoord.y<1))
   {
-  	if (texture(shadowTexture,ShadowCoord.xy).z < ShadowCoord.z-0.005)
+  	if (texture(shadowTexture,ShadowCoord.xy).z < ShadowCoord.z-0.0001)
   	{
   		vis = 0.5;
   	}
   }
   vec4 otherTexFrag = texture(otherTexture,tex);
-  if ((otherTexFrag.x>0.9)&&(otherTexFrag.z>0.9))
+  if ((otherTexFrag.x>0.9)&&(otherTexFrag.z>0.9)&&(otherTexFrag.y<0.1))
   	alph = 0.0;
   FragColor =  vec4(vis*vec3(col.xyz)*otherTexFrag.xyz,alph); 
 }

@@ -9,42 +9,42 @@
 #ifndef VECTOR3_H
 #define VECTOR3_H
 
-/// A simple 3D-vector imlimentation
+/// A 3D-vector imlimentation
 class Vector3
 {
   public:
     /// The x component of the vector
     float x;
-	/// The y component of the vector
+	  /// The y component of the vector
     float y;
-	/// The z component of the vector
+	  /// The z component of the vector
     float z;
-	/// Construct a vector object with the given components
-	Vector3(float x,float y,float z);
-	/// Construct a vector with the array [x,y,z] components
-  Vector3(float*);
-  /// Construc the null vector
-  Vector3();
-	/// Assigns this vector to the other vector
-  Vector3 operator=(const Vector3&);
-	/// Adds a vector
-  Vector3 operator+(Vector3);
-	/// Subtracts a vector
-  Vector3 operator-(Vector3);
-	/// Performs a multiplication with a scalar
-  Vector3 operator*(float);
-	/// Performs a division with a scalar
-  Vector3 operator/(float);
-	/// Performs a dot product with the other vector
-  float dot(Vector3);
-  /// Performs a cross product
-  Vector3 cross(Vector3);
-	/// Returns the magnitude of the vector
-  float magnitude();
-  /// Returns the normal of this vector
-  Vector3 normal();
-	/// Turns the vector into a unit vector
-  void normalise();
+	  /// Construct a vector object with the given components
+	  Vector3(float x,float y,float z);
+	  /// Construct a vector with the array [x,y,z] components
+    Vector3(float*);
+    /// Construc the null vector
+    Vector3();
+	  /// Assigns this vector to the other vector
+    Vector3 operator=(const Vector3&);
+	  /// Adds a vector
+    Vector3 operator+(Vector3);
+	  /// Subtracts a vector
+    Vector3 operator-(Vector3);
+	  /// Performs a multiplication with a scalar
+    Vector3 operator*(float);
+	  /// Performs a division with a scalar
+    Vector3 operator/(float);
+	  /// Performs a dot product with the other vector
+    float dot(Vector3);
+    /// Performs a cross product
+    Vector3 cross(Vector3);
+	  /// Returns the magnitude of the vector
+    float magnitude();
+    /// Returns the normal of this vector
+    Vector3 normal();
+	  /// Turns the vector into a unit vector
+    void normalise();
 };
 
 /// Returns a random unit vector
