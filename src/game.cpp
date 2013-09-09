@@ -57,11 +57,11 @@ Game::Game(bool doGraphics)
   if (doGraphics)
   {
     sky = new Sky(this); 
-    for (int i = 0; i<300;i++)
+    for (int i = 0; i<30;i++)
     {
-      Vector3 t = randomVector()*100;
+      Vector3 t = randomVector()*10;
       t.y = 0;
-      birds.push_back(new Bird(Vector3(100,60,100)+t,this));
+      birds.push_back(new Bird(Vector3(0,60,0)+t,this));
     }
   }
 }
