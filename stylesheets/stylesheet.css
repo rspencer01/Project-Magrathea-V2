@@ -364,6 +364,13 @@ strong
   font-weight: bold;
 }
 
+.linenos
+{
+  background-color: #2A2A2A;
+  color: #D6D6D6;
+  text-align: center;
+}
+
 /* Markdown */
 .markdown-body h1,
 .markdown-body h2,
