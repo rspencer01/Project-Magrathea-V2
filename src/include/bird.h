@@ -10,7 +10,7 @@
 
 class Game;
 class Bird;
-
+#include <object.h>
 #include <magrathea.h>
 
 class Bird : public Object

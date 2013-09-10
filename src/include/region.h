@@ -10,8 +10,8 @@
 #define REGION_H
 
 class Game;
-
-#include <magrathea.h>
+#include <object.h>
+//#include <magrathea.h>
 
 #include <vector>
 

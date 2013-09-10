@@ -96,6 +96,18 @@ void ShaderProgram::Load()
   // Now load this program
   glUseProgram(ShaderProgramID);
   variableLocations.clear();
+  objPos = -1;
+}
+
+/// The object matrix is set so often that looking it up (even in a map) each time
+/// is far too costly.  This function specifically caches that matrix (unlike
+/// setMatrix which does a generic matrix).
+/// @param value The value to set the matrix to.
+void ShaderProgram::setObjectMatrix(float* value)
+{
+  if (objPos==-1)
+    objPos = glGetUniformLocation(ShaderProgramID, "objectMatrix");
+  glUniformMatrix4fv(objPos,1,GL_TRUE,value);
 }
 
 void ShaderProgram::setMatrix(const char* varName, float* value)

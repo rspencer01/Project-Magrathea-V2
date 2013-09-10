@@ -133,8 +133,13 @@ void Game::display()
   if (shadows->readyForWriting(refreshTime))
   {
     // Create the shadow texture
+    // Keep track of which shader we are using
+    currentShader = shadows->shader;
+    // Render the scene for depth testing
     RenderScene(0);
+    // And reset
     shadows->readyForReading(mainShader);
+    currentShader = mainShader;
   }
    
   // Render to the screen
@@ -142,6 +147,7 @@ void Game::display()
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glClearColor(0.813,0.957,0.99,1);
+  
   camera->Render();
   // Gogogo!
   sky->Render(refreshTime);
