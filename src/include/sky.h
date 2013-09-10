@@ -15,7 +15,7 @@ class Sun : public Object
     Vector3 centre;
     float theta;
   public:
-    Sun(Vector3 pos,Game* parent,ShaderProgram*);
+    Sun(Vector3 pos,Game* parent);
     void Render(int);
 };
 
@@ -24,7 +24,7 @@ class Sky : public Object
   private:
     Sun* sun;
   public:
-    Sky(Game* parent,ShaderProgram*);
+    Sky(Game* parent);
     void Render(int);
 };
 

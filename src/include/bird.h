@@ -24,7 +24,7 @@ class Bird : public Object
     Vector3 upward;
   public:
 	  /// Constructs the tree with the given coordinates
-    Bird(Vector3,Game*,ShaderProgram*);
+    Bird(Vector3,Game*);
     void Render(int);
 };
 

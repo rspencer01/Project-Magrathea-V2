@@ -10,6 +10,6 @@ class Grass : public Object
 {
   public:
     /// Constructs grass at given position, with given normal
-    Grass(Vector3 pos, Vector3 norm, Game* parent,ShaderProgram*);
+    Grass(Vector3 pos, Vector3 norm, Game* parent);
 };
 #endif

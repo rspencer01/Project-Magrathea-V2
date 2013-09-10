@@ -14,11 +14,10 @@
 
 /// @param pos The position of this object in gamespace
 /// @param g   The game to which this object belongs
-Object::Object(Vector3 pos,Game* g,ShaderProgram* s)
+Object::Object(Vector3 pos,Game* g)
 {
   position = pos;
   game = g;
-  shader = s;
   buffersInitialised = false;
   vertexData = NULL;
   triDat = NULL;
@@ -65,7 +64,7 @@ void Object::Render(int refreshTime)
   // Only do something if we have data	
 	if (buffersInitialised)
 	{
-    shader->setObjectMatrix(transformMatrix);
+    game->currentShader->setObjectMatrix(transformMatrix);
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D,textureNumber);
     glEnableVertexAttribArrayARB(0);

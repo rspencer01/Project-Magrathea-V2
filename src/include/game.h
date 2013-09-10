@@ -67,6 +67,7 @@ class Game
     /// A test bird
     Bird* bird;
   public:
+    ShaderProgram* currentShader;
     /// Creates a game instance and initialises all variables.  If false is passed as a paramter, the game initialises no graphics
     Game(bool);
     /// Runs the game

@@ -55,7 +55,7 @@ Game::Game(bool doGraphics)
   fpsOn = true;
   showMenu = false;
   if (doGraphics)
-    sky = new Sky(this,mainShader); 
+    sky = new Sky(this); 
 }
 
 /// Initialises all the shaders and cameras and shadows associated with this game
@@ -78,7 +78,7 @@ void Game::initialisePipeline()
   // Initialise the shadows
   shadows = new ShadowManager();
 
-  bird = new Bird(Vector3(10,60,10),this,mainShader);
+  bird = new Bird(Vector3(10,60,10),this);
 }
 
 /// This function assigns the event handlers defined at the top of this
@@ -133,6 +133,7 @@ void Game::display()
   if (shadows->readyForWriting(refreshTime))
   {
     // Create the shadow texture
+    currentShader = shadows->shader;
     RenderScene(0);
     shadows->readyForReading(mainShader);
   }
@@ -142,6 +143,7 @@ void Game::display()
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glClearColor(0.813,0.957,0.99,1);
+  currentShader = mainShader;
   camera->Render();
   // Gogogo!
   sky->Render(refreshTime);
@@ -230,14 +232,14 @@ void Game::constructRegions(float x,float y)
 	if (regions.size()==0)
 	{
 		regions.push_back(std::deque<Region*>());
-		Region* rg = new Region(rx,ry,this,mainShader);
+		Region* rg = new Region(rx,ry,this);
 		regions[0].push_back(rg);
 	}
   
 	if (regions.back().back()->getOriginY() < ry+REGION_SIZE*7)
 	{
 		int oy = regions.back().back()->getOriginY();
-		Region* rg = new Region(rx,oy+REGION_SIZE,this,mainShader);
+		Region* rg = new Region(rx,oy+REGION_SIZE,this);
 		regions.push_back(std::deque<Region*>());
 		regions.back().push_back(rg);
 	}
@@ -253,7 +255,7 @@ void Game::constructRegions(float x,float y)
     int oy = regions.front().back()->getOriginY();
     if (oy-REGION_SIZE>=0)
     {
-		  Region* rg = new Region(rx,oy-REGION_SIZE,this,mainShader);
+		  Region* rg = new Region(rx,oy-REGION_SIZE,this);
 		  regions.push_front(std::deque<Region*>());
 		  regions.front().push_back(rg);
     }
@@ -269,7 +271,7 @@ void Game::constructRegions(float x,float y)
 	for (unsigned int i = 0;i<regions.size();i++)
 	{
 		if (regions[i].back()->getOriginX() < rx+REGION_SIZE*7)
-			regions[i].push_back(new Region(regions[i].back()->getOriginX()+REGION_SIZE,regions[i].back()->getOriginY(),this,mainShader));
+			regions[i].push_back(new Region(regions[i].back()->getOriginX()+REGION_SIZE,regions[i].back()->getOriginY(),this));
 		if (regions[i].back()->getOriginX() > rx+REGION_SIZE*7)
 		{
 			delete regions[i].back();
@@ -277,7 +279,7 @@ void Game::constructRegions(float x,float y)
 		}
 		if (regions[i].front()->getOriginX() > rx-REGION_SIZE*7)
       if (regions[i].front()->getOriginX()-REGION_SIZE>=0)
-			  regions[i].push_front(new Region(regions[i].front()->getOriginX()-REGION_SIZE,regions[i].front()->getOriginY(),this,mainShader));
+			  regions[i].push_front(new Region(regions[i].front()->getOriginX()-REGION_SIZE,regions[i].front()->getOriginY(),this));
 		if (regions[i].front()->getOriginX() < rx-REGION_SIZE*7)
 		{
 			delete regions[i].front();

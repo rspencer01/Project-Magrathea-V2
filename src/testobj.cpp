@@ -1,7 +1,7 @@
 #include <testobj.h>
 #include <images.h>
 
-TestObj::TestObj(Game* parent,ShaderProgram* s) : Object(Vector3(0,0,0),parent,s)
+TestObj::TestObj(Game* parent) : Object(Vector3(0,0,0),parent)
 {
   clearTriangleData(11,7);
   // Add a tetrahedron thing

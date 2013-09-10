@@ -101,13 +101,12 @@ class Object
     float transformMatrix [16];
     /// The function to populate the above
     void updateMatrix();
-    ShaderProgram* shader;
     Vector3 forward;
     Vector3 up;
     Vector3 right;
   public:
 	  /// Constructs the object with the given coordinates and in the given game
-    Object(Vector3,Game*,ShaderProgram*);
+    Object(Vector3,Game*);
   	/// Destroys the Object, freeing space
     ~Object();
   	/// Renders the Object to the screen
