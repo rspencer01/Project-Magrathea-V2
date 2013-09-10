@@ -102,6 +102,9 @@ class Object
     /// The function to populate the above
     void updateMatrix();
     ShaderProgram* shader;
+    Vector3 forward;
+    Vector3 up;
+    Vector3 right;
   public:
 	  /// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*,ShaderProgram*);

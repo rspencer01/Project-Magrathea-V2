@@ -22,6 +22,9 @@ Object::Object(Vector3 pos,Game* g,ShaderProgram* s)
   vertexData = NULL;
   triDat = NULL;
   textureNumber = -1;
+  forward = Vector3(1,0,0);
+  up = Vector3(0,1,0);
+  right = Vector3(0,0,1);
   updateMatrix();
 }
 
@@ -113,8 +116,6 @@ void Object::clearTriangleData(int p, int t)
 /// @param g The green component of the colour
 void Object::addPoint(int i,Vector3 point,Vector3 normal, float r, float g, float b)
 {
-	// Point is relative to the position of the object
-	//point = point + position;
   // Add it to the internal array
 	vertexData[i].px = point.x;
 	vertexData[i].py = point.y;
@@ -183,39 +184,27 @@ void Object::editTextureCoord(int i, float u, float v)
 /// @param basisY The new Y axis
 void Object::rotate(Vector3 basisX,Vector3 basisY)
 {
-  Vector3 basisZ = basisX.cross(basisY).normal();
-  for (int i = 0;i<numberOfPoints;i++)
-  {
-    Vector3 newPos = basisX * (vertexData[i].px - position.x) + 
-                     basisY * (vertexData[i].py - position.y)  + 
-                     basisZ * (vertexData[i].pz - position.z) ;
-    Vector3 newNrm = basisX * vertexData[i].nx + 
-                     basisY * vertexData[i].ny + 
-                     basisZ * vertexData[i].nz;
-    vertexData[i].px = (position+newPos).x;
-    vertexData[i].py = (position+newPos).y;
-    vertexData[i].pz = (position+newPos).z;
-    vertexData[i].nx = newNrm.x;
-    vertexData[i].ny = newNrm.y;
-    vertexData[i].nz = newNrm.z;
-  }
+  forward = basisX.normal();
+  up = basisY.normal();
+  right = up.cross(forward).normal();
+  updateMatrix();
 }
 
 void Object::updateMatrix()
 {
-  transformMatrix[0] = 1;
-  transformMatrix[1] = 0;
-  transformMatrix[2] = 0;
+  transformMatrix[0] = forward.x;
+  transformMatrix[1] = up.x;
+  transformMatrix[2] = right.x;
   transformMatrix[3] = position.x;
 
-  transformMatrix[4] = 0;
-  transformMatrix[5] = 1;
-  transformMatrix[6] = 0;
+  transformMatrix[4] = forward.y;
+  transformMatrix[5] = up.y;
+  transformMatrix[6] = right.y;
   transformMatrix[7] = position.y;
 
-  transformMatrix[8] = 0;
-  transformMatrix[9] = 0;
-  transformMatrix[10] = 1;
+  transformMatrix[8] = forward.y;
+  transformMatrix[9] = up.z;
+  transformMatrix[10] = right.z;
   transformMatrix[11] = position.z;
 
   transformMatrix[12] = 0;
