@@ -52,6 +52,7 @@ Vector3 Object::getPosition()
 void Object::setPosition(Vector3 pos)
 {
   position = pos;
+  updateMatrix();
 }
 
 /// Renders this object to the screen, using the VBOs that were 
