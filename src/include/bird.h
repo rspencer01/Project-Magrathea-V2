@@ -19,6 +19,7 @@ class Bird : public Object
 	  void initialiseTriangles();
     float theta;
     float dihedral;
+    float turnCoeff;
     Vector3 velocity;
     Vector3 forward;
     Vector3 upward;

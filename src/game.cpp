@@ -55,7 +55,15 @@ Game::Game(bool doGraphics)
   fpsOn = true;
   showMenu = false;
   if (doGraphics)
+  {
     sky = new Sky(this); 
+    for (int i = 0; i<30;i++)
+    {
+      Vector3 t = randomVector()*10;
+      t.y = 0;
+      birds.push_back(new Bird(Vector3(0,60,0)+t,this));
+    }
+  }
 }
 
 /// Initialises all the shaders and cameras and shadows associated with this game
@@ -77,8 +85,6 @@ void Game::initialisePipeline()
   camera->RotateY(-3.1415/2);
   // Initialise the shadows
   shadows = new ShadowManager();
-
-  bird = new Bird(Vector3(10,60,10),this);
 }
 
 /// This function assigns the event handlers defined at the top of this
@@ -110,7 +116,8 @@ void Game::RenderScene(int refreshTime)
   for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)
       regions[i][j]->Render(refreshTime);
-  bird->Render(refreshTime);
+  for (unsigned int i = 0;i<birds.size();i++)
+    birds[i]->Render(refreshTime);
 }
 
 int shadowsDone = 0;
