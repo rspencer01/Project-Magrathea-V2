@@ -5,6 +5,7 @@ Project-Magrathea-V2
 
 The second generation realistic terrain project.
 The first version ended up dying as a result of too many changes of mind.  This will hopefully be better.
+The project has a [webpage][1], which has some nice screenshots.
 
 Goals:
 ------
@@ -30,26 +31,28 @@ Wishlist
 --------
 This is alist of high level things that I want to impliment at some stage.  Low level stuff to do is found in `TODO.md`.
 
- * ~~Trees~~
- * Birds
- * ~~Colors~~
- * ~~Textures~~
- * Sun and sky
- * Sensical terrain types
+ * [x] Trees
+ * [ ] Birds
+ * [x] Colors
+ * [x] Textures
+ * [ ] Sun and sky
+ * [ ] Sensical terrain types
 
 Assets and Data
 ---------------
-The assets and data are too large to hold in this repo.  They can be found [here][1].  Unpack the zip file into a folder called `assets` one directory below where you run the executable
+The assets and data are too large to hold in this repo.  They can be found [here][2].  Unpack the zip file into a folder called `assets` one directory below where you run the executable.  It is worth noting that in the same directory as `assets`, the folder `src/shaders` should be copied.
 
-The textures are (currently) BMP files.  Feel free to chop and change these to improve them.  If you develop a better texture, please let me know (or submit a pull request).
+The textures are (currently) BMP and RAW files.  Feel free to chop and change these to improve them.  If you develop a better texture, please let me know (or submit a pull request).
 
 Heightmap Data
 --------------
-Data is 3m resolution of a 9 square kilometers of a section of North America.  More data can be obtained from [here][2].
+Data is 3m resolution of a 9 square kilometers of a section of North America.  More data can be obtained from [here][3].
 
 Code Technicalities
 -------------------
-Whenever I see new code, I hate having to reinvent the wheel to work out how the thing works.  I hope that this code is sufficently readable to make understanding it easy (even to those not familiar with OpenGL coding).  To this end, I have written `TECHNICAL.md` which givs an overview of how the code works and what calls what etc.
+Whenever I see new code, I hate having to reinvent the wheel to work out how the thing works.  I hope that this code is sufficently readable to make understanding it easy (even to those not familiar with OpenGL coding).  To this end, I have written `TECHNICAL.md` which givs an overview of how the code works and what calls what etc. as well as `DEVELOPMENT.md` which documents my coding style.
 
-[1]: http://www.ked.co.za/temp/assets.zip "Sample formatted data obtainable here"
-[2]: http://viewer.nationalmap.gov/viewer/ "More raw data obtainable here"
+There are also some tutorials up on the project webpage (these are currently growing).
+
+[2]: http://www.ked.co.za/temp/assets.zip "Sample formatted data obtainable here"
+[3]: http://viewer.nationalmap.gov/viewer/ "More raw data obtainable here"

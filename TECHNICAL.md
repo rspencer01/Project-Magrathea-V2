@@ -11,9 +11,11 @@ The `Game` Class
 ----------------
 This is the class that handles most of the program.  Upon construction, a variety of things are initialised.  Upon running, control is surrendered to GLUT, the OpenGL window managment system Magrathea uses.
 
+Worth noting is the curious variable, `currentGame`.  This is because GLUT is not happy with taking a function of a class as a callback function, so this variable and the wrapper classes are required.
+
 `Book`, `Page` and the Paging System
 ------------------------------------
-Project Magrathea will idealy grow to be big.  Not big as in "This movie is big", but big in the same way space is big.  (Bigger than the trip to your local shop).  As such it is procedurally generated, and at no time is the entire world held in memory.
+Project Magrathea will idealy grow to be big.  Not big as in "This file is big", but big in the same way space is big.  (Bigger than the trip to your local shop).  As such it is procedurally generated, and at no time is the entire world held in memory.
 
 At present, the main component of the world (heightmap data) is still read in from a file.  This *will* change.
 
@@ -27,7 +29,13 @@ DynoTrees and Their Generation
 ------------------------------
 `DynoTree` is the class that handles the generation of cool looking trees.  These trees are (currently) binary, ie each branch divides into two.
 
-    MORE DETAILS HERE
+Each branch consists of 20 points: 2 rings of 10, joined by 20 triangles.
+
+Once the branch divides in two, one of the branches "continues" the old branch by using the points that the old branch ended on as its starting ring.  The other starts anew.
+
+Once the branches are small enough, 6 "plates" are placed randomly just off the branch.  These large squares hold a transparant texture with leaves that gives a most pleasing effect.
+
+Once the branches are even smaller, the recursion stops.
 
 Graphics and `Object`s
 ----------------------
@@ -48,8 +56,18 @@ Then we pass the texture, during every subsequent render pass to the fragment sh
 
 The `0.002` is a small offset to prevent items from throwing a shadow on themselves (acne, I think it is called).  If it fails this check, it is darkened.
 
-Still to be implemented is the functionality of moving the shadow source around, to follow the player.
+The shadows are updated every few seconds to follow the player and to turn with the sun.
 
 Birds
 -----
-Birds are a pair of triangles with a texture.  They are kinematic (use velocity/acceleration etc) and fly fairly well.  The flapping pattern is not sinusoidal, but rather the sum of sin functions, giving a rounded triangular shape.
+Birds are a pair of triangles with a texture.  They are kinematic (use velocity/acceleration etc) and fly fairly well.  The flapping pattern is not sinusoidal, but rather the sum of sin functions, giving a rounded triangular shape.  Soon they will flock.  Mwaaahahahah!
+
+Terrain
+-------
+What follows is a plan, not yet tested, nor implemented.
+
+One of the headaches with creating terrain is constructing a realistic transition from one type (say grass) to another (say rock).  One of the effective methods for this is to just fade from one texture on the ground to another.
+
+The origional plan was for each `Region` to have a texture that it creates and lays over itself.  However, this is costly on creation and requires storing lots of big images.  A better plan is to pass the task to the fragment shader!  This shader samples a number of textures and outputs the correct pixel colour based on that.
+
+Any weirdnesss with a half grass half rock portion of land will hopefully be brushed over with actual grass objects or other things that cover the ground.
