@@ -17,7 +17,9 @@ Bird::Bird(Vector3 position, Game* game) : Object(position,game)
   textureNumber = birdTextureNumber;
   theta = 3.141592 * random((int)this+position.x+position.y+position.x*position.z);
   turnCoeff = 0.2*(random((int)this+position.x+position.y+position.x*position.z+1)-0.5);
-  forward = Vector3(1,0,0);
+  forward = randomVector();
+  forward.y = 0;
+  forward.normalise();
   velocity = forward;
   upward = Vector3(0,1,0);
 }
