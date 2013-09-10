@@ -13,8 +13,9 @@ At the moment, it has a long way to go, but it is getting there steadily.  We wi
 
 If you would like to browse, checkout or even edit the code, simply run
 
-    {% highlight bash %}
-    $ git clone https://github.com/rspencer01/Project-Magrathea-V2{% endhighlight %}
+{% highlight bash %}
+$ git clone https://github.com/rspencer01/Project-Magrathea-V2
+{% endhighlight %}
 
 There is a lot more documentation in the repo, but that also, will start to move to this site.
 
