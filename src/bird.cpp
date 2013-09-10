@@ -7,7 +7,7 @@ GLuint birdTextureNumber = (GLuint)-1;
 // Where is the texture actually stored?
 const char* birdtextureName = "../assets/bird2.bmp";
 
-Bird::Bird(Vector3 position, Game* game) : Object(position,game)
+Bird::Bird(Vector3 position, Game* game,ShaderProgram* s) : Object(position,game,s)
 {
   initialiseTriangles();
     // If we have yet to load the texture, do it

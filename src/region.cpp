@@ -13,7 +13,7 @@ GLuint texture = (GLuint)-1;
 /// @param x The x coordinate of the origin
 /// @param y The y coordinate of the origin
 /// @param parent The game that this region is in.
-Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
+Region::Region(int x, int y,Game* parent,ShaderProgram* s) : Object(Vector3(x,0.f,y),parent,s)
 {
 	printf("New region at %d %d\n",x,y);
 	initialiseTriangles();
@@ -22,11 +22,11 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
     {
       terrainBit here = game->getTerrainBit(tx+x,ty+y);
       if (here.isTree)
-      	foliage.push_back(new DynoTree(*(here.position),parent));
+      	foliage.push_back(new DynoTree(*(here.position),parent,s));
       //if (here.isGrass)
       //  foliage.push_back(new Grass(*(here.position),*(here.normal),parent));
       if (here.isFern)
-        foliage.push_back(new Fern(*(here.position),*(here.normal),parent));
+        foliage.push_back(new Fern(*(here.position),*(here.normal),parent,s));
     }
   if (texture == (GLuint)-1)
 	  texture = textureFromBMP("../assets/BigGrass.bmp");

@@ -3,7 +3,7 @@
 #include <images.h>
 #include <GL/glut.h>
 
-Sky::Sky(Game* parent) : Object(Vector3(0,0,0),parent)
+Sky::Sky(Game* parent,ShaderProgram* s) : Object(Vector3(0,0,0),parent,s)
 {
   textureNumber = textureFromRAW("../assets/Sky7.raw");
   clearTriangleData(22,21);
@@ -26,7 +26,7 @@ Sky::Sky(Game* parent) : Object(Vector3(0,0,0),parent)
   // And save
 	pushTriangleData();
 
-  sun = new Sun(Vector3(0,0,0),parent);
+  sun = new Sun(Vector3(0,0,0),parent,s);
 }
 
 void Sky::Render(int refreshTime)
@@ -35,7 +35,7 @@ void Sky::Render(int refreshTime)
   sun->Render(refreshTime);
 }
 
-Sun::Sun(Vector3 pos,Game* parent) : Object(pos,parent)
+Sun::Sun(Vector3 pos,Game* parent,ShaderProgram* s) : Object(pos,parent,s)
 {
   centre = pos;
   theta = 0;

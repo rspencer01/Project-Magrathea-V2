@@ -20,7 +20,7 @@ class TestObj : public Object
 	  void initialiseTriangles();
   public:
 	  /// Constructs the object
-    TestObj(Game*);
+    TestObj(Game*,ShaderProgram*);
 };
 
 

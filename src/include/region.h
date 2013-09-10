@@ -10,8 +10,8 @@
 #define REGION_H
 
 class Game;
-
-#include <magrathea.h>
+#include <object.h>
+//#include <magrathea.h>
 
 #include <vector>
 
@@ -31,7 +31,7 @@ class Region : public Object
     std::vector<Object*> foliage;
   public:
   	/// Constructs the region with the given coordinates
-    Region(int,int,Game*);
+    Region(int,int,Game*,ShaderProgram*);
   	/// Renders the region to the screen (and all the trees here)
     void Render(int);
     /// Returns the X coordinate of the origin of this region

@@ -11,7 +11,7 @@ GLuint dtreeTextureNumber = (GLuint)-1;
 const char* dtextureName = "../assets/BasicTreeTrans1.bmp";
 
 /// Construct a dynoTree at the given location
-DynoTree::DynoTree(Vector3 pos,Game* g) : Object(pos,g)
+DynoTree::DynoTree(Vector3 pos,Game* g,ShaderProgram* s) : Object(pos,g,s)
 {
   // Actually construct the triangles
   initialiseTriangles();

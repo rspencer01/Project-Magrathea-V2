@@ -10,7 +10,7 @@
 
 class Game;
 class Bird;
-
+#include <object.h>
 #include <magrathea.h>
 
 class Bird : public Object
@@ -24,7 +24,7 @@ class Bird : public Object
     Vector3 upward;
   public:
 	  /// Constructs the tree with the given coordinates
-    Bird(Vector3,Game*);
+    Bird(Vector3,Game*,ShaderProgram*);
     void Render(int);
 };
 

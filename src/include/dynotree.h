@@ -25,7 +25,7 @@ class DynoTree : public Object
 	  void initialiseTriangles();
   public:
 	  /// Constructs the tree with the given coordinates
-    DynoTree(Vector3,Game*);
+    DynoTree(Vector3,Game*,ShaderProgram*);
 };
 
 #endif

@@ -6,7 +6,7 @@ GLuint treeTextureNumber = (GLuint)-1;
 const char* textureName = "../assets/BasicTree3.bmp";
 
 /// Initialises the tree at the position, and constructs it
-Tree::Tree(Vector3 pos,Game* g) : Object(pos,g)
+Tree::Tree(Vector3 pos,Game* g,ShaderProgram* s) : Object(pos,g,s)
 {
   initialiseTriangles();
   // If we have yet to load the texture, do so

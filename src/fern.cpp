@@ -6,7 +6,7 @@ GLuint fernTextureNumber = (GLuint)-1;
 const char* fernTextureName = "../assets/fern.bmp";
 
 /// Initialises the tree at the position, and constructs it
-Fern::Fern(Vector3 pos,Vector3 norm,Game* g) : Object(pos,g)
+Fern::Fern(Vector3 pos,Vector3 norm,Game* g,ShaderProgram* s) : Object(pos,g,s)
 {
   normal = norm;
   initialiseTriangles();

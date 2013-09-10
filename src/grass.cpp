@@ -2,7 +2,7 @@
 #include <grass.h>
 #include <noise.h>
 
-Grass::Grass(Vector3 pos, Vector3 norm, Game* parent) : Object(pos,parent)
+Grass::Grass(Vector3 pos, Vector3 norm, Game* parent,ShaderProgram* s) : Object(pos,parent,s)
 {
   // Get a random vector in the xz plane to orient this grass
   Vector3 rnd = Vector3(random((int)pos.x)-0.5f,0,random((int)pos.z)-0.5f);
