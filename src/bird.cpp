@@ -63,7 +63,7 @@ void Bird::Render(int refreshTime)
   forward.y = 0;
 
   setPosition(position + velocity * refreshTime/1000.0);
-  rotate(forward,upward);
+  rotate(velocity.normal(),upward);
 
   updateTriangleData();
   
