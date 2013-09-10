@@ -63,11 +63,11 @@ class Game
     void RenderScene(int);
     /// The shadow manager.  Handles all the shadow shader stuff
     ShadowManager* shadows;
+    /// The shader that runs most of the rendering
     ShaderProgram* mainShader;
     /// A test bird
     Bird* bird;
   public:
-    ShaderProgram* currentShader;
     /// Creates a game instance and initialises all variables.  If false is passed as a paramter, the game initialises no graphics
     Game(bool);
     /// Runs the game
@@ -82,6 +82,8 @@ class Game
     terrainBit getTerrainBit(int x, int y);
     /// Set the projection matrix.  Called by the resize function
     void setProjectionMatrix(float*);
+    /// This is a pointer the shader that is currently in use.
+    ShaderProgram* currentShader;
 };
 
 #endif

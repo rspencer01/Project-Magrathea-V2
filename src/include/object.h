@@ -65,7 +65,11 @@ class Object
   	VertexDatum* vertexData;
     /// What is the position of this?  All other points are given as relative to this centre
     Vector3 position;
-    /// The game to which this object belongs.  Not really required, but might be nice at some point
+    /// The direction (s) we are facing
+    Vector3 forward;
+    Vector3 up;
+    Vector3 right;
+    /// The game to which this object belongs.  Used to access shaders
     Game* game;
   	/// Vertex buffer for the vertex data
     GLuint vertexVBO;
@@ -101,9 +105,6 @@ class Object
     float transformMatrix [16];
     /// The function to populate the above
     void updateMatrix();
-    Vector3 forward;
-    Vector3 up;
-    Vector3 right;
   public:
 	  /// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*);

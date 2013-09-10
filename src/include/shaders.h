@@ -21,6 +21,7 @@ class ShaderProgram
     void constructProgram();
     GLuint ShaderProgramID;
     std::map<std::string,GLuint> variableLocations;
+    GLuint objPos;
   public:
     ShaderProgram();
     /// Add an object
@@ -32,8 +33,9 @@ class ShaderProgram
     /// Set some variable
     void setMatrix(const char*,float*);
     void setInt(const char* varName, unsigned int value);
-    void ShaderProgram::setObjectMatrix(float* value);
-    GLuint objPos;
+    /// Function to set the object transformation matrix
+    void setObjectMatrix(float* value);
+
 };
 
 #endif

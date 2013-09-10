@@ -48,13 +48,11 @@ Vector3 Object::getPosition()
   return position;
 }
 
-/// Changes the position of the object, updating it in game space.
-/// Eventually, each object will pass a variable to the shader telling it what to draw relative to
+/// Changes the position of the object.
 void Object::setPosition(Vector3 pos)
 {
   position = pos;
 }
-
 
 /// Renders this object to the screen, using the VBOs that were 
 /// initialised using the addPoint, addTriangle and pushTriangleData
@@ -64,7 +62,9 @@ void Object::Render(int refreshTime)
   // Only do something if we have data	
 	if (buffersInitialised)
 	{
+    // Load our transformation matrix
     game->currentShader->setObjectMatrix(transformMatrix);
+    // Upload this object's texture
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D,textureNumber);
     glEnableVertexAttribArrayARB(0);
@@ -192,6 +192,7 @@ void Object::rotate(Vector3 basisX,Vector3 basisY)
 
 void Object::updateMatrix()
 {
+  // This works.  You can check it yourself.
   transformMatrix[0] = forward.x;
   transformMatrix[1] = up.x;
   transformMatrix[2] = right.x;
