@@ -49,17 +49,6 @@ Vector3 Object::getPosition()
 /// Eventually, each object will pass a variable to the shader telling it what to draw relative to
 void Object::setPosition(Vector3 pos)
 {
-  if (buffersInitialised)
-  {
-    Vector3 delta = pos - position;
-    for (int i = 0;i<numberOfPoints;i++)
-    {
-      vertexData[i].px += delta.x;
-      vertexData[i].py += delta.y;
-      vertexData[i].pz += delta.z;
-    }
-    updateTriangleData();
-  }
   position = pos;
 }
 
@@ -125,7 +114,7 @@ void Object::clearTriangleData(int p, int t)
 void Object::addPoint(int i,Vector3 point,Vector3 normal, float r, float g, float b)
 {
 	// Point is relative to the position of the object
-	point = point + position;
+	//point = point + position;
   // Add it to the internal array
 	vertexData[i].px = point.x;
 	vertexData[i].py = point.y;
@@ -217,17 +206,17 @@ void Object::updateMatrix()
   transformMatrix[0] = 1;
   transformMatrix[1] = 0;
   transformMatrix[2] = 0;
-  transformMatrix[3] = 0;
+  transformMatrix[3] = position.x;
 
   transformMatrix[4] = 0;
-  transformMatrix[5] = 0;
-  transformMatrix[6] = 1;
-  transformMatrix[7] = 0;
+  transformMatrix[5] = 1;
+  transformMatrix[6] = 0;
+  transformMatrix[7] = position.y;
 
   transformMatrix[8] = 0;
-  transformMatrix[9] = 1;
-  transformMatrix[10] = 0;
-  transformMatrix[11] = 0;
+  transformMatrix[9] = 0;
+  transformMatrix[10] = 1;
+  transformMatrix[11] = position.z;
 
   transformMatrix[12] = 0;
   transformMatrix[13] = 0;
