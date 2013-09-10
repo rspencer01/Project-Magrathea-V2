@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <object.h>
+#include <game.h>
 
 
 /// @param pos The position of this object in gamespace
