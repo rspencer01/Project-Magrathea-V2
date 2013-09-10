@@ -10,10 +10,13 @@
 #define OBJECT_H
 
 class Game;
+class Object;
 
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <vector3.h>
+
+#include <shaders.h>
 
 /// \brief Contains all the information passed to the shaders.
 ///
@@ -94,9 +97,14 @@ class Object
     void setPosition(Vector3);
     /// Rotates the object so that it matches the new axis
     void rotate(Vector3,Vector3);
+    /// The transformation matrix for the object's vertices
+    float transformMatrix [16];
+    /// The function to populate the above
+    void updateMatrix();
+    ShaderProgram* shader;
   public:
 	  /// Constructs the object with the given coordinates and in the given game
-    Object(Vector3,Game*);
+    Object(Vector3,Game*,ShaderProgram*);
   	/// Destroys the Object, freeing space
     ~Object();
   	/// Renders the Object to the screen

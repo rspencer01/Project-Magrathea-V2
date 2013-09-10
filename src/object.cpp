@@ -13,14 +13,16 @@
 
 /// @param pos The position of this object in gamespace
 /// @param g   The game to which this object belongs
-Object::Object(Vector3 pos,Game* g)
+Object::Object(Vector3 pos,Game* g,ShaderProgram* s)
 {
   position = pos;
   game = g;
+  shader = s;
   buffersInitialised = false;
   vertexData = NULL;
   triDat = NULL;
   textureNumber = -1;
+  updateMatrix();
 }
 
 /// Frees the data used by this object (esp the buffers in the GPU)
@@ -70,6 +72,7 @@ void Object::Render(int refreshTime)
   // Only do something if we have data	
 	if (buffersInitialised)
 	{
+    shader->setObjectMatrix(transformMatrix);
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D,textureNumber);
     glEnableVertexAttribArrayARB(0);
@@ -207,6 +210,29 @@ void Object::rotate(Vector3 basisX,Vector3 basisY)
     vertexData[i].ny = newNrm.y;
     vertexData[i].nz = newNrm.z;
   }
+}
+
+void Object::updateMatrix()
+{
+  transformMatrix[0] = 1;
+  transformMatrix[1] = 0;
+  transformMatrix[2] = 0;
+  transformMatrix[3] = 0;
+
+  transformMatrix[4] = 0;
+  transformMatrix[5] = 0;
+  transformMatrix[6] = 1;
+  transformMatrix[7] = 0;
+
+  transformMatrix[8] = 0;
+  transformMatrix[9] = 1;
+  transformMatrix[10] = 0;
+  transformMatrix[11] = 0;
+
+  transformMatrix[12] = 0;
+  transformMatrix[13] = 0;
+  transformMatrix[14] = 0;
+  transformMatrix[15] = 1;
 }
 
 
