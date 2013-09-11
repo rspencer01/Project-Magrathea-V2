@@ -26,7 +26,7 @@ This is a list of blog posts.  There are also some tutorials scattered in betwee
   <li>
     <span>{{ post.date | date: "%B %e, %Y" }}</span> <a href="http://rspencer01.github.io/Project-Magrathea-V2{{ post.url }}">{{ post.title }}</a>
 	  <div class="post-excerpt">
-		{{post.excerpt }}...
+		{{post.excerpt }}
     </div>
   </li>
   {% endfor %}
