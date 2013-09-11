@@ -96,7 +96,7 @@ void ShaderProgram::Load()
   // Now load this program
   glUseProgram(ShaderProgramID);
   variableLocations.clear();
-  objPos = -1;
+  objPos = (GLuint)-1;
 }
 
 /// The object matrix is set so often that looking it up (even in a map) each time
@@ -105,7 +105,7 @@ void ShaderProgram::Load()
 /// @param value The value to set the matrix to.
 void ShaderProgram::setObjectMatrix(float* value)
 {
-  if (objPos==-1)
+  if (objPos==(GLuint)-1)
     objPos = glGetUniformLocation(ShaderProgramID, "objectMatrix");
   glUniformMatrix4fv(objPos,1,GL_TRUE,value);
 }
