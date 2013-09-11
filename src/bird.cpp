@@ -15,8 +15,8 @@ Bird::Bird(Vector3 position, Game* game) : Object(position,game)
 	  birdTextureNumber = textureFromBMP(birdtextureName);
   // And set it as this object's texture
   textureNumber = birdTextureNumber;
-  theta = 3.141592 * random((int)this+position.x+position.y+position.x*position.z);
-  turnCoeff = 0.2*(random((int)this+position.x+position.y+position.x*position.z+1)-0.5);
+  theta = 3.141592 * random(position.x+position.y+position.x*position.z);
+  turnCoeff = 0.2*(random(position.x+position.y+position.x*position.z+1)-0.5);
   forward = randomVector();
   forward.y = 0;
   forward.normalise();
