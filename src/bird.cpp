@@ -15,9 +15,12 @@ Bird::Bird(Vector3 position, Game* game) : Object(position,game)
 	  birdTextureNumber = textureFromBMP(birdtextureName);
   // And set it as this object's texture
   textureNumber = birdTextureNumber;
-  theta = 0;
-  velocity = Vector3(1,0,0);
-  forward = Vector3(1,0,0);
+  theta = 3.141592 * random((int)this+position.x+position.y+position.x*position.z);
+  turnCoeff = 0.2*(random((int)this+position.x+position.y+position.x*position.z+1)-0.5);
+  forward = randomVector();
+  forward.y = 0;
+  forward.normalise();
+  velocity = forward;
   upward = Vector3(0,1,0);
 }
 
@@ -40,6 +43,7 @@ void Bird::initialiseTriangles()
 void Bird::Render(int refreshTime)
 {
   Object::Render(refreshTime);
+
   theta += refreshTime*3.141592*2.0/1000.0 * 0.7;
   dihedral =  -sin(theta) - 1/5.0*sin(theta*2) - 1/25.0*sin(theta*3);
   addPoint(1,Vector3(0.5,sin(dihedral),cos(dihedral)),Vector3(0,1,0),1,1,1);
@@ -52,10 +56,15 @@ void Bird::Render(int refreshTime)
   if (fs<0)
     fs = 0;
 
-  velocity = velocity +upward*fs*3.07*refreshTime/1000.0;
-  velocity = velocity +forward*fs*0.8*refreshTime/1000.0;
+  velocity = velocity + upward*fs*3.07*refreshTime/1000.0;
+  velocity = velocity + forward*fs*0.8*refreshTime/1000.0;
+
+  forward = (forward + forward.cross(upward)*turnCoeff*refreshTime/1000.0).normal();
+  forward.y = 0;
 
   setPosition(position + velocity * refreshTime/1000.0);
+  rotate(velocity.normal(),upward);
 
   updateTriangleData();
+  
 }

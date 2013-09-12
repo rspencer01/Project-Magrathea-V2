@@ -10,10 +10,13 @@
 #define OBJECT_H
 
 class Game;
+class Object;
 
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <vector3.h>
+
+#include <shaders.h>
 
 /// \brief Contains all the information passed to the shaders.
 ///
@@ -62,7 +65,11 @@ class Object
   	VertexDatum* vertexData;
     /// What is the position of this?  All other points are given as relative to this centre
     Vector3 position;
-    /// The game to which this object belongs.  Not really required, but might be nice at some point
+    /// The direction (s) we are facing
+    Vector3 forward;
+    Vector3 up;
+    Vector3 right;
+    /// The game to which this object belongs.  Used to access shaders
     Game* game;
   	/// Vertex buffer for the vertex data
     GLuint vertexVBO;
@@ -94,6 +101,10 @@ class Object
     void setPosition(Vector3);
     /// Rotates the object so that it matches the new axis
     void rotate(Vector3,Vector3);
+    /// The transformation matrix for the object's vertices
+    float transformMatrix [16];
+    /// The function to populate the above
+    void updateMatrix();
   public:
 	  /// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*);

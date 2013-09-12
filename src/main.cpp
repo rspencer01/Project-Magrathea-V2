@@ -11,7 +11,7 @@ int main(int argc, char** argv)
   // Are we running in console mode?
   bool textMode = false;
   // Check to see if the command line paramter for console mode is present
-  if (argc>0)
+  if (argc>1)
     if (argv[1][0]=='-' && argv[1][1]=='c')
       textMode = true;
   // Construct a game and initialise it

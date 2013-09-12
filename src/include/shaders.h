@@ -9,7 +9,7 @@
 #ifndef SHADERS_H
 #define SHADERS_H
 
-#include <magrathea.h>
+//#include <magrathea.h>
 
 #include <map>
 #include <string>
@@ -21,6 +21,7 @@ class ShaderProgram
     void constructProgram();
     GLuint ShaderProgramID;
     std::map<std::string,GLuint> variableLocations;
+    GLuint objPos;
   public:
     ShaderProgram();
     /// Add an object
@@ -32,6 +33,9 @@ class ShaderProgram
     /// Set some variable
     void setMatrix(const char*,float*);
     void setInt(const char* varName, unsigned int value);
+    /// Function to set the object transformation matrix
+    void setObjectMatrix(float* value);
+
 };
 
 #endif
