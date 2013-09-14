@@ -32,7 +32,7 @@ ShadowManager::ShadowManager()
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fboID);
 
 	// attach the texture to FBO depth attachment point
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texID, 0);
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texID, 0);
 	// Instruct openGL that we won't bind a color texture with the currently binded FBO
 	glDrawBuffer(GL_NONE);
   glReadBuffer(GL_NONE);
