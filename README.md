@@ -1,6 +1,6 @@
 Project-Magrathea-V2
 ====================
-####V2.0.1
+####V2.0.3
 ----------
 
 The second generation realistic terrain project.
@@ -36,7 +36,7 @@ This is alist of high level things that I want to impliment at some stage.  Low 
  * [x] Colors
  * [x] Textures
  * [ ] Sun and sky
- * [ ] Sensical terrain types
+ * [.] Sensical terrain types
 
 Assets and Data
 ---------------
