@@ -66,7 +66,12 @@ void ShaderProgram::LoadShader(const char* shaderPath, GLenum ShaderType)
 
 void ShaderProgram::CompileAll()
 {
-  // Link them
+  // Bind the attributes to the right locations
+  glBindAttribLocation(ShaderProgramID,0,"inPosition");
+  glBindAttribLocation(ShaderProgramID,1,"inColour");
+  glBindAttribLocation(ShaderProgramID,2,"inTex");
+  glBindAttribLocation(ShaderProgramID,3,"inNorm");
+  // Link the program
   glLinkProgram(ShaderProgramID);
   // If there is an error...
   GLint Success = 0;
