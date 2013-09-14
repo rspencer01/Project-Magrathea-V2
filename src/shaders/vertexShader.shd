@@ -1,8 +1,8 @@
-#version 330
-layout (location = 0) in vec3 inPosition;
-layout (location = 1) in vec4 inColour;
-layout (location = 2) in vec2 inTex;
-layout (location = 3) in vec3 inNorm;
+#version 130
+in vec3 inPosition;
+in vec4 inColour;
+in vec2 inTex;
+in vec3 inNorm;
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 lightTransformMatrix;
