@@ -3,6 +3,7 @@ in vec4 ShadowCoord;
 in vec4 col;
 out vec4 FragColor;
 in vec2 tex;
+in vec4 texShades;
 uniform sampler2D shadowTexture;
 uniform sampler2D otherTexture;
 void main()
@@ -17,8 +18,18 @@ void main()
   		vis = 0.5;
   	}
   }
-  vec4 otherTexFrag = texture(otherTexture,tex);
+  vec4 otherTexFrag = vec4(0);
+  if (texShades.x<0)
+    otherTexFrag = texture(otherTexture,tex);
+  else
+  {
+    otherTexFrag += texShades.x * texture(otherTexture,mod(tex,vec2(1.0))/2);
+    otherTexFrag += texShades.y * texture(otherTexture,mod(tex,vec2(1.0))/2+vec2(0,0.5));
+    otherTexFrag += texShades.z * texture(otherTexture,mod(tex,vec2(1.0))/2+vec2(0.5,0));
+    otherTexFrag += texShades.w * texture(otherTexture,mod(tex,vec2(1.0))/2+vec2(0.5,0.5));
+  }
   if ((otherTexFrag.x>0.9)&&(otherTexFrag.z>0.9)&&(otherTexFrag.y<0.1))
   	alph = 0.0;
+  
   FragColor =  vec4(vis*vec3(col.xyz)*otherTexFrag.xyz,alph); 
 }

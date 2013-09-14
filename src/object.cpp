@@ -72,19 +72,22 @@ void Object::Render(int refreshTime)
     glEnableVertexAttribArrayARB(1);
     glEnableVertexAttribArrayARB(2);
     glEnableVertexAttribArrayARB(3);
+    glEnableVertexAttribArrayARB(4);
 
     glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
     // Get the position data
     glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
     glVertexAttribPointerARB(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));
     glVertexAttribPointerARB(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
-    glVertexAttribPointerARB(3,3  ,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
+    glVertexAttribPointerARB(3,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
+    glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
     glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
     glDrawElements(GL_TRIANGLES,numberOfTriangles*3,GL_UNSIGNED_INT,0);
     glDisableVertexAttribArrayARB(0);
     glDisableVertexAttribArrayARB(1);
     glDisableVertexAttribArrayARB(2);
     glDisableVertexAttribArrayARB(3);
+    glDisableVertexAttribArrayARB(4);
 	}
 }
 
@@ -128,7 +131,19 @@ void Object::addPoint(int i,Vector3 point,Vector3 normal, float r, float g, floa
 	vertexData[i].green = g;
 	vertexData[i].blue = b;
   vertexData[i].alpha = 1.f;
+  vertexData[i].texZero = -1.0;
+  vertexData[i].texOne = -1.0;
+  vertexData[i].texTwo = -1.0;
+  vertexData[i].texThree = -1.0;
+}
 
+
+void Object::setTextureMix(int point,float a, float b, float c, float d)
+{
+  vertexData[point].texZero = a;
+  vertexData[point].texOne = b;
+  vertexData[point].texTwo = c;
+  vertexData[point].texThree = d;
 }
 
 /// Adds a new triangle to the object.  Indexes are the same as the order the points were added

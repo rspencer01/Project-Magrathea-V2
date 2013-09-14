@@ -3,6 +3,7 @@ in vec3 inPosition;
 in vec4 inColour;
 in vec2 inTex;
 in vec3 inNorm;
+in vec4 inTexShades;
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 lightTransformMatrix;
@@ -11,6 +12,7 @@ uniform mat4 objectMatrix;
 out vec4 ShadowCoord;
 out vec4 col;
 out vec2 tex;
+out vec4 texShades;
 void main()
 {
   gl_Position = projectionMatrix * transformationMatrix * objectMatrix* vec4(inPosition, 1.0);
@@ -23,4 +25,6 @@ void main()
   col = inColour * (dot(inNorm,vec3(0,1,0))*0.8+0.2);
   
   tex = inTex;
+  
+  texShades = inTexShades;
 }

@@ -4,7 +4,7 @@ Todo list
 These are low level things that need implimentaion
 
 - [ ] Fix BMP reading bug.
-- [ ] Make objects transform in shaders
+- [x] Make objects transform in shaders
 - [x] Remove artifacts of misrendering regions
 - [x] Render timestep, for moving objects
 - [x] Fix shadows not appearing
