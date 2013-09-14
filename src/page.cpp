@@ -36,20 +36,45 @@ Page::Page(int x,int y,float(*g)(int,int))
   for (int i = 0;i<PAGE_SIZE;i++)
     for (int j = 0;j<PAGE_SIZE;j++)
     {
+      data[i][j].type = grass;
+      if (data[i][j].normal->y<0.6)
+        data[i][j].type = stone;
+    }
+  for (int i = 0;i<PAGE_SIZE;i++)
+    for (int j = 0;j<PAGE_SIZE;j++)
+    {
       if (data[i][j].normal->y>0.85)
         data[i][j].isGrass = noise(origin_x-i,origin_y-j)<0.10;
       else
         data[i][j].isGrass = false;
+
+      data[i][j].isTree = false;
       if (data[i][j].normal->y>0.9)
-        data[i][j].isTree = !data[i][j].isGrass && noise(origin_x+i,origin_y+j)<0.01;
-      else
-        data[i][j].isTree = false;
+        if (!data[i][j].isGrass && noise(origin_x+i,origin_y+j)<0.01)
+        {
+          data[i][j].isTree = true;
+          data[i][j].type = soil;
+        }
+
+      data[i][j].isFern = false;  
       if (data[i][j].normal->y>0.83)
-        data[i][j].isFern = (!data[i][j].isGrass && !data[i][j].isTree) && noise(origin_x+i,origin_y+j)<0.15;
-      else
-        data[i][j].isFern = false;
+        if ((!data[i][j].isGrass && !data[i][j].isTree) && noise(origin_x+i,origin_y+j)<0.15)
+        {
+          data[i][j].isFern = true;
+          data[i][j].type = soil;
+        }
+    }
+  // This is **very** buggy fixme soon please
+  for (int i = 1;i<PAGE_SIZE-1;i++)
+    for (int j = 1;j<PAGE_SIZE-1;j++)
+    {
+      if (data[i][j].isTree)
+      for (int x = -1;x<2;x++)
+        for (int y = -1;y<2;y++)
+          data[i+x][j+y].type = soil;
 
     }
+
 }
 
 /// Returns the data at *internal coordinate* x,y
