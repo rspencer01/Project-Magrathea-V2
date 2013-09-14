@@ -48,13 +48,15 @@ void Region::initialiseTriangles()
                        *(game->getTerrainBit(x+position.x,y+position.z).normal),
                        1,1,1);
       editTextureCoord(y*(REGION_SIZE+1)+x,4.0*x/(REGION_SIZE+1),4.0*y/(REGION_SIZE+1));
-      //setTextureMix(y*(REGION_SIZE+1)+x,0,0,1,0);
-      // This line mixes the texture interestingly
-      //setTextureMix(y*(REGION_SIZE+1)+x,float(y)/REGION_SIZE/2,(1-(float(y)/REGION_SIZE))/2,float(x)/REGION_SIZE/2,(1-(float(x)/REGION_SIZE))/2);
-      if ((x/2*2)%4<2)
-        setTextureMix(y*(REGION_SIZE+1)+x,(y%4)/2,0,1.0-(y%4)/2,0);
-      else
-        setTextureMix(y*(REGION_SIZE+1)+x,0,(y%4)/2,0,1.0-(y%4)/2);
+      terrainType t = game->getTerrainBit(x+position.x,y+position.z).type;
+      if (t==grass)
+        setTextureMix(y*(REGION_SIZE+1)+x,0,0,1,0);
+      if (t==stone)
+        setTextureMix(y*(REGION_SIZE+1)+x,1,0,0,0);
+      if (t==sand)
+        setTextureMix(y*(REGION_SIZE+1)+x,0,1,0,0);
+      if (t==soil)
+        setTextureMix(y*(REGION_SIZE+1)+x,0,0,0,1);
 
 		}
 	
