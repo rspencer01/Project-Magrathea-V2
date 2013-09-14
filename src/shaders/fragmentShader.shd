@@ -23,10 +23,10 @@ void main()
     otherTexFrag = texture(otherTexture,tex);
   else
   {
-    otherTexFrag += texShades.x * texture(otherTexture,tex/2);
-    otherTexFrag += texShades.y * texture(otherTexture,tex/2+vec2(0,0.5));
-    otherTexFrag += texShades.z * texture(otherTexture,tex/2+vec2(0.5,0));
-    otherTexFrag += texShades.w * texture(otherTexture,tex/2+vec2(0.5,0.5));
+    otherTexFrag += texShades.x * texture(otherTexture,mod(tex,vec2(1.0))/2);
+    otherTexFrag += texShades.y * texture(otherTexture,mod(tex,vec2(1.0))/2+vec2(0,0.5));
+    otherTexFrag += texShades.z * texture(otherTexture,mod(tex,vec2(1.0))/2+vec2(0.5,0));
+    otherTexFrag += texShades.w * texture(otherTexture,mod(tex,vec2(1.0))/2+vec2(0.5,0.5));
   }
   if ((otherTexFrag.x>0.9)&&(otherTexFrag.z>0.9)&&(otherTexFrag.y<0.1))
   	alph = 0.0;
