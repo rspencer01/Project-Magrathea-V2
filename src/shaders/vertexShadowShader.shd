@@ -3,6 +3,7 @@ in vec3 inPosition;
 in vec4 inColour;
 in vec2 inTex;
 in vec3 inNorm;
+in vec4 inTexShades;
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 objectMatrix;

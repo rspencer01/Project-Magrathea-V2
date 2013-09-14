@@ -71,6 +71,7 @@ void ShaderProgram::CompileAll()
   glBindAttribLocation(ShaderProgramID,1,"inColour");
   glBindAttribLocation(ShaderProgramID,2,"inTex");
   glBindAttribLocation(ShaderProgramID,3,"inNorm");
+  glBindAttribLocation(ShaderProgramID,4,"inTexShades");
   // Link the program
   glLinkProgram(ShaderProgramID);
   // If there is an error...
