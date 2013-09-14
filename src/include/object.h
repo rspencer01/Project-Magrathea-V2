@@ -49,6 +49,11 @@ typedef struct
   float texx;
   /// The y coordinates of the vertex texture
   float texy;
+  /// Texture mixing parts.  A value of less than 0 in the texZero indicates not texture mixing
+  float texZero;
+  float texOne;
+  float texTwo;
+  float texThree;
 } VertexDatum;
 
 /// \brief An object is anything that occurs in the game space
@@ -105,6 +110,8 @@ class Object
     float transformMatrix [16];
     /// The function to populate the above
     void updateMatrix();
+    /// Sets a point's mix of textures
+    void setTextureMix(int,float,float,float,float);
   public:
 	  /// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*);
