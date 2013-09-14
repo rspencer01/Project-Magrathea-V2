@@ -5,7 +5,7 @@
 
 Sky::Sky(Game* parent) : Object(Vector3(0,0,0),parent)
 {
-  textureNumber = textureFromRAW("../assets/Sky7.raw");
+  textureNumber = textureFromRAW("../assets/sky7.raw");
   clearTriangleData(22,21);
 	for (int y = 0; y<21;y++)
 	{
