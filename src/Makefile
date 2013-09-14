@@ -8,7 +8,7 @@ SRCS := $(shell find . -name '*.cpp')
 _OBJS = $(SRCS:.cpp=.o)
 OBJS = $(patsubst %,$(ODIR)/%,$(_OBJS))
 EXEC = magrathea
-LIBS = -lglut -lGLU -lGLEW
+LIBS = -lGL -lglut -lGLU -lGLEW
 
 all: $(ODIR) $(OBJS) $(EXEC)
 
