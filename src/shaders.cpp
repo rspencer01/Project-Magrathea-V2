@@ -66,7 +66,13 @@ void ShaderProgram::LoadShader(const char* shaderPath, GLenum ShaderType)
 
 void ShaderProgram::CompileAll()
 {
-  // Link them
+  // Bind the attributes to the right locations
+  glBindAttribLocation(ShaderProgramID,0,"inPosition");
+  glBindAttribLocation(ShaderProgramID,1,"inColour");
+  glBindAttribLocation(ShaderProgramID,2,"inTex");
+  glBindAttribLocation(ShaderProgramID,3,"inNorm");
+  glBindAttribLocation(ShaderProgramID,4,"inTexShades");
+  // Link the program
   glLinkProgram(ShaderProgramID);
   // If there is an error...
   GLint Success = 0;
@@ -96,7 +102,7 @@ void ShaderProgram::Load()
   // Now load this program
   glUseProgram(ShaderProgramID);
   variableLocations.clear();
-  objPos = -1;
+  objPos = (GLuint)-1;
 }
 
 /// The object matrix is set so often that looking it up (even in a map) each time
@@ -105,7 +111,7 @@ void ShaderProgram::Load()
 /// @param value The value to set the matrix to.
 void ShaderProgram::setObjectMatrix(float* value)
 {
-  if (objPos==-1)
+  if (objPos==(GLuint)-1)
     objPos = glGetUniformLocation(ShaderProgramID, "objectMatrix");
   glUniformMatrix4fv(objPos,1,GL_TRUE,value);
 }

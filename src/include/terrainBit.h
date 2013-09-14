@@ -3,6 +3,10 @@
 
 #include <vector3.h>
 
+
+enum terrainType 
+{ grass, stone, sand, soil };
+
 /// The terrain bit is a representation of stuff at some point
 typedef struct
 {
@@ -10,6 +14,8 @@ typedef struct
   Vector3* position;
   /// The normal here
   Vector3* normal;
+  /// What is the ground like here?
+  terrainType type;
   /// Is this point a tree?
   bool isTree;
   /// Is this point a grass piece?

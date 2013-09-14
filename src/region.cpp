@@ -29,7 +29,7 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
         foliage.push_back(new Fern(*(here.position),*(here.normal),parent));
     }
   if (texture == (GLuint)-1)
-	  texture = textureFromBMP("../assets/BigGrass.bmp");
+	  texture = textureFromRAW("../assets/MixedGround.raw");
   textureNumber = texture;
 }
 
@@ -46,8 +46,18 @@ void Region::initialiseTriangles()
 			                 game->getTerrainBit(x+position.x,y+position.z).position->y,
 			                 y),
                        *(game->getTerrainBit(x+position.x,y+position.z).normal),
-                       0.41,0.61,0.24);
-      editTextureCoord(y*(REGION_SIZE+1)+x,2.0*x/(REGION_SIZE+1),2.0*y/(REGION_SIZE+1));
+                       1,1,1);
+      editTextureCoord(y*(REGION_SIZE+1)+x,4.0*x/(REGION_SIZE+1),4.0*y/(REGION_SIZE+1));
+      terrainType t = game->getTerrainBit(x+position.x,y+position.z).type;
+      if (t==grass)
+        setTextureMix(y*(REGION_SIZE+1)+x,0,0,1,0);
+      if (t==stone)
+        setTextureMix(y*(REGION_SIZE+1)+x,1,0,0,0);
+      if (t==sand)
+        setTextureMix(y*(REGION_SIZE+1)+x,0,1,0,0);
+      if (t==soil)
+        setTextureMix(y*(REGION_SIZE+1)+x,0,0,0,1);
+
 		}
 	
   // Populate one triangle (for now) per block

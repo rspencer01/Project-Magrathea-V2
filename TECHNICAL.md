@@ -64,10 +64,12 @@ Birds are a pair of triangles with a texture.  They are kinematic (use velocity/
 
 Terrain
 -------
-What follows is a plan, not yet tested, nor implemented.
-
 One of the headaches with creating terrain is constructing a realistic transition from one type (say grass) to another (say rock).  One of the effective methods for this is to just fade from one texture on the ground to another.
 
 The origional plan was for each `Region` to have a texture that it creates and lays over itself.  However, this is costly on creation and requires storing lots of big images.  A better plan is to pass the task to the fragment shader!  This shader samples a number of textures and outputs the correct pixel colour based on that.
 
 Any weirdnesss with a half grass half rock portion of land will hopefully be brushed over with actual grass objects or other things that cover the ground.
+
+In practice, the fragment shader is passed a texture with 4 squares or blocks in it.  It is also passed a `vec4` of weightings to take from each block.  It gets the weighted average pixel and outputs that.
+
+This is orders of magnitude ( `O(1)` vs `O(n^2)` ) better than the previous method.
