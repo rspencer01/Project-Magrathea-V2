@@ -8,7 +8,14 @@ uniform sampler2D shadowTexture;
 uniform sampler2D otherTexture;
 void main()
 { 
-  float vis = 1.0;
+  
+  
+  // These will eventually be parameters
+  float ambient = 0.5;
+  float sunlight = 1.0;
+  // 16 samples per pixel.
+  float diff = (sunlight-ambient)/64.0;
+  float vis = sunlight;
   float alph = 1.0;
   
   // Test if point is inside the shadow render area...
@@ -16,10 +23,11 @@ void main()
   	   (ShadowCoord.y>0  && ShadowCoord.y<1))
   {
   	float y,x;
+  	
   	for (y = -1.5 ; y <=1.5 ; y+=0.5)
 			for (x = -1.5 ; x <=1.5 ; x+=0.5)
   		 	if (texture(shadowTexture,ShadowCoord.xy+vec2(x,y)/10000).z < ShadowCoord.z-0.0001)
-  				vis -= 1.0/(32.0*4);
+  				vis -= diff;
   }
   
   // A color for the texture
