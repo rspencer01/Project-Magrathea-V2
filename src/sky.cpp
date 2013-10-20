@@ -37,13 +37,14 @@ void Sky::Render(int refreshTime)
 
 Sun::Sun(Vector3 pos,Game* parent) : Object(pos,parent)
 {
+  int SUN_SIZE = 10;
   centre = pos;
   theta = 0;
 
   clearTriangleData(20,20);
   for(int i = 0;i<20;i++)
   {
-    addPoint(i,Vector3(50*sin(i*3.1415*2/20),500,50*cos(i*3.1415*2/20)),
+    addPoint(i,Vector3(2*SUN_SIZE*sin(i*3.1415*2/20),500,2*SUN_SIZE*cos(i*3.1415*2/20)),
       Vector3(0,1,0),1,1,1);
     editTextureCoord(i,0.1+0.05*sin(i*3.1415*2/20),0.1+0.05*cos(i*3.1415*2/20));
   }
