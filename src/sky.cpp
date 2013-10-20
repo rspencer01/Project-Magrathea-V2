@@ -55,8 +55,8 @@ Sun::Sun(Vector3 pos,Game* parent) : Object(pos,parent)
 void Sun::Render(int refreshTime)
 {
   theta += refreshTime / 1000.0 *3.1415*2*2.0/600.0;
-/*  rotate(Vector3(cos(refreshTime / 1000.0 *3.1415*2*2.0/600.0),sin(refreshTime / 1000.0 *3.1415*2*2.0/600.0),0),
-         Vector3(sin(refreshTime / 1000.0 *3.1415*2*2.0/600.0),cos(refreshTime / 1000.0 *3.1415*2*2.0/600.0),0));
-  updateTriangleData();*/
+  rotate(Vector3(cos(theta),-sin(theta),0),
+         Vector3(sin(theta),cos(theta),0));
+  updateTriangleData();
   Object::Render(refreshTime);
 }
