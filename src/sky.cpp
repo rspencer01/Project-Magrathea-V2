@@ -37,6 +37,9 @@ void Sky::Render(int refreshTime)
 
 Sun::Sun(Vector3 pos,Game* parent) : Object(pos,parent)
 {
+  // Get the texture
+  textureNumber = textureFromRAW("../assets/sun.raw");
+
   int SUN_SIZE = 10;
   centre = pos;
   theta = 0;
@@ -46,7 +49,7 @@ Sun::Sun(Vector3 pos,Game* parent) : Object(pos,parent)
   {
     addPoint(i,Vector3(2*SUN_SIZE*sin(i*3.1415*2/20),500,2*SUN_SIZE*cos(i*3.1415*2/20)),
       Vector3(0,1,0),1,1,1);
-    editTextureCoord(i,0.1+0.05*sin(i*3.1415*2/20),0.1+0.05*cos(i*3.1415*2/20));
+    editTextureCoord(i,0.5+0.5*sin(i*3.1415*2/20),0.5+0.5*cos(i*3.1415*2/20));
   }
   for(int i = 1;i<19;i++)
     addTriangle(i,0,i,i+1);
