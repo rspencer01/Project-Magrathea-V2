@@ -79,6 +79,8 @@ class Game
     void keyPress(unsigned char key, int, int);
     /// Event handler for a key release
     void keyUp(unsigned char key, int, int);
+    /// Event handler for the mouse move
+    void mouseMove(int x, int y);
     /// Returns data about a single point
     terrainBit getTerrainBit(int x, int y);
     /// Set the projection matrix.  Called by the resize function

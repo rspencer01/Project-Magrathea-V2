@@ -25,6 +25,12 @@ void keyPressCurrentGame(unsigned char key,int x,int y)
 {
   currentGame->keyPress(key,x,y);
 }
+void mouseMoveCurrentGame(int x,int y)
+{
+  currentGame->mouseMove(x,y);
+}
+
+
 
 // TODO Move this somewhere better
 inline float interpolate(float a, float b, float t)
@@ -100,6 +106,7 @@ void Game::initialiseCallbacks()
   // Log the key functions
   glutKeyboardFunc(keyPressCurrentGame);
   glutKeyboardUpFunc(keyUpCurrentGame);
+  glutPassiveMotionFunc(mouseMoveCurrentGame);
 }
 
 /// Run the game
@@ -228,6 +235,17 @@ void Game::keyOperations()
     camera->RotateX(0.01f);
   if (keyDown['e'])
     camera->RotateX(-0.01f);
+}
+
+int lastx = 0;
+int lasty = 0;
+
+void Game::mouseMove(int x, int y)
+{
+  camera->RotateFlat(-(x-lastx)/200.0);
+  camera->RotateX(-(y-lasty)/200.0);
+  lastx = x;
+  lasty = y;
 }
 
 terrainBit Game::getTerrainBit(int x,int y)
