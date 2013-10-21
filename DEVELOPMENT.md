@@ -22,23 +22,23 @@ Variable and function names should be as explicit as possible.  Self documenting
 Variable names should start with a lower case letter.  Where multiple words are desired, subsequent words should be capitalised.
 
 ###Class names
-Class names should be nouns, and their first letters should be capitalised.
+Class names should be nouns, and their first letters should be capitalised.  In cases of multiple words, each word should be capitalised (as in `SmallFern`.
 
 ###Examples
 
-  if (someBoolean)
-    doSomething();
+    if (someBoolean)
+      doSomething();
 
 	for (int y = 0; y<5;y++)
 	{
-    someFunction(y);
-    ...
-  }
+      someFunction(y);
+      ...
+    }
 
-  void Sky::Render(int refreshTime)
-  {
-    Object::Render(refreshTime);
-  }
+    void Sky::Render(int refreshTime)
+    {
+      Object::Render(refreshTime);
+    }
 
 Commenting
 ----------
