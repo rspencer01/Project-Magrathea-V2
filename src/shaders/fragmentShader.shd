@@ -6,13 +6,14 @@ in vec2 tex;
 in vec4 texShades;
 uniform sampler2D shadowTexture;
 uniform sampler2D otherTexture;
+uniform float sunIntensity;
 void main()
 { 
   
   
   // These will eventually be parameters
-  float ambient = 0.5;
-  float sunlight = 1.0;
+  float ambient = sunIntensity/2.0;
+  float sunlight = sunIntensity;
   // 16 samples per pixel.
   float diff = (sunlight-ambient)/64.0;
   float vis = sunlight;

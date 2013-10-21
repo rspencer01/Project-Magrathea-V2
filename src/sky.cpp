@@ -62,5 +62,12 @@ void Sun::Render(int refreshTime)
   rotate(Vector3(cos(theta),-sin(theta),0),
          Vector3(sin(theta),cos(theta),0));
   updateTriangleData();
+  // We want to be fully lit.
+  game->currentShader->setFloat("sunIntensity",1.0);
   Object::Render(refreshTime);
+  // Then light the rest as per usual.
+  if (cos(theta)>0)
+    game->currentShader->setFloat("sunIntensity",cos(theta));
+  else
+    game->currentShader->setFloat("sunIntensity",0);
 }
