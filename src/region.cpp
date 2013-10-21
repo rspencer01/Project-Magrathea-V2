@@ -8,6 +8,7 @@
 #include <smallFern.h>
 
 GLuint texture = (GLuint)-1;
+bool doneFern = false;
 
 /// Constructs a new region at the given position
 /// @param x The x coordinate of the origin
@@ -17,7 +18,7 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
 {
 	printf("New region at %d %d\n",x,y);
 	initialiseTriangles();
-  for (int ty = 0;ty<REGION_SIZE;ty++)
+  /*for (int ty = 0;ty<REGION_SIZE;ty++)
     for (int tx = 0;tx<REGION_SIZE;tx++)
     {
       terrainBit here = game->getTerrainBit(tx+x,ty+y);
@@ -27,7 +28,13 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
       //  foliage.push_back(new Grass(*(here.position),*(here.normal),parent));
       if (here.isFern)
         foliage.push_back(new SmallFern(*(here.position),*(here.normal),parent));
-    }
+    }*/
+  if (!doneFern)
+  {
+    foliage.push_back(new SmallFern(Vector3(15,30,5),Vector3(0,1,0),parent));
+    doneFern = true;
+  }
+
   if (texture == (GLuint)-1)
 	  texture = textureFromRAW("../assets/MixedGround.raw");
   textureNumber = texture;
@@ -79,7 +86,7 @@ void Region::initialiseTriangles()
 /// Render this region and the trees
 void Region::Render(int refreshTime)
 {
-  Object::Render(refreshTime);
+  //Object::Render(refreshTime);
   for (unsigned int i = 0; i<foliage.size();i++)
     foliage[i]->Render(refreshTime);
 }
