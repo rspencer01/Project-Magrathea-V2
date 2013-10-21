@@ -31,6 +31,7 @@ Sky::Sky(Game* parent) : Object(Vector3(0,0,0),parent)
 
 void Sky::Render(int refreshTime)
 {
+  game->currentShader->setFloat("sunIntensity",1.0);
   Object::Render(refreshTime);
   sun->Render(refreshTime);
 }
@@ -58,12 +59,12 @@ Sun::Sun(Vector3 pos,Game* parent) : Object(pos,parent)
 
 void Sun::Render(int refreshTime)
 {
-  theta += refreshTime / 1000.0 *3.1415*2*2.0/600.0;
+  theta += refreshTime / 1000.0 *3.1415*2*2.0 / 600.0;
   rotate(Vector3(cos(theta),-sin(theta),0),
          Vector3(sin(theta),cos(theta),0));
   updateTriangleData();
   // We want to be fully lit.
-  game->currentShader->setFloat("sunIntensity",1.0);
+  
   Object::Render(refreshTime);
   // Then light the rest as per usual.
   if (cos(theta)>0)
