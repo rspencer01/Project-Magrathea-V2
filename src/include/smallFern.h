@@ -16,7 +16,7 @@ class SmallFern : public Object
 {
   private:
 	  void initialiseTriangles();
-    void makeLeaf(Vector3 pos, Vector3 dir, float width);
+    void makeLeaf(Vector3 pos, Vector3 dir, float width,float droopyness);
     Vector3 normal;
   public:
 	  /// Constructs
