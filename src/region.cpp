@@ -5,7 +5,7 @@
 #include <dynotree.h>
 #include <grass.h>
 #include <images.h>
-#include <fern.h>
+#include <smallFern.h>
 
 GLuint texture = (GLuint)-1;
 
@@ -26,7 +26,7 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
       //if (here.isGrass)
       //  foliage.push_back(new Grass(*(here.position),*(here.normal),parent));
       if (here.isFern)
-        foliage.push_back(new Fern(*(here.position),*(here.normal),parent));
+        foliage.push_back(new SmallFern(*(here.position),*(here.normal),parent));
     }
   if (texture == (GLuint)-1)
 	  texture = textureFromRAW("../assets/MixedGround.raw");
