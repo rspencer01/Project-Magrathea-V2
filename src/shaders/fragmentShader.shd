@@ -12,11 +12,13 @@ void main()
   
   
   // These will eventually be parameters
-  float ambient = sunIntensity/2.0;
+  float ambient = 0.3;
   float sunlight = sunIntensity;
   // 16 samples per pixel.
-  float diff = (sunlight-ambient)/64.0;
-  float vis = sunlight;
+  float diff = (sunlight-ambient)/49.0;
+  if (diff<0)
+  	diff = 0;
+  float vis = max(ambient,sunlight);
   float alph = 1.0;
   
   // Test if point is inside the shadow render area...
