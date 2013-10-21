@@ -4,6 +4,8 @@ Todo list
 These are low level things that need implimentaion
 
 - [ ] Fix BMP reading bug.
+- [ ] Change preferred image format to PPM
+- [ ] Make sky change nicely at night
 - [x] Make objects transform in shaders
 - [x] Remove artifacts of misrendering regions
 - [x] Render timestep, for moving objects
