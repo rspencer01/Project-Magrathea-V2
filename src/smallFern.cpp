@@ -61,10 +61,10 @@ void SmallFern::makeLeaf(Vector3 pos, Vector3 dir, float width,float droopyness)
   cross = cross*0.5;
 
 
-  addPoint(numberOfPoints,pos+cross,Vector3(0,1,0),0.7f,1.0f,0.2f);
+  addPoint(numberOfPoints,pos+cross,Vector3(0,1,0),0.7f,0.8f,0.2f);
   editTextureCoord(numberOfPoints,0,1);
   numberOfPoints++;
-  addPoint(numberOfPoints,pos-cross,Vector3(0,1,0),0.7f,1.0f,0.2f);
+  addPoint(numberOfPoints,pos-cross,Vector3(0,1,0),0.7f,0.8f,0.2f);
   editTextureCoord(numberOfPoints,1,1);
   numberOfPoints++;
   for (int i = 0;i<5;i++)
@@ -77,11 +77,11 @@ void SmallFern::makeLeaf(Vector3 pos, Vector3 dir, float width,float droopyness)
     norm.normalise();
     
     addPoint(numberOfPoints,pos+cross,
-      norm,0.7f,1.0f,0.2f);
+      norm,0.7f,0.8f,0.2f);
     editTextureCoord(numberOfPoints,0,1-((i+1)/5.f));
     numberOfPoints++;
     addPoint(numberOfPoints,pos-cross,
-      norm,0.7f,1.0f,0.2f);
+      norm,0.7f,0.8f,0.2f);
     editTextureCoord(numberOfPoints,1,1-((i+1)/5.f));
     numberOfPoints++;
     addTriangle(numberOfTriangles,numberOfPoints-4,numberOfPoints-3,numberOfPoints-2);
