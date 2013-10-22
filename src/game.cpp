@@ -29,6 +29,10 @@ void mouseMoveCurrentGame(int x,int y)
 {
   currentGame->mouseMove(x,y);
 }
+void mouseCurrentGame(int button, int state, int x,int y)
+{
+  currentGame->mouse(button,state,x,y);
+}
 
 
 
@@ -91,6 +95,8 @@ void Game::initialisePipeline()
   camera->RotateY(-3.1415/2);
   // Initialise the shadows
   shadows = new ShadowManager();
+
+  mouseControl = true;
 }
 
 /// This function assigns the event handlers defined at the top of this
@@ -107,6 +113,7 @@ void Game::initialiseCallbacks()
   glutKeyboardFunc(keyPressCurrentGame);
   glutKeyboardUpFunc(keyUpCurrentGame);
   glutPassiveMotionFunc(mouseMoveCurrentGame);
+  glutMouseFunc(mouseCurrentGame);
 }
 
 /// Run the game
@@ -239,18 +246,43 @@ void Game::keyOperations()
 
 void Game::mouseMove(int x, int y)
 {
-  // Get the centre of the screen
-  int centerX = glutGet(GLUT_WINDOW_WIDTH) / 2;
-  int centerY = glutGet(GLUT_WINDOW_HEIGHT) / 2;
-  // If the mouse has moved
-  if (x!=centerX || y!=centerY)
+  if (mouseControl)
   {
-    // Rotate the camera
-    camera->RotateFlat(-(x-centerX)/200.0);
-    camera->RotateX(-(y-centerY)/200.0);
-    // Grab that mouse again
+    // Get the centre of the screen
+    int centerX = glutGet(GLUT_WINDOW_WIDTH) / 2;
+    int centerY = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+    // If the mouse has moved
+    if (x!=centerX || y!=centerY)
+    {
+      // Rotate the camera
+      camera->RotateFlat(-(x-centerX)/200.0);
+      camera->RotateX(-(y-centerY)/200.0);
+      // Grab that mouse again
+      glutWarpPointer(centerX,centerY);
+    }
+  }
+}
+
+
+int lastState = GLUT_UP;
+void Game::mouse(int button, int state, int x, int y)
+{
+  if (button == GLUT_LEFT_BUTTON)
+  {
+    mouseControl ^= lastState==GLUT_UP;
+    lastState = state;
+  }
+  if (mouseControl)
+  {
+    // Make there be no cursor
+    glutSetCursor(GLUT_CURSOR_NONE);
+    // Move the mouse to the centre screen
+    int centerX = glutGet(GLUT_WINDOW_WIDTH) / 2;
+    int centerY = glutGet(GLUT_WINDOW_HEIGHT) / 2;
     glutWarpPointer(centerX,centerY);
   }
+  else
+    glutSetCursor(GLUT_CURSOR_CROSSHAIR);
 }
 
 terrainBit Game::getTerrainBit(int x,int y)
@@ -261,6 +293,7 @@ terrainBit Game::getTerrainBit(int x,int y)
 /// Constructs regions in an area around the given coordinates.  Does at most one region construction/destruction per call.
 void Game::constructRegions(float x,float y)
 {
+
 	int rx = (int)(x /REGION_SIZE)*REGION_SIZE;
 	int ry = (int)(y /REGION_SIZE)*REGION_SIZE;
 	if (regions.size()==0)
