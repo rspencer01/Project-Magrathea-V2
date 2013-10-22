@@ -21,12 +21,22 @@ SmallFern::SmallFern(Vector3 pos,Vector3 norm,Game* g) : Object(pos,g)
 void SmallFern::initialiseTriangles()
 {
 	// Begin the operation of setting up triangles
-	clearTriangleData(120,60);
+	clearTriangleData(420,300);
   numberOfPoints = 0;
   numberOfTriangles = 0;
+
+  int seed = (int)position.x;
+  Vector3 pos = Vector3();
   // Three leaves equally spaced round the circle
-  for (int i = 0;i<3;i++)
-    makeLeaf(Vector3(),Vector3(random(i+5)*2-1,1.2+0.1*random(i*101+7),random(i*100+1)*2-1)/2.5,3.f,0.12+0.1*random(i*1011+88));
+  for (int i = 0;i<7;i++)
+  {
+    
+    Vector3 dir = Vector3(random(seed++)*2-1,
+                         0.3+0.1*random(seed++),
+                         random(seed++)*2-1).normal();
+    makeLeaf(pos,dir,2.f,0.1);
+    pos = pos + Vector3(0,0.1,0);
+  }
   //for (int i = 5;i<8;i++)
   //  makeLeaf(Vector3(0,0.3,0),Vector3(random(i+5)*2-1,1.5+0.1*random(i*101+7),random(i*100+1)*2-1)/2.5,3.f,0.12+0.03*random(i*1011+88));
 
@@ -49,10 +59,10 @@ void SmallFern::makeLeaf(Vector3 pos, Vector3 dir, float width,float droopyness)
   Vector3 cross = dir.cross(Vector3(dir.x,0,dir.z)).normal()*width/2;
   
   addPoint(numberOfPoints,pos+cross,Vector3(0,1,0),0.7f,1.0f,0.2f);
-  editTextureCoord(numberOfPoints,0.2,1);
+  editTextureCoord(numberOfPoints,0,1);
   numberOfPoints++;
   addPoint(numberOfPoints,pos-cross,Vector3(0,1,0),0.7f,1.0f,0.2f);
-  editTextureCoord(numberOfPoints,0.8,1);
+  editTextureCoord(numberOfPoints,1,1);
   numberOfPoints++;
   for (int i = 0;i<5;i++)
   {
@@ -65,11 +75,11 @@ void SmallFern::makeLeaf(Vector3 pos, Vector3 dir, float width,float droopyness)
     
     addPoint(numberOfPoints,pos+cross,
       norm,0.7f,1.0f,0.2f);
-    editTextureCoord(numberOfPoints,0.2,1-((i+1)/5.f));
+    editTextureCoord(numberOfPoints,0,1-((i+1)/5.f));
     numberOfPoints++;
     addPoint(numberOfPoints,pos-cross,
       norm,0.7f,1.0f,0.2f);
-    editTextureCoord(numberOfPoints,0.8,1-((i+1)/5.f));
+    editTextureCoord(numberOfPoints,1,1-((i+1)/5.f));
     numberOfPoints++;
     addTriangle(numberOfTriangles,numberOfPoints-4,numberOfPoints-3,numberOfPoints-2);
     numberOfTriangles++;
