@@ -264,13 +264,14 @@ void Game::mouseMove(int x, int y)
 }
 
 
-int lastState = GLUT_UP;
+int lastLeftState = GLUT_UP;
+int lastMiddleState = GLUT_UP;
 void Game::mouse(int button, int state, int x, int y)
 {
   if (button == GLUT_LEFT_BUTTON)
   {
-    mouseControl ^= lastState==GLUT_UP;
-    lastState = state;
+    mouseControl ^= lastLeftState==GLUT_UP;
+    lastLeftState = state;
   }
   if (mouseControl)
   {
@@ -283,7 +284,15 @@ void Game::mouse(int button, int state, int x, int y)
   }
   else
     glutSetCursor(GLUT_CURSOR_CROSSHAIR);
+  // Turn on the fps if required
+  if (button == GLUT_MIDDLE_BUTTON)
+  {
+    fpsOn^=lastMiddleState==GLUT_UP;
+    lastMiddleState = state;
+  }
+
 }
+
 
 terrainBit Game::getTerrainBit(int x,int y)
 {
