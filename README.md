@@ -39,6 +39,10 @@ This is alist of high level things that I want to impliment at some stage.  Low 
  * [.] Sun and sky
  * [.] Sensical terrain types
 
+Control
+-------
+Use the mouse to point and go.  Keys `S` and `W` to move forward and backward.  Left click to enter/exit pointing mode.  Middle click (or `o` key) to enter/exit first person mode.  If you don't have a mouse, use keys `A`, `D`, `Q` and `E` to move around.
+
 Assets and Data
 ---------------
 The assets and data are too large to hold in this repo.  They can be found [here][2] (link may be outdated.  [email][4] me if it is...) .  Unpack the zip file into a folder called `assets` one directory below where you run the executable.  It is worth noting that in the same directory as `assets`, the folder `src/shaders` should be copied.
