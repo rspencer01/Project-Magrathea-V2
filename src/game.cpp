@@ -237,15 +237,20 @@ void Game::keyOperations()
     camera->RotateX(-0.01f);
 }
 
-int lastx = 0;
-int lasty = 0;
-
 void Game::mouseMove(int x, int y)
 {
-  camera->RotateFlat(-(x-lastx)/200.0);
-  camera->RotateX(-(y-lasty)/200.0);
-  lastx = x;
-  lasty = y;
+  // Get the centre of the screen
+  int centerX = glutGet(GLUT_WINDOW_WIDTH) / 2;
+  int centerY = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+  // If the mouse has moved
+  if (x!=centerX || y!=centerY)
+  {
+    // Rotate the camera
+    camera->RotateFlat(-(x-centerX)/200.0);
+    camera->RotateX(-(y-centerY)/200.0);
+    // Grab that mouse again
+    glutWarpPointer(centerX,centerY);
+  }
 }
 
 terrainBit Game::getTerrainBit(int x,int y)
