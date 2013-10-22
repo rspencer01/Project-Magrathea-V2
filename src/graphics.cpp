@@ -50,6 +50,9 @@ void initialiseGraphics(Game* sh)
   // Fill the polygons, please
   glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
+  // Lets not display a cursor
+  glutSetCursor(GLUT_CURSOR_NONE);
+
 }
 
 /// Builds a projection matrix

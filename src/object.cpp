@@ -219,7 +219,7 @@ void Object::updateMatrix()
   transformMatrix[6] = right.y;
   transformMatrix[7] = position.y;
 
-  transformMatrix[8] = forward.y;
+  transformMatrix[8] = forward.z;
   transformMatrix[9] = up.z;
   transformMatrix[10] = right.z;
   transformMatrix[11] = position.z;

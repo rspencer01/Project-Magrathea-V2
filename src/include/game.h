@@ -68,6 +68,8 @@ class Game
     ShaderProgram* mainShader;
     /// Some test birds
     std::vector<Bird*> birds;
+    /// Is the mouse being used to control the camera
+    bool mouseControl;
   public:
     /// Creates a game instance and initialises all variables.  If false is passed as a paramter, the game initialises no graphics
     Game(bool);
@@ -79,6 +81,10 @@ class Game
     void keyPress(unsigned char key, int, int);
     /// Event handler for a key release
     void keyUp(unsigned char key, int, int);
+    /// Event handler for the mouse move
+    void mouseMove(int x, int y);
+    /// Event handler for mouse events
+    void mouse(int button, int state, int x, int y);
     /// Returns data about a single point
     terrainBit getTerrainBit(int x, int y);
     /// Set the projection matrix.  Called by the resize function

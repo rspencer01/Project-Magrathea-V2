@@ -1,6 +1,6 @@
 Project-Magrathea-V2
 ====================
-V2.0.3
+V2.0.4
 
 ----------
 
@@ -26,22 +26,26 @@ The following milestones have been passed:
  * Dynamic region creation based on camera position
  * Use of real data (imported)
  * Nice trees
- * Shadows (still buggy)
+ * Shadows (still buggy, but getting there)
 
 Wishlist
 --------
 This is alist of high level things that I want to impliment at some stage.  Low level stuff to do is found in `TODO.md`.
 
  * [x] Trees
- * [ ] Birds
+ * [.] Birds
  * [x] Colors
  * [x] Textures
- * [ ] Sun and sky
+ * [.] Sun and sky
  * [.] Sensical terrain types
+
+Control
+-------
+Use the mouse to point and go.  Keys `S` and `W` to move forward and backward.  Left click to enter/exit pointing mode.  Middle click (or `o` key) to enter/exit first person mode.  If you don't have a mouse, use keys `A`, `D`, `Q` and `E` to move around.
 
 Assets and Data
 ---------------
-The assets and data are too large to hold in this repo.  They can be found [here][2].  Unpack the zip file into a folder called `assets` one directory below where you run the executable.  It is worth noting that in the same directory as `assets`, the folder `src/shaders` should be copied.
+The assets and data are too large to hold in this repo.  They can be found [here][2] (link may be outdated.  [email][4] me if it is...) .  Unpack the zip file into a folder called `assets` one directory below where you run the executable.  It is worth noting that in the same directory as `assets`, the folder `src/shaders` should be copied.
 
 The textures are (currently) BMP and RAW files.  Feel free to chop and change these to improve them.  If you develop a better texture, please let me know (or submit a pull request).
 
@@ -57,3 +61,4 @@ There are also some tutorials up on the project webpage (these are currently gro
 
 [2]: http://www.ked.co.za/temp/assets.zip "Sample formatted data obtainable here"
 [3]: http://viewer.nationalmap.gov/viewer/ "More raw data obtainable here"
+[4]: mailto:robert.spencer94@gmail.com

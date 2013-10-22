@@ -6,28 +6,49 @@ in vec2 tex;
 in vec4 texShades;
 uniform sampler2D shadowTexture;
 uniform sampler2D otherTexture;
+uniform float sunIntensity;
 void main()
 { 
-  float vis = 1.0;
+  
+  
+  // These will eventually be parameters
+  float ambient = 0.3;
+  float sunlight = sunIntensity;
+  // 16 samples per pixel.
+  float diff = (sunlight-ambient)/49.0;
+  if (diff<0)
+  	diff = 0;
+  float vis = max(ambient,sunlight);
   float alph = 1.0;
+  
+  // Test if point is inside the shadow render area...
   if ((ShadowCoord.x>0  && ShadowCoord.x<1)&&
   	   (ShadowCoord.y>0  && ShadowCoord.y<1))
   {
-  	if (texture(shadowTexture,ShadowCoord.xy).z < ShadowCoord.z-0.0001)
-  	{
-  		vis = 0.5;
-  	}
+  	float y,x;
+  	
+  	for (y = -1.5 ; y <=1.5 ; y+=0.5)
+			for (x = -1.5 ; x <=1.5 ; x+=0.5)
+  		 	if (texture(shadowTexture,ShadowCoord.xy+vec2(x,y)/10000).z < ShadowCoord.z-0.0001)
+  				vis -= diff;
   }
+  
+  // A color for the texture
   vec4 otherTexFrag = vec4(0);
+  
+  // Determine if the multi-texture mode is disabled
   if (texShades.x<0)
     otherTexFrag = texture(otherTexture,tex);
+  // Otherwise, sample the multi-texture.
   else
   {
-    otherTexFrag += texShades.x * texture(otherTexture,mod(tex,vec2(1.0))/2);
-    otherTexFrag += texShades.y * texture(otherTexture,mod(tex,vec2(1.0))/2+vec2(0,0.5));
-    otherTexFrag += texShades.z * texture(otherTexture,mod(tex,vec2(1.0))/2+vec2(0.5,0));
+    otherTexFrag += texShades.x * texture(otherTexture,mod(tex,vec2(1.0))/2              );
+    otherTexFrag += texShades.y * texture(otherTexture,mod(tex,vec2(1.0))/2+vec2(0  ,0.5));
+    otherTexFrag += texShades.z * texture(otherTexture,mod(tex,vec2(1.0))/2+vec2(0.5,0)  );
     otherTexFrag += texShades.w * texture(otherTexture,mod(tex,vec2(1.0))/2+vec2(0.5,0.5));
   }
+  
+  // If it is magenta, make it transparant
   if ((otherTexFrag.x>0.9)&&(otherTexFrag.z>0.9)&&(otherTexFrag.y<0.1))
   	alph = 0.0;
   

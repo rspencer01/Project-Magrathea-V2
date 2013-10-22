@@ -140,8 +140,23 @@ void ShaderProgram::setInt(const char* varName, unsigned int value)
   }
   if (variableLocations[vName]==0xFFFFFFFF)
   {
-    printf("ERROR: Cannot find variable '%s' in shader\n",varName);
+    printf("ERROR: Cannot find integer variable '%s' in shader\n",varName);
     return;
   }
   glUniform1i(variableLocations[vName],value);
+}
+
+void ShaderProgram::setFloat(const char* varName, float value)
+{
+  std::string vName (varName);
+  if (! variableLocations.count(vName)>0)
+  {
+    variableLocations[vName] = glGetUniformLocation(ShaderProgramID, varName);
+  }
+  if (variableLocations[vName]==0xFFFFFFFF)
+  {
+    printf("ERROR: Cannot find float variable '%s' in shader\n",varName);
+    return;
+  }
+  glUniform1f(variableLocations[vName],value);
 }

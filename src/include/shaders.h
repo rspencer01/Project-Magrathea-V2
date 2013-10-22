@@ -33,6 +33,7 @@ class ShaderProgram
     /// Set some variable
     void setMatrix(const char*,float*);
     void setInt(const char* varName, unsigned int value);
+    void setFloat(const char* varName, float value);
     /// Function to set the object transformation matrix
     void setObjectMatrix(float* value);
 
