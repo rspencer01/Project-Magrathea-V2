@@ -32,9 +32,9 @@ void SmallFern::initialiseTriangles()
   {
     
     Vector3 dir = Vector3(random(seed++)*2-1,
-                         0.3+0.1*random(seed++),
+                         0.4+0.2*random(seed++),
                          random(seed++)*2-1).normal();
-    makeLeaf(pos,dir,2.f,0.1);
+    makeLeaf(pos,dir,2.f,0.05);
     pos = pos + Vector3(0,0.1,0);
   }
   //for (int i = 5;i<8;i++)
@@ -57,7 +57,10 @@ void SmallFern::makeLeaf(Vector3 pos, Vector3 dir, float width,float droopyness)
   dir.normalise();
   dir = dir*width/5.0;
   Vector3 cross = dir.cross(Vector3(dir.x,0,dir.z)).normal()*width/2;
-  
+
+  cross = cross*0.5;
+
+
   addPoint(numberOfPoints,pos+cross,Vector3(0,1,0),0.7f,1.0f,0.2f);
   editTextureCoord(numberOfPoints,0,1);
   numberOfPoints++;
