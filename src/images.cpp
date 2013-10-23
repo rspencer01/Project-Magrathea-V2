@@ -79,3 +79,43 @@ GLuint textureFromRAW(const char* filePath)
 
 	return returnValue;
 }
+
+
+GLuint textureFromTGA(const char* filePath)
+{
+	printf("Loading texture %s\n",filePath);
+	FILE* fp = fopen(filePath,"rb");
+  char inp;
+  fseek(fp,2,0);
+  fread(&inp,1,1,fp);
+  unsigned short width;
+  unsigned short height;
+  fseek(fp,12,0);
+  fread(&inp,1,1,fp);
+  width = inp;
+  fread(&inp,1,1,fp);
+  width += inp<<8;
+  fread(&inp,1,1,fp);
+  height = inp;
+  fread(&inp,1,1,fp);
+  height += inp<<8;
+
+  fread(&inp,1,1,fp);
+  if (inp!=32)
+  {
+    fprintf(stderr,"Error loading texture:  All TGA files must be 32 bit.\n");
+    return -1;
+  }
+  fread(&inp,1,1,fp);
+
+  char* rgbaData = new char[width*height*4];
+  fread(rgbaData,4,height*width,fp);
+  GLuint returnValue = newTexture();
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgbaData);
+
+  delete rgbaData;
+	fclose(fp);
+
+	return returnValue;
+
+}
