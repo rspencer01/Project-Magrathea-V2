@@ -85,7 +85,7 @@ GLuint textureFromTGA(const char* filePath)
 {
 	printf("Loading texture %s\n",filePath);
 	FILE* fp = fopen(filePath,"rb");
-  char inp;
+  unsigned char inp;
   fseek(fp,2,0);
   fread(&inp,1,1,fp);
   unsigned short width;
