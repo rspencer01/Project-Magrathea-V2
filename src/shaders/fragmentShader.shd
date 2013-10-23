@@ -9,8 +9,6 @@ uniform sampler2D otherTexture;
 uniform float sunIntensity;
 void main()
 { 
-  
-  
   // These will eventually be parameters
   float ambient = 0.3;
   float sunlight = sunIntensity;
@@ -48,9 +46,6 @@ void main()
     otherTexFrag += texShades.w * texture(otherTexture,mod(tex,vec2(1.0))/2+vec2(0.5,0.5));
   }
   
-  // If it is magenta, make it transparant
-  if ((otherTexFrag.x>0.9)&&(otherTexFrag.z>0.9)&&(otherTexFrag.y<0.1))
-  	alph = 0.0;
-  
-  FragColor =  vec4(vis*vec3(col.xyz)*otherTexFrag.xyz,alph); 
+  // The transparancy is taken straight from the texture 
+  FragColor =  vec4(vis*vec3(col.xyz)*otherTexFrag.xyz,otherTexFrag.w); 
 }

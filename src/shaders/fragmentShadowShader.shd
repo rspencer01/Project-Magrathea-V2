@@ -4,8 +4,5 @@ uniform sampler2D otherTexture;
 in vec2 tex;
 void main()
 {
-  float alph = 1.0;
-  if ((texture(otherTexture,tex).x>0.9)&&(texture(otherTexture,tex).z>0.9))
-  	alph = 0.0;
-  FragColor = vec4(vec3(gl_FragCoord.z),alph);
+  FragColor = vec4(vec3(gl_FragCoord.z),texture(otherTexture,tex).w);
 }
