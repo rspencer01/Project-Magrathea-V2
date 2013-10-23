@@ -110,6 +110,12 @@ GLuint textureFromTGA(const char* filePath)
 
   char* rgbaData = new char[width*height*4];
   fread(rgbaData,4,height*width,fp);
+  for (int i = 0;i<width*height;i++)
+  {
+    char t = rgbaData[i*4 ];
+    rgbaData[i*4     ] = rgbaData[i*4 + 2];
+    rgbaData[i*4 + 2 ] = t;
+  }
   GLuint returnValue = newTexture();
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgbaData);
 
