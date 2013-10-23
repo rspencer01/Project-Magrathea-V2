@@ -32,16 +32,16 @@ Sky::Sky(Game* parent) : Object(Vector3(0,0,0),parent)
 void Sky::Render(int refreshTime)
 {
   game->currentShader->setFloat("sunIntensity",1.0);
-  Object::Render(refreshTime);
+  //Object::Render(refreshTime);
   sun->Render(refreshTime);
 }
 
 Sun::Sun(Vector3 pos,Game* parent) : Object(pos,parent)
 {
   // Get the texture
-  textureNumber = textureFromRAW("../assets/sun.raw");
+  textureNumber = textureFromTGA("../assets/sun.tga",true);
 
-  int SUN_SIZE = 10;
+  int SUN_SIZE = 20;
   centre = pos;
   theta = 0;
 

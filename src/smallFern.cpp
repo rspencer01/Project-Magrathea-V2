@@ -12,7 +12,7 @@ SmallFern::SmallFern(Vector3 pos,Vector3 norm,Game* g) : Object(pos,g)
   initialiseTriangles();
   // If we have yet to load the texture, do so
   if (smallFernTextureNumber == (GLuint)-1)
-	  smallFernTextureNumber = textureFromTGA(smallFernTextureName);
+	  smallFernTextureNumber = textureFromTGA(smallFernTextureName,false);
   // And set the texture as ours
   textureNumber = smallFernTextureNumber;
   
@@ -28,7 +28,7 @@ void SmallFern::initialiseTriangles()
   int seed = (int)position.x;
   Vector3 pos = Vector3();
   // Three leaves equally spaced round the circle
-  //for (int i = 0;i<7;i++)
+  for (int i = 0;i<7;i++)
   {
     
     Vector3 dir = Vector3(random(seed++)*2-1,
