@@ -44,7 +44,7 @@ void initialiseGraphics(Game* sh)
   // Lets enable alpha blending
   glEnable (GL_BLEND);
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glAlphaFunc ( GL_GREATER, (GLclampf)0.7 ) ;
+  glAlphaFunc ( GL_GREATER, (GLclampf)0.01 ) ;
   glEnable ( GL_ALPHA_TEST ) ;
 
   // Fill the polygons, please
