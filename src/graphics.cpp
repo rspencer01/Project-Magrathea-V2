@@ -87,7 +87,7 @@ void resize(int width, int height)
   // Set the size of the viewport
   glViewport(0,0,(GLsizei)width,(GLsizei)height);
   // Construct the projection matrix ...
-  BuildPerspProjMat(projMatrix,30.f, float(width)/height, 2.f, 100.f);
+  BuildPerspProjMat(projMatrix,20.f, float(width)/height, 2.f, 100.f);
   // ... and push it to the shaders
   game->setProjectionMatrix(&projMatrix[0]);
 }

@@ -5,7 +5,7 @@
 
 Sky::Sky(Game* parent) : Object(Vector3(0,0,0),parent)
 {
-  textureNumber = textureFromRAW("../assets/sky7.raw");
+  textureNumber = textureFromTGA("../assets/sky.tga",true);
   clearTriangleData(22,21);
 	for (int y = 0; y<21;y++)
 	{
@@ -32,7 +32,7 @@ Sky::Sky(Game* parent) : Object(Vector3(0,0,0),parent)
 void Sky::Render(int refreshTime)
 {
   game->currentShader->setFloat("sunIntensity",1.0);
-  //Object::Render(refreshTime);
+  Object::Render(refreshTime);
   sun->Render(refreshTime);
 }
 
