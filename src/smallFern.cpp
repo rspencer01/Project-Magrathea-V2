@@ -3,7 +3,7 @@
 #include <smallFern.h>
 
 GLuint smallFernTextureNumber = (GLuint)-1;
-const char* smallFernTextureName = "../assets/smallFern.raw";
+const char* smallFernTextureName = "../assets/smallFern.tga";
 
 /// Initialises the tree at the position, and constructs it
 SmallFern::SmallFern(Vector3 pos,Vector3 norm,Game* g) : Object(pos,g)
@@ -12,7 +12,7 @@ SmallFern::SmallFern(Vector3 pos,Vector3 norm,Game* g) : Object(pos,g)
   initialiseTriangles();
   // If we have yet to load the texture, do so
   if (smallFernTextureNumber == (GLuint)-1)
-	  smallFernTextureNumber = textureFromRAW(smallFernTextureName);
+	  smallFernTextureNumber = textureFromTGA(smallFernTextureName,false);
   // And set the texture as ours
   textureNumber = smallFernTextureNumber;
   
@@ -62,10 +62,10 @@ void SmallFern::makeLeaf(Vector3 pos, Vector3 dir, float width,float droopyness)
 
 
   addPoint(numberOfPoints,pos+cross,Vector3(0,1,0),0.7f,0.8f,0.2f);
-  editTextureCoord(numberOfPoints,0,1);
+  editTextureCoord(numberOfPoints,0,0);
   numberOfPoints++;
   addPoint(numberOfPoints,pos-cross,Vector3(0,1,0),0.7f,0.8f,0.2f);
-  editTextureCoord(numberOfPoints,1,1);
+  editTextureCoord(numberOfPoints,1,0);
   numberOfPoints++;
   for (int i = 0;i<5;i++)
   {
@@ -78,11 +78,11 @@ void SmallFern::makeLeaf(Vector3 pos, Vector3 dir, float width,float droopyness)
     
     addPoint(numberOfPoints,pos+cross,
       norm,0.7f,0.8f,0.2f);
-    editTextureCoord(numberOfPoints,0,1-((i+1)/5.f));
+    editTextureCoord(numberOfPoints,0,((i+1)/5.f));
     numberOfPoints++;
     addPoint(numberOfPoints,pos-cross,
       norm,0.7f,0.8f,0.2f);
-    editTextureCoord(numberOfPoints,1,1-((i+1)/5.f));
+    editTextureCoord(numberOfPoints,1,((i+1)/5.f));
     numberOfPoints++;
     addTriangle(numberOfTriangles,numberOfPoints-4,numberOfPoints-3,numberOfPoints-2);
     numberOfTriangles++;

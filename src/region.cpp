@@ -30,7 +30,7 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
     }
 
   if (texture == (GLuint)-1)
-	  texture = textureFromRAW("../assets/MixedGround.raw");
+	  texture = textureFromTGA("../assets/MixedGround.tga",true);
   textureNumber = texture;
 }
 
@@ -51,13 +51,13 @@ void Region::initialiseTriangles()
       editTextureCoord(y*(REGION_SIZE+1)+x,4.0*x/(REGION_SIZE+1),4.0*y/(REGION_SIZE+1));
       terrainType t = game->getTerrainBit(x+position.x,y+position.z).type;
       if (t==grass)
-        setTextureMix(y*(REGION_SIZE+1)+x,0,0,1,0);
-      if (t==stone)
-        setTextureMix(y*(REGION_SIZE+1)+x,1,0,0,0);
-      if (t==sand)
-        setTextureMix(y*(REGION_SIZE+1)+x,0,1,0,0);
-      if (t==soil)
         setTextureMix(y*(REGION_SIZE+1)+x,0,0,0,1);
+      if (t==stone)
+        setTextureMix(y*(REGION_SIZE+1)+x,0,1,0,0);
+      if (t==sand)
+        setTextureMix(y*(REGION_SIZE+1)+x,1,0,0,0);
+      if (t==soil)
+        setTextureMix(y*(REGION_SIZE+1)+x,0,0,1,0);
 
 		}
 	

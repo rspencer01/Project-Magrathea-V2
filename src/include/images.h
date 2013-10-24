@@ -6,4 +6,5 @@
 /// Constructs an opengl texture from the given bitmap
 GLuint textureFromBMP(const char*);
 GLuint textureFromRAW(const char*);
+GLuint textureFromTGA(const char*,bool);
 #endif

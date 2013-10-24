@@ -44,7 +44,8 @@ void initialiseGraphics(Game* sh)
   // Lets enable alpha blending
   glEnable (GL_BLEND);
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glAlphaFunc ( GL_GREATER, (GLclampf)0.7 ) ;
+  // Draw all transparancies except completely invisibles
+  glAlphaFunc ( GL_GREATER, (GLclampf)0.01 ) ;
   glEnable ( GL_ALPHA_TEST ) ;
 
   // Fill the polygons, please
@@ -86,7 +87,7 @@ void resize(int width, int height)
   // Set the size of the viewport
   glViewport(0,0,(GLsizei)width,(GLsizei)height);
   // Construct the projection matrix ...
-  BuildPerspProjMat(projMatrix,30.f, float(width)/height, 2.f, 100.f);
+  BuildPerspProjMat(projMatrix,20.f, float(width)/height, 2.f, 100.f);
   // ... and push it to the shaders
   game->setProjectionMatrix(&projMatrix[0]);
 }
