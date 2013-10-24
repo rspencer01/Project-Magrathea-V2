@@ -70,9 +70,11 @@ class Object
   	VertexDatum* vertexData;
     /// What is the position of this?  All other points are given as relative to this centre
     Vector3 position;
-    /// The direction (s) we are facing
+    /// The direction we are facing (or the direction towards the camera in billboard mode)
     Vector3 forward;
+    /// The upward direction
     Vector3 up;
+    /// The right direction
     Vector3 right;
     /// The game to which this object belongs.  Used to access shaders
     Game* game;
@@ -118,7 +120,7 @@ class Object
   	/// Destroys the Object, freeing space
     ~Object();
   	/// Renders the Object to the screen
-    void Render(int refreshTime);
+    void Render(int refreshTime, Vector3 cameraPos);
   	/// Accessor for the item position
     Vector3 getPosition();
 };

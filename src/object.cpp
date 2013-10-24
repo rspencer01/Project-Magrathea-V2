@@ -58,7 +58,9 @@ void Object::setPosition(Vector3 pos)
 /// Renders this object to the screen, using the VBOs that were 
 /// initialised using the addPoint, addTriangle and pushTriangleData
 /// functions
-void Object::Render(int refreshTime)
+/// @param refreshTime Number of milliseconds since the last rendering
+/// @param cameraPos   Position of the camera in 3-space
+void Object::Render(int refreshTime, Vector3 cameraPos)
 {
   // Only do something if we have data	
 	if (buffersInitialised)
