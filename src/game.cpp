@@ -74,6 +74,7 @@ Game::Game(bool doGraphics)
       birds.push_back(new Bird(Vector3(200,200,200)+t,this));
     }
   }
+  cloud = new Cloud(Vector3(100,300,100),this);
 }
 
 /// Initialises all the shaders and cameras and shadows associated with this game
@@ -126,6 +127,7 @@ void Game::run()
 /// Draws the entire game
 void Game::RenderScene(int refreshTime)
 {
+  cloud->Render(refreshTime,&(camera->Position));
   // Run through the rectangle of regions, and draw each one
   for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)

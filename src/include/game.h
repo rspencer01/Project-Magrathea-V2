@@ -21,6 +21,7 @@
 #include <shaders.h>
 #include <shadow.h>
 #include <bird.h>
+#include <cloud.h>
 
 /// The gameops class contains all the methods to do with gameplay
 ///
@@ -68,6 +69,8 @@ class Game
     ShaderProgram* mainShader;
     /// Some test birds
     std::vector<Bird*> birds;
+    /// A test cloud
+    Cloud* cloud;
     /// Is the mouse being used to control the camera
     bool mouseControl;
   public:

@@ -9,6 +9,7 @@ class ShadowManager;
 class ShaderProgram;
 class Camera;
 class Object;
+class Cloud;
 
 #include <vector3.h>
 
