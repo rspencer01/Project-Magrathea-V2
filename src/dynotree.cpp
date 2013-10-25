@@ -20,6 +20,8 @@ DynoTree::DynoTree(Vector3 pos,Game* g) : Object(pos,g)
 	  dtreeTextureNumber = textureFromTGA(dtextureName,false);
   // And set it as this object's texture
   textureNumber = dtreeTextureNumber;
+
+  billboard = true;
 }
 
 /// Construct the triangles

@@ -33,7 +33,7 @@ Sky::Sky(Game* parent) : Object(Vector3(0,0,0),parent)
   sun = new Sun(Vector3(0,0,0),parent);
 }
 
-void Sky::Render(int refreshTime, Vector3 cameraPos)
+void Sky::Render(int refreshTime, Vector3* cameraPos)
 {
   game->currentShader->setFloat("sunIntensity",1.0);
   Object::Render(refreshTime,cameraPos);
@@ -61,7 +61,7 @@ Sun::Sun(Vector3 pos,Game* parent) : Object(pos,parent)
   pushTriangleData();
 }
 
-void Sun::Render(int refreshTime,Vector3 cameraPos)
+void Sun::Render(int refreshTime,Vector3* cameraPos)
 {
   theta += refreshTime / 1000.0 *3.1415*2*2.0 / 600.0;
   rotate(Vector3(cos(theta),-sin(theta),0),

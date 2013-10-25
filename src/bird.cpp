@@ -40,7 +40,7 @@ void Bird::initialiseTriangles()
   pushTriangleData();
 }
 
-void Bird::Render(int refreshTime, Vector3 cameraPos)
+void Bird::Render(int refreshTime, Vector3* cameraPos)
 {
   Object::Render(refreshTime,cameraPos);
 

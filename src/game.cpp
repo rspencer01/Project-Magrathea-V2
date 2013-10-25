@@ -129,9 +129,9 @@ void Game::RenderScene(int refreshTime)
   // Run through the rectangle of regions, and draw each one
   for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)
-      regions[i][j]->Render(refreshTime,camera->Position);
+      regions[i][j]->Render(refreshTime,&(camera->Position));
   for (unsigned int i = 0;i<birds.size();i++)
-    birds[i]->Render(refreshTime,camera->Position);
+    birds[i]->Render(refreshTime,&(camera->Position));
 }
 
 int shadowsDone = 0;
@@ -171,7 +171,7 @@ void Game::display()
   
   camera->Render();
   // Gogogo!
-  sky->Render(refreshTime,camera->Position);
+  sky->Render(refreshTime,&(camera->Position));
   RenderScene(refreshTime);
   
   // Push this to the screen

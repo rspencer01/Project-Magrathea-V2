@@ -78,7 +78,7 @@ void Region::initialiseTriangles()
 }
 
 /// Render this region and the trees
-void Region::Render(int refreshTime,Vector3 cameraPos)
+void Region::Render(int refreshTime,Vector3* cameraPos)
 {
   Object::Render(refreshTime,cameraPos);
   for (unsigned int i = 0; i<foliage.size();i++)
