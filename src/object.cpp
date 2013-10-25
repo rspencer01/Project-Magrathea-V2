@@ -67,7 +67,7 @@ void Object::Render(int refreshTime, Vector3* cameraPos)
   if (billboard)
   {
     right = (*cameraPos-position).normal().cross(up);
-    forward = (*cameraPos-position).normal();
+    forward = up.cross(right);
     updateMatrix();
   }
   
