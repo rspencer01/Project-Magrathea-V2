@@ -22,7 +22,7 @@ void main()
   ShadowCoord.y = ShadowCoord.y*0.5/ShadowCoord.w+0.5;
   ShadowCoord.z = ShadowCoord.z*0.5/ShadowCoord.w+0.5;
   
-  col = inColour * (dot(inNorm,vec3(0,1,0))*0.8+0.2);
+  col = inColour;
   
   tex = inTex;
   
