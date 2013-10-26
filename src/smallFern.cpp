@@ -30,10 +30,13 @@ void SmallFern::initialiseTriangles()
   // Three leaves equally spaced round the circle
   for (int i = 0;i<7;i++)
   {
-    
-    Vector3 dir = Vector3(random(seed++)*2-1,
-                         0.4+0.2*random(seed++),
-                         random(seed++)*2-1).normal();
+    //Multiple increments in one line leads to undefined behaviour - Warning as Error GCC 4.8.1
+    int s1 = seed++;
+    int s2 = seed++;
+    int s3 = seed++;
+    Vector3 dir = Vector3(random(s1)*2-1,
+                         0.4+0.2*random(s2),
+                         random(s3)*2-1).normal();
     makeLeaf(pos,dir,2.f,0.05);
     pos = pos + Vector3(0,0.1,0);
   }
