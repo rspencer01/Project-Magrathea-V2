@@ -9,6 +9,7 @@ uniform mat4 projectionMatrix;
 uniform mat4 lightTransformMatrix;
 uniform mat4 lightProjectionMatrix;
 uniform mat4 objectMatrix;
+uniform vec3 sunDirection;
 out vec4 ShadowCoord;
 out vec4 col;
 out vec2 tex;
@@ -22,7 +23,7 @@ void main()
   ShadowCoord.y = ShadowCoord.y*0.5/ShadowCoord.w+0.5;
   ShadowCoord.z = ShadowCoord.z*0.5/ShadowCoord.w+0.5;
   
-  col = inColour;
+  col = inColour * (0.4+0.6*dot(sunDirection,inNorm));
   
   tex = inTex;
   

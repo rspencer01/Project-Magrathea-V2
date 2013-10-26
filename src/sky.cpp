@@ -18,7 +18,7 @@ Sky::Sky(Game* parent) : Object(Vector3(0,0,0),parent)
     editTextureCoord(y,0.5+0.5*sin(-y/10.0*3.1415),0.5+0.5*cos(-y/10.0*3.1415));
 	}
 	addPoint(21,Vector3(1000.f*(float)sin(21/10.f*3.1415),
-						  1000.f,
+						  2000.f,
 						  1000.f*(float)cos(21/10.f*3.1415)),
               Vector3(0,1,0),
               1.f,1.f,1.f);
@@ -35,9 +35,12 @@ Sky::Sky(Game* parent) : Object(Vector3(0,0,0),parent)
 
 void Sky::Render(int refreshTime, Vector3* cameraPos)
 {
-  game->currentShader->setFloat("sunIntensity",1.0);
-  Object::Render(refreshTime,cameraPos);
+  glDepthMask(false);
   sun->Render(refreshTime,cameraPos);
+  glDepthMask(true);
+  game->currentShader->setFloat("sunIntensity",1.0);
+  //Object::Render(refreshTime,cameraPos);
+  
 }
 
 Sun::Sun(Vector3 pos,Game* parent) : Object(pos,parent)
@@ -63,7 +66,13 @@ Sun::Sun(Vector3 pos,Game* parent) : Object(pos,parent)
 
 void Sun::Render(int refreshTime,Vector3* cameraPos)
 {
+  position = *cameraPos;
   theta += refreshTime / 1000.0 *3.1415*2*2.0 / 600.0;
+  float sunDir[3];
+  sunDir[0] = sin(theta);
+  sunDir[1] = cos(theta);
+  sunDir[2] = 0;
+  game->currentShader->setVec3("sunDirection",sunDir);
   rotate(Vector3(cos(theta),-sin(theta),0),
          Vector3(sin(theta),cos(theta),0));
   updateTriangleData();
