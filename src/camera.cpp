@@ -35,22 +35,22 @@ void Camera::Render()
   viewMatrix[0] = Right.x;
   viewMatrix[4] = UpVector.x;
   viewMatrix[8] = -ViewDir.x;
-  viewMatrix[12] = 0.0;
+  viewMatrix[12] = 0.f;
 
   viewMatrix[1] = Right.y;
   viewMatrix[5] = UpVector.y;
   viewMatrix[9] = -ViewDir.y;
-  viewMatrix[13] = 0.0;
+  viewMatrix[13] = 0.f;
 
   viewMatrix[2] = Right.z;
   viewMatrix[6] = UpVector.z;
   viewMatrix[10] = -ViewDir.z;
-  viewMatrix[14] = 0.0;
+  viewMatrix[14] = 0.f;
 
   viewMatrix[3] = -Right.dot(Position);
   viewMatrix[7] = -(UpVector.dot(Position));
   viewMatrix[11] = ViewDir.dot(Position);
-  viewMatrix[15] = 1.0;
+  viewMatrix[15] = 1.f;
 
   // Now set the matrix of transformation in the shader
   shader->setMatrix(matrixName,&viewMatrix[0]);
