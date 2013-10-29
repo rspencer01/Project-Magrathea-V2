@@ -132,7 +132,7 @@ void ShaderProgram::setObjectMatrix(float* value)
 void ShaderProgram::setMatrix(const char* varName, float* value)
 {
   std::string vName (varName);
-  if (! variableLocations.count(vName)>0)
+  if (variableLocations.count(vName)==0)
   {
     variableLocations[vName] = glGetUniformLocation(ShaderProgramID, varName);
   }
@@ -147,7 +147,7 @@ void ShaderProgram::setMatrix(const char* varName, float* value)
 void ShaderProgram::setInt(const char* varName, unsigned int value)
 {
   std::string vName (varName);
-  if (! variableLocations.count(vName)>0)
+  if (variableLocations.count(vName)==0)
   {
     variableLocations[vName] = glGetUniformLocation(ShaderProgramID, varName);
   }
@@ -162,7 +162,7 @@ void ShaderProgram::setInt(const char* varName, unsigned int value)
 void ShaderProgram::setFloat(const char* varName, float value)
 {
   std::string vName (varName);
-  if (! variableLocations.count(vName)>0)
+  if (variableLocations.count(vName)==0)
   {
     variableLocations[vName] = glGetUniformLocation(ShaderProgramID, varName);
   }
