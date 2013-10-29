@@ -6,17 +6,21 @@
 
 GLuint gSampler;
 
+/// Gets rid of all the 0x0D values in a file (kills the GLSL compiler)
+/// @param program The shader program to sanatise
+/// @param size    The size of said program
+void sanatiseShader(char* program, int size)
+{
+  // Loop through the file, replacing '\r' with newlines
+  for (int i = 0;i<size;i++)
+   if (program[i]==0x0D)
+      program[i] = 0x0A;
+}
+
 ShaderProgram::ShaderProgram()
 {
   // Make us a new program*
   constructProgram();
-}
-
-void sanatiseShader(char* program, int size)
-{
-  for (int i = 0;i<size;i++)
-   if (program[i]==0x0D)
-      program[i] = 0x0A;
 }
 
 void ShaderProgram::constructProgram()
