@@ -74,7 +74,7 @@ Game::Game(bool doGraphics)
       birds.push_back(new Bird(Vector3(200,200,200)+t,this));
     }
   }
-  cloud = new Cloud(Vector3(0,100,0),this);
+  cloud = new Cloud(Vector3(0,500,0),this);
 }
 
 /// Initialises all the shaders and cameras and shadows associated with this game
