@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <images.h>
+#include <magrathea.h>
 
 /// Genertate a new texture from scratch
 GLuint newTexture(bool smoothTexture)
@@ -32,6 +33,8 @@ GLuint textureFromBMP(const char* filePath)
 {
 	printf("Loading texture %s\n",filePath);
 	FILE* fp = fopen(filePath,"rb");
+  if (fp==NULL)
+    DIE2("Texture path doesn't exist:",filePath);
 	int width,height;
 	GLuint returnValue = newTexture(false);
 	fseek(fp,0x12,0);
@@ -65,6 +68,8 @@ GLuint textureFromRAW(const char* filePath)
 {
 	printf("Loading texture %s\n",filePath);
 	FILE* fp = fopen(filePath,"rb");
+  if (fp==NULL)
+    DIE2("Texture path doesn't exist:",filePath);
 	int width,height;
 	GLuint returnValue = newTexture(false);
 	width = height = 1024;
@@ -94,6 +99,8 @@ GLuint textureFromTGA(const char* filePath, bool smoothTexture)
 {
 	printf("Loading texture %s\n",filePath);
 	FILE* fp = fopen(filePath,"rb");
+  if (fp==NULL)
+    DIE2("Texture path doesn't exist:",filePath);
   unsigned char inp;
   fseek(fp,2,0);
   fread(&inp,1,1,fp);

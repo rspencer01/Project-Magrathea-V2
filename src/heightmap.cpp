@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <magrathea.h>
 #include <heightmap.h>
 #include <noise.h>
 
@@ -10,8 +10,8 @@ void initialiseHeightmap()
   printf("Initialising heightmap\n");
   // Load the file (for fast accessing
   fp = fopen("../assets/smalldata.dat","rb");
-  if (!fp)
-    fprintf(stderr,"ERROR: HEIGHTMAP DATA NOT FOUND!\n");
+  if (fp==NULL)
+    DIE("Heightmap data not found");
 }
 
 float getHeightmapData(int x, int y)
