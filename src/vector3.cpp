@@ -107,13 +107,16 @@ void Vector3::normalise()
 
 int seed = 1;
 /// Constructs a random vector of magnitude 1.  Vector will be different each time of calling.
-/// Not recommended for reusable content (trees etc).
+/// Not recommended for reusable content (trees etc).  Also, vector is not truly random...
 Vector3 randomVector()
 {
   float x,y,z;
-  x = random(seed++)-0.5;
-  y = random(seed++)-0.5;
-  z = random(seed++)-0.5;
+  int s1 = seed++;
+  int s2 = seed++;
+  int s3 = seed++;
+  x = random(s1)-0.5f;
+  y = random(s2)-0.5f;
+  z = random(s3)-0.5f;
   return Vector3(x,y,z).normal();
 }
 
