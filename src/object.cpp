@@ -295,7 +295,7 @@ void Object::loadFromOBJFile(const char* filePath)
       float fx,fy,fz;
       // x,y,z space separated
       iss>>fx>>fy>>fz;
-      std::vector<int> tmp;tmp.push_back(fx);tmp.push_back(fy);tmp.push_back(fz);
+      std::vector<int> tmp;tmp.push_back((int)fx);tmp.push_back((int)fy);tmp.push_back((int)fz);
       norm.push_back(tmp);
     }
     // Texture coords

@@ -13,7 +13,7 @@ GLuint texture = (GLuint)-1;
 /// @param x The x coordinate of the origin
 /// @param y The y coordinate of the origin
 /// @param parent The game that this region is in.
-Region::Region(int x, int y,Game* parent) : Object(Vector3(x,0.f,y),parent)
+Region::Region(int x, int y,Game* parent) : Object(Vector3((float)x,0.f,(float)y),parent)
 {
 	printf("New region at %d %d\n",x,y);
 	initialiseTriangles();
@@ -43,13 +43,13 @@ void Region::initialiseTriangles()
 		for (int x = 0; x<(REGION_SIZE+1);x++)
 		{
       addPoint(y*(REGION_SIZE+1)+x,
-               Vector3(x,
-			                 game->getTerrainBit(x+position.x,y+position.z).position->y,
-			                 y),
-                       *(game->getTerrainBit(x+position.x,y+position.z).normal),
+               Vector3((float)x,
+			                 game->getTerrainBit(x+(int)position.x,y+(int)position.z).position->y,
+			                 (float)y),
+                       *(game->getTerrainBit(x+(int)position.x,y+(int)position.z).normal),
                        1,1,1);
-      editTextureCoord(y*(REGION_SIZE+1)+x,4.0*x/(REGION_SIZE+1),4.0*y/(REGION_SIZE+1));
-      terrainType t = game->getTerrainBit(x+position.x,y+position.z).type;
+      editTextureCoord(y*(REGION_SIZE+1)+x,4.f*x/(REGION_SIZE+1),4.f*y/(REGION_SIZE+1));
+      terrainType t = game->getTerrainBit(x+(int)position.x,y+(int)position.z).type;
       if (t==grass)
         setTextureMix(y*(REGION_SIZE+1)+x,0,0,0,1);
       if (t==stone)

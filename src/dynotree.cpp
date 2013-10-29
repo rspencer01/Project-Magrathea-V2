@@ -46,7 +46,7 @@ int DynoTree::makeRing(Vector3 pos, Vector3 basisA, Vector3 basisB, float width,
   for (int y = 0; y<11;y++)
   {
     // Calculate the angle
-    float theta = 3.1415*2.0*y/10.f;
+    float theta = 3.1415f*2.f*y/10.f;
     // And add this point
  		addPoint(numberOfPoints,
               pos+
@@ -56,7 +56,7 @@ int DynoTree::makeRing(Vector3 pos, Vector3 basisA, Vector3 basisB, float width,
               basisB*cos(theta),
               0.58f	,0.35f,0.09f);
     // Add the texture coordinate, inverting if required
-    editTextureCoord(numberOfPoints,y*0.0345,swapTex?1:0);
+    editTextureCoord(numberOfPoints,y*0.0345f,swapTex?1.f:0.f);
     // Log that we added a point
     numberOfPoints++;
  	}
@@ -86,7 +86,7 @@ void DynoTree::makeBranch(Vector3 pos, Vector3 dir, float len, float width, int 
   if (lastRingIndex==-1)
     lastRingIndex = makeRing(pos,basisA,basisB,width,true);
   // Otherwise, and in addition, create the top ring
-  int topRingIndex = makeRing(pos+dir*len,basisA,basisB,width*0.66,swapTex);
+  int topRingIndex = makeRing(pos+dir*len,basisA,basisB,width*0.66f,swapTex);
 	// Add in all the triangles
 	makeTriangles(lastRingIndex,topRingIndex);
   // If the branch is thick enough, we can branch into two others
@@ -95,17 +95,17 @@ void DynoTree::makeBranch(Vector3 pos, Vector3 dir, float len, float width, int 
     // Get a random direction
     Vector3 d = randomVector();
     // Add it to this direction
-    Vector3 newDirection = dir + d/1.8;
+    Vector3 newDirection = dir + d/1.8f;
     // Make a sub branch in that direction
-    makeBranch(pos+dir*len,newDirection.normal(),len/1.2,width*2.0/5.0,-1,false);
+    makeBranch(pos+dir*len,newDirection.normal(),len/1.2f,width*2.f/5.f,-1,false);
     // Do it again
     d = randomVector();
-    newDirection = dir + d/2.8;
+    newDirection = dir + d/2.8f;
     // Continue this branch
-    makeBranch(pos+dir*len,newDirection.normal(),len/1.2,width*3.0/5.0,topRingIndex,!swapTex);
+    makeBranch(pos+dir*len,newDirection.normal(),len/1.2f,width*3.f/5.f,topRingIndex,!swapTex);
   }
   // If we are small enough, we can put leaves here
-  if (width<0.3)
+  if (width<0.3f)
     makeLeaves(pos,dir,len);
 }
 
@@ -113,9 +113,9 @@ void DynoTree::makeLeaves(Vector3 pos, Vector3 dir, float len)
 {
   for (int i = 1;i<6;i++)
   {
-    Vector3 leafDir = dir.normal() * 0.5 + randomVector()*0.5;
-    Vector3 leafCross = leafDir.cross(Vector3(random(i+pos.x*1000),0,random(i+pos.y*1000))).normal()*0.5;
-    Vector3 leafPos = pos + dir*len/6.0*i + leafDir*0.3;
+    Vector3 leafDir = dir.normal() * 0.5f + randomVector()*0.5f;
+    Vector3 leafCross = leafDir.cross(Vector3(random(i+(int)pos.x*1000),0.f,random(i+(int)pos.y*1000))).normal()*0.5;
+    Vector3 leafPos = pos + dir*len/6.f*(float)i + leafDir*0.3f;
     leafDir = leafDir*2;
     leafCross = leafCross*2;
 
@@ -123,19 +123,19 @@ void DynoTree::makeLeaves(Vector3 pos, Vector3 dir, float len)
              leafPos,
              Vector3(0,1,0),
              0.f,0.7f,0.0f);
-    editTextureCoord(numberOfPoints,0.38,1);
+    editTextureCoord(numberOfPoints,0.38f,1.f);
     numberOfPoints++;
    	addPoint(numberOfPoints,
              leafPos+leafDir/2.0+leafCross,
              Vector3(0,1,0),
              0.f	,0.7f,0.f);
-    editTextureCoord(numberOfPoints,0.63,1);
+    editTextureCoord(numberOfPoints,0.63f,1.f);
     numberOfPoints++;
    	addPoint(numberOfPoints,
              leafPos+leafDir,
              Vector3(0,1,0),
              0.f,0.7f,0.f);
-    editTextureCoord(numberOfPoints,0.63,0.75);
+    editTextureCoord(numberOfPoints,0.63f,0.75f);
     numberOfPoints++;
     addTriangle(numberOfTriangles,numberOfPoints-2,numberOfPoints-1,numberOfPoints-3);
     numberOfTriangles++;
@@ -144,7 +144,7 @@ void DynoTree::makeLeaves(Vector3 pos, Vector3 dir, float len)
              leafPos+leafDir/2.0-leafCross,
              Vector3(0,1,0),
              0.f	,0.7f,0.f);
-    editTextureCoord(numberOfPoints,0.38,0.75);
+    editTextureCoord(numberOfPoints,0.38f,0.75f);
     numberOfPoints++;
     addTriangle(numberOfTriangles,numberOfPoints-2,numberOfPoints-1,numberOfPoints-4);
     numberOfTriangles++;

@@ -46,20 +46,20 @@ ShadowManager::ShadowManager()
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
   //BuildPerspProjMat(projMatrix,10,1,3,100);
-  projMatrix[0] = 1.0/shadowBoxSize;
+  projMatrix[0] = 1.f/shadowBoxSize;
   projMatrix[1] = 0;
   projMatrix[2] = 0;
   projMatrix[3] = 0;
 
   projMatrix[4] = 0;
-  projMatrix[5] = 1.0/shadowBoxSize;
+  projMatrix[5] = 1.f/shadowBoxSize;
   projMatrix[6] = 0;
   projMatrix[7] = 0;
 
   projMatrix[8] = 0;
   projMatrix[9] = 0;
   // 4096 is the maximum distance
-  projMatrix[10] = -1.0/(maxShadowDistance-minShadowDistance);
+  projMatrix[10] = -1.f/(maxShadowDistance-minShadowDistance);
 
   projMatrix[11] = -minShadowDistance/(maxShadowDistance-minShadowDistance);
 
@@ -75,8 +75,8 @@ ShadowManager::ShadowManager()
   shader->CompileAll();
   shader->setMatrix("projectionMatrix",&projMatrix[0]);
   camera = new Camera(shader,"transformationMatrix");
-  camera->Position = Vector3(0,200,0);
-  camera->RotateX(-3.1415/2);
+  camera->Position = Vector3(0.f,200.f,0.f);
+  camera->RotateX(-3.1415f/2);
   sinceLastRefresh = 10000;
   theta = 0;
 }
@@ -116,7 +116,7 @@ void ShadowManager::readyForReading(ShaderProgram* mainShader)
 
 void ShadowManager::relocate(Vector3 newPos, int refreshTime)
 {
-  theta += refreshTime / 1000.0 *3.1415*2*2.0/600.0;
+  theta += refreshTime / 1000.f *3.1415f*2*2.f/600.f;
   camera->Position.x = newPos.x + 1000*sin(theta);
   camera->Position.y = newPos.y + 1000*cos(theta);
   camera->Position.z = newPos.z;

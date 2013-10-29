@@ -59,13 +59,13 @@ void initialiseGraphics(Game* sh)
 /// Builds a projection matrix
 void BuildPerspProjMat(float *m, float fov, float aspect, float znear, float zfar)
 {
-  m[0]  = 1.0/(aspect * tan(fov*3.141592/360.0));
+  m[0]  = (float)(1.f/(aspect * tan(fov*3.141592/360.0)));
   m[1]  = 0;
   m[2]  = 0;
   m[3]  = 0;
 
   m[4]  = 0;
-  m[5]  = 1.0/tan(fov*3.141592/360.0);
+  m[5]  = (float)(1.f/tan(fov*3.141592/360.0));
   m[6]  = 0;
   m[7]  = 0;
 
@@ -126,7 +126,7 @@ void writeString(int x, int y, const char* format, ... )
   glTranslatef(fx,fy,0);
   
   // Scale it to the right text size
-  glScalef(0.0005,0.0005,1);
+  glScalef((GLfloat)0.0005,(GLfloat)0.0005,(GLfloat)1);
 
   // Some nice white text, please
   glColor4f(1.f,1.f,1.f,1.f);

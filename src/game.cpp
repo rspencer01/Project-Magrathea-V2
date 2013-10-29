@@ -61,7 +61,7 @@ Game::Game(bool doGraphics)
   }
   data = new Book(getHeightmapData);
   currentGame = this;
-  speed = 0.1;
+  speed = 0.1f;
   fpsOn = true;
   showMenu = false;
   if (doGraphics)
@@ -92,7 +92,7 @@ void Game::initialisePipeline()
   camera = new Camera(mainShader,"transformationMatrix");
   // Put it somewhere nice to start with
   camera->Position = Vector3(5,1,5);
-  camera->RotateY(-3.1415/2);
+  camera->RotateY(-3.1415f/2.f);
   // Initialise the shadows
   shadows = new ShadowManager();
 
@@ -167,7 +167,7 @@ void Game::display()
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-  glClearColor(0.813,0.957,0.99,1);
+  glClearColor((GLclampf)0.813,(GLclampf)0.957,(GLclampf)0.99,(GLclampf)1.0);
   
   camera->Render();
   // Gogogo!
@@ -193,7 +193,7 @@ void Game::setCameraFPS()
 						interpolate(getTerrainBit((int)camera->Position.x,(int)camera->Position.z+1).position->y,
 									getTerrainBit((int)camera->Position.x+1,(int)camera->Position.z+1).position->y,
 									fx),
-						fy) + 0.63;
+						fy) + 0.63f;
 }
 
 void Game::initialiseKeyops()
@@ -255,8 +255,8 @@ void Game::mouseMove(int x, int y)
     if (x!=centerX || y!=centerY)
     {
       // Rotate the camera
-      camera->RotateFlat(-(x-centerX)/200.0);
-      camera->RotateX(-(y-centerY)/200.0);
+      camera->RotateFlat(-(x-centerX)/200.f);
+      camera->RotateX(-(y-centerY)/200.f);
       // Grab that mouse again
       glutWarpPointer(centerX,centerY);
     }
@@ -314,7 +314,7 @@ void Game::constructRegions(float x,float y)
   
 	if (regions.back().back()->getOriginY() < ry+REGION_SIZE*7)
 	{
-		int oy = regions.back().back()->getOriginY();
+		int oy = (int)regions.back().back()->getOriginY();
 		Region* rg = new Region(rx,oy+REGION_SIZE,this);
 		regions.push_back(std::deque<Region*>());
 		regions.back().push_back(rg);
@@ -328,7 +328,7 @@ void Game::constructRegions(float x,float y)
 
 	if (regions.front().back()->getOriginY() > ry-REGION_SIZE*7)
 	{
-    int oy = regions.front().back()->getOriginY();
+    int oy = (int)regions.front().back()->getOriginY();
     if (oy-REGION_SIZE>=0)
     {
 		  Region* rg = new Region(rx,oy-REGION_SIZE,this);
@@ -347,7 +347,7 @@ void Game::constructRegions(float x,float y)
 	for (unsigned int i = 0;i<regions.size();i++)
 	{
 		if (regions[i].back()->getOriginX() < rx+REGION_SIZE*7)
-			regions[i].push_back(new Region(regions[i].back()->getOriginX()+REGION_SIZE,regions[i].back()->getOriginY(),this));
+			regions[i].push_back(new Region((int)regions[i].back()->getOriginX()+REGION_SIZE,(int)regions[i].back()->getOriginY(),this));
 		if (regions[i].back()->getOriginX() > rx+REGION_SIZE*7)
 		{
 			delete regions[i].back();
@@ -355,7 +355,7 @@ void Game::constructRegions(float x,float y)
 		}
 		if (regions[i].front()->getOriginX() > rx-REGION_SIZE*7)
       if (regions[i].front()->getOriginX()-REGION_SIZE>=0)
-			  regions[i].push_front(new Region(regions[i].front()->getOriginX()-REGION_SIZE,regions[i].front()->getOriginY(),this));
+			  regions[i].push_front(new Region((int)regions[i].front()->getOriginX()-REGION_SIZE,(int)regions[i].front()->getOriginY(),this));
 		if (regions[i].front()->getOriginX() < rx-REGION_SIZE*7)
 		{
 			delete regions[i].front();
@@ -370,7 +370,7 @@ void Game::renderMenu()
 {
   glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
-  glColor4f(0,0,0,0.85);
+  glColor4f(0,0,0,0.85f);
   glTranslatef(camera->Position.x,camera->Position.y,camera->Position.z);
   glutSolidSphere(0.25,10,10);
   writeString(3,95,"PROJECT MAGRATHEA V2");

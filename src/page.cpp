@@ -10,7 +10,7 @@ Page::Page(int x,int y,float(*g)(int,int))
   origin_y = y;
   for (int i = 0;i<PAGE_SIZE;i++)
     for (int j = 0;j<PAGE_SIZE;j++)
-      data[i][j].position = new Vector3(origin_x+i,generatingFunction(origin_x+i,origin_y+j),origin_y+j);
+      data[i][j].position = new Vector3((float)origin_x+i,generatingFunction(origin_x+i,origin_y+j),(float)origin_y+j);
   for (int i = 0;i<PAGE_SIZE;i++)
     for (int j = 0;j<PAGE_SIZE;j++)
     {
@@ -24,8 +24,8 @@ Page::Page(int x,int y,float(*g)(int,int))
       {
         if ((origin_x+i>0) && (origin_y+j>0))
         {
-          Vector3 a = Vector3(origin_x+i-1,generatingFunction(origin_x+i-1,origin_y+j),origin_y+j) - *(data[i][j].position);
-          Vector3 b = Vector3(origin_x+i,generatingFunction(origin_x+i,origin_y+j-1),origin_y+j-1) - *(data[i][j].position);
+          Vector3 a = Vector3((float)origin_x+i-1,generatingFunction(origin_x+i-1,origin_y+j),(float)origin_y+j) - *(data[i][j].position);
+          Vector3 b = Vector3((float)origin_x+i,generatingFunction(origin_x+i,origin_y+j-1),(float)origin_y+j-1) - *(data[i][j].position);
           data[i][j].normal = new Vector3(b.cross(a).normal());
 
         }
