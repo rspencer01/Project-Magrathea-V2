@@ -34,6 +34,7 @@ class ShaderProgram
     void setMatrix(const char*,float*);
     void setInt(const char* varName, unsigned int value);
     void setFloat(const char* varName, float value);
+    void setVec3(const char*,float*);
     /// Function to set the object transformation matrix
     void setObjectMatrix(float* value);
 

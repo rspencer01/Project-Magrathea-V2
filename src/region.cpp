@@ -78,11 +78,11 @@ void Region::initialiseTriangles()
 }
 
 /// Render this region and the trees
-void Region::Render(int refreshTime)
+void Region::Render(int refreshTime,Vector3* cameraPos)
 {
-  Object::Render(refreshTime);
+  Object::Render(refreshTime,cameraPos);
   for (unsigned int i = 0; i<foliage.size();i++)
-    foliage[i]->Render(refreshTime);
+    foliage[i]->Render(refreshTime,cameraPos);
 }
 
 /// Returns the x coordinate

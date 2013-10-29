@@ -138,7 +138,7 @@ void ShaderProgram::setMatrix(const char* varName, float* value)
   }
   if (variableLocations[vName]==0xFFFFFFFF)
   {
-    printf("ERROR: Cannot find variable '%s' in shader\n",varName);
+    printf("ERROR: Cannot find matrix variable '%s' in shader\n",varName);
     return;
   }
   glUniformMatrix4fv(variableLocations[vName],1,GL_TRUE,value);
@@ -172,4 +172,20 @@ void ShaderProgram::setFloat(const char* varName, float value)
     return;
   }
   glUniform1f(variableLocations[vName],value);
+}
+
+void ShaderProgram::setVec3(const char* varName, float* value)
+{
+  std::string vName (varName);
+  if (variableLocations.count(vName)==0)
+  {
+    variableLocations[vName] = glGetUniformLocation(ShaderProgramID, varName);
+  }
+  if (variableLocations[vName]==0xFFFFFFFF)
+  {
+    printf("ERROR: Cannot find vec3 variable '%s' in shader\n",varName);
+    return;
+  }
+  //glUniform3fv(variableLocations[vName],3,value);
+  glUniform3f(variableLocations[vName],value[0],value[1],value[2]);
 }

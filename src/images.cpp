@@ -3,6 +3,7 @@
 #include <magrathea.h>
 
 /// Genertate a new texture from scratch
+/// @param smoothTexture Should the texture be smoothly interpolated?
 GLuint newTexture(bool smoothTexture)
 {
   GLuint returnValue;

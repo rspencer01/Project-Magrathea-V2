@@ -40,10 +40,10 @@ void Bird::initialiseTriangles()
   pushTriangleData();
 }
 
-void Bird::Render(int refreshTime)
+void Bird::Render(int refreshTime, Vector3* cameraPos)
 {
   float refreshSeconds = (float)refreshTime/1000.f;
-  Object::Render(refreshTime);
+  Object::Render(refreshTime,cameraPos);
 
   theta    += (float)(refreshSeconds * 3.141592 * 2.0 * 0.7);
   dihedral  = (float)(- sin(theta) - 1/5.0*sin(theta*2) - 1/25.0*sin(theta*3));

@@ -22,6 +22,7 @@ Object::Object(Vector3 pos,Game* g)
   vertexData = NULL;
   triDat = NULL;
   textureNumber = -1;
+  billboard = false;
   forward = Vector3(1,0,0);
   up = Vector3(0,1,0);
   right = Vector3(0,0,1);
@@ -58,8 +59,18 @@ void Object::setPosition(Vector3 pos)
 /// Renders this object to the screen, using the VBOs that were 
 /// initialised using the addPoint, addTriangle and pushTriangleData
 /// functions
-void Object::Render(int refreshTime)
+/// @param refreshTime Number of milliseconds since the last rendering
+/// @param cameraPos   Position of the camera in 3-space
+void Object::Render(int refreshTime, Vector3* cameraPos)
 {
+  // Rotate the object if it is a billboard
+  if (billboard)
+  {
+    right = (*cameraPos-position).normal().cross(up);
+    forward = up.cross(right);
+    updateMatrix();
+  }
+  
   // Only do something if we have data	
 	if (buffersInitialised)
 	{
