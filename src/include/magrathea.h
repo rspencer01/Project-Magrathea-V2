@@ -19,4 +19,10 @@ class Object;
 
 #include <game.h>
 
+#if defined ( WIN32 )
+#define __func__ __FUNCTION__
+#endif
+
+#define DIE(_x) fprintf(stderr,"***\nProcess called DIE on line\n  %d (%s)\nin file\n  %s \nwith message\n  \"%s\"\n***",__LINE__,__func__,__FILE__,_x);while(1);
+
 #endif
