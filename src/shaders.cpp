@@ -12,6 +12,13 @@ ShaderProgram::ShaderProgram()
   constructProgram();
 }
 
+void sanatiseShader(char* program, int size)
+{
+  for (int i = 0;i<size;i++)
+   if (program[i]==0x0D)
+      program[i] = 0x0A;
+}
+
 void ShaderProgram::constructProgram()
 {
   // Construct the program we are going to use
@@ -35,7 +42,7 @@ void ShaderProgram::LoadShader(const char* shaderPath, GLenum ShaderType)
     while(1);
   }
   // Now open the shader source.
-  FILE* fp = fopen(shaderPath,"r");
+  FILE* fp = fopen(shaderPath,"rb");
   // Find the length of the file
   fseek(fp,0,SEEK_END);
   int fileSize = ftell(fp);
@@ -43,6 +50,8 @@ void ShaderProgram::LoadShader(const char* shaderPath, GLenum ShaderType)
   // Read in the entire file
   const GLchar* p = new GLchar[fileSize];
   fread((void*)p,fileSize,1,fp);
+  // Sanatise the shader
+  sanatiseShader((char*)p,fileSize);
   // And tell opengl that it is the source code
   glShaderSourceARB(ShaderObj, 1, &p, &fileSize);
   // Now we are done with these, get rid of them
