@@ -6,6 +6,17 @@
 
 GLuint gSampler;
 
+/// Gets rid of all the 0x0D values in a file (kills the GLSL compiler)
+/// @param program The shader program to sanatise
+/// @param size    The size of said program
+void sanatiseShader(char* program, int size)
+{
+  // Loop through the file, replacing '\r' with newlines
+  for (int i = 0;i<size;i++)
+   if (program[i]==0x0D)
+      program[i] = 0x0A;
+}
+
 ShaderProgram::ShaderProgram()
 {
   // Make us a new program*
@@ -35,7 +46,7 @@ void ShaderProgram::LoadShader(const char* shaderPath, GLenum ShaderType)
     while(1);
   }
   // Now open the shader source.
-  FILE* fp = fopen(shaderPath,"r");
+  FILE* fp = fopen(shaderPath,"rb");
   // Find the length of the file
   fseek(fp,0,SEEK_END);
   int fileSize = ftell(fp);
@@ -43,6 +54,8 @@ void ShaderProgram::LoadShader(const char* shaderPath, GLenum ShaderType)
   // Read in the entire file
   const GLchar* p = new GLchar[fileSize];
   fread((void*)p,fileSize,1,fp);
+  // Sanatise the shader
+  sanatiseShader((char*)p,fileSize);
   // And tell opengl that it is the source code
   glShaderSourceARB(ShaderObj, 1, &p, &fileSize);
   // Now we are done with these, get rid of them
