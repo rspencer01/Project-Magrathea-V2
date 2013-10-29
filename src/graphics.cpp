@@ -126,7 +126,7 @@ void writeString(int x, int y, const char* format, ... )
   glTranslatef(fx,fy,0);
   
   // Scale it to the right text size
-  glScalef(0.0005,0.0005,1);
+  glScalef((GLfloat)0.0005,(GLfloat)0.0005,(GLfloat)1);
 
   // Some nice white text, please
   glColor4f(1.f,1.f,1.f,1.f);
