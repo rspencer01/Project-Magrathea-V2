@@ -59,13 +59,13 @@ void initialiseGraphics(Game* sh)
 /// Builds a projection matrix
 void BuildPerspProjMat(float *m, float fov, float aspect, float znear, float zfar)
 {
-  m[0]  = 1.0/(aspect * tan(fov*3.141592/360.0));
+  m[0]  = (float)(1.f/(aspect * tan(fov*3.141592/360.0)));
   m[1]  = 0;
   m[2]  = 0;
   m[3]  = 0;
 
   m[4]  = 0;
-  m[5]  = 1.0/tan(fov*3.141592/360.0);
+  m[5]  = (float)(1.f/tan(fov*3.141592/360.0));
   m[6]  = 0;
   m[7]  = 0;
 
