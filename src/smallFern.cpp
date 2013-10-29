@@ -35,10 +35,10 @@ void SmallFern::initialiseTriangles()
     int s2 = seed++;
     int s3 = seed++;
     Vector3 dir = Vector3(random(s1)*2-1,
-                         0.4+0.2*random(s2),
+                         0.4f+0.2f*random(s2),
                          random(s3)*2-1).normal();
-    makeLeaf(pos,dir,2.f,0.05);
-    pos = pos + Vector3(0,0.1,0);
+    makeLeaf(pos,dir,2.f,0.05f);
+    pos = pos + Vector3(0,0.1f,0);
   }
   //for (int i = 5;i<8;i++)
   //  makeLeaf(Vector3(0,0.3,0),Vector3(random(i+5)*2-1,1.5+0.1*random(i*101+7),random(i*100+1)*2-1)/2.5,3.f,0.12+0.03*random(i*1011+88));
