@@ -26,5 +26,5 @@ class Cloud;
 
 #define DIE(_x) {fprintf(stderr,"***\nProcess called DIE on line\n  %d (%s)\nin file\n  %s \nwith message\n  \"%s\"\n***",__LINE__,__func__,__FILE__,_x);while(1);}
 #define DIE2(_x,_y) {fprintf(stderr,"***\nProcess called DIE on line\n  %d (%s)\nin file\n  %s \nwith message\n  \"%s %s\"\n***",__LINE__,__func__,__FILE__,_x,_y);while(1);}
-
+#define DIE3(_x,_y,_z) {fprintf(stderr,"***\nProcess called DIE on line\n  %d (%s)\nin file\n  %s \nwith message\n  \"%s %s %s\"\n***",__LINE__,__func__,__FILE__,_x,_y,_z);while(1);}
 #endif
