@@ -30,6 +30,8 @@ class Book
 		int numberOfInitialisedPages;
     /// The function that is called to get data.  This will be passed to all children pages
     float (*generatingFunction)(int,int);
+    /// The nullbit is returned on invalid calls
+    terrainBit nullBit;
 	public:
     /// Construct a new book.  Use the given function to populate
 		Book(float (*g)(int,int));

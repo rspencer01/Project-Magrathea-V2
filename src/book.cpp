@@ -13,6 +13,12 @@ Book::Book(float (*g)(int,int))
       pages[i][j] = NULL;
   // No pages are initialised yet
   numberOfInitialisedPages = 0;
+  // Initialise the null bit
+  nullBit.position = new Vector3();
+  nullBit.normal = new Vector3(0.f,1.f,0.f);
+  nullBit.isTree = false;
+  nullBit.isGrass = false;
+  nullBit.isFern = false;
 }
 
 /// Frees up all used space
@@ -32,13 +38,6 @@ Book::~Book()
 /// @param y The y coordinate to access
 terrainBit Book::getAt(int x, int y)
 {
-  // The nullBit is used for areas that are not in the terrain
-  terrainBit nullBit;
-  nullBit.position = new Vector3((float)x,0.f,(float)y);
-  nullBit.normal = new Vector3(0.f,1.f,0.f);
-  nullBit.isTree = false;
-  nullBit.isGrass = false;
-  nullBit.isFern = false;
   // Check that this is a valid point to enquire about.  If not, return a nothing.
   if ((x > PAGE_COUNT * PAGE_SIZE) || (x<0))
     return nullBit;
