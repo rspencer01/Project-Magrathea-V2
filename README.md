@@ -26,7 +26,7 @@ The following milestones have been passed:
  * Dynamic region creation based on camera position
  * Use of real data (imported)
  * Nice trees
- * Shadows (still buggy, but getting there)
+ * Shadows
 
 Wishlist
 --------
@@ -47,7 +47,7 @@ Assets and Data
 ---------------
 The assets and data are too large to hold in this repo.  They can be found [here][2] (link may be outdated.  [email][4] me if it is...) .  Unpack the zip file into a folder called `assets` one directory below where you run the executable.  It is worth noting that in the same directory as `assets`, the folder `src/shaders` should be copied.
 
-The textures are (currently) BMP and RAW files.  Feel free to chop and change these to improve them.  If you develop a better texture, please let me know (or submit a pull request).
+The textures are [TGA][1] files.  Feel free to chop and change these to improve them.  If you develop a better texture, please let me know.
 
 Heightmap Data
 --------------
@@ -62,3 +62,4 @@ There are also some tutorials up on the project webpage (these are currently gro
 [2]: http://www.ked.co.za/temp/assets.zip "Sample formatted data obtainable here"
 [3]: http://viewer.nationalmap.gov/viewer/ "More raw data obtainable here"
 [4]: mailto:robert.spencer94@gmail.com
+[1]: http://www.paulbourke.net/dataformats/tga/
