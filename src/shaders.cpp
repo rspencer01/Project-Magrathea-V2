@@ -123,63 +123,36 @@ void ShaderProgram::setObjectMatrix(float* value)
   glUniformMatrix4fv(objPos,1,GL_TRUE,value);
 }
 
+GLuint ShaderProgram::getVariablePosition(const char* name)
+{
+  // A std::string for hasing purposes
+  std::string vName (name);
+  // If we don't know this variable, find out its location
+  if (variableLocations.count(vName)==0)
+    variableLocations[vName] = glGetUniformLocation(ShaderProgramID, name);
+  // Die nicely if we need to
+  if (variableLocations[vName]==0xFFFFFFFF)
+    DIE2("Cannot find shader variable",name);
+  // Return the answer
+  return variableLocations[vName];
+}
+
 void ShaderProgram::setMatrix(const char* varName, float* value)
 {
-  std::string vName (varName);
-  if (variableLocations.count(vName)==0)
-  {
-    variableLocations[vName] = glGetUniformLocation(ShaderProgramID, varName);
-  }
-  if (variableLocations[vName]==0xFFFFFFFF)
-  {
-    printf("ERROR: Cannot find matrix variable '%s' in shader\n",varName);
-    return;
-  }
-  glUniformMatrix4fv(variableLocations[vName],1,GL_TRUE,value);
+  glUniformMatrix4fv(getVariablePosition(varName),1,GL_TRUE,value);
 }
 
 void ShaderProgram::setInt(const char* varName, unsigned int value)
 {
-  std::string vName (varName);
-  if (variableLocations.count(vName)==0)
-  {
-    variableLocations[vName] = glGetUniformLocation(ShaderProgramID, varName);
-  }
-  if (variableLocations[vName]==0xFFFFFFFF)
-  {
-    printf("ERROR: Cannot find integer variable '%s' in shader\n",varName);
-    return;
-  }
-  glUniform1i(variableLocations[vName],value);
+  glUniform1i(getVariablePosition(varName),value);
 }
 
 void ShaderProgram::setFloat(const char* varName, float value)
 {
-  std::string vName (varName);
-  if (variableLocations.count(vName)==0)
-  {
-    variableLocations[vName] = glGetUniformLocation(ShaderProgramID, varName);
-  }
-  if (variableLocations[vName]==0xFFFFFFFF)
-  {
-    printf("ERROR: Cannot find float variable '%s' in shader\n",varName);
-    return;
-  }
-  glUniform1f(variableLocations[vName],value);
+  glUniform1f(getVariablePosition(varName),value);
 }
 
 void ShaderProgram::setVec3(const char* varName, float* value)
 {
-  std::string vName (varName);
-  if (variableLocations.count(vName)==0)
-  {
-    variableLocations[vName] = glGetUniformLocation(ShaderProgramID, varName);
-  }
-  if (variableLocations[vName]==0xFFFFFFFF)
-  {
-    printf("ERROR: Cannot find vec3 variable '%s' in shader\n",varName);
-    return;
-  }
-  //glUniform3fv(variableLocations[vName],3,value);
-  glUniform3f(variableLocations[vName],value[0],value[1],value[2]);
+  glUniform3f(getVariablePosition(varName),value[0],value[1],value[2]);
 }

@@ -20,6 +20,8 @@ class ShaderProgram
   private:
     /// The number OpenGL assigned to this program
     GLuint ShaderProgramID;
+    /// Finds the location of a variable by name
+    GLuint getVariablePosition(const char* name);
     /// A map to hold the positions in GPU memory of variables (so we don't look them up each time)
     std::map<std::string,GLuint> variableLocations;
     /// The position of the object transform matrix (changed often)
