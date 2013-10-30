@@ -110,9 +110,15 @@ void Object::clearTriangleData(int p, int t)
 {
   // Clear all the data and the buffers (if required)
   if (triDat!=NULL)
+  { 
     delete triDat;
+    triDat = NULL;
+  }
   if (vertexData!=NULL)
+  {
     delete vertexData;
+    vertexData = NULL;
+  }
   triDat = new int[t*3];
   vertexData = new VertexDatum[p];
   if (buffersInitialised)
@@ -250,9 +256,15 @@ void Object::updateMatrix()
 void Object::freeze()
 {
   if (triDat!=NULL)
+  {
     delete[] triDat;
+    triDat = NULL;
+  }
   if (vertexData!=NULL)
+  {
     delete[] vertexData;
+    vertexData = NULL;
+  }
 }
 
 
