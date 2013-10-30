@@ -8,7 +8,7 @@ const char* fernTextureName = "../assets/fern.bmp";
 /// Initialises the tree at the position, and constructs it
 Fern::Fern(Vector3 pos,Vector3 norm,Game* g) : Object(pos,g)
 {
-  normal = norm;
+  normal = *(g->getTerrainBit((int)pos.x,(int)pos.y).normal);
   initialiseTriangles();
   freeze();
   // If we have yet to load the texture, do so

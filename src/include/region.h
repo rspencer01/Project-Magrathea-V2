@@ -31,7 +31,7 @@ class Region : public Object
     std::vector<Object*> foliage;
   public:
   	/// Constructs the region with the given coordinates
-    Region(int,int,Game*);
+    Region(Vector3,Game*);
   	/// Renders the region to the screen (and all the trees here)
     void Render(int, Vector3* cameraPos);
     /// Returns the X coordinate of the origin of this region
