@@ -19,6 +19,8 @@ Book::Book(float (*g)(int,int))
   nullBit.isTree = false;
   nullBit.isGrass = false;
   nullBit.isFern = false;
+  // Initialise the deletion indices
+  delI = delJ = 0;
 }
 
 /// Frees up all used space
@@ -64,14 +66,20 @@ int Book::getNumberOfInitialisedPages()
 
 void Book::deleteUnused()
 {
-  for (int i = 0;i<PAGE_COUNT;i++)
-    for (int j = 0;j<PAGE_COUNT;j++)
-      if (pages[i][j]!=NULL)
-        if (pages[i][j]->toBeDeleted())
-        {
-          delete pages[i][j];
-          pages[i][j] = NULL;
-          numberOfInitialisedPages--;
-          printf("Paging size: %dkB\n",numberOfInitialisedPages*sizeof(Page)/1024);
-        }
+  if (pages[delI][delJ]!=NULL)
+    if (pages[delI][delJ]->toBeDeleted())
+    {
+      delete pages[delI][delJ];
+      pages[delI][delJ] = NULL;
+      numberOfInitialisedPages--;
+      printf("Paging size: %dkB\n",numberOfInitialisedPages*sizeof(Page)/1024);
+    }
+  delI++;
+  if (delI>=PAGE_COUNT)
+  {
+    delI = 0;
+    delJ++;
+    if (delJ>=PAGE_COUNT)
+      delJ = 0;
+  }
 }
