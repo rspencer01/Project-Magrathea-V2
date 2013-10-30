@@ -10,6 +10,7 @@ Fern::Fern(Vector3 pos,Vector3 norm,Game* g) : Object(pos,g)
 {
   normal = norm;
   initialiseTriangles();
+  freeze();
   // If we have yet to load the texture, do so
   if (fernTextureNumber == (GLuint)-1)
 	  fernTextureNumber = textureFromBMP(fernTextureName);

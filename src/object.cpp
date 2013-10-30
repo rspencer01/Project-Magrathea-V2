@@ -217,6 +217,7 @@ void Object::rotate(Vector3 basisX,Vector3 basisY)
   updateMatrix();
 }
 
+/// Updates the object translation and rotation matrix
 void Object::updateMatrix()
 {
   // This works.  You can check it yourself.
@@ -239,6 +240,19 @@ void Object::updateMatrix()
   transformMatrix[13] = 0;
   transformMatrix[14] = 0;
   transformMatrix[15] = 1;
+}
+
+/// WARNING: Only call this function if you are sure that you will never 
+/// edit the vertices again.  That will cause a seg fault
+/// Only to be called after the triangle data has been set of an object
+/// that is either massive, or very common and that will never animate
+/// (eg trees)
+void Object::freeze()
+{
+  if (triDat!=NULL)
+    delete[] triDat;
+  if (vertexData!=NULL)
+    delete[] vertexData;
 }
 
 

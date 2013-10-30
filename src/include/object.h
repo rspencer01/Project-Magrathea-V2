@@ -116,6 +116,8 @@ class Object
     void updateMatrix();
     /// Sets a point's mix of textures
     void setTextureMix(int,float,float,float,float);
+    /// Free the space of the vertices
+    void freeze();
   public:
 	  /// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*);
