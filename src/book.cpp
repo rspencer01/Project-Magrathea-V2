@@ -13,6 +13,14 @@ Book::Book(float (*g)(int,int))
       pages[i][j] = NULL;
   // No pages are initialised yet
   numberOfInitialisedPages = 0;
+  // Initialise the null bit
+  nullBit.position = new Vector3();
+  nullBit.normal = new Vector3(0.f,1.f,0.f);
+  nullBit.isTree = false;
+  nullBit.isGrass = false;
+  nullBit.isFern = false;
+  // Initialise the deletion indices
+  delI = delJ = 0;
 }
 
 /// Frees up all used space
@@ -32,13 +40,6 @@ Book::~Book()
 /// @param y The y coordinate to access
 terrainBit Book::getAt(int x, int y)
 {
-  // The nullBit is used for areas that are not in the terrain
-  terrainBit nullBit;
-  nullBit.position = new Vector3((float)x,0.f,(float)y);
-  nullBit.normal = new Vector3(0.f,1.f,0.f);
-  nullBit.isTree = false;
-  nullBit.isGrass = false;
-  nullBit.isFern = false;
   // Check that this is a valid point to enquire about.  If not, return a nothing.
   if ((x > PAGE_COUNT * PAGE_SIZE) || (x<0))
     return nullBit;
@@ -52,6 +53,7 @@ terrainBit Book::getAt(int x, int y)
   {
     pages[px][py] = new Page(px*PAGE_SIZE,py*PAGE_SIZE,generatingFunction);
     numberOfInitialisedPages++;
+    printf("Paging size: %dkB\n",numberOfInitialisedPages*sizeof(Page)/1024);
   }
   // Ask the page for the terrainBit
   return pages[px][py]->getAt(x%PAGE_SIZE,y%PAGE_SIZE);
@@ -60,4 +62,31 @@ terrainBit Book::getAt(int x, int y)
 int Book::getNumberOfInitialisedPages()
 {
   return numberOfInitialisedPages;
+}
+
+/// Delete pages that have marked themself as ready for removal.
+void Book::deleteUnused()
+{
+  // delI and delJ are the indices that are updated each frame
+  // Check if the page exists, and if so, if it wants to go
+  if (pages[delI][delJ]!=NULL)
+    if (pages[delI][delJ]->toBeDeleted())
+    {
+      // Free it up, then set it as empty
+      delete pages[delI][delJ];
+      pages[delI][delJ] = NULL;
+      // Some feedback for the user
+      numberOfInitialisedPages--;
+      printf("Paging size: %dkB\n",numberOfInitialisedPages*sizeof(Page)/1024);
+    }
+  // Update the indices
+  delI++;
+  // Roll over
+  if (delI>=PAGE_COUNT)
+  {
+    delI = 0;
+    delJ++;
+    if (delJ>=PAGE_COUNT)
+      delJ = 0;
+  }
 }

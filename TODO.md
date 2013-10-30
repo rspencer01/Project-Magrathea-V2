@@ -11,6 +11,9 @@ These are low level things that need implimentaion
 - [ ] Stop loading data from file (very slow...)
 - [ ] Doubles or floats?  Decide.
 - [ ] Move this todo list to github issues?
+- [ ] Impliment an object creation queue, so that at most one object is created a frame (to speed up loading regions)
+- [ ] Store all objects in `Game`
+- [ ] Somehow prevent `Game` from becoming a God Object?
 - [x] Change preferred image format to TGA
 - [x] Make objects transform in shaders
 - [x] Remove artifacts of misrendering regions

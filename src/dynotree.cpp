@@ -15,6 +15,7 @@ DynoTree::DynoTree(Vector3 pos,Game* g) : Object(pos,g)
 {
   // Actually construct the triangles
   initialiseTriangles();
+  freeze();
   // If we have yet to load the texture, do it
   if (dtreeTextureNumber == (GLuint)-1)
 	  dtreeTextureNumber = textureFromTGA(dtextureName,false);

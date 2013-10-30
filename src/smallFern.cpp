@@ -10,6 +10,7 @@ SmallFern::SmallFern(Vector3 pos,Vector3 norm,Game* g) : Object(pos,g)
 {
   normal = norm;
   initialiseTriangles();
+  freeze();
   // If we have yet to load the texture, do so
   if (smallFernTextureNumber == (GLuint)-1)
 	  smallFernTextureNumber = textureFromTGA(smallFernTextureName,false);

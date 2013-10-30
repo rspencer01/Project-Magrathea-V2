@@ -17,6 +17,7 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3((float)x,0.f,(float)y
 {
 	printf("New region at %d %d\n",x,y);
 	initialiseTriangles();
+  freeze();
   for (int ty = 0;ty<REGION_SIZE;ty++)
     for (int tx = 0;tx<REGION_SIZE;tx++)
     {

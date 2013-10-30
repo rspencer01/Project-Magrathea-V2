@@ -150,6 +150,8 @@ void Game::display()
 
   // Make whatever regions are required
   constructRegions(camera->Position.x,camera->Position.z);
+  // Destroy unused pages
+  data->deleteUnused();
   
   shadows->relocate(camera->Position,refreshTime);
   if (shadows->readyForWriting(refreshTime))

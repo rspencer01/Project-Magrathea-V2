@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <page.h>
 #include <noise.h>
+#include <time.h>
 
 Page::Page(int x,int y,float(*g)(int,int))
 {
@@ -80,5 +81,11 @@ Page::Page(int x,int y,float(*g)(int,int))
 /// Returns the data at *internal coordinate* x,y
 terrainBit Page::getAt(int x,int y)
 {
+  timeSinceLastAccess = time(NULL);
   return data[x][y];
+}
+
+bool Page::toBeDeleted()
+{
+  return (time(NULL)-timeSinceLastAccess)>PAGE_LIFE;
 }
