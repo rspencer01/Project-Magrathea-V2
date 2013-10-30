@@ -1,3 +1,4 @@
+#include <magrathea.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <stdio.h>
@@ -17,49 +18,43 @@ void sanatiseShader(char* program, int size)
       program[i] = 0x0A;
 }
 
+/// Ask OpenGL to create a new shader program, and kill the program if there was an error
 ShaderProgram::ShaderProgram()
-{
-  // Make us a new program*
-  constructProgram();
-}
-
-void ShaderProgram::constructProgram()
 {
   // Construct the program we are going to use
   ShaderProgramID = glCreateProgramObjectARB();
   // If there was an error, let us know
   if (ShaderProgramID == 0) 
-  {
-    fprintf(stderr, "Error creating shader program\n");
-    while(1);
-  }
+    DIE("Error creating new shader program");
 }
 
-void ShaderProgram::LoadShader(const char* shaderPath, GLenum ShaderType)
+/// Load a shader program from a source file.
+/// @param shaderPath The path to the source file
+/// @param shaderType The type of shader object to load (fragment or vertex)
+void ShaderProgram::LoadShader(const char* shaderPath, GLenum shaderType)
 {
   // Create us a new shader
-  GLuint ShaderObj = glCreateShaderObjectARB(ShaderType);
+  GLuint ShaderObj = glCreateShaderObjectARB(shaderType);
   // If something went wrong, tell us about it
   if (ShaderObj == 0) 
-  {
-    fprintf(stderr, "Error creating shader type %d\n", ShaderType);
-    while(1);
-  }
+    DIE("Error creating shader object");
   // Now open the shader source.
   FILE* fp = fopen(shaderPath,"rb");
+  if (fp==NULL)
+    DIE2("Cannot open shader source",shaderPath);
   // Find the length of the file
   fseek(fp,0,SEEK_END);
   int fileSize = ftell(fp);
   rewind(fp);
   // Read in the entire file
-  const GLchar* p = new GLchar[fileSize];
-  fread((void*)p,fileSize,1,fp);
+  const GLchar* progSource = new GLchar[fileSize];
+  fread((void*)progSource,fileSize,1,fp);
   // Sanatise the shader
-  sanatiseShader((char*)p,fileSize);
+  sanatiseShader((char*)progSource,fileSize);
   // And tell opengl that it is the source code
-  glShaderSourceARB(ShaderObj, 1, &p, &fileSize);
+  glShaderSourceARB(ShaderObj, 1, &progSource, &fileSize);
   // Now we are done with these, get rid of them
-  delete p;
+  delete progSource;
   fclose(fp);
   // Attempt to compile the shader
   glCompileShaderARB(ShaderObj);
@@ -70,13 +65,13 @@ void ShaderProgram::LoadShader(const char* shaderPath, GLenum ShaderType)
   {
     GLchar InfoLog[1024];
     glGetInfoLogARB(ShaderObj, 1024, NULL, InfoLog);
-    fprintf(stderr, "Error compiling shader type %d: '%s'\n", ShaderType, InfoLog);
-    while(1);
+    DIE3("Error compiling shader",shaderPath, InfoLog);
   }
   // Attach the compiled object to the program
   glAttachShader(ShaderProgramID, ShaderObj);
 }
 
+/// Compile the loaded shaders into the program
 void ShaderProgram::CompileAll()
 {
   // Bind the attributes to the right locations
@@ -94,8 +89,7 @@ void ShaderProgram::CompileAll()
   {
     GLchar ErrorLog[1024] = { 0 };
 		glGetProgramInfoLog(ShaderProgramID, sizeof(ErrorLog), NULL, ErrorLog);
-		fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
-    while(1);
+    DIE2("Error linking shader program:", ErrorLog);
 	}
   // Confirm that this is valid
   glValidateProgram(ShaderProgramID);
@@ -105,11 +99,11 @@ void ShaderProgram::CompileAll()
   {
     GLchar ErrorLog[1024] = { 0 };
     glGetProgramInfoLog(ShaderProgramID, sizeof(ErrorLog), NULL, ErrorLog);
-    fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
-    while(1);
+    DIE2("Invalid shader program:", ErrorLog);
   }
 }
 
+/// Load the program into GPU memory, ready to be run
 void ShaderProgram::Load()
 {
   // Now load this program
