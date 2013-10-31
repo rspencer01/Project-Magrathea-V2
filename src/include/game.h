@@ -72,8 +72,6 @@ class Game
     Cloud* cloud;
     /// Is the mouse being used to control the camera
     bool mouseControl;
-    /// The object manager for this game
-    ObjectManager* objectManager;
   public:
     /// Creates a game instance and initialises all variables.  If false is passed as a paramter, the game initialises no graphics
     Game(bool);
@@ -95,6 +93,8 @@ class Game
     void setProjectionMatrix(float*);
     /// This is a pointer the shader that is currently in use.
     ShaderProgram* currentShader;
+    /// The object manager for this game
+    ObjectManager* objectManager;
 };
 
 #endif
