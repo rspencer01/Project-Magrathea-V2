@@ -10,6 +10,7 @@ class ShaderProgram;
 class Camera;
 class Object;
 class Cloud;
+class ObjectManager;
 
 #include <vector3.h>
 
