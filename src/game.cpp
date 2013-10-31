@@ -72,7 +72,7 @@ Game::Game(bool doGraphics)
     {
       Vector3 t = randomVector()*150;
       t.y = 0;
-      objectManager->addObject(Vector3(200,200,200)+t,this);
+      objectManager->addObject(bird,Vector3(200,200,200)+t,this);
     }
   }
   cloud = new Cloud(Vector3(0,500,0),this);

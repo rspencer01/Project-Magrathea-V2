@@ -1,10 +1,17 @@
 #include <objectManager.h>
 #include <stdio.h>
 
-void ObjectManager::addObject(Vector3 pos, Game* parent)
+void ObjectManager::addObject(objectType type,Vector3 pos, Game* parent)
 {
   printf("New object at %f %f %f\n",pos.x,pos.y,pos.z);
-  objects.push_back(new Bird(pos,parent));
+  switch (type)
+  {
+    case bird:
+    {
+      objects.push_back(new Bird(pos,parent));
+      break;
+    }
+  }
 }
 
 void ObjectManager::Render(int t, Vector3* c)
