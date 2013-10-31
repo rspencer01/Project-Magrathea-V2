@@ -124,7 +124,7 @@ class Object
   	/// Destroys the Object, freeing space
     ~Object();
   	/// Renders the Object to the screen
-    void Render(int refreshTime, Vector3* cameraPos);
+    virtual void Render(int refreshTime, Vector3* cameraPos);
   	/// Accessor for the item position
     Vector3 getPosition();
 };
