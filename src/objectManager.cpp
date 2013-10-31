@@ -1,5 +1,7 @@
 #include <objectManager.h>
 #include <stdio.h>
+#include <dynoTree.h>
+#include <smallFern.h>
 
 void ObjectManager::addObject(objectType type,Vector3 pos, Game* parent)
 {
@@ -9,6 +11,16 @@ void ObjectManager::addObject(objectType type,Vector3 pos, Game* parent)
     case bird:
     {
       objects.push_back(new Bird(pos,parent));
+      break;
+    }
+    case dynoTree:
+    {
+      objects.push_back(new DynoTree(pos,parent));
+      break;
+    }
+    case smallFern:
+    {
+      objects.push_back(new SmallFern(pos,parent));
       break;
     }
   }
