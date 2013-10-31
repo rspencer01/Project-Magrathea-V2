@@ -60,6 +60,7 @@ Game::Game(bool doGraphics)
     initialisePipeline();
   }
   data = new Book(getHeightmapData);
+  objectManager = new ObjectManager;
   currentGame = this;
   speed = 0.1f;
   fpsOn = true;
@@ -71,7 +72,7 @@ Game::Game(bool doGraphics)
     {
       Vector3 t = randomVector()*150;
       t.y = 0;
-      birds.push_back(new Bird(Vector3(200,200,200)+t,this));
+      objectManager->addObject(Vector3(200,200,200)+t,this);
     }
   }
   cloud = new Cloud(Vector3(0,500,0),this);
@@ -131,8 +132,7 @@ void Game::RenderScene(int refreshTime)
   for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)
       regions[i][j]->Render(refreshTime,&(camera->Position));
-  for (unsigned int i = 0;i<birds.size();i++)
-    birds[i]->Render(refreshTime,&(camera->Position));
+  objectManager->Render(refreshTime,&(camera->Position));
 }
 
 int shadowsDone = 0;

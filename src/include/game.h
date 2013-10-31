@@ -22,6 +22,7 @@
 #include <shadow.h>
 #include <bird.h>
 #include <cloud.h>
+#include <objectManager.h>
 
 /// The gameops class contains all the methods to do with gameplay
 ///
@@ -67,12 +68,12 @@ class Game
     ShadowManager* shadows;
     /// The shader that runs most of the rendering
     ShaderProgram* mainShader;
-    /// Some test birds
-    std::vector<Bird*> birds;
     /// A test cloud
     Cloud* cloud;
     /// Is the mouse being used to control the camera
     bool mouseControl;
+    /// The object manager for this game
+    ObjectManager* objectManager;
   public:
     /// Creates a game instance and initialises all variables.  If false is passed as a paramter, the game initialises no graphics
     Game(bool);
