@@ -27,13 +27,9 @@ class Region : public Object
   private:
   	/// Populates the VBOs
 	  void initialiseTriangles();
-  	/// All the trees in this region
-    std::vector<Object*> foliage;
   public:
   	/// Constructs the region with the given coordinates
     Region(Vector3,Game*);
-  	/// Renders the region to the screen (and all the trees here)
-    void Render(int, Vector3* cameraPos);
     /// Returns the X coordinate of the origin of this region
     float getOriginX();
     /// Returns the Y coordinate of the origin of this region.  This is its z coordinate in gamespace
