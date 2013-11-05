@@ -8,6 +8,8 @@
 
 class Grass : public Object
 {
+  private:
+    void makeBunch(Vector3 pos);
   public:
     /// Constructs grass at given position, with given normal
     Grass(Vector3 pos, Vector3 norm, Game* parent);
