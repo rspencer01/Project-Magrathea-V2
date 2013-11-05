@@ -11,6 +11,7 @@
 
 #include <magrathea.h>
 #include <vector>
+#include <queue>
 
 enum objectType 
 { bird, dynoTree, smallFern };
@@ -21,7 +22,7 @@ typedef struct
   /// The position of the object to be created
   Vector3* position;
   /// The parent game
-  Game* normal;
+  Game* game;
   /// What type of object?
   objectType type;
 } objectRequest;
@@ -32,6 +33,7 @@ class ObjectManager
 {
   private:
     std::vector<Object*> objects;
+    std::queue<objectRequest> requests;
   public:
     void addObject(objectType,Vector3,Game*);
     void Render(int,Vector3*);
