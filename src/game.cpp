@@ -60,6 +60,7 @@ Game::Game(bool doGraphics)
     initialisePipeline();
   }
   data = new Book(getHeightmapData);
+  objectManager = new ObjectManager;
   currentGame = this;
   speed = 0.1f;
   fpsOn = true;
@@ -71,7 +72,7 @@ Game::Game(bool doGraphics)
     {
       Vector3 t = randomVector()*150;
       t.y = 0;
-      birds.push_back(new Bird(Vector3(200,200,200)+t,this));
+      objectManager->addObject(bird,Vector3(200,200,200)+t,this);
     }
   }
   cloud = new Cloud(Vector3(0,500,0),this);
@@ -131,8 +132,7 @@ void Game::RenderScene(int refreshTime)
   for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)
       regions[i][j]->Render(refreshTime,&(camera->Position));
-  for (unsigned int i = 0;i<birds.size();i++)
-    birds[i]->Render(refreshTime,&(camera->Position));
+  objectManager->Render(refreshTime,&(camera->Position));
 }
 
 int shadowsDone = 0;
@@ -178,6 +178,7 @@ void Game::display()
   cloud->Render(refreshTime,&(camera->Position));
   RenderScene(refreshTime);
   
+  logFrame();
   // Push this to the screen
   glutSwapBuffers();
 
@@ -312,14 +313,14 @@ void Game::constructRegions(float x,float y)
 	if (regions.size()==0)
 	{
 		regions.push_back(std::deque<Region*>());
-		Region* rg = new Region(rx,ry,this);
+		Region* rg = new Region(Vector3(rx,0,ry),this);
 		regions[0].push_back(rg);
 	}
   
 	if (regions.back().back()->getOriginY() < ry+REGION_SIZE*7)
 	{
 		int oy = (int)regions.back().back()->getOriginY();
-		Region* rg = new Region(rx,oy+REGION_SIZE,this);
+		Region* rg = new Region(Vector3(rx,0,oy+REGION_SIZE),this);
 		regions.push_back(std::deque<Region*>());
 		regions.back().push_back(rg);
 	}
@@ -335,7 +336,7 @@ void Game::constructRegions(float x,float y)
     int oy = (int)regions.front().back()->getOriginY();
     if (oy-REGION_SIZE>=0)
     {
-		  Region* rg = new Region(rx,oy-REGION_SIZE,this);
+		  Region* rg = new Region(Vector3(rx,0,oy-REGION_SIZE),this);
 		  regions.push_front(std::deque<Region*>());
 		  regions.front().push_back(rg);
     }
@@ -351,7 +352,7 @@ void Game::constructRegions(float x,float y)
 	for (unsigned int i = 0;i<regions.size();i++)
 	{
 		if (regions[i].back()->getOriginX() < rx+REGION_SIZE*7)
-			regions[i].push_back(new Region((int)regions[i].back()->getOriginX()+REGION_SIZE,(int)regions[i].back()->getOriginY(),this));
+			regions[i].push_back(new Region(Vector3((int)regions[i].back()->getOriginX()+REGION_SIZE,0,(int)regions[i].back()->getOriginY()),this));
 		if (regions[i].back()->getOriginX() > rx+REGION_SIZE*7)
 		{
 			delete regions[i].back();
@@ -359,7 +360,7 @@ void Game::constructRegions(float x,float y)
 		}
 		if (regions[i].front()->getOriginX() > rx-REGION_SIZE*7)
       if (regions[i].front()->getOriginX()-REGION_SIZE>=0)
-			  regions[i].push_front(new Region((int)regions[i].front()->getOriginX()-REGION_SIZE,(int)regions[i].front()->getOriginY(),this));
+			  regions[i].push_front(new Region(Vector3((int)regions[i].front()->getOriginX()-REGION_SIZE,0,(int)regions[i].front()->getOriginY()),this));
 		if (regions[i].front()->getOriginX() < rx-REGION_SIZE*7)
 		{
 			delete regions[i].front();

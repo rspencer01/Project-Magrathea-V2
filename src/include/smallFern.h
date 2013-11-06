@@ -20,7 +20,7 @@ class SmallFern : public Object
     Vector3 normal;
   public:
 	  /// Constructs
-    SmallFern(Vector3,Vector3,Game*);
+    SmallFern(Vector3,Game*);
 };
 
 

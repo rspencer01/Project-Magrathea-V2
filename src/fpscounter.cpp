@@ -22,6 +22,7 @@ void logFrame()
     // Reset the counters
     previousTime = currentTime;
     frameCount = 0;
+    printf("FPS %f\n",fps);
   }
   previousFrame = currentTime;
 }

@@ -13,21 +13,19 @@ GLuint texture = (GLuint)-1;
 /// @param x The x coordinate of the origin
 /// @param y The y coordinate of the origin
 /// @param parent The game that this region is in.
-Region::Region(int x, int y,Game* parent) : Object(Vector3((float)x,0.f,(float)y),parent)
+Region::Region(Vector3 pos,Game* parent) : Object(pos,parent)
 {
-	printf("New region at %d %d\n",x,y);
+	printf("New region at %d %d\n",(int)pos.x,(int)pos.z);
 	initialiseTriangles();
   freeze();
   for (int ty = 0;ty<REGION_SIZE;ty++)
     for (int tx = 0;tx<REGION_SIZE;tx++)
     {
-      terrainBit here = game->getTerrainBit(tx+x,ty+y);
+      terrainBit here = game->getTerrainBit(tx+(int)pos.x,ty+(int)pos.z);
       if (here.isTree)
-      	foliage.push_back(new DynoTree(*(here.position),parent));
-      //if (here.isGrass)
-      //  foliage.push_back(new Grass(*(here.position),*(here.normal),parent));
+        parent->objectManager->addObject(dynoTree,*(here.position),parent);
       if (here.isFern)
-        foliage.push_back(new SmallFern(*(here.position),*(here.normal),parent));
+        parent->objectManager->addObject(smallFern,*(here.position),parent);
     }
 
   if (texture == (GLuint)-1)
@@ -76,14 +74,6 @@ void Region::initialiseTriangles()
 			            (y+1)*(REGION_SIZE+1) + (x+1));
 		}
   pushTriangleData();
-}
-
-/// Render this region and the trees
-void Region::Render(int refreshTime,Vector3* cameraPos)
-{
-  Object::Render(refreshTime,cameraPos);
-  for (unsigned int i = 0; i<foliage.size();i++)
-    foliage[i]->Render(refreshTime,cameraPos);
 }
 
 /// Returns the x coordinate
