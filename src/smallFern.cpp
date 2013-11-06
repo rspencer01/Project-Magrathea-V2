@@ -13,7 +13,7 @@ SmallFern::SmallFern(Vector3 pos,Game* g) : Object(pos,g)
   freeze();
   // If we have yet to load the texture, do so
   if (smallFernTextureNumber == (GLuint)-1)
-	  smallFernTextureNumber = textureFromTGA(smallFernTextureName,false);
+	  smallFernTextureNumber = textureFromTGA(smallFernTextureName,true);
   // And set the texture as ours
   textureNumber = smallFernTextureNumber;
   
