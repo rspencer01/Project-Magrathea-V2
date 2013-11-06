@@ -306,6 +306,8 @@ terrainBit Game::getTerrainBit(int x,int y)
 /// Constructs regions in an area around the given coordinates.  Does at most one region construction/destruction per call.
 void Game::constructRegions(float x,float y)
 {
+  if (regions.size()!=0)
+    return;
 
 	int rx = (int)(x /REGION_SIZE)*REGION_SIZE;
 	int ry = (int)(y /REGION_SIZE)*REGION_SIZE;

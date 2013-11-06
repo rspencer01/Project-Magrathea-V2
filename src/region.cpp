@@ -26,8 +26,8 @@ Region::Region(int x, int y,Game* parent) : Object(Vector3((float)x,0.f,(float)y
       	foliage.push_back(new DynoTree(*(here.position),parent));
       //if (here.isGrass)
       //  foliage.push_back(new Grass(*(here.position),*(here.normal),parent));
-      if (here.isFern)
-        foliage.push_back(new SmallFern(*(here.position),*(here.normal),parent));
+      //if (here.isFern)
+      //  foliage.push_back(new SmallFern(*(here.position),*(here.normal),parent));
     }
 
   if (texture == (GLuint)-1)
@@ -81,9 +81,12 @@ void Region::initialiseTriangles()
 /// Render this region and the trees
 void Region::Render(int refreshTime,Vector3* cameraPos)
 {
-  Object::Render(refreshTime,cameraPos);
+  //Object::Render(refreshTime,cameraPos);
   for (unsigned int i = 0; i<foliage.size();i++)
+  {
     foliage[i]->Render(refreshTime,cameraPos);
+    break;
+  }
 }
 
 /// Returns the x coordinate
