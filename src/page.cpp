@@ -44,14 +44,14 @@ Page::Page(int x,int y,float(*g)(int,int))
   for (int i = 0;i<PAGE_SIZE;i++)
     for (int j = 0;j<PAGE_SIZE;j++)
     {
-      if (data[i][j].normal->y>0.85)
-        data[i][j].isGrass = noise(origin_x-i,origin_y-j)<0.10;
+      if (data[i][j].normal->y>0.75)
+        data[i][j].isGrass = noise(origin_x-i,origin_y-j)<0.98;
       else
         data[i][j].isGrass = false;
-
+      
       data[i][j].isTree = false;
       if (data[i][j].normal->y>0.9)
-        if (!data[i][j].isGrass && noise(origin_x+i,origin_y+j)<0.01)
+        if (noise(origin_x+i,origin_y+j)<0.01)
         {
           data[i][j].isTree = true;
           data[i][j].type = soil;
@@ -59,7 +59,7 @@ Page::Page(int x,int y,float(*g)(int,int))
 
       data[i][j].isFern = false;  
       if (data[i][j].normal->y>0.83)
-        if ((!data[i][j].isGrass && !data[i][j].isTree) && noise(origin_x+i,origin_y+j)<0.15)
+        if ((!data[i][j].isTree) && noise(origin_x+i,origin_y+j)<0.15)
         {
           data[i][j].isFern = true;
           data[i][j].type = soil;

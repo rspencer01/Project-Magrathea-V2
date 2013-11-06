@@ -14,7 +14,7 @@
 #include <queue>
 
 enum objectType 
-{ bird, dynoTree, smallFern };
+{ bird, dynoTree, smallFern, grass_o };
 
 /// An objectRequest is a request for the manager to create a new object
 typedef struct

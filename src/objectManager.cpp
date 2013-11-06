@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <dynoTree.h>
 #include <smallFern.h>
+#include <grass.h>
 
 void ObjectManager::addObject(objectType type,Vector3 pos, Game* parent)
 {
@@ -43,6 +44,12 @@ void ObjectManager::Render(int t, Vector3* c)
         objects.push_back(new SmallFern(*req.position,req.game));
         break;
       }
+      case grass_o:
+      {
+        objects.push_back(new Grass(*req.position,req.game));
+        break;
+      }
+
     }
     delete req.position;
   }
