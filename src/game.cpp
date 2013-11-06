@@ -178,6 +178,7 @@ void Game::display()
   cloud->Render(refreshTime,&(camera->Position));
   RenderScene(refreshTime);
   
+  logFrame();
   // Push this to the screen
   glutSwapBuffers();
 
