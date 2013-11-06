@@ -34,6 +34,7 @@ class ObjectManager
   private:
     std::vector<Object*> objects;
     std::queue<objectRequest> requests;
+    void insertSort(Vector3);
   public:
     void addObject(objectType,Vector3,Game*);
     void Render(int,Vector3*);
