@@ -10,7 +10,7 @@ Cloud::Cloud(Vector3 pos,Game* g) : Object(pos,g)
   coverage = 1;
   initialiseTriangles();
   updateTexture();
-  drift = randomVector()*0.1;
+  drift = randomVector()*0.1f;
   drift.y = 0;
   offset = randomVector();
 }
@@ -41,29 +41,29 @@ void Cloud::updateTexture()
     for (int j =0;j<textureSize;j++)
     {
       int ind = i*textureSize+j;
-      float p = perlinNoise(i/(textureSize/8.0) + offset.x,
-                            j/(textureSize/8.0) + offset.z,
-                            4,0.97);
+      float p = perlinNoise(i/(textureSize/8.f) + offset.x,
+                            j/(textureSize/8.f) + offset.z,
+                            4,0.97f);
       // Make p more pronounced.
-      p-=0.2;p*=2.5;
+      p-=0.2f;p*=2.5f;
 
       if (p>1)p = 1;
-      if (p<=0) p = 0.01;
+      if (p<=0) p = 0.01f;
       p *= coverage;
 
-      float d = perlinNoise(i/(textureSize/4.0) + offset.x + 20,
-                            j/(textureSize/4.0) + offset.z + 20,
-                            3,0.98);
+      float d = perlinNoise(i/(textureSize/4.f) + offset.x + 20,
+                            j/(textureSize/4.f) + offset.z + 20,
+                            3,0.98f);
       d/=2;
       d *= p;
       d = 1-d;
 
-      p = 0.5 * (sin((p-0.5)*3.1415)+1);
+      p = 0.5f * (float)(sin((p-0.5)*3.1415)+1);
 
-      data[ind*4  ] = d*255;
-      data[ind*4+1] = d*255;
-      data[ind*4+2] = d*255;
-      data[ind*4+3] = p*255;
+      data[ind*4  ] = (unsigned char)(d*255);
+      data[ind*4+1] = (unsigned char)(d*255);
+      data[ind*4+2] = (unsigned char)(d*255);
+      data[ind*4+3] = (unsigned char)(p*255);
     }
     
   glBindTexture(GL_TEXTURE_2D,textureNumber);
@@ -72,7 +72,7 @@ void Cloud::updateTexture()
 
 void Cloud::Render(int refreshTime, Vector3* cameraPos)
 {
-  position = position+drift*refreshTime/1000.0;
+  position = position+drift*(float)refreshTime/1000.f;
   updateMatrix();
   Object::Render(refreshTime,cameraPos);
 }
