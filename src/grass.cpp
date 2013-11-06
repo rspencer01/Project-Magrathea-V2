@@ -101,3 +101,9 @@ void Grass::makeBunch(Vector3 position)
   numberOfTriangles++;
 
 }
+
+void Grass::Render(int refreshTime, Vector3* cameraPos)
+{
+  if ((*cameraPos - position).magnitude()<10)
+    Object::Render(refreshTime,cameraPos);
+}
