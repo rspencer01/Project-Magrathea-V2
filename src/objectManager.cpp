@@ -14,13 +14,10 @@ void ObjectManager::addObject(objectType type,Vector3 pos, Game* parent)
 
 void ObjectManager::Render(int t, Vector3* c)
 {
-  insertSort(*c);
-  for (int i = 0;i<objects.size();i++)
-  {
-    if ((*c-objects[i]->getPosition()).magnitude()>200)
-      break;
+  int furthestObject = insertSort(*c);
+  for (int i = furthestObject-1;i>=0;i--)
     objects[i]->Render(t,c);
-  }
+
   // Now add any items we have yet to do
   for (int i = 0;i<10;i++)
   {
@@ -51,7 +48,7 @@ void ObjectManager::Render(int t, Vector3* c)
   }
 }
 
-void ObjectManager::insertSort(Vector3 c)
+int ObjectManager::insertSort(Vector3 c)
 {
   for (int i = 1;i<objects.size();i++)
   {
@@ -62,4 +59,8 @@ void ObjectManager::insertSort(Vector3 c)
        objects[k-1] = t;
      }
   }
+  for (int i = objects.size()-1;i>0;i--)
+    if ((c-objects[i]->getPosition()).magnitude() < 100)
+      return i+1;
+  return objects.size();
 }
