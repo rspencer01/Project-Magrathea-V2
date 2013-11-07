@@ -15,7 +15,7 @@ const char* grassName2 = "../assets/grass.tga";
 
 Grass::Grass(Vector3 pos, Game* parent) : Object(pos,parent)
 {
-  Vector3 norm = *(parent->getTerrainBit((int)pos.x,(int)pos.y).normal);
+  Vector3 norm = *(parent->getTerrainBit((int)pos.x,(int)pos.z).normal);
   // If we have yet to load the texture, do it
   if (grassTextureNumber == (GLuint)-1)
 	  grassTextureNumber = textureFromTGA(grassName,true);
@@ -100,10 +100,4 @@ void Grass::makeBunch(Vector3 position)
   addTriangle(numberOfTriangles,numberOfPoints-3,numberOfPoints-2,numberOfPoints-1);
   numberOfTriangles++;
 
-}
-
-void Grass::Render(int refreshTime, Vector3* cameraPos)
-{
-  if ((*cameraPos - position).magnitude()<10)
-    Object::Render(refreshTime,cameraPos);
 }
