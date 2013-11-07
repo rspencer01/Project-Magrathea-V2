@@ -11,7 +11,7 @@
 
 #include <magrathea.h>
 #include <vector>
-#include <queue>
+#include <set>
 
 enum objectType 
 { bird, dynoTree, smallFern, grass_o };
@@ -19,6 +19,7 @@ enum objectType
 /// An objectRequest is a request for the manager to create a new object
 typedef struct
 {
+  float priority;
   /// The position of the object to be created
   Vector3* position;
   /// The parent game
@@ -33,9 +34,11 @@ class ObjectManager
 {
   private:
     std::vector<Object*> objects;
-    std::queue<objectRequest> requests;
+    std::set<objectRequest,bool(*)(objectRequest,objectRequest)>* requests;
     int insertSort(Vector3);
+    int furthestObject;
   public:
+    ObjectManager();
     void addObject(objectType,Vector3,Game*);
     void Render(int,Vector3*);
 };

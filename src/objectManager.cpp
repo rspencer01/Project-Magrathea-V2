@@ -3,6 +3,22 @@
 #include <dynoTree.h>
 #include <smallFern.h>
 #include <grass.h>
+#include <vector>
+
+Vector3 camPos = Vector3();
+
+bool compFunc(objectRequest a,objectRequest b)
+{
+  return a.priority<b.priority;
+}
+
+
+ObjectManager::ObjectManager()
+{
+  requests = new std::set<objectRequest,bool(*)(objectRequest,objectRequest)> (compFunc);
+  furthestObject = 0;
+}
+
 
 void ObjectManager::addObject(objectType type,Vector3 pos, Game* parent)
 {
@@ -10,22 +26,35 @@ void ObjectManager::addObject(objectType type,Vector3 pos, Game* parent)
   req.type = type;
   req.game = parent;
   req.position = new Vector3(pos);
-  requests.push(req);
+  req.priority = (camPos-pos).magnitude();
+  requests->insert(req);
 }
+
+
 
 void ObjectManager::Render(int t, Vector3* c)
 {
-  int furthestObject = insertSort(*c);
+  camPos = *c;
+  furthestObject = insertSort(*c);
+
   for (int i = furthestObject-1;i>=0;i--)
     objects[i]->Render(t,c);
 
   // Now add any items we have yet to do
   for (int i = 0;i<10;i++)
   {
-    if (requests.empty())
+    if (requests->empty())
       break;
-    objectRequest req = requests.front();
-    requests.pop();
+    
+    objectRequest req = *requests->begin();
+    requests->erase(requests->begin());
+    if ((camPos-*req.position).magnitude()>100)
+    {
+      req.priority = (camPos-*req.position).magnitude();
+      requests->insert(req);
+      continue;
+    }
+
 
     switch (req.type)
     {
@@ -37,6 +66,7 @@ void ObjectManager::Render(int t, Vector3* c)
       case dynoTree:
       {
         objects.push_back(new DynoTree(*req.position,req.game));
+        printf("%d objects\n",objects.size());
         break;
       }
       case smallFern:
