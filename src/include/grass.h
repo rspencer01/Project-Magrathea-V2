@@ -10,8 +10,10 @@ class Grass : public Object
 {
   private:
     void makeBunch(Vector3 pos);
+    float theta;
   public:
     /// Constructs grass at given position, with given normal
     Grass(Vector3 pos, Game* parent);
+    void Render(int refreshTime, Vector3* cameraPos);
 };
 #endif
