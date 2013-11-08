@@ -75,6 +75,7 @@ Game::Game(bool doGraphics)
     }
   }
   cloud = new Cloud(Vector3(0,500,0),this);
+  water = new Water(Vector3(0,30,0),this);
 }
 
 /// Initialises all the shaders and cameras and shadows associated with this game
@@ -133,6 +134,7 @@ void Game::RenderScene(int refreshTime)
       regions[i][j]->Render(refreshTime,&(camera->Position));
   for (unsigned int i = 0;i<birds.size();i++)
     birds[i]->Render(refreshTime,&(camera->Position));
+  water->Render(refreshTime,&(camera->Position));
 }
 
 int shadowsDone = 0;
