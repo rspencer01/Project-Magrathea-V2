@@ -89,11 +89,11 @@ int ObjectManager::insertSort(Vector3 c)
 {
   for (int i = 1;i<objects.size();i++)
   {
-     for (int k = i;k>0 && ((c-objects[k]->getPosition()).magnitude())<((c-objects[k-1]->getPosition()).magnitude());k--)
+     if ((c-objects[i]->getPosition()).magnitude()<(c-objects[i-1]->getPosition()).magnitude())
      {
-       Object* t = objects[k];
-       objects[k] = objects[k-1];
-       objects[k-1] = t;
+       Object* t = objects[i];
+       objects[i] = objects[i-1];
+       objects[i-1] = t;
      }
   }
   for (int i = objects.size()-1;i>0;i--)
