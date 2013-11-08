@@ -54,6 +54,8 @@ void Camera::Render()
 
   // Now set the matrix of transformation in the shader
   shader->setMatrix(matrixName,&viewMatrix[0]);
+  float t [3] = {Position.x,Position.y,Position.z};
+  shader->setVec3("cameraPos",t);
 }
 
 /// Moves the camera in the direction it is facing
