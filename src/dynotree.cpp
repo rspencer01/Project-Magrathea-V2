@@ -117,24 +117,25 @@ void DynoTree::makeLeaves(Vector3 pos, Vector3 dir, float len)
     Vector3 leafDir = dir.normal() * 0.5f + randomVector()*0.5f;
     Vector3 leafCross = leafDir.cross(Vector3(random(i+(int)pos.x*1000),0.f,random(i+(int)pos.y*1000))).normal()*0.5;
     Vector3 leafPos = pos + dir*len/6.f*(float)i + leafDir*0.3f;
+    Vector3 leafNorm = leafCross.cross(leafDir).normal();
     leafDir = leafDir*2;
     leafCross = leafCross*2;
 
   	addPoint(numberOfPoints,
              leafPos,
-             Vector3(0,1,0),
+             leafNorm,
              0.f,0.7f,0.0f);
     editTextureCoord(numberOfPoints,0.38f,1.f);
     numberOfPoints++;
    	addPoint(numberOfPoints,
              leafPos+leafDir/2.0+leafCross,
-             Vector3(0,1,0),
+             leafNorm,
              0.f	,0.7f,0.f);
     editTextureCoord(numberOfPoints,0.63f,1.f);
     numberOfPoints++;
    	addPoint(numberOfPoints,
              leafPos+leafDir,
-             Vector3(0,1,0),
+             leafNorm,
              0.f,0.7f,0.f);
     editTextureCoord(numberOfPoints,0.63f,0.75f);
     numberOfPoints++;
@@ -143,7 +144,7 @@ void DynoTree::makeLeaves(Vector3 pos, Vector3 dir, float len)
 
    	addPoint(numberOfPoints,
              leafPos+leafDir/2.0-leafCross,
-             Vector3(0,1,0),
+             leafNorm,
              0.f	,0.7f,0.f);
     editTextureCoord(numberOfPoints,0.38f,0.75f);
     numberOfPoints++;

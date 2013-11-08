@@ -175,7 +175,7 @@ void Game::display()
   camera->Render();
   // Gogogo!
   sky->Render(refreshTime,&(camera->Position));
-  cloud->Render(refreshTime,&(camera->Position));
+  //cloud->Render(refreshTime,&(camera->Position));
   RenderScene(refreshTime);
   
   // Push this to the screen
