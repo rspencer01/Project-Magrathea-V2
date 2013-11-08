@@ -15,7 +15,7 @@ const char* grassName2 = "../assets/grass.tga";
 
 Grass::Grass(Vector3 pos, Game* parent) : Object(pos,parent)
 {
-  Vector3 norm = *(parent->getTerrainBit((int)pos.x,(int)pos.y).normal);
+  Vector3 norm = *(parent->getTerrainBit((int)pos.x,(int)pos.z).normal);
   // If we have yet to load the texture, do it
   if (grassTextureNumber == (GLuint)-1)
 	  grassTextureNumber = textureFromTGA(grassName,true);
@@ -36,6 +36,7 @@ Grass::Grass(Vector3 pos, Game* parent) : Object(pos,parent)
   makeBunch(Vector3(0,0,0));
  
   rotate(randomVector().cross(norm),norm);
+  theta=0;
 
   updateMatrix();
   pushTriangleData();
@@ -47,17 +48,18 @@ void Grass::makeBunch(Vector3 position)
   Vector3 horis = Vector3(1,0,0);
   horis.normalise();
   Vector3 vert = horis.cross(Vector3(0,1,0));
+  float height = 1;
   
   addPoint(numberOfPoints,horis                   ,Vector3(0,1,0),1,1,1);
   editTextureCoord(numberOfPoints,0,0);
   numberOfPoints++;
-  addPoint(numberOfPoints,horis+Vector3(0,1,0)*0.5    ,Vector3(0,1,0),1,1,1);
+  addPoint(numberOfPoints,horis+Vector3(0,1,0)*height    ,Vector3(0,1,0),1,1,1);
   editTextureCoord(numberOfPoints,0,1);
   numberOfPoints++;
   addPoint(numberOfPoints,horis*-1                ,Vector3(0,1,0),1,1,1);
   editTextureCoord(numberOfPoints,1,0);
   numberOfPoints++;
-  addPoint(numberOfPoints,horis*-1+Vector3(0,1,0)*0.5 ,Vector3(0,1,0),1,1,1);
+  addPoint(numberOfPoints,horis*-1+Vector3(0,1,0)*height ,Vector3(0,1,0),1,1,1);
   editTextureCoord(numberOfPoints,1,1);
   numberOfPoints++;
   addTriangle(numberOfTriangles,numberOfPoints-4,numberOfPoints-3,numberOfPoints-2);
@@ -69,13 +71,13 @@ void Grass::makeBunch(Vector3 position)
   addPoint(numberOfPoints,vert*0.866+horis*0.5    ,Vector3(0,1,0),1,1,1);
   editTextureCoord(numberOfPoints,0,0);
   numberOfPoints++;
-  addPoint(numberOfPoints,vert*0.866+horis*0.5 +Vector3(0,1,0)*0.5    ,Vector3(0,1,0),1,1,1);
+  addPoint(numberOfPoints,vert*0.866+horis*0.5 +Vector3(0,1,0)*height    ,Vector3(0,1,0),1,1,1);
   editTextureCoord(numberOfPoints,0,1);
   numberOfPoints++;
   addPoint(numberOfPoints,vert*-0.866-horis*0.5                ,Vector3(0,1,0),1,1,1);
   editTextureCoord(numberOfPoints,1,0);
   numberOfPoints++;
-  addPoint(numberOfPoints,vert*-0.866-horis*0.5+Vector3(0,1,0)*0.5 ,Vector3(0,1,0),1,1,1);
+  addPoint(numberOfPoints,vert*-0.866-horis*0.5+Vector3(0,1,0)*height ,Vector3(0,1,0),1,1,1);
   editTextureCoord(numberOfPoints,1,1);
   numberOfPoints++;
   addTriangle(numberOfTriangles,numberOfPoints-4,numberOfPoints-3,numberOfPoints-2);
@@ -86,13 +88,13 @@ void Grass::makeBunch(Vector3 position)
   addPoint(numberOfPoints,vert*0.866+horis*-0.5    ,Vector3(0,1,0),1,1,1);
   editTextureCoord(numberOfPoints,0,0);
   numberOfPoints++;
-  addPoint(numberOfPoints,vert*0.866+horis*-0.5 +Vector3(0,1,0)*0.5    ,Vector3(0,1,0),1,1,1);
+  addPoint(numberOfPoints,vert*0.866+horis*-0.5 +Vector3(0,1,0)*height    ,Vector3(0,1,0),1,1,1);
   editTextureCoord(numberOfPoints,0,1);
   numberOfPoints++;
   addPoint(numberOfPoints,vert*-0.866+horis*0.5                ,Vector3(0,1,0),1,1,1);
   editTextureCoord(numberOfPoints,1,0);
   numberOfPoints++;
-  addPoint(numberOfPoints,vert*-0.866+horis*0.5+Vector3(0,1,0)*0.5 ,Vector3(0,1,0),1,1,1);
+  addPoint(numberOfPoints,vert*-0.866+horis*0.5+Vector3(0,1,0)*height ,Vector3(0,1,0),1,1,1);
   editTextureCoord(numberOfPoints,1,1);
   numberOfPoints++;
   addTriangle(numberOfTriangles,numberOfPoints-4,numberOfPoints-3,numberOfPoints-2);
@@ -104,6 +106,8 @@ void Grass::makeBunch(Vector3 position)
 
 void Grass::Render(int refreshTime, Vector3* cameraPos)
 {
-  if ((*cameraPos - position).magnitude()<10)
-    Object::Render(refreshTime,cameraPos);
+   theta += refreshTime/1000.f;
+   xySlew = 0.5*sin(theta);
+   updateMatrix();
+   Object::Render(refreshTime,cameraPos);
 }

@@ -90,6 +90,8 @@ class Object
     int numberOfPoints;
     /// Is this object billboarded (always facing the camera)?
     bool billboard;
+    /// A testing number for slew
+    float xySlew;
     /// Initialise the triangle and position datas
     void clearTriangleData(int,int);
     /// Adds a new vertex to the shape of this thing

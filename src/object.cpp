@@ -26,6 +26,7 @@ Object::Object(Vector3 pos,Game* g)
   forward = Vector3(1,0,0);
   up = Vector3(0,1,0);
   right = Vector3(0,0,1);
+  xySlew = 0;
   updateMatrix();
 }
 
@@ -228,7 +229,7 @@ void Object::updateMatrix()
 {
   // This works.  You can check it yourself.
   transformMatrix[0] = forward.x;
-  transformMatrix[1] = up.x;
+  transformMatrix[1] = up.x+xySlew;
   transformMatrix[2] = right.x;
   transformMatrix[3] = position.x;
 
