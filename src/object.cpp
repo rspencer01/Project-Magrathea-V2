@@ -27,6 +27,7 @@ Object::Object(Vector3 pos,Game* g)
   up = Vector3(0,1,0);
   right = Vector3(0,0,1);
   xySlew = 0;
+  shinyness = 0.f;
   updateMatrix();
 }
 
@@ -77,6 +78,7 @@ void Object::Render(int refreshTime, Vector3* cameraPos)
 	{
     // Load our transformation matrix
     game->currentShader->setObjectMatrix(transformMatrix);
+    game->currentShader->setFloat("shinyness",shinyness);
     // Upload this object's texture
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D,textureNumber);

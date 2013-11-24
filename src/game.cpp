@@ -76,6 +76,7 @@ Game::Game(bool doGraphics)
     }
   }
   cloud = new Cloud(Vector3(0,500,0),this);
+  water = new Water(Vector3(0,30,0),this);
 }
 
 /// Initialises all the shaders and cameras and shadows associated with this game
@@ -175,7 +176,7 @@ void Game::display()
   camera->Render();
   // Gogogo!
   sky->Render(refreshTime,&(camera->Position));
-  cloud->Render(refreshTime,&(camera->Position));
+  //cloud->Render(refreshTime,&(camera->Position));
   RenderScene(refreshTime);
   
   

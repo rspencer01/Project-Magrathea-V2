@@ -120,6 +120,8 @@ class Object
     void setTextureMix(int,float,float,float,float);
     /// Free the space of the vertices
     void freeze();
+    /// How shiny is the material?
+    float shinyness;
   public:
 	  /// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*);

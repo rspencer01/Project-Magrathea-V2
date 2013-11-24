@@ -131,8 +131,8 @@ GLuint ShaderProgram::getVariablePosition(const char* name)
   if (variableLocations.count(vName)==0)
     variableLocations[vName] = glGetUniformLocation(ShaderProgramID, name);
   // Die nicely if we need to
-  if (variableLocations[vName]==0xFFFFFFFF)
-    DIE2("Cannot find shader variable",name);
+  //if (variableLocations[vName]==0xFFFFFFFF)
+  //  DIE2("Cannot find shader variable",name);
   // Return the answer
   return variableLocations[vName];
 }
