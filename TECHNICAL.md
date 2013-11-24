@@ -43,6 +43,10 @@ Project Magrathea stores all the visible things as `Object`s.  This class has th
 
 Another funciton, not fully tested, but seeming to work, is the `loadFromOBJFile` function.  This loads `obj` files.
 
+The `ObjectManager`
+--------------------
+This class stores all the objects on the screen, renders them and also has a fairly(ish) efficient order of creation of the objects.  If you want a new object, you call its `addObject` method, and it will, at some point in the future be added to the scene.
+
 Shadows
 -------
 Oooh.  Shadows.  Both a headache and very neat.  The rendering of shadows required a complete rewrite of the rendering process of Magrathea.  For starters, shaders (4 of them) had to be written.  Then data had to be passed with Vertex attribute arrays and `glVertexAttribPointerARB`.  Much of their development was done in the dark (literally!) with little to no feedback on what was working and what was not.  The reason I say this, is as a warning to changing stuff.  It works.  I offer no guarantee that tinkering with it will not break it.
