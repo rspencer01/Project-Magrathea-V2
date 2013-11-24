@@ -21,6 +21,9 @@
 #include <shaders.h>
 #include <shadow.h>
 #include <bird.h>
+#include <cloud.h>
+#include <objectManager.h>
+#include <water.h>
 
 /// The gameops class contains all the methods to do with gameplay
 ///
@@ -66,8 +69,10 @@ class Game
     ShadowManager* shadows;
     /// The shader that runs most of the rendering
     ShaderProgram* mainShader;
-    /// Some test birds
-    std::vector<Bird*> birds;
+    /// A test cloud
+    Cloud* cloud;
+    /// A test body of water
+    Water* water;
     /// Is the mouse being used to control the camera
     bool mouseControl;
   public:
@@ -91,6 +96,8 @@ class Game
     void setProjectionMatrix(float*);
     /// This is a pointer the shader that is currently in use.
     ShaderProgram* currentShader;
+    /// The object manager for this game
+    ObjectManager* objectManager;
 };
 
 #endif

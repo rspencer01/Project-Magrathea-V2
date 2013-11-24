@@ -44,7 +44,8 @@ void initialiseGraphics(Game* sh)
   // Lets enable alpha blending
   glEnable (GL_BLEND);
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glAlphaFunc ( GL_GREATER, (GLclampf)0.7 ) ;
+  // Draw all transparancies except completely invisibles
+  glAlphaFunc ( GL_GREATER, (GLclampf)0.01 ) ;
   glEnable ( GL_ALPHA_TEST ) ;
 
   // Fill the polygons, please
@@ -58,13 +59,13 @@ void initialiseGraphics(Game* sh)
 /// Builds a projection matrix
 void BuildPerspProjMat(float *m, float fov, float aspect, float znear, float zfar)
 {
-  m[0]  = 1.0/(aspect * tan(fov*3.141592/360.0));
+  m[0]  = (float)(1.f/(aspect * tan(fov*3.141592/360.0)));
   m[1]  = 0;
   m[2]  = 0;
   m[3]  = 0;
 
   m[4]  = 0;
-  m[5]  = 1.0/tan(fov*3.141592/360.0);
+  m[5]  = (float)(1.f/tan(fov*3.141592/360.0));
   m[6]  = 0;
   m[7]  = 0;
 
@@ -86,7 +87,7 @@ void resize(int width, int height)
   // Set the size of the viewport
   glViewport(0,0,(GLsizei)width,(GLsizei)height);
   // Construct the projection matrix ...
-  BuildPerspProjMat(projMatrix,30.f, float(width)/height, 2.f, 100.f);
+  BuildPerspProjMat(projMatrix,20.f, float(width)/height, 2.f, 100.f);
   // ... and push it to the shaders
   game->setProjectionMatrix(&projMatrix[0]);
 }
@@ -125,7 +126,7 @@ void writeString(int x, int y, const char* format, ... )
   glTranslatef(fx,fy,0);
   
   // Scale it to the right text size
-  glScalef(0.0005,0.0005,1);
+  glScalef((GLfloat)0.0005,(GLfloat)0.0005,(GLfloat)1);
 
   // Some nice white text, please
   glColor4f(1.f,1.f,1.f,1.f);

@@ -14,7 +14,9 @@
 
 /// The size of the data that this page holds.  Since it is 2D, any page actually holds
 /// PAGE_SIZE*PAGE_SIZE pieces of data.  Thus this should not get too large.
-#define PAGE_SIZE 50
+#define PAGE_SIZE 30
+/// The length of time (in seconds) a page may stay alive without being accessed
+#define PAGE_LIFE 100
 
 /// \brief Pages are contained in books and hold and perform operations on data.
 ///
@@ -26,6 +28,7 @@ class Page
     int origin_x;
     int origin_y;
     float(*generatingFunction)(int,int);
+    int timeSinceLastAccess;
 	public:
 		Page(int,int,float(*g)(int,int));
 		/// Returns the value of the data indexed by the values (from the page origin)

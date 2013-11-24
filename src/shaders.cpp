@@ -1,3 +1,4 @@
+#include <magrathea.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <stdio.h>
@@ -6,47 +7,54 @@
 
 GLuint gSampler;
 
-ShaderProgram::ShaderProgram()
+/// Gets rid of all the 0x0D values in a file (kills the GLSL compiler)
+/// @param program The shader program to sanatise
+/// @param size    The size of said program
+void sanatiseShader(char* program, int size)
 {
-  // Make us a new program*
-  constructProgram();
+  // Loop through the file, replacing '\r' with newlines
+  for (int i = 0;i<size;i++)
+   if (program[i]==0x0D)
+      program[i] = 0x0A;
 }
 
-void ShaderProgram::constructProgram()
+/// Ask OpenGL to create a new shader program, and kill the program if there was an error
+ShaderProgram::ShaderProgram()
 {
   // Construct the program we are going to use
   ShaderProgramID = glCreateProgramObjectARB();
   // If there was an error, let us know
   if (ShaderProgramID == 0) 
-  {
-    fprintf(stderr, "Error creating shader program\n");
-    while(1);
-  }
+    DIE("Error creating new shader program");
 }
 
-void ShaderProgram::LoadShader(const char* shaderPath, GLenum ShaderType)
+/// Load a shader program from a source file.
+/// @param shaderPath The path to the source file
+/// @param shaderType The type of shader object to load (fragment or vertex)
+void ShaderProgram::LoadShader(const char* shaderPath, GLenum shaderType)
 {
   // Create us a new shader
-  GLuint ShaderObj = glCreateShaderObjectARB(ShaderType);
+  GLuint ShaderObj = glCreateShaderObjectARB(shaderType);
   // If something went wrong, tell us about it
   if (ShaderObj == 0) 
-  {
-    fprintf(stderr, "Error creating shader type %d\n", ShaderType);
-    while(1);
-  }
+    DIE("Error creating shader object");
   // Now open the shader source.
-  FILE* fp = fopen(shaderPath,"r");
+  FILE* fp = fopen(shaderPath,"rb");
+  if (fp==NULL)
+    DIE2("Cannot open shader source",shaderPath);
   // Find the length of the file
   fseek(fp,0,SEEK_END);
   int fileSize = ftell(fp);
   rewind(fp);
   // Read in the entire file
-  const GLchar* p = new GLchar[fileSize];
-  fread((void*)p,fileSize,1,fp);
+  const GLchar* progSource = new GLchar[fileSize];
+  fread((void*)progSource,fileSize,1,fp);
+  // Sanatise the shader
+  sanatiseShader((char*)progSource,fileSize);
   // And tell opengl that it is the source code
-  glShaderSourceARB(ShaderObj, 1, &p, &fileSize);
+  glShaderSourceARB(ShaderObj, 1, &progSource, &fileSize);
   // Now we are done with these, get rid of them
-  delete p;
+  delete progSource;
   fclose(fp);
   // Attempt to compile the shader
   glCompileShaderARB(ShaderObj);
@@ -57,13 +65,13 @@ void ShaderProgram::LoadShader(const char* shaderPath, GLenum ShaderType)
   {
     GLchar InfoLog[1024];
     glGetInfoLogARB(ShaderObj, 1024, NULL, InfoLog);
-    fprintf(stderr, "Error compiling shader type %d: '%s'\n", ShaderType, InfoLog);
-    while(1);
+    DIE3("Error compiling shader",shaderPath, InfoLog);
   }
   // Attach the compiled object to the program
   glAttachShader(ShaderProgramID, ShaderObj);
 }
 
+/// Compile the loaded shaders into the program
 void ShaderProgram::CompileAll()
 {
   // Bind the attributes to the right locations
@@ -81,8 +89,7 @@ void ShaderProgram::CompileAll()
   {
     GLchar ErrorLog[1024] = { 0 };
 		glGetProgramInfoLog(ShaderProgramID, sizeof(ErrorLog), NULL, ErrorLog);
-		fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
-    while(1);
+    DIE2("Error linking shader program:", ErrorLog);
 	}
   // Confirm that this is valid
   glValidateProgram(ShaderProgramID);
@@ -92,11 +99,11 @@ void ShaderProgram::CompileAll()
   {
     GLchar ErrorLog[1024] = { 0 };
     glGetProgramInfoLog(ShaderProgramID, sizeof(ErrorLog), NULL, ErrorLog);
-    fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
-    while(1);
+    DIE2("Invalid shader program:", ErrorLog);
   }
 }
 
+/// Load the program into GPU memory, ready to be run
 void ShaderProgram::Load()
 {
   // Now load this program
@@ -116,47 +123,36 @@ void ShaderProgram::setObjectMatrix(float* value)
   glUniformMatrix4fv(objPos,1,GL_TRUE,value);
 }
 
+GLuint ShaderProgram::getVariablePosition(const char* name)
+{
+  // A std::string for hasing purposes
+  std::string vName (name);
+  // If we don't know this variable, find out its location
+  if (variableLocations.count(vName)==0)
+    variableLocations[vName] = glGetUniformLocation(ShaderProgramID, name);
+  // Die nicely if we need to
+  //if (variableLocations[vName]==0xFFFFFFFF)
+  //  DIE2("Cannot find shader variable",name);
+  // Return the answer
+  return variableLocations[vName];
+}
+
 void ShaderProgram::setMatrix(const char* varName, float* value)
 {
-  std::string vName (varName);
-  if (! variableLocations.count(vName)>0)
-  {
-    variableLocations[vName] = glGetUniformLocation(ShaderProgramID, varName);
-  }
-  if (variableLocations[vName]==0xFFFFFFFF)
-  {
-    printf("ERROR: Cannot find variable '%s' in shader\n",varName);
-    return;
-  }
-  glUniformMatrix4fv(variableLocations[vName],1,GL_TRUE,value);
+  glUniformMatrix4fv(getVariablePosition(varName),1,GL_TRUE,value);
 }
 
 void ShaderProgram::setInt(const char* varName, unsigned int value)
 {
-  std::string vName (varName);
-  if (! variableLocations.count(vName)>0)
-  {
-    variableLocations[vName] = glGetUniformLocation(ShaderProgramID, varName);
-  }
-  if (variableLocations[vName]==0xFFFFFFFF)
-  {
-    printf("ERROR: Cannot find integer variable '%s' in shader\n",varName);
-    return;
-  }
-  glUniform1i(variableLocations[vName],value);
+  glUniform1i(getVariablePosition(varName),value);
 }
 
 void ShaderProgram::setFloat(const char* varName, float value)
 {
-  std::string vName (varName);
-  if (! variableLocations.count(vName)>0)
-  {
-    variableLocations[vName] = glGetUniformLocation(ShaderProgramID, varName);
-  }
-  if (variableLocations[vName]==0xFFFFFFFF)
-  {
-    printf("ERROR: Cannot find float variable '%s' in shader\n",varName);
-    return;
-  }
-  glUniform1f(variableLocations[vName],value);
+  glUniform1f(getVariablePosition(varName),value);
+}
+
+void ShaderProgram::setVec3(const char* varName, float* value)
+{
+  glUniform3f(getVariablePosition(varName),value[0],value[1],value[2]);
 }

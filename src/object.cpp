@@ -22,9 +22,12 @@ Object::Object(Vector3 pos,Game* g)
   vertexData = NULL;
   triDat = NULL;
   textureNumber = -1;
+  billboard = false;
   forward = Vector3(1,0,0);
   up = Vector3(0,1,0);
   right = Vector3(0,0,1);
+  xySlew = 0;
+  shinyness = 0.f;
   updateMatrix();
 }
 
@@ -58,13 +61,24 @@ void Object::setPosition(Vector3 pos)
 /// Renders this object to the screen, using the VBOs that were 
 /// initialised using the addPoint, addTriangle and pushTriangleData
 /// functions
-void Object::Render(int refreshTime)
+/// @param refreshTime Number of milliseconds since the last rendering
+/// @param cameraPos   Position of the camera in 3-space
+void Object::Render(int refreshTime, Vector3* cameraPos)
 {
+  // Rotate the object if it is a billboard
+  if (billboard)
+  {
+    right = (*cameraPos-position).normal().cross(up);
+    forward = up.cross(right);
+    updateMatrix();
+  }
+  
   // Only do something if we have data	
 	if (buffersInitialised)
 	{
     // Load our transformation matrix
     game->currentShader->setObjectMatrix(transformMatrix);
+    game->currentShader->setFloat("shinyness",shinyness);
     // Upload this object's texture
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D,textureNumber);
@@ -99,9 +113,15 @@ void Object::clearTriangleData(int p, int t)
 {
   // Clear all the data and the buffers (if required)
   if (triDat!=NULL)
+  { 
     delete triDat;
+    triDat = NULL;
+  }
   if (vertexData!=NULL)
+  {
     delete vertexData;
+    vertexData = NULL;
+  }
   triDat = new int[t*3];
   vertexData = new VertexDatum[p];
   if (buffersInitialised)
@@ -206,11 +226,12 @@ void Object::rotate(Vector3 basisX,Vector3 basisY)
   updateMatrix();
 }
 
+/// Updates the object translation and rotation matrix
 void Object::updateMatrix()
 {
   // This works.  You can check it yourself.
   transformMatrix[0] = forward.x;
-  transformMatrix[1] = up.x;
+  transformMatrix[1] = up.x+xySlew;
   transformMatrix[2] = right.x;
   transformMatrix[3] = position.x;
 
@@ -228,6 +249,25 @@ void Object::updateMatrix()
   transformMatrix[13] = 0;
   transformMatrix[14] = 0;
   transformMatrix[15] = 1;
+}
+
+/// WARNING: Only call this function if you are sure that you will never 
+/// edit the vertices again.  That will cause a seg fault
+/// Only to be called after the triangle data has been set of an object
+/// that is either massive, or very common and that will never animate
+/// (eg trees)
+void Object::freeze()
+{
+  if (triDat!=NULL)
+  {
+    delete[] triDat;
+    triDat = NULL;
+  }
+  if (vertexData!=NULL)
+  {
+    delete[] vertexData;
+    vertexData = NULL;
+  }
 }
 
 
@@ -295,7 +335,7 @@ void Object::loadFromOBJFile(const char* filePath)
       float fx,fy,fz;
       // x,y,z space separated
       iss>>fx>>fy>>fz;
-      std::vector<int> tmp;tmp.push_back(fx);tmp.push_back(fy);tmp.push_back(fz);
+      std::vector<int> tmp;tmp.push_back((int)fx);tmp.push_back((int)fy);tmp.push_back((int)fz);
       norm.push_back(tmp);
     }
     // Texture coords

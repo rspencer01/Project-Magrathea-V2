@@ -3,16 +3,17 @@
 #include <smallFern.h>
 
 GLuint smallFernTextureNumber = (GLuint)-1;
-const char* smallFernTextureName = "../assets/smallFern.raw";
+const char* smallFernTextureName = "../assets/smallFern.tga";
 
 /// Initialises the tree at the position, and constructs it
-SmallFern::SmallFern(Vector3 pos,Vector3 norm,Game* g) : Object(pos,g)
+SmallFern::SmallFern(Vector3 pos,Game* g) : Object(pos,g)
 {
-  normal = norm;
+  normal = *(g->getTerrainBit((int)pos.x,(int)pos.y).normal);
   initialiseTriangles();
+  freeze();
   // If we have yet to load the texture, do so
   if (smallFernTextureNumber == (GLuint)-1)
-	  smallFernTextureNumber = textureFromRAW(smallFernTextureName);
+	  smallFernTextureNumber = textureFromTGA(smallFernTextureName,true);
   // And set the texture as ours
   textureNumber = smallFernTextureNumber;
   
@@ -30,12 +31,15 @@ void SmallFern::initialiseTriangles()
   // Three leaves equally spaced round the circle
   for (int i = 0;i<7;i++)
   {
-    
-    Vector3 dir = Vector3(random(seed++)*2-1,
-                         0.4+0.2*random(seed++),
-                         random(seed++)*2-1).normal();
-    makeLeaf(pos,dir,2.f,0.05);
-    pos = pos + Vector3(0,0.1,0);
+    //Multiple increments in one line leads to undefined behaviour - Warning as Error GCC 4.8.1
+    int s1 = seed++;
+    int s2 = seed++;
+    int s3 = seed++;
+    Vector3 dir = Vector3(random(s1)*2-1,
+                         0.4f+0.2f*random(s2),
+                         random(s3)*2-1).normal();
+    makeLeaf(pos,dir,2.f,0.05f);
+    pos = pos + Vector3(0,0.1f,0);
   }
   //for (int i = 5;i<8;i++)
   //  makeLeaf(Vector3(0,0.3,0),Vector3(random(i+5)*2-1,1.5+0.1*random(i*101+7),random(i*100+1)*2-1)/2.5,3.f,0.12+0.03*random(i*1011+88));
@@ -62,10 +66,10 @@ void SmallFern::makeLeaf(Vector3 pos, Vector3 dir, float width,float droopyness)
 
 
   addPoint(numberOfPoints,pos+cross,Vector3(0,1,0),0.7f,0.8f,0.2f);
-  editTextureCoord(numberOfPoints,0,1);
+  editTextureCoord(numberOfPoints,0,0);
   numberOfPoints++;
   addPoint(numberOfPoints,pos-cross,Vector3(0,1,0),0.7f,0.8f,0.2f);
-  editTextureCoord(numberOfPoints,1,1);
+  editTextureCoord(numberOfPoints,1,0);
   numberOfPoints++;
   for (int i = 0;i<5;i++)
   {
@@ -78,11 +82,11 @@ void SmallFern::makeLeaf(Vector3 pos, Vector3 dir, float width,float droopyness)
     
     addPoint(numberOfPoints,pos+cross,
       norm,0.7f,0.8f,0.2f);
-    editTextureCoord(numberOfPoints,0,1-((i+1)/5.f));
+    editTextureCoord(numberOfPoints,0,((i+1)/5.f));
     numberOfPoints++;
     addPoint(numberOfPoints,pos-cross,
       norm,0.7f,0.8f,0.2f);
-    editTextureCoord(numberOfPoints,1,1-((i+1)/5.f));
+    editTextureCoord(numberOfPoints,1,((i+1)/5.f));
     numberOfPoints++;
     addTriangle(numberOfTriangles,numberOfPoints-4,numberOfPoints-3,numberOfPoints-2);
     numberOfTriangles++;

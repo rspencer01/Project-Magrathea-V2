@@ -26,7 +26,7 @@ class Bird : public Object
   public:
 	  /// Constructs the tree with the given coordinates
     Bird(Vector3,Game*);
-    void Render(int);
+    void Render(int,Vector3*);
 };
 
 #endif
