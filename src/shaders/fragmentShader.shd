@@ -12,11 +12,12 @@ uniform sampler2D otherTexture;
 uniform vec3 sunDirection;
 uniform vec3 cameraPos;
 uniform float sunIntensity;
+uniform float shinyness;
 void main()
 { 
-  // These will eventually be parameters
-  float ambient = 0.3;
-  float shinyness = 0.01;
+  // This will eventually be parameters
+  float ambient = 0.2;
+  
   
   float sunlight = sunIntensity;
   // 16 samples per pixel.
@@ -54,8 +55,6 @@ void main()
   
 
   float vis = 0;
-  vis += ambient;
-  vis += 0.5 * clamp(dot(normal,sunDirection),0,1);
   
   
   float spec = 0;
@@ -64,8 +63,9 @@ void main()
   vec3 surfaceToCamera = normalize(cameraPos - pos);
   spec = pow(max(0,dot(surfaceToCamera,reflectionVector)),1.0/shinyness);
   
-  vis += 0.2*spec;
-  vis = clamp(vis,0,1);
+  vis += ambient;
+  vis += clamp(dot(normal,sunDirection),0,0.7);
+  vis += spec;
     
   // The transparancy is taken straight from the texture 
   FragColor =  vec4(vis * shadow * col.xyz * otherTexFrag.xyz , col.w * otherTexFrag.w); 
