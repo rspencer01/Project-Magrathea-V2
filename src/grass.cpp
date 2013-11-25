@@ -24,7 +24,7 @@ Grass::Grass(Vector3 pos, Game* parent) : Object(pos,parent)
 	  grassTextureNumber2 = textureFromTGA(grassName2,true);
 
   // And set it as this object's texture
-  if (random(pos.x+pos.y*10000)>0.2)
+  if (random(pos.x+pos.z*10000)>0.2)
     textureNumber = grassTextureNumber;
   else
     textureNumber = grassTextureNumber2;

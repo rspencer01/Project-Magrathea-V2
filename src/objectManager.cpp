@@ -15,7 +15,7 @@ bool compFunc(objectRequest a,objectRequest b)
 
 ObjectManager::ObjectManager()
 {
-  requests = new std::set<objectRequest,bool(*)(objectRequest,objectRequest)> (compFunc);
+  requests = new std::multiset<objectRequest,bool(*)(objectRequest,objectRequest)> (compFunc);
   furthestObject = 0;
 }
 
