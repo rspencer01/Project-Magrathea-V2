@@ -34,7 +34,7 @@ class ObjectManager
 {
   private:
     std::vector<Object*> objects;
-    std::set<objectRequest,bool(*)(objectRequest,objectRequest)>* requests;
+    std::multiset<objectRequest,bool(*)(objectRequest,objectRequest)>* requests;
     int insertSort(Vector3);
     int furthestObject;
   public:
