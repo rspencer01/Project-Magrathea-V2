@@ -87,7 +87,7 @@ void ObjectManager::Render(int t, Vector3* c)
 
 int ObjectManager::insertSort(Vector3 c)
 {
-  for (int i = 1;i<objects.size();i++)
+  for (unsigned int i = 1;i<objects.size();i++)
   {
      if ((c-objects[i]->getPosition()).magnitude()<(c-objects[i-1]->getPosition()).magnitude())
      {
