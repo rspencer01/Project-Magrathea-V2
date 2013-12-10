@@ -1,6 +1,6 @@
 #include <objectManager.h>
 #include <stdio.h>
-#include <dynoTree.h>
+#include <dynotree.h>
 #include <smallFern.h>
 #include <grass.h>
 #include <vector>

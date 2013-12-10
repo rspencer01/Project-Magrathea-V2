@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <grass.h>
 #include <noise.h>
+#include <cmath>
 
 // We only want to load this texture once, if we can reload.  Remember the handle for it.
 GLuint grassTextureNumber = (GLuint)-1;

@@ -1,4 +1,5 @@
 #include <magrathea.h>
+#include <cstdio>
 
 float fps = 0.0;
 int currentTime;
