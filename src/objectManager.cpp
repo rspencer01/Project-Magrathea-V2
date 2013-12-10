@@ -66,7 +66,7 @@ void ObjectManager::Render(int t, Vector3* c)
       case dynoTree:
       {
         objects.push_back(new DynoTree(*req.position,req.game));
-        printf("%d objects\n",objects.size());
+        printf("%lu objects\n",objects.size());
         break;
       }
       case smallFern:
