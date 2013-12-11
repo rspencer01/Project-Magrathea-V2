@@ -1,5 +1,6 @@
 #include <testobj.h>
 #include <images.h>
+#include <cmath>
 
 Water::Water(Vector3 pos,Game* parent) : Object(pos,parent)
 {

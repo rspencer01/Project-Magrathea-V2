@@ -35,7 +35,7 @@ void Cloud::updateTexture()
 {
   if (data==NULL)
     data = new unsigned char [textureSize*textureSize*4];
-  if (textureNumber == -1)
+  if (textureNumber == 0) //Empty Texture are zero
     textureNumber = newTexture(true);
   for (int i =0;i<textureSize;i++)
     for (int j =0;j<textureSize;j++)

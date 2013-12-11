@@ -53,7 +53,7 @@ terrainBit Book::getAt(int x, int y)
   {
     pages[px][py] = new Page(px*PAGE_SIZE,py*PAGE_SIZE,generatingFunction);
     numberOfInitialisedPages++;
-    printf("Paging size: %dkB\n",numberOfInitialisedPages*sizeof(Page)/1024);
+    printf("Paging size: %lukB\n",(unsigned long)numberOfInitialisedPages*sizeof(Page)/1024);
   }
   // Ask the page for the terrainBit
   return pages[px][py]->getAt(x%PAGE_SIZE,y%PAGE_SIZE);
@@ -77,7 +77,7 @@ void Book::deleteUnused()
       pages[delI][delJ] = NULL;
       // Some feedback for the user
       numberOfInitialisedPages--;
-      printf("Paging size: %dkB\n",numberOfInitialisedPages*sizeof(Page)/1024);
+      printf("Paging size: %lukB\n",(unsigned long)(numberOfInitialisedPages*sizeof(Page)/1024));
     }
   // Update the indices
   delI++;

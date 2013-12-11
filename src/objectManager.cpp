@@ -1,6 +1,6 @@
 #include <objectManager.h>
 #include <stdio.h>
-#include <dynoTree.h>
+#include <dynotree.h>
 #include <smallFern.h>
 #include <grass.h>
 #include <vector>
@@ -66,7 +66,7 @@ void ObjectManager::Render(int t, Vector3* c)
       case dynoTree:
       {
         objects.push_back(new DynoTree(*req.position,req.game));
-        printf("%d objects\n",objects.size());
+        printf("%lu objects\n",(unsigned long)objects.size());
         break;
       }
       case smallFern:
@@ -87,7 +87,7 @@ void ObjectManager::Render(int t, Vector3* c)
 
 int ObjectManager::insertSort(Vector3 c)
 {
-  for (int i = 1;i<objects.size();i++)
+  for (unsigned int i = 1;i<objects.size();i++)
   {
      if ((c-objects[i]->getPosition()).magnitude()<(c-objects[i-1]->getPosition()).magnitude())
      {

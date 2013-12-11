@@ -126,7 +126,7 @@ class Object
 	  /// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*);
   	/// Destroys the Object, freeing space
-    ~Object();
+    virtual ~Object();
   	/// Renders the Object to the screen
     virtual void Render(int refreshTime, Vector3* cameraPos);
   	/// Accessor for the item position
