@@ -6,7 +6,7 @@
 #include <images.h>
 
 // We only want to load this texture once, if we can reload.  Remember the handle for it.
-GLuint dtreeTextureNumber = (GLuint)-1;
+GLuint dtreeTextureNumber = 0;
 // Where is the texture actually stored?
 const char* dtextureName = "../assets/Tree.tga";
 
@@ -17,7 +17,7 @@ DynoTree::DynoTree(Vector3 pos,Game* g) : Object(pos,g)
   initialiseTriangles();
   freeze();
   // If we have yet to load the texture, do it
-  if (dtreeTextureNumber == (GLuint)-1)
+  if (dtreeTextureNumber == 0)
 	  dtreeTextureNumber = textureFromTGA(dtextureName,false);
   // And set it as this object's texture
   textureNumber = dtreeTextureNumber;

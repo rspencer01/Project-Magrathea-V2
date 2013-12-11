@@ -3,7 +3,7 @@
 
 
 // We only want to load this texture once, if we can reload.  Remember the handle for it.
-GLuint birdTextureNumber = (GLuint)-1;
+GLuint birdTextureNumber = 0;
 // Where is the texture actually stored?
 const char* birdtextureName = "../assets/bird.tga";
 
@@ -11,7 +11,7 @@ Bird::Bird(Vector3 position, Game* game) : Object(position,game)
 {
   initialiseTriangles();
     // If we have yet to load the texture, do it
-  if (birdTextureNumber == (GLuint)-1)
+  if (birdTextureNumber == 0)
 	  birdTextureNumber = textureFromTGA(birdtextureName,false);
   // And set it as this object's texture
   textureNumber = birdTextureNumber;

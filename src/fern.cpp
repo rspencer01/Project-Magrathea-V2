@@ -2,7 +2,7 @@
 #include <math.h>
 #include <fern.h>
 
-GLuint fernTextureNumber = (GLuint)-1;
+GLuint fernTextureNumber = 0;
 const char* fernTextureName = "../assets/fern.bmp";
 
 /// Initialises the tree at the position, and constructs it
@@ -12,7 +12,7 @@ Fern::Fern(Vector3 pos,Vector3 norm,Game* g) : Object(pos,g)
   initialiseTriangles();
   freeze();
   // If we have yet to load the texture, do so
-  if (fernTextureNumber == (GLuint)-1)
+  if (fernTextureNumber == 0)
 	  fernTextureNumber = textureFromBMP(fernTextureName);
   // And set the texture as ours
   textureNumber = fernTextureNumber;

@@ -4,12 +4,12 @@
 #include <cmath>
 
 // We only want to load this texture once, if we can reload.  Remember the handle for it.
-GLuint grassTextureNumber = (GLuint)-1;
+GLuint grassTextureNumber = 0;
 // Where is the texture actually stored?
 const char* grassName = "../assets/grass2.tga";
 
 // We only want to load this texture once, if we can reload.  Remember the handle for it.
-GLuint grassTextureNumber2 = (GLuint)-1;
+GLuint grassTextureNumber2 = 0;
 // Where is the texture actually stored?
 const char* grassName2 = "../assets/grass.tga";
 
@@ -18,10 +18,10 @@ Grass::Grass(Vector3 pos, Game* parent) : Object(pos,parent)
 {
   Vector3 norm = *(parent->getTerrainBit((int)pos.x,(int)pos.z).normal);
   // If we have yet to load the texture, do it
-  if (grassTextureNumber == (GLuint)-1)
+  if (grassTextureNumber == 0)
 	  grassTextureNumber = textureFromTGA(grassName,true);
   // If we have yet to load the texture, do it
-  if (grassTextureNumber2 == (GLuint)-1)
+  if (grassTextureNumber2 == 0)
 	  grassTextureNumber2 = textureFromTGA(grassName2,true);
 
   // And set it as this object's texture
