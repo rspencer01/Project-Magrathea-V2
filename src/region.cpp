@@ -7,7 +7,7 @@
 #include <images.h>
 #include <smallFern.h>
 
-GLuint texture = (GLuint)-1;
+GLuint texture = 0;
 
 /// Constructs a new region at the given position
 /// @param x The x coordinate of the origin
@@ -30,7 +30,7 @@ Region::Region(Vector3 pos,Game* parent) : Object(pos,parent)
         parent->objectManager->addObject(smallFern,*(here.position),parent);
     }
 
-  if (texture == (GLuint)-1)
+  if (texture == 0)
 	  texture = textureFromTGA("../assets/MixedGround.tga",true);
   textureNumber = texture;
 }

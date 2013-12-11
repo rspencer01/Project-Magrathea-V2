@@ -2,7 +2,7 @@
 #include <math.h>
 #include <smallFern.h>
 
-GLuint smallFernTextureNumber = (GLuint)-1;
+GLuint smallFernTextureNumber = 0;
 const char* smallFernTextureName = "../assets/smallFern.tga";
 
 /// Initialises the tree at the position, and constructs it
@@ -12,7 +12,7 @@ SmallFern::SmallFern(Vector3 pos,Game* g) : Object(pos,g)
   initialiseTriangles();
   freeze();
   // If we have yet to load the texture, do so
-  if (smallFernTextureNumber == (GLuint)-1)
+  if (smallFernTextureNumber == 0)
 	  smallFernTextureNumber = textureFromTGA(smallFernTextureName,true);
   // And set the texture as ours
   textureNumber = smallFernTextureNumber;

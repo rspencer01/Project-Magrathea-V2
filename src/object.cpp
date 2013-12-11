@@ -21,7 +21,7 @@ Object::Object(Vector3 pos,Game* g)
   buffersInitialised = false;
   vertexData = NULL;
   triDat = NULL;
-  textureNumber = -1;
+  textureNumber = 0;
   billboard = false;
   forward = Vector3(1,0,0);
   up = Vector3(0,1,0);
