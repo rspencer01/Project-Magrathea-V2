@@ -54,6 +54,12 @@ void initialiseGraphics(Game* sh)
   // Lets not display a cursor
   glutSetCursor(GLUT_CURSOR_NONE);
 
+  // Set up all the vertex attribut arrays for rendering later on...
+  glEnableVertexAttribArrayARB(0);
+  glEnableVertexAttribArrayARB(1);
+  glEnableVertexAttribArrayARB(2);
+  glEnableVertexAttribArrayARB(3);
+  glEnableVertexAttribArrayARB(4);
 }
 
 /// Builds a projection matrix

@@ -82,11 +82,6 @@ void Object::Render(int refreshTime, Vector3* cameraPos)
     // Upload this object's texture
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D,textureNumber);
-    glEnableVertexAttribArrayARB(0);
-    glEnableVertexAttribArrayARB(1);
-    glEnableVertexAttribArrayARB(2);
-    glEnableVertexAttribArrayARB(3);
-    glEnableVertexAttribArrayARB(4);
 
     glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
     // Get the position data
@@ -97,12 +92,7 @@ void Object::Render(int refreshTime, Vector3* cameraPos)
     glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
     glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
     glDrawElements(GL_TRIANGLES,numberOfTriangles*3,GL_UNSIGNED_INT,0);
-    glDisableVertexAttribArrayARB(0);
-    glDisableVertexAttribArrayARB(1);
-    glDisableVertexAttribArrayARB(2);
-    glDisableVertexAttribArrayARB(3);
-    glDisableVertexAttribArrayARB(4);
-	}
+  }
 }
 
 /// Reset the data.  Clear the internal arrays, and the GPU arrays.
