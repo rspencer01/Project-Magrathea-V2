@@ -109,7 +109,8 @@ void ShaderProgram::Load()
   // Now load this program
   glUseProgram(ShaderProgramID);
   variableLocations.clear();
-  objPos = (GLuint)-1;
+  objectTransformMatrixPosition = (GLuint)-1;
+  materialShinynessPosition = (GLuint)-1;
 }
 
 /// The object matrix is set so often that looking it up (even in a map) each time
@@ -118,9 +119,17 @@ void ShaderProgram::Load()
 /// @param value The value to set the matrix to.
 void ShaderProgram::setObjectMatrix(float* value)
 {
-  if (objPos==(GLuint)-1)
-    objPos = glGetUniformLocation(ShaderProgramID, "objectMatrix");
-  glUniformMatrix4fv(objPos,1,GL_TRUE,value);
+  if (objectTransformMatrixPosition==(GLuint)-1)
+    objectTransformMatrixPosition = glGetUniformLocation(ShaderProgramID, "objectMatrix");
+  glUniformMatrix4fv(objectTransformMatrixPosition,1,GL_TRUE,value);
+}
+
+
+void ShaderProgram::setMaterialShinyness(float value)
+{
+  if (materialShinynessPosition==(GLuint)-1)
+    materialShinynessPosition = glGetUniformLocation(ShaderProgramID, "shinyness");
+  glUniform1f(materialShinynessPosition,value);
 }
 
 GLuint ShaderProgram::getVariablePosition(const char* name)

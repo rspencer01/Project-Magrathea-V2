@@ -25,7 +25,8 @@ class ShaderProgram
     /// A map to hold the positions in GPU memory of variables (so we don't look them up each time)
     std::map<std::string,GLuint> variableLocations;
     /// The position of the object transform matrix (changed often)
-    GLuint objPos;
+    GLuint objectTransformMatrixPosition;
+    GLuint materialShinynessPosition;
   public:
     /// Construct the program (empty and unloaded)
     ShaderProgram();
@@ -45,6 +46,7 @@ class ShaderProgram
     void setVec3(const char*,float*);
     /// Function to set the object transformation matrix
     void setObjectMatrix(float* value);
+    void setMaterialShinyness(float value);
 
 };
 
