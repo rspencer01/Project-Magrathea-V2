@@ -77,17 +77,13 @@ ShadowManager::ShadowManager()
   camera = new Camera(shader,"transformationMatrix");
   camera->Position = Vector3(0.f,200.f,0.f);
   camera->RotateX(-3.1415f/2);
-  sinceLastRefresh = 10000;
   theta = 0;
 }
 
 int oldViewport[4];
 
-bool ShadowManager::readyForWriting(int refreshTime)
+void ShadowManager::readyForWriting(int refreshTime)
 {
-  sinceLastRefresh += refreshTime;
-  if (sinceLastRefresh<2000)
-    return false;
   shader->Load();
   glGetIntegerv(GL_VIEWPORT,oldViewport);
   glViewport(0,0,TEXTURE_SIZE,TEXTURE_SIZE);
@@ -98,8 +94,6 @@ bool ShadowManager::readyForWriting(int refreshTime)
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-  sinceLastRefresh = 0;
-  return true;
 }
 
 void ShadowManager::readyForReading(ShaderProgram* mainShader)

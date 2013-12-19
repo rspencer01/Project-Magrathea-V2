@@ -154,18 +154,17 @@ void Game::display()
   // Destroy unused pages
   data->deleteUnused();
   
+  // Do the shadow stuff
   shadows->relocate(camera->Position,refreshTime);
-  if (shadows->readyForWriting(refreshTime))
-  {
-    // Create the shadow texture
-    // Keep track of which shader we are using
-    currentShader = shadows->shader;
-    // Render the scene for depth testing
-    RenderScene(0);
-    // And reset
-    shadows->readyForReading(mainShader);
-    currentShader = mainShader;
-  }
+  shadows->readyForWriting(refreshTime);
+  // Create the shadow texture
+  // Keep track of which shader we are using
+  currentShader = shadows->shader;
+  // Render the scene for depth testing
+  RenderScene(0);
+  // And reset
+  shadows->readyForReading(mainShader);
+  currentShader = mainShader;
    
   // Render to the screen
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
