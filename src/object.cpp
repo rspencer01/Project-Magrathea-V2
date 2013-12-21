@@ -29,6 +29,13 @@ Object::Object(glm::vec3 pos,Game* g)
   xySlew = 0;
   shinyness = 0.f;
   updateMatrix();
+  // This only needs to be done once.  I suppose it should find its way into shader.cpp eventually...
+  glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
+  glVertexAttribPointerARB(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));
+  glVertexAttribPointerARB(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
+  glVertexAttribPointerARB(3,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
+  glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
+
 }
 
 /// Frees the data used by this object (esp the buffers in the GPU)
@@ -72,24 +79,19 @@ void Object::Render(int refreshTime, glm::vec3 cameraPos)
     forward = glm::cross(up,right);
     updateMatrix();
   }
-  
-  // Only do something if we have data	
+  // Only do something if we have data	(THIS IS THE MAIN BOTTLENECK!)
 	if (buffersInitialised)
 	{
     // Load our transformation matrix
     game->currentShader->setObjectMatrix(transformMatrix);
     game->currentShader->setMaterialShinyness(shinyness);
-    // Upload this object's texture
+
+    // Select this object's texture
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D,textureNumber);
 
+    // Use our data
     glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
-    // Get the position data
-    glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
-    glVertexAttribPointerARB(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));
-    glVertexAttribPointerARB(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
-    glVertexAttribPointerARB(3,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
-    glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
     glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
     glDrawElements(GL_TRIANGLES,numberOfTriangles*3,GL_UNSIGNED_INT,0);
   }
