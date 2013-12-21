@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <magrathea.h>
-
+#include <gtx/random.hpp>
 #include <dynotree.h>
 #include <images.h>
 
@@ -11,7 +11,7 @@ GLuint dtreeTextureNumber = 0;
 const char* dtextureName = "../assets/Tree.tga";
 
 /// Construct a dynoTree at the given location
-DynoTree::DynoTree(Vector3 pos,Game* g) : Object(pos,g)
+DynoTree::DynoTree(glm::vec3 pos,Game* g) : Object(pos,g)
 {
   // Actually construct the triangles
   initialiseTriangles();
@@ -34,12 +34,12 @@ void DynoTree::initialiseTriangles()
   numberOfPoints = 0;
   numberOfTriangles = 0;
   // Construct the trunk, 1m below the ground, going up.
-  makeBranch(Vector3(0,-1,0),Vector3(0,1,0),3,1,-1,false);
+  makeBranch(glm::vec3(0,-1,0),glm::vec3(0,1,0),3,1,-1,false);
 	// And save
 	pushTriangleData();
 }
 
-int DynoTree::makeRing(Vector3 pos, Vector3 basisA, Vector3 basisB, float width,bool swapTex)
+int DynoTree::makeRing(glm::vec3 pos, glm::vec3 basisA, glm::vec3 basisB, float width,bool swapTex)
 {
   // Record the index of the beginning, to return
   int lastRingIndex = numberOfPoints;
@@ -78,11 +78,11 @@ void DynoTree::makeTriangles(int beginning,int end)
   }
 }
 
-void DynoTree::makeBranch(Vector3 pos, Vector3 dir, float len, float width, int lastRingIndex,bool swapTex)
+void DynoTree::makeBranch(glm::vec3 pos, glm::vec3 dir, float len, float width, int lastRingIndex,bool swapTex)
 {
   // Construct the two basis vectors for construction of points
-  Vector3 basisA = dir.cross(Vector3(1,0,1)).normal();
-  Vector3 basisB = dir.cross(basisA).normal();
+  glm::vec3 basisA = glm::normalize(glm::cross(dir,glm::vec3(1,0,1)));
+  glm::vec3 basisB = glm::normalize(glm::cross(dir,basisA));
   // If we need to make a bottom ring, do so
   if (lastRingIndex==-1)
     lastRingIndex = makeRing(pos,basisA,basisB,width,true);
@@ -94,32 +94,32 @@ void DynoTree::makeBranch(Vector3 pos, Vector3 dir, float len, float width, int 
   if (width>0.05)
   {
     // Get a random direction
-    Vector3 d = randomVector();
+    glm::vec3 d = glm::sphericalRand(1.f);
     // Add it to this direction
-    Vector3 newDirection = dir + d/1.8f;
+    glm::vec3 newDirection = dir + d/1.8f;
     // Make a sub branch in that direction
-    makeBranch(pos+dir*len,newDirection.normal(),len/1.2f,width*2.f/5.f,-1,false);
+    makeBranch(pos+dir*len,glm::normalize(newDirection),len/1.2f,width*2.f/5.f,-1,false);
     // Do it again
-    d = randomVector();
+    d = glm::sphericalRand(1.f);
     newDirection = dir + d/2.8f;
     // Continue this branch
-    makeBranch(pos+dir*len,newDirection.normal(),len/1.2f,width*3.f/5.f,topRingIndex,!swapTex);
+    makeBranch(pos+dir*len,glm::normalize(newDirection),len/1.2f,width*3.f/5.f,topRingIndex,!swapTex);
   }
   // If we are small enough, we can put leaves here
   if (width<0.3f)
     makeLeaves(pos,dir,len);
 }
 
-void DynoTree::makeLeaves(Vector3 pos, Vector3 dir, float len)
+void DynoTree::makeLeaves(glm::vec3 pos, glm::vec3 dir, float len)
 {
   for (int i = 1;i<6;i++)
   {
-    Vector3 leafDir = dir.normal() * 0.5f + randomVector()*0.5f;
-    Vector3 leafCross = leafDir.cross(Vector3(random(i+(int)pos.x*1000),0.f,random(i+(int)pos.y*1000))).normal()*0.5;
-    Vector3 leafPos = pos + dir*len/6.f*(float)i + leafDir*0.3f;
-    Vector3 leafNorm = leafCross.cross(leafDir).normal();
-    leafDir = leafDir*2;
-    leafCross = leafCross*2;
+    glm::vec3 leafDir = glm::normalize(dir) * 0.5f + glm::sphericalRand(0.5f);
+    glm::vec3 leafCross = glm::normalize(glm::cross(leafDir,glm::vec3(random(i+(int)pos.x*1000),0.f,random(i+(int)pos.y*1000))))*0.5f;
+    glm::vec3 leafPos = pos + dir*len/6.f*(float)i + leafDir*0.3f;
+    glm::vec3 leafNorm = glm::normalize(glm::cross(leafCross,leafDir));
+    leafDir = leafDir*2.f;
+    leafCross = leafCross*2.f;
 
   	addPoint(numberOfPoints,
              leafPos,
@@ -128,7 +128,7 @@ void DynoTree::makeLeaves(Vector3 pos, Vector3 dir, float len)
     editTextureCoord(numberOfPoints,0.38f,1.f);
     numberOfPoints++;
    	addPoint(numberOfPoints,
-             leafPos+leafDir/2.0+leafCross,
+             leafPos+leafDir/2.f+leafCross,
              leafNorm,
              0.f	,0.7f,0.f);
     editTextureCoord(numberOfPoints,0.63f,1.f);
@@ -143,7 +143,7 @@ void DynoTree::makeLeaves(Vector3 pos, Vector3 dir, float len)
     numberOfTriangles++;
 
    	addPoint(numberOfPoints,
-             leafPos+leafDir/2.0-leafCross,
+             leafPos+leafDir/2.f-leafCross,
              leafNorm,
              0.f	,0.7f,0.f);
     editTextureCoord(numberOfPoints,0.38f,0.75f);

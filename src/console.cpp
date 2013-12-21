@@ -48,13 +48,13 @@ void doContour()
     for (int x = 1;x<100;x++)
     {
       bool isContour = false;
-      if ((int)(gam->getTerrainBit(x,y).position->y/5) > (int)(gam->getTerrainBit(x-1,y).position->y/5))
+      if ((int)(gam->getTerrainBit(x,y).position.y/5) > (int)(gam->getTerrainBit(x-1,y).position.y/5))
         isContour = true;
-      if ((int)(gam->getTerrainBit(x,y).position->y/5) > (int)(gam->getTerrainBit(x+1,y).position->y/5))
+      if ((int)(gam->getTerrainBit(x,y).position.y/5) > (int)(gam->getTerrainBit(x+1,y).position.y/5))
         isContour = true;
-      if ((int)(gam->getTerrainBit(x,y).position->y/5) > (int)(gam->getTerrainBit(x,y-1).position->y/5))
+      if ((int)(gam->getTerrainBit(x,y).position.y/5) > (int)(gam->getTerrainBit(x,y-1).position.y/5))
         isContour = true;
-      if ((int)(gam->getTerrainBit(x,y).position->y/5) > (int)(gam->getTerrainBit(x,y+1).position->y/5))
+      if ((int)(gam->getTerrainBit(x,y).position.y/5) > (int)(gam->getTerrainBit(x,y+1).position.y/5))
         isContour = true;
       if (isContour) 
         map[y][x] = '.';

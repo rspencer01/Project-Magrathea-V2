@@ -10,9 +10,9 @@
 Camera::Camera(ShaderProgram* sp, const char* transName)
 {
   // Initialise to some useful directions
-  Position = Vector3(0,0,1);
-  ViewDir = Vector3(0,0,-1);
-  UpVector = Vector3(0,1,0);
+  Position = glm::vec3(0,0,1);
+  ViewDir = glm::vec3(0,0,-1);
+  UpVector = glm::vec3(0,1,0);
   // No rotation yet
   RotatedX = 0;
   // Remember the environment
@@ -25,11 +25,11 @@ Camera::Camera(ShaderProgram* sp, const char* transName)
 void Camera::Render()
 {
   // Calculate the right vector
-  Vector3 Right = ViewDir.cross(UpVector);
+  glm::vec3 Right = glm::cross(ViewDir,UpVector);
   // Normalise all the other vectors
-  Right.normalise();
-  UpVector.normalise();
-  ViewDir.normalise();
+  Right = glm::normalize(Right);
+  UpVector = glm::normalize(UpVector);
+  ViewDir = glm::normalize(ViewDir);
 
   // Construct a matrix that transforms the object in the correct way
   viewMatrix[0] = Right.x;
@@ -47,9 +47,9 @@ void Camera::Render()
   viewMatrix[10] = -ViewDir.z;
   viewMatrix[14] = 0.f;
 
-  viewMatrix[3] = -Right.dot(Position);
-  viewMatrix[7] = -(UpVector.dot(Position));
-  viewMatrix[11] = ViewDir.dot(Position);
+  viewMatrix[3] = -glm::dot(Right,Position);
+  viewMatrix[7] = -glm::dot(UpVector,Position);
+  viewMatrix[11] = glm::dot(ViewDir,Position);
   viewMatrix[15] = 1.f;
 
   // Now set the matrix of transformation in the shader
@@ -70,9 +70,8 @@ void Camera::MoveForward( float d)
 void Camera::RotateY( float theta )
 {
   // Calculate the right hand vector
-  Vector3 rightDir = ViewDir.cross(UpVector).normal();
-  ViewDir = ViewDir*cos(theta) - rightDir*sin(theta);
-  ViewDir.normalise();
+  glm::vec3 rightDir = glm::normalize(glm::cross(ViewDir,UpVector));
+  ViewDir = glm::normalize(ViewDir*cos(theta) - rightDir*sin(theta));
 }
 
 /// Rotates the camera about the X axis (vertical)
@@ -80,12 +79,12 @@ void Camera::RotateY( float theta )
 void Camera::RotateX( float theta )
 {
   // Calculate the right hand vector
-  Vector3 rightDir = ViewDir.cross(UpVector).normal();
+  glm::vec3 rightDir = glm::normalize(glm::cross(ViewDir,UpVector));
   ViewDir = ViewDir*cos(theta) + UpVector*sin(theta);
-  UpVector = rightDir.cross(ViewDir);
-  ViewDir.normalise();
-  UpVector.normalise();
-  // Lot this rotation
+  UpVector = glm::cross(rightDir,ViewDir);
+  ViewDir  = glm::normalize(ViewDir);
+  UpVector = glm::normalize(UpVector);
+  // Log this rotation
   RotatedX += theta;
 }
 

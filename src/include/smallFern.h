@@ -16,11 +16,11 @@ class SmallFern : public Object
 {
   private:
 	  void initialiseTriangles();
-    void makeLeaf(Vector3 pos, Vector3 dir, float width,float droopyness);
-    Vector3 normal;
+    void makeLeaf(glm::vec3 pos, glm::vec3 dir, float width,float droopyness);
+    glm::vec3 normal;
   public:
 	  /// Constructs
-    SmallFern(Vector3,Game*);
+    SmallFern(glm::vec3,Game*);
 };
 
 

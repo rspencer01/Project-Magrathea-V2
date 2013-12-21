@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <glm.hpp>
 #include <book.h>
 
 //  The constructor...
@@ -14,8 +15,8 @@ Book::Book(float (*g)(int,int))
   // No pages are initialised yet
   numberOfInitialisedPages = 0;
   // Initialise the null bit
-  nullBit.position = new Vector3();
-  nullBit.normal = new Vector3(0.f,1.f,0.f);
+  nullBit.position = glm::vec3(0.f);
+  nullBit.normal = glm::vec3(0.f);
   nullBit.isTree = false;
   nullBit.isGrass = false;
   nullBit.isFern = false;

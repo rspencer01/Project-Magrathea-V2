@@ -2,7 +2,7 @@
 #include <images.h>
 #include <cmath>
 
-Water::Water(Vector3 pos,Game* parent) : Object(pos,parent)
+Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
 {
   textureNumber = textureFromTGA("../assets/water.tga",true);
   clearTriangleData((50+1)*(50+1),50*50*2);
@@ -10,12 +10,12 @@ Water::Water(Vector3 pos,Game* parent) : Object(pos,parent)
 	for (int y = 0; y<(50+1);y++)
 		for (int x = 0; x<(50+1);x++)
 		{
-      Vector3 r = Vector3(x,0,y) -Vector3(25,0,25);
+      glm::vec3 r = glm::vec3(x,0,y) -glm::vec3(25,0.01,25);
       addPoint(y*(50+1)+x,
-               Vector3((float)x,
+               glm::vec3((float)x,
 			                 0,
 			                 (float)y),
-                       Vector3(cos(r.magnitude())*(25-x)/r.magnitude(),1,-cos(r.magnitude())*(25-y)/r.magnitude()).normal(),
+                       glm::normalize(glm::vec3(cos((float)r.length())*(25-x)/r.length(),1,-cos((float)r.length())*(25-y)/r.length())),
                        1,1,1);
       editTextureCoord(y*(50+1)+x,4.f*x/(50+1),4.f*y/(50+1));
 		}

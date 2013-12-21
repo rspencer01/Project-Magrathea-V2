@@ -14,7 +14,7 @@
 
 /// @param pos The position of this object in gamespace
 /// @param g   The game to which this object belongs
-Object::Object(Vector3 pos,Game* g)
+Object::Object(glm::vec3 pos,Game* g)
 {
   position = pos;
   game = g;
@@ -23,9 +23,9 @@ Object::Object(Vector3 pos,Game* g)
   triDat = NULL;
   textureNumber = 0;
   billboard = false;
-  forward = Vector3(1,0,0);
-  up = Vector3(0,1,0);
-  right = Vector3(0,0,1);
+  forward = glm::vec3(1,0,0);
+  up = glm::vec3(0,1,0);
+  right = glm::vec3(0,0,1);
   xySlew = 0;
   shinyness = 0.f;
   updateMatrix();
@@ -46,13 +46,13 @@ Object::~Object()
 }
 
 /// Accesses the position of this object
-Vector3 Object::getPosition()
+glm::vec3 Object::getPosition()
 {
   return position;
 }
 
 /// Changes the position of the object.
-void Object::setPosition(Vector3 pos)
+void Object::setPosition(glm::vec3 pos)
 {
   position = pos;
   updateMatrix();
@@ -63,13 +63,13 @@ void Object::setPosition(Vector3 pos)
 /// functions
 /// @param refreshTime Number of milliseconds since the last rendering
 /// @param cameraPos   Position of the camera in 3-space
-void Object::Render(int refreshTime, Vector3* cameraPos)
+void Object::Render(int refreshTime, glm::vec3 cameraPos)
 {
   // Rotate the object if it is a billboard
   if (billboard)
   {
-    right = (*cameraPos-position).normal().cross(up);
-    forward = up.cross(right);
+    right = glm::cross(glm::normalize(cameraPos-position),up);
+    forward = glm::cross(up,right);
     updateMatrix();
   }
   
@@ -128,7 +128,7 @@ void Object::clearTriangleData(int p, int t)
 /// @param r The red component of the colour
 /// @param b The blue component of the colour
 /// @param g The green component of the colour
-void Object::addPoint(int i,Vector3 point,Vector3 normal, float r, float g, float b)
+void Object::addPoint(int i,glm::vec3 point,glm::vec3 normal, float r, float g, float b)
 {
   // Add it to the internal array
 	vertexData[i].px = point.x;
@@ -208,11 +208,11 @@ void Object::editTextureCoord(int i, float u, float v)
 /// Rotates the object to match the given new axis
 /// @param basisX The new X axis
 /// @param basisY The new Y axis
-void Object::rotate(Vector3 basisX,Vector3 basisY)
+void Object::rotate(glm::vec3 basisX,glm::vec3 basisY)
 {
-  forward = basisX.normal();
-  up = basisY.normal();
-  right = up.cross(forward).normal();
+  forward = glm::normalize(basisX);
+  up = glm::normalize(basisY);
+  right = glm::normalize(glm::cross(up,forward));
   updateMatrix();
 }
 

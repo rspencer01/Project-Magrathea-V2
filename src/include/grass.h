@@ -3,17 +3,16 @@
 
 #include <magrathea.h>
 
-#include <vector3.h>
 #include <object.h>
 
 class Grass : public Object
 {
   private:
-    void makeBunch(Vector3 pos);
+    void makeBunch(glm::vec3 pos);
     float theta;
   public:
     /// Constructs grass at given position, with given normal
-    Grass(Vector3 pos, Game* parent);
-    void Render(int refreshTime, Vector3* cameraPos);
+    Grass(glm::vec3 pos, Game* parent);
+    void Render(int refreshTime, glm::vec3 cameraPos);
 };
 #endif

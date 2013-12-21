@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
+#include <gtx/random.hpp>
 
 #include <game.h>
 #include <graphics.h>
@@ -70,13 +71,13 @@ Game::Game(bool doGraphics)
     sky = new Sky(this); 
     for (int i = 0; i<30;i++)
     {
-      Vector3 t = randomVector()*150;
+      glm::vec3 t = glm::sphericalRand(150.f);
       t.y = 0;
-      objectManager->addObject(bird,Vector3(200,200,200)+t,this);
+      objectManager->addObject(bird,glm::vec3(200)+t,this);
     }
   }
-  cloud = new Cloud(Vector3(0,500,0),this);
-  water = new Water(Vector3(0,30,0),this);
+  cloud = new Cloud(glm::vec3(0,500,0),this);
+  water = new Water(glm::vec3(0,30,0),this);
 }
 
 /// Initialises all the shaders and cameras and shadows associated with this game
@@ -94,7 +95,7 @@ void Game::initialisePipeline()
   // Construct a new camera, linking to the transformationMatrix of the above shader
   camera = new Camera(mainShader,"transformationMatrix");
   // Put it somewhere nice to start with
-  camera->Position = Vector3(5,1,5);
+  camera->Position = glm::vec3(5,1,5);
   camera->RotateY(-3.1415f/2.f);
   // Initialise the shadows
   shadows = new ShadowManager();
@@ -132,8 +133,8 @@ void Game::RenderScene(int refreshTime)
   // Run through the rectangle of regions, and draw each one
   for (unsigned int i = 0;i<regions.size();i++)
     for (unsigned int j = 0;j<regions[i].size();j++)
-      regions[i][j]->Render(refreshTime,&(camera->Position));
-  objectManager->Render(refreshTime,&(camera->Position));
+      regions[i][j]->Render(refreshTime,camera->Position);
+  objectManager->Render(refreshTime,camera->Position);
 }
 
 int shadowsDone = 0;
@@ -148,7 +149,7 @@ void Game::display()
 
   if (fpsOn)
     setCameraFPS();
-
+  
   // Make whatever regions are required
   constructRegions(camera->Position.x,camera->Position.z);
   // Destroy unused pages
@@ -174,11 +175,11 @@ void Game::display()
   
   camera->Render();
   // Gogogo!
-  sky->Render(refreshTime,&(camera->Position));
+  sky->Render(refreshTime,camera->Position);
   //cloud->Render(refreshTime,&(camera->Position));
   RenderScene(refreshTime);
   
-  
+
   // Push this to the screen
   glutSwapBuffers();
 
@@ -192,11 +193,11 @@ void Game::setCameraFPS()
 	float fy = camera->Position.z - (int)camera->Position.z;
   // Now do the horrible interpolating to get the altitude of the camera
 	camera->Position.y = interpolate(
-						interpolate(getTerrainBit((int)camera->Position.x,(int)camera->Position.z).position->y,
-									getTerrainBit((int)camera->Position.x+1,(int)camera->Position.z).position->y,
+						interpolate(getTerrainBit((int)camera->Position.x,(int)camera->Position.z).position.y,
+									getTerrainBit((int)camera->Position.x+1,(int)camera->Position.z).position.y,
 									fx),
-						interpolate(getTerrainBit((int)camera->Position.x,(int)camera->Position.z+1).position->y,
-									getTerrainBit((int)camera->Position.x+1,(int)camera->Position.z+1).position->y,
+						interpolate(getTerrainBit((int)camera->Position.x,(int)camera->Position.z+1).position.y,
+									getTerrainBit((int)camera->Position.x+1,(int)camera->Position.z+1).position.y,
 									fx),
 						fy) + 0.63f;
 }
@@ -313,14 +314,14 @@ void Game::constructRegions(float x,float y)
 	if (regions.size()==0)
 	{
 		regions.push_back(std::deque<Region*>());
-		Region* rg = new Region(Vector3(rx,0,ry),this);
+		Region* rg = new Region(glm::vec3(rx,0,ry),this);
 		regions[0].push_back(rg);
 	}
   
 	if (regions.back().back()->getOriginY() < ry+REGION_SIZE*7)
 	{
 		int oy = (int)regions.back().back()->getOriginY();
-		Region* rg = new Region(Vector3(rx,0,oy+REGION_SIZE),this);
+		Region* rg = new Region(glm::vec3(rx,0,oy+REGION_SIZE),this);
 		regions.push_back(std::deque<Region*>());
 		regions.back().push_back(rg);
 	}
@@ -336,7 +337,7 @@ void Game::constructRegions(float x,float y)
     int oy = (int)regions.front().back()->getOriginY();
     if (oy-REGION_SIZE>=0)
     {
-		  Region* rg = new Region(Vector3(rx,0,oy-REGION_SIZE),this);
+		  Region* rg = new Region(glm::vec3(rx,0,oy-REGION_SIZE),this);
 		  regions.push_front(std::deque<Region*>());
 		  regions.front().push_back(rg);
     }
@@ -352,7 +353,7 @@ void Game::constructRegions(float x,float y)
 	for (unsigned int i = 0;i<regions.size();i++)
 	{
 		if (regions[i].back()->getOriginX() < rx+REGION_SIZE*7)
-			regions[i].push_back(new Region(Vector3((int)regions[i].back()->getOriginX()+REGION_SIZE,0,(int)regions[i].back()->getOriginY()),this));
+			regions[i].push_back(new Region(glm::vec3((int)regions[i].back()->getOriginX()+REGION_SIZE,0,(int)regions[i].back()->getOriginY()),this));
 		if (regions[i].back()->getOriginX() > rx+REGION_SIZE*7)
 		{
 			delete regions[i].back();
@@ -360,7 +361,7 @@ void Game::constructRegions(float x,float y)
 		}
 		if (regions[i].front()->getOriginX() > rx-REGION_SIZE*7)
       if (regions[i].front()->getOriginX()-REGION_SIZE>=0)
-			  regions[i].push_front(new Region(Vector3((int)regions[i].front()->getOriginX()-REGION_SIZE,0,(int)regions[i].front()->getOriginY()),this));
+			  regions[i].push_front(new Region(glm::vec3((int)regions[i].front()->getOriginX()-REGION_SIZE,0,(int)regions[i].front()->getOriginY()),this));
 		if (regions[i].front()->getOriginX() < rx-REGION_SIZE*7)
 		{
 			delete regions[i].front();

@@ -75,7 +75,7 @@ ShadowManager::ShadowManager()
   shader->CompileAll();
   shader->setMatrix("projectionMatrix",&projMatrix[0]);
   camera = new Camera(shader,"transformationMatrix");
-  camera->Position = Vector3(0.f,200.f,0.f);
+  camera->Position = glm::vec3(0.f,200.f,0.f);
   camera->RotateX(-3.1415f/2);
   theta = 0;
 }
@@ -108,11 +108,11 @@ void ShadowManager::readyForReading(ShaderProgram* mainShader)
   glViewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
 }
 
-void ShadowManager::relocate(Vector3 newPos, int refreshTime)
+void ShadowManager::relocate(glm::vec3 newPos, int refreshTime)
 {
   theta += refreshTime / 1000.f *3.1415f*2*2.f/600.f;
   camera->Position.x = newPos.x + 1000*sin(theta);
   camera->Position.y = newPos.y + 1000*cos(theta);
   camera->Position.z = newPos.z;
-  camera->ViewDir = (newPos-camera->Position).normal();
+  camera->ViewDir = glm::normalize(newPos-camera->Position);
 }

@@ -25,7 +25,7 @@ class ShadowManager
     void readyForWriting(int);
     void readyForReading(ShaderProgram*);
     ShaderProgram* shader;
-    void relocate(Vector3,int);
+    void relocate(glm::vec3,int);
 };
 
 #endif

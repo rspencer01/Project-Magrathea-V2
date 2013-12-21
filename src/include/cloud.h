@@ -19,13 +19,13 @@ class Cloud : public Object
     void updateTexture();
     int textureSize;
     unsigned char* data;
-    Vector3 drift;
-    Vector3 offset;
+    glm::vec3 drift;
+    glm::vec3 offset;
     float coverage;
   public:
 	  /// Constructs
-    Cloud(Vector3,Game*);
-    void Render(int,Vector3*);
+    Cloud(glm::vec3,Game*);
+    void Render(int,glm::vec3);
 };
 
 
