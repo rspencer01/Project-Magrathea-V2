@@ -26,6 +26,8 @@ ShaderProgram::ShaderProgram()
   // If there was an error, let us know
   if (ShaderProgramID == 0) 
     DIE("Error creating new shader program");
+  objectTransformMatrixPosition = (GLuint)-1;
+  materialShinynessPosition = (GLuint)-1;
 }
 
 /// Load a shader program from a source file.
@@ -108,9 +110,7 @@ void ShaderProgram::Load()
 {
   // Now load this program
   glUseProgram(ShaderProgramID);
-  variableLocations.clear();
-  objectTransformMatrixPosition = (GLuint)-1;
-  materialShinynessPosition = (GLuint)-1;
+  //variableLocations.clear();
 }
 
 /// The object matrix is set so often that looking it up (even in a map) each time
