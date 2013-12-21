@@ -8,6 +8,7 @@
 #include <heightmap.h>
 #include <shaders.h>
 #include <images.h>
+#include <cmath>
 
 #include <fpscounter.h>
 // This is necessary so that we have a static funtion to call on display updates/keyboard etc.  
@@ -78,6 +79,12 @@ Game::Game(bool doGraphics)
   }
   cloud = new Cloud(glm::vec3(0,500,0),this);
   water = new Water(glm::vec3(0,30,0),this);
+  for (unsigned int i = 0;i<1024;i++)
+  {
+    regions[i] = new Region* [1024];
+    for (unsigned int j = 0;j<1024;j++)
+      regions[i][j] = NULL;
+  }
 }
 
 /// Initialises all the shaders and cameras and shadows associated with this game
@@ -131,10 +138,11 @@ void Game::run()
 void Game::RenderScene(int refreshTime)
 {
   // Run through the rectangle of regions, and draw each one
-  for (unsigned int i = 0;i<regions.size();i++)
-    for (unsigned int j = 0;j<regions[i].size();j++)
-      regions[i][j]->Render(refreshTime,camera->Position);
-  objectManager->Render(refreshTime,camera->Position);
+  for (unsigned int i = 0;i<1024;i++)
+    for (unsigned int j = 0;j<1024;j++)
+      if (regions[i][j]!=NULL)
+        regions[i][j]->Render(refreshTime,camera->Position);
+  //objectManager->Render(refreshTime,camera->Position);
 }
 
 int shadowsDone = 0;
@@ -308,68 +316,12 @@ terrainBit Game::getTerrainBit(int x,int y)
 /// Constructs regions in an area around the given coordinates.  Does at most one region construction/destruction per call.
 void Game::constructRegions(float x,float y)
 {
-
-	int rx = (int)(x /REGION_SIZE)*REGION_SIZE;
-	int ry = (int)(y /REGION_SIZE)*REGION_SIZE;
-	if (regions.size()==0)
-	{
-		regions.push_back(std::deque<Region*>());
-		Region* rg = new Region(glm::vec3(rx,0,ry),this);
-		regions[0].push_back(rg);
-	}
-  
-	if (regions.back().back()->getOriginY() < ry+REGION_SIZE*7)
-	{
-		int oy = (int)regions.back().back()->getOriginY();
-		Region* rg = new Region(glm::vec3(rx,0,oy+REGION_SIZE),this);
-		regions.push_back(std::deque<Region*>());
-		regions.back().push_back(rg);
-	}
-	if (regions.back().back()->getOriginY() > ry+REGION_SIZE*7)
-	{
-		for (unsigned int i = 0; i <regions.back().size();i++)
-			delete regions.back()[i];
-		regions.pop_back();
-	}
-
-	if (regions.front().back()->getOriginY() > ry-REGION_SIZE*7)
-	{
-    int oy = (int)regions.front().back()->getOriginY();
-    if (oy-REGION_SIZE>=0)
-    {
-		  Region* rg = new Region(glm::vec3(rx,0,oy-REGION_SIZE),this);
-		  regions.push_front(std::deque<Region*>());
-		  regions.front().push_back(rg);
-    }
-	}
-	if (regions.front().back()->getOriginY() < ry-REGION_SIZE*7)
-	{
-		for (unsigned int i = 0; i <regions.front().size();i++)
-			delete regions.front()[i];
-		regions.pop_front();
-	}
-
-	
-	for (unsigned int i = 0;i<regions.size();i++)
-	{
-		if (regions[i].back()->getOriginX() < rx+REGION_SIZE*7)
-			regions[i].push_back(new Region(glm::vec3((int)regions[i].back()->getOriginX()+REGION_SIZE,0,(int)regions[i].back()->getOriginY()),this));
-		if (regions[i].back()->getOriginX() > rx+REGION_SIZE*7)
-		{
-			delete regions[i].back();
-			regions[i].pop_back();
-		}
-		if (regions[i].front()->getOriginX() > rx-REGION_SIZE*7)
-      if (regions[i].front()->getOriginX()-REGION_SIZE>=0)
-			  regions[i].push_front(new Region(glm::vec3((int)regions[i].front()->getOriginX()-REGION_SIZE,0,(int)regions[i].front()->getOriginY()),this));
-		if (regions[i].front()->getOriginX() < rx-REGION_SIZE*7)
-		{
-			delete regions[i].front();
-			regions[i].pop_front();
-		}
-	}
-	
-  
+  int rx = (int)(x /REGION_SIZE);
+  int ry = (int)(y /REGION_SIZE);
+  for (int x = std::max(0,rx-2);x<std::min(1023,rx+2);x++)
+    for (int y = std::max(0,ry-2);y<std::min(1023,ry+2);y++)
+      if (regions[y][x] == NULL)
+        regions[y][x] = new Region(glm::vec3(x*REGION_SIZE,0,y*REGION_SIZE),this);
 }
 
 void Game::renderMenu()
