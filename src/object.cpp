@@ -81,13 +81,18 @@ void Object::Render(int refreshTime, glm::vec3 cameraPos)
     // Load our transformation matrix
     game->currentShader->setObjectMatrix(transformMatrix);
     game->currentShader->setMaterialShinyness(shinyness);
-
     // Select this object's texture
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D,textureNumber);
     // Use our data
+
     glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
     glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
+          glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
+  glVertexAttribPointerARB(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));
+  glVertexAttribPointerARB(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
+  glVertexAttribPointerARB(3,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
+  glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
     glDrawElements(GL_TRIANGLES,numberOfTriangles*3,GL_UNSIGNED_INT,0);
   }
 }

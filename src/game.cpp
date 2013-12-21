@@ -142,7 +142,7 @@ void Game::RenderScene(int refreshTime)
     for (unsigned int j = 0;j<1024;j++)
       if (regions[i][j]!=NULL)
         regions[i][j]->Render(refreshTime,camera->Position);
-  //objectManager->Render(refreshTime,camera->Position);
+  objectManager->Render(refreshTime,camera->Position);
 }
 
 int shadowsDone = 0;

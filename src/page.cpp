@@ -15,6 +15,7 @@ Page::Page(int x,int y,float(*g)(int,int))
     {
       data[i][j].isFern = data[i][j].isGrass = data[i][j].isTree = false;
       data[i][j].type = grass;
+      data[i][j].isGrass = true;
       data[i][j].position = glm::vec3((float)origin_x+i,0,(float)origin_y+j);
       data[i][j].normal   = glm::vec3(0,1,0);
     }

@@ -48,12 +48,12 @@ void ObjectManager::Render(int t, glm::vec3 c)
     
     objectRequest req = *requests->begin();
     requests->erase(requests->begin());
-    if ((camPos-req.position).length()>100)
+    /*if ((camPos-req.position).length()>100)
     {
       req.priority = (camPos-req.position).length();
       requests->insert(req);
       continue;
-    }
+    }*/
 
 
     switch (req.type)
@@ -88,7 +88,7 @@ int ObjectManager::insertSort(glm::vec3 c)
 {
   for (unsigned int i = 1;i<objects.size();i++)
   {
-     if ((c-objects[i]->getPosition()).length() < (c-objects[i-1]->getPosition()).length())
+     if (glm::length(c-objects[i]->getPosition()) < glm::length(c-objects[i-1]->getPosition()))
      {
        Object* t = objects[i];
        objects[i] = objects[i-1];
@@ -96,7 +96,9 @@ int ObjectManager::insertSort(glm::vec3 c)
      }
   }
   for (int i = objects.size()-1;i>0;i--)
-    if ((c-objects[i]->getPosition()).length() < 100)
+  {
+    if (glm::length(c-objects[i]->getPosition()) < 10)
       return i+1;
+  }
   return objects.size();
 }
