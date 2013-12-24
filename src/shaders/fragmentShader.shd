@@ -68,8 +68,9 @@ void main()
   spec = pow(max(0,dot(surfaceToCamera,reflectionVector)),1.0/shinyness);
   
   vis += ambient;
-  vis += clamp(dot(normal,sunDirection),0,0.7);
-  vis += spec;
+  vis += clamp(dot(normal,sunDirection),0,0.7)*sunlight;
+  vis += spec*sunlight;
+  
     
   // The transparancy is taken straight from the texture 
   if (doLighting==1)
