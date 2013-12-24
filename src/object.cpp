@@ -131,6 +131,9 @@ void Object::clearTriangleData(int p, int t)
   }
   numberOfTriangles = t;
   numberOfPoints = p;
+  // Now make buffers
+	glGenBuffersARB(1,&indexVBO);
+  glGenBuffersARB(1,&vertexVBO);
 }
 /// Add a new point to the object.  All points are taken relative to the origin of the object
 /// @param i The index of the vertex to change
@@ -182,15 +185,11 @@ void Object::addTriangle(int i, int a,int b, int c)
 /// Constructs new VBOs and pushes all the data to the GPU
 void Object::pushTriangleData()
 {
-	// Now make a buffers
-	glGenBuffersARB(1,&vertexVBO);
 	// set it as the current one,
 	glBindBufferARB(GL_ARRAY_BUFFER, vertexVBO);
 	// ... and blit the data in.
 	glBufferDataARB(GL_ARRAY_BUFFER, numberOfPoints*sizeof(VertexDatum),vertexData,GL_STATIC_DRAW);
 
-	// Now make a buffer...
-	glGenBuffersARB(1,&indexVBO);
 	// set it as the current one,
 	glBindBufferARB(GL_ARRAY_BUFFER, indexVBO);
 	// ... and blit the data in.
