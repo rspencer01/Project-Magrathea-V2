@@ -171,7 +171,8 @@ void Game::display()
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-  glClearColor((GLclampf)0.813,(GLclampf)0.957,(GLclampf)0.99,(GLclampf)1.0);
+  //glClearColor((GLclampf)0.813,(GLclampf)0.957,(GLclampf)0.99,(GLclampf)1.0);
+  glClearColor((GLclampf)1,(GLclampf)0.0,(GLclampf)0.0,(GLclampf)1.0);
   
   camera->Render();
   // Gogogo!
