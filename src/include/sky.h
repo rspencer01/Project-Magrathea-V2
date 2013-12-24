@@ -23,6 +23,7 @@ class Sky : public Object
 {
   private:
     Sun* sun;
+    float theta;
   public:
     Sky(Game* parent);
     void Render(int,Vector3*);

@@ -33,18 +33,30 @@ Sky::Sky(Game* parent) : Object(Vector3(0,0,0),parent)
   
   textureNumber = textureFromTGA("../assets/plainsky.tga",false);
   pushTriangleData();
-
+  theta = 0.f;
 }
+
+inline float k(float x){return -cos(x*3.1415f)/2.f+0.5f;}
+ 
 
 void Sky::Render(int refreshTime, Vector3* cameraPos)
 {
-  //Make sure that the sun is ALWAYS behind everything, by disabling depth testing
+  // Make sure that the sun is ALWAYS behind everything, by disabling depth testing
   glDepthMask(false);
-  //Remove all the lighting stuff
+  // Remove all the lighting stuff
   game->currentShader->setInt("doLighting",0);
+  // Move the sky dome
   setPosition(*cameraPos);
+  // Update the colour...
+  theta += refreshTime / 1000.f *3.1415f*2*2.f / 600.f;
+  float l = 3.0*(1.0 - k(k(k(theta/3.1415))))/4.0 + 0.25;
+  colour[0] = l*( k(k(k(sin(theta/2.f))))/20.0 + 0.4);
+  colour[1] = l*( 0.6 - k(k(k(sin(theta/2.f))))/9.0);
+  colour[2] = l*1.0;
+  // Render stuff
   Object::Render(refreshTime,cameraPos);
   sun->Render(refreshTime,cameraPos);
+  // Reinstate rendering
   glDepthMask(true);
   game->currentShader->setInt("doLighting",1);
 }

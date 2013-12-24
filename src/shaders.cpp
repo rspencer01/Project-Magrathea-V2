@@ -156,3 +156,8 @@ void ShaderProgram::setVec3(const char* varName, float* value)
 {
   glUniform3f(getVariablePosition(varName),value[0],value[1],value[2]);
 }
+
+void ShaderProgram::setVec4(const char* varName, float* value)
+{
+  glUniform4f(getVariablePosition(varName),value[0],value[1],value[2],value[3]);
+}
