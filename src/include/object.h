@@ -122,6 +122,8 @@ class Object
     void freeze();
     /// How shiny is the material?
     float shinyness;
+    /// What is the colour of the whole object?
+    float colour[4];
   public:
 	  /// Constructs the object with the given coordinates and in the given game
     Object(Vector3,Game*);

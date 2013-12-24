@@ -3,7 +3,7 @@
 
 class Game;
 class Sky;
-
+class Stars;
 #include <magrathea.h>
 
 #include <game.h>
@@ -19,10 +19,21 @@ class Sun : public Object
     void Render(int,Vector3*);
 };
 
+class Stars : public Object
+{
+  private:
+    float theta;
+  public:
+    Stars(Game* parent);
+    void Render(int,Vector3*);
+};
+
 class Sky : public Object
 {
   private:
     Sun* sun;
+    Stars* stars;
+    float theta;
   public:
     Sky(Game* parent);
     void Render(int,Vector3*);

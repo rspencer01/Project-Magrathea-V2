@@ -43,6 +43,8 @@ class ShaderProgram
     void setFloat(const char* varName, float value);
     /// Set some uniform vec3 variable
     void setVec3(const char*,float*);
+    /// Set some uniform vec3 variable
+    void setVec4(const char*,float*);
     /// Function to set the object transformation matrix
     void setObjectMatrix(float* value);
 
