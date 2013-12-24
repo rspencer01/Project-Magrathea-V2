@@ -13,8 +13,10 @@ uniform vec3 sunDirection;
 uniform vec3 cameraPos;
 uniform float sunIntensity;
 uniform float shinyness;
+uniform int doLighting;
 void main()
 { 
+
   // This will eventually be parameters
   float ambient = 0.2;
   
@@ -68,5 +70,8 @@ void main()
   vis += spec;
     
   // The transparancy is taken straight from the texture 
-  FragColor =  vec4(vis * shadow * col.xyz * otherTexFrag.xyz , col.w * otherTexFrag.w); 
+  if (doLighting==1)
+    FragColor =  vec4(vis * shadow * col.xyz * otherTexFrag.xyz , col.w * otherTexFrag.w); 
+  else
+    FragColor =  col* otherTexFrag; 
 }

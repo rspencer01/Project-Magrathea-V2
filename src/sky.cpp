@@ -40,10 +40,13 @@ void Sky::Render(int refreshTime, Vector3* cameraPos)
 {
   //Make sure that the sun is ALWAYS behind everything, by disabling depth testing
   glDepthMask(false);
+  //Remove all the lighting stuff
+  game->currentShader->setInt("doLighting",0);
   setPosition(*cameraPos);
   Object::Render(refreshTime,cameraPos);
   sun->Render(refreshTime,cameraPos);
   glDepthMask(true);
+  game->currentShader->setInt("doLighting",1);
 }
 
 Sun::Sun(Vector3 pos,Game* parent) : Object(pos,parent)
