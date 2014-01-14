@@ -105,7 +105,7 @@ void Game::initialisePipeline()
   camera->Position = glm::vec3(5,1,5);
   camera->RotateY(-3.1415f/2.f);
   // Initialise the shadows
-  shadows = new ShadowManager();
+  shadows = new ShadowManager(mainShader);
 
   mouseControl = true;
 }
@@ -155,6 +155,7 @@ void Game::display()
   // Do all the key stuff
   keyOperations();
 
+  // Lock the player to the ground if required
   if (fpsOn)
     setCameraFPS();
   
@@ -162,21 +163,17 @@ void Game::display()
   constructRegions(camera->Position.x,camera->Position.z);
   // Destroy unused pages
   data->deleteUnused();
-  
+
   // Do the shadow stuff
   shadows->relocate(camera->Position,refreshTime);
+
   shadows->readyForWriting(refreshTime);
   // Create the shadow texture
-  // Keep track of which shader we are using
-  currentShader = shadows->shader;
-  // Render the scene for depth testing
   RenderScene(0);
+  
   // And reset
   shadows->readyForReading(mainShader);
-  currentShader = mainShader;
-   
-  // Render to the screen
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glClearColor((GLclampf)0.813,(GLclampf)0.957,(GLclampf)0.99,(GLclampf)1.0);
@@ -187,7 +184,7 @@ void Game::display()
   //cloud->Render(refreshTime,&(camera->Position));
   RenderScene(refreshTime);
   
-
+  
   // Push this to the screen
   glutSwapBuffers();
 

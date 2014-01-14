@@ -3,8 +3,10 @@
 #include <shadow.h>
 #include <graphics.h>
 
-ShadowManager::ShadowManager()
+ShadowManager::ShadowManager(ShaderProgram* mainShader)
 {
+  shader = mainShader;
+
   maxShadowDistance = 1200;
   minShadowDistance = 800;
   shadowBoxSize = 100;
@@ -12,6 +14,7 @@ ShadowManager::ShadowManager()
 	GLenum FBOstatus;
 	
 	// Try to use a texture depth component
+  glActiveTexture(GL_TEXTURE7);
 	glGenTextures(1, &texID);
 	glBindTexture(GL_TEXTURE_2D, texID);
 	
@@ -68,44 +71,47 @@ ShadowManager::ShadowManager()
   projMatrix[14] = 0;
   projMatrix[15] = 1;
 
-
-  shader = new ShaderProgram();
-  shader->LoadShader("../shaders/vertexShadowShader.shd", GL_VERTEX_SHADER);
-  shader->LoadShader("../shaders/fragmentShadowShader.shd", GL_FRAGMENT_SHADER);
-  shader->CompileAll();
-  shader->setMatrix("projectionMatrix",&projMatrix[0]);
-  camera = new Camera(shader,"transformationMatrix");
+  camera = new Camera(shader,"lightTransformMatrix");
   camera->Position = glm::vec3(0.f,200.f,0.f);
   camera->RotateX(-3.1415f/2);
-  theta = 0;
-}
 
-int oldViewport[4];
-
-void ShadowManager::readyForWriting(int refreshTime)
-{
-  shader->Load();
-  glGetIntegerv(GL_VIEWPORT,oldViewport);
-  glViewport(0,0,TEXTURE_SIZE,TEXTURE_SIZE);
-  shader->setMatrix("projectionMatrix",&projMatrix[0]);
-  shader->setInt("otherTexture",3);
-  camera->Render();
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,fboID);	//Rendering offscreen
+  // Set the shadow texture to this one's texture
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
+  // And set the two samplers and the shadow projection matrix
+  shader->setInt("shadowTexture",7);
+  shader->setInt("otherTexture",3);
+  shader->setMatrix("lightProjectionMatrix",&projMatrix[0]);
+  theta = 0.2;
+}
+
+/// Prepare the shadow manager for writing to the shadow texture.
+void ShadowManager::readyForWriting(int refreshTime)
+{
+  // Save our viewport
+  glGetIntegerv(GL_VIEWPORT,oldViewport);
+  // Set the viewport to be the size of the texture
+  glViewport(0,0,TEXTURE_SIZE,TEXTURE_SIZE);
+  // Tell the shader we are rendering shadows
+  shader->setInt("isShadow",1);
+  // Set the camera matrix
+  camera->Render();
+  // Render offscreen to the texture...
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,fboID);
+  glActiveTexture(GL_TEXTURE7);
+  glBindTexture(GL_TEXTURE_2D,texID);
+  // ... which we clear
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 }
 
 void ShadowManager::readyForReading(ShaderProgram* mainShader)
 {
-  glActiveTexture(GL_TEXTURE7);
-  glBindTexture(GL_TEXTURE_2D,texID);
-  mainShader->Load();
-  mainShader->setMatrix("lightTransformMatrix",camera->getTransformationMatrix());
-  mainShader->setMatrix("lightProjectionMatrix",&projMatrix[0]);
-  mainShader->setInt("shadowTexture",7);
-  mainShader->setInt("otherTexture",3);
+  // We are not rendering shadows anymore
+  shader->setInt("isShadow",0);
+  // We will use the old viewport
   glViewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
+  // Render to the screen
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
 }
 
 void ShadowManager::relocate(glm::vec3 newPos, int refreshTime)

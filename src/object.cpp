@@ -79,8 +79,8 @@ void Object::Render(int refreshTime, glm::vec3 cameraPos)
 	if (buffersInitialised)
 	{
     // Load our transformation matrix
-    game->currentShader->setObjectMatrix(transformMatrix);
-    game->currentShader->setMaterialShinyness(shinyness);
+    game->mainShader->setObjectMatrix(transformMatrix);
+    game->mainShader->setMaterialShinyness(shinyness);
     // Select this object's texture
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D,textureNumber);

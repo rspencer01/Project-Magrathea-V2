@@ -67,8 +67,6 @@ class Game
     void RenderScene(int);
     /// The shadow manager.  Handles all the shadow shader stuff
     ShadowManager* shadows;
-    /// The shader that runs most of the rendering
-    ShaderProgram* mainShader;
     /// A test cloud
     Cloud* cloud;
     /// A test body of water
@@ -94,10 +92,10 @@ class Game
     terrainBit getTerrainBit(int x, int y);
     /// Set the projection matrix.  Called by the resize function
     void setProjectionMatrix(float*);
-    /// This is a pointer the shader that is currently in use.
-    ShaderProgram* currentShader;
     /// The object manager for this game
     ObjectManager* objectManager;
+    /// The shader that runs most of the rendering
+    ShaderProgram* mainShader;
 };
 
 #endif

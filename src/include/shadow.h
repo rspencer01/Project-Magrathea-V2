@@ -19,8 +19,9 @@ class ShadowManager
     float shadowBoxSize;
     float projMatrix[16];
     float theta;
+    int oldViewport[4];
   public:
-    ShadowManager();
+    ShadowManager(ShaderProgram*);
     Camera* camera;
     void readyForWriting(int);
     void readyForReading(ShaderProgram*);

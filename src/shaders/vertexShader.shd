@@ -10,6 +10,7 @@ uniform mat4 lightTransformMatrix;
 uniform mat4 lightProjectionMatrix;
 uniform mat4 objectMatrix;
 uniform vec3 sunDirection;
+uniform int isShadow;
 out vec4 ShadowCoord;
 out vec4 col;
 out vec2 tex;
@@ -21,14 +22,23 @@ void main()
   gl_Position = projectionMatrix * transformationMatrix * objectMatrix* vec4(inPosition, 1.0);
   
   ShadowCoord = lightProjectionMatrix * lightTransformMatrix * objectMatrix* vec4(inPosition, 1.0);
-  ShadowCoord.x = ShadowCoord.x*0.5/ShadowCoord.w+0.5;
-  ShadowCoord.y = ShadowCoord.y*0.5/ShadowCoord.w+0.5;
-  ShadowCoord.z = ShadowCoord.z*0.5/ShadowCoord.w+0.5;
   
   pos = (objectMatrix* vec4(inPosition, 1.0)).xyz;
   col = inColour;
   normal = inNorm;  
   tex = inTex;
   
-  texShades = inTexShades;
+  texShades = inTexShades;  
+  
+  if (isShadow==1)
+  {
+  	gl_Position = ShadowCoord;
+  	return;
+  }
+  
+  ShadowCoord.x = ShadowCoord.x*0.5/ShadowCoord.w+0.5;
+  ShadowCoord.y = ShadowCoord.y*0.5/ShadowCoord.w+0.5;
+  ShadowCoord.z = ShadowCoord.z*0.5/ShadowCoord.w+0.5;
+  
+
 }
