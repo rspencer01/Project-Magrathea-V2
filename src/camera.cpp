@@ -7,7 +7,7 @@
 /// Construct a new camera, editing the "transformationMatrix" variable of the given shader program
 /// @param gm The game in which this camera resides
 /// @param sp The shader to which this camera belongs
-Camera::Camera(ShaderProgram* sp, const char* transName)
+Camera::Camera(ShaderProgram* sp, float* matrix)
 {
   // Initialise to some useful directions
   Position = glm::vec3(0,0,1);
@@ -17,7 +17,7 @@ Camera::Camera(ShaderProgram* sp, const char* transName)
   RotatedX = 0;
   // Remember the environment
   shader = sp;
-  matrixName = transName;
+  viewMatrix = matrix;
 }
 
 /// Modifys the game world transform to reflect the postion of the camera.
@@ -33,29 +33,30 @@ void Camera::Render()
 
   // Construct a matrix that transforms the object in the correct way
   viewMatrix[0] = Right.x;
-  viewMatrix[4] = UpVector.x;
-  viewMatrix[8] = -ViewDir.x;
-  viewMatrix[12] = 0.f;
+  viewMatrix[1] = UpVector.x;
+  viewMatrix[2] = -ViewDir.x;
+  viewMatrix[3] = 0.f;
 
-  viewMatrix[1] = Right.y;
+  viewMatrix[4] = Right.y;
   viewMatrix[5] = UpVector.y;
-  viewMatrix[9] = -ViewDir.y;
-  viewMatrix[13] = 0.f;
+  viewMatrix[6] = -ViewDir.y;
+  viewMatrix[7] = 0.f;
 
-  viewMatrix[2] = Right.z;
-  viewMatrix[6] = UpVector.z;
+  viewMatrix[8] = Right.z;
+  viewMatrix[9] = UpVector.z;
   viewMatrix[10] = -ViewDir.z;
-  viewMatrix[14] = 0.f;
+  viewMatrix[11] = 0.f;
 
-  viewMatrix[3] = -glm::dot(Right,Position);
-  viewMatrix[7] = -glm::dot(UpVector,Position);
-  viewMatrix[11] = glm::dot(ViewDir,Position);
+  viewMatrix[12] = -glm::dot(Right,Position);
+  viewMatrix[13] = -glm::dot(UpVector,Position);
+  viewMatrix[14] = glm::dot(ViewDir,Position);
   viewMatrix[15] = 1.f;
 
+  shader->frameData.cameraPos[0] = Position.x;
+  shader->frameData.cameraPos[1] = Position.y;
+  shader->frameData.cameraPos[2] = Position.z;
   // Now set the matrix of transformation in the shader
-  shader->setMatrix(matrixName,&viewMatrix[0]);
-  float t [3] = {Position.x,Position.y,Position.z};
-  shader->setVec3("cameraPos",t);
+  shader->setFrameData();
 }
 
 /// Moves the camera in the direction it is facing

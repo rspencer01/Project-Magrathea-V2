@@ -50,28 +50,28 @@ ShadowManager::ShadowManager(ShaderProgram* mainShader)
 
   //BuildPerspProjMat(projMatrix,10,1,3,100);
   projMatrix[0] = 1.f/shadowBoxSize;
-  projMatrix[1] = 0;
-  projMatrix[2] = 0;
-  projMatrix[3] = 0;
-
   projMatrix[4] = 0;
-  projMatrix[5] = 1.f/shadowBoxSize;
-  projMatrix[6] = 0;
-  projMatrix[7] = 0;
-
   projMatrix[8] = 0;
+  projMatrix[12] = 0;
+
+  projMatrix[1] = 0;
+  projMatrix[5] = 1.f/shadowBoxSize;
   projMatrix[9] = 0;
+  projMatrix[13] = 0;
+
+  projMatrix[2] = 0;
+  projMatrix[6] = 0;
   // 4096 is the maximum distance
   projMatrix[10] = -1.f/(maxShadowDistance-minShadowDistance);
 
-  projMatrix[11] = -minShadowDistance/(maxShadowDistance-minShadowDistance);
+  projMatrix[14] = -minShadowDistance/(maxShadowDistance-minShadowDistance);
 
-  projMatrix[12] = 0;
-  projMatrix[13] = 0;
-  projMatrix[14] = 0;
+  projMatrix[3] = 0;
+  projMatrix[7] = 0;
+  projMatrix[11] = 0;
   projMatrix[15] = 1;
 
-  camera = new Camera(shader,"lightTransformMatrix");
+  camera = new Camera(shader,shader->frameData.lightCameraMatrix);
   camera->Position = glm::vec3(0.f,200.f,0.f);
   camera->RotateX(-3.1415f/2);
 
@@ -81,7 +81,7 @@ ShadowManager::ShadowManager(ShaderProgram* mainShader)
   // And set the two samplers and the shadow projection matrix
   shader->setInt("shadowTexture",7);
   shader->setInt("otherTexture",3);
-  shader->setMatrix("lightProjectionMatrix",&projMatrix[0]);
+  memcpy(shader->frameData.lightProjectionMatrix,projMatrix,16*sizeof(float));
   theta = 0.2;
 }
 
@@ -93,7 +93,7 @@ void ShadowManager::readyForWriting(int refreshTime)
   // Set the viewport to be the size of the texture
   glViewport(0,0,TEXTURE_SIZE,TEXTURE_SIZE);
   // Tell the shader we are rendering shadows
-  shader->setInt("isShadow",1);
+  shader->frameData.isShadow = 1;
   // Set the camera matrix
   camera->Render();
   // Render offscreen to the texture...
@@ -109,7 +109,8 @@ void ShadowManager::readyForWriting(int refreshTime)
 void ShadowManager::readyForReading(ShaderProgram* mainShader)
 {
   // We are not rendering shadows anymore
-  shader->setInt("isShadow",0);
+  shader->frameData.isShadow = 0;
+  shader->setFrameData();
   // We will use the old viewport
   glViewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
   // Render to the screen

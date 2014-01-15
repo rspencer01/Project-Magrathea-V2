@@ -22,13 +22,13 @@ class Camera
     ShaderProgram* shader;
     float RotatedX;	
 	  const char* matrixName;
-    float viewMatrix[16];
+    float* viewMatrix;
   public:
     glm::vec3 ViewDir;
 	  /// The position of the camera
 	  glm::vec3 Position;
 	  /// Initialises the camera
-  	Camera(ShaderProgram*,const char*);				
+  	Camera(ShaderProgram*,float*);				
 	  /// Rotates and translates the scene to the correct position.
   	void Render ( void );							
 	  /// Translate the camera

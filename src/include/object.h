@@ -60,6 +60,7 @@ typedef struct
 {
   float transformMatrix [16];
   float objectColour [4];
+  float shinyness;
 } ObjectData;
 
 /// \brief An object is anything that occurs in the game space

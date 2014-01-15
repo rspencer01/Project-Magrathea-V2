@@ -16,6 +16,14 @@
 typedef struct
 {
   float colour[4];
+  float cameraMatrix[16];
+  float projectionMatrix[16];
+  float lightCameraMatrix[16];
+  float lightProjectionMatrix[16];
+  float sunDirection[4];
+  float cameraPos[4];
+  float isShadow;
+  float sunIntensity;
 } FrameData;
 
 /// A shader program object handles the loading, compiling and executing of shaders (both vertex and fragment)

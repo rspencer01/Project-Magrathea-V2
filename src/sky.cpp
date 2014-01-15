@@ -43,21 +43,20 @@ void Sun::Render(int refreshTime,glm::vec3 cameraPos)
 {
   position = cameraPos;
   theta += refreshTime / 1000.f *3.1415f*2*2.f / 600.f;
-  float sunDir[3];
-  sunDir[0] = sin(theta);
-  sunDir[1] = cos(theta);
-  sunDir[2] = 0;
-  game->mainShader->setVec3("sunDirection",sunDir);
+
+  game->mainShader->frameData.sunDirection[0] = sin(theta);
+  game->mainShader->frameData.sunDirection[1] = cos(theta);
+  game->mainShader->frameData.sunDirection[2] = 0;
 
   rotate(glm::vec3(cos(theta),-sin(theta),0),
          glm::vec3(sin(theta),cos(theta),0));
   updateTriangleData();
   // We want to be fully lit.
-  game->mainShader->setFloat("sunIntensity",1.0);
+  game->mainShader->frameData.sunIntensity=1.0;
   Object::Render(refreshTime,cameraPos);
   // Then light the rest as per usual.
   if (cos(theta)>0)
-    game->mainShader->setFloat("sunIntensity",cos(theta));
+    game->mainShader->frameData.sunIntensity=cos(theta);
   else
-    game->mainShader->setFloat("sunIntensity",0);
+    game->mainShader->frameData.sunIntensity=0;
 }

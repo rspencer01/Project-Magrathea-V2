@@ -100,7 +100,7 @@ void Game::initialisePipeline()
   mainShader->CompileAll();
   mainShader->Load();
   // Construct a new camera, linking to the transformationMatrix of the above shader
-  camera = new Camera(mainShader,"transformationMatrix");
+  camera = new Camera(mainShader,mainShader->frameData.cameraMatrix);
   // Put it somewhere nice to start with
   camera->Position = glm::vec3(5,1,5);
   camera->RotateY(-3.1415f/2.f);

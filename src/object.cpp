@@ -34,6 +34,7 @@ Object::Object(glm::vec3 pos,Game* g)
   objectData.objectColour[1] = 1;
   objectData.objectColour[2] = 1;
   objectData.objectColour[3] = 1;
+  objectData.shinyness = 0.000001;
   updateMatrix();
 }
 
@@ -279,7 +280,7 @@ void Object::updateObjectBO()
 {
   
   glBindBuffer(GL_UNIFORM_BUFFER, objectBO);
-  glBufferData(GL_UNIFORM_BUFFER, 20*sizeof(float), &objectData, GL_DYNAMIC_DRAW);
+  glBufferData(GL_UNIFORM_BUFFER, sizeof(objectData), &objectData, GL_DYNAMIC_DRAW);
 }
 
 

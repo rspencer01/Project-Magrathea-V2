@@ -7,17 +7,31 @@ in vec4 texShades;
 in vec3 normal;
 in vec3 camPos;
 in vec3 pos;
+layout(shared)uniform frameData
+{
+  vec4 frameColour;  
+  mat4x4 transformationMatrix;
+  mat4x4 projectionMatrix;  
+  mat4x4 lightTransformMatrix;
+  mat4x4 lightProjectionMatrix;
+  vec4 sunDirection;  
+  vec4 cameraPos;
+  float isShadow;
+  float sunIntensity;
+};
+
+layout(shared)uniform objectData
+{
+  mat4x4 objectMatrix;
+  vec4 objectColour; 
+  float shinyness;  
+};
 uniform sampler2D shadowTexture;
 uniform sampler2D otherTexture;
-uniform vec3 sunDirection;
-uniform vec3 cameraPos;
-uniform float sunIntensity;
-uniform float shinyness;
-uniform int isShadow;
 
 void main()
 { 
-  if (isShadow==1)
+  if (isShadow>0.5)
   {
     FragColor = texture(otherTexture,tex);//  texture(otherTexture,tex);//vec4(vec3(gl_FragCoord.z),texture(otherTexture,tex).w);
     return;
@@ -66,13 +80,13 @@ void main()
   
   
   float spec = 0;
-  vec3 incidenceVector = -normalize(sunDirection);
+  vec3 incidenceVector = -normalize(sunDirection.xyz);
   vec3 reflectionVector = normalize(reflect(incidenceVector,normal));
-  vec3 surfaceToCamera = normalize(cameraPos - pos);
+  vec3 surfaceToCamera = normalize(cameraPos.xyz - pos);
   spec = pow(max(0,dot(surfaceToCamera,reflectionVector)),1.0/shinyness);
   
   vis += ambient;
-  vis += clamp(dot(normal,sunDirection),0,0.7);
+  vis += clamp(dot(normal,sunDirection.xyz),0,0.7);
   vis += spec;
     
   // The transparancy is taken straight from the texture 

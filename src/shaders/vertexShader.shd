@@ -4,21 +4,24 @@ in vec4 inColour;
 in vec2 inTex;
 in vec3 inNorm;
 in vec4 inTexShades;
-uniform mat4 transformationMatrix;
-uniform mat4 projectionMatrix;
-uniform mat4 lightTransformMatrix;
-uniform mat4 lightProjectionMatrix;
-uniform vec3 sunDirection;
-uniform int isShadow;
 layout(shared)uniform frameData
 {
   vec4 frameColour;  
+  mat4x4 transformationMatrix;
+  mat4x4 projectionMatrix;  
+  mat4x4 lightTransformMatrix;
+  mat4x4 lightProjectionMatrix;
+  vec4 sunDirection;  
+  vec4 cameraPos;
+  float isShadow;
+  float sunIntensity;
 };
 
 layout(shared)uniform objectData
 {
   mat4x4 objectMatrix;
-  vec4 objectColour;  
+  vec4 objectColour; 
+  float shinyness;  
 };
 
 out vec4 ShadowCoord;
@@ -40,7 +43,7 @@ void main()
   
   texShades = inTexShades;  
   
-  if (isShadow==1)
+  if (isShadow>0.5)
   {
   	gl_Position = ShadowCoord;
   	return;
