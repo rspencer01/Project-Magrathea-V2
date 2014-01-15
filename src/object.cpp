@@ -84,7 +84,6 @@ void Object::Render(int refreshTime, glm::vec3 cameraPos)
     // Load our transformation matrix etc
     game->mainShader->setObjectData(objectBO);
     // Select this object's texture
-    glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D,textureNumber);
     // Use our data
 
