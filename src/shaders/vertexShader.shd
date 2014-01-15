@@ -1,4 +1,4 @@
-#version 130
+#version 140
 in vec3 inPosition;
 in vec4 inColour;
 in vec2 inTex;
@@ -8,9 +8,13 @@ uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 lightTransformMatrix;
 uniform mat4 lightProjectionMatrix;
-uniform mat4 objectMatrix;
 uniform vec3 sunDirection;
 uniform int isShadow;
+layout(shared)uniform objectData
+{
+  mat4x4 objectMatrix;
+  vec4 colo;  
+};
 out vec4 ShadowCoord;
 out vec4 col;
 out vec2 tex;
@@ -19,12 +23,12 @@ out vec3 normal;
 out vec3 pos;
 void main()
 {
-  gl_Position = projectionMatrix * transformationMatrix * objectMatrix* vec4(inPosition, 1.0);
+  gl_Position = projectionMatrix * transformationMatrix * objectMatrix * vec4(inPosition, 1.0);
   
   ShadowCoord = lightProjectionMatrix * lightTransformMatrix * objectMatrix* vec4(inPosition, 1.0);
   
   pos = (objectMatrix* vec4(inPosition, 1.0)).xyz;
-  col = inColour;
+  col = inColour * colo;
   normal = inNorm;  
   tex = inTex;
   

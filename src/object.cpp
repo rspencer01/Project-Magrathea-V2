@@ -28,10 +28,11 @@ Object::Object(glm::vec3 pos,Game* g)
   right = glm::vec3(0,0,1);
   xySlew = 0;
   shinyness = 0.f;
+  
+
+  glGenBuffers(1, &objectBO);
+  updateObjectBO();
   updateMatrix();
-  // This only needs to be done once.  I suppose it should find its way into shader.cpp eventually...
-
-
 }
 
 /// Frees the data used by this object (esp the buffers in the GPU)
@@ -78,9 +79,8 @@ void Object::Render(int refreshTime, glm::vec3 cameraPos)
   // Only do something if we have data	(THIS IS THE MAIN BOTTLENECK!)
 	if (buffersInitialised)
 	{
-    // Load our transformation matrix
-    game->mainShader->setObjectMatrix(transformMatrix);
-    game->mainShader->setMaterialShinyness(shinyness);
+    // Load our transformation matrix etc
+    game->mainShader->setObjectData(objectBO);
     // Select this object's texture
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D,textureNumber);
@@ -88,11 +88,11 @@ void Object::Render(int refreshTime, glm::vec3 cameraPos)
 
     glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
     glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
-          glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
-  glVertexAttribPointerARB(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));
-  glVertexAttribPointerARB(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
-  glVertexAttribPointerARB(3,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
-  glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
+    glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
+    glVertexAttribPointerARB(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));
+    glVertexAttribPointerARB(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
+    glVertexAttribPointerARB(3,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
+    glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
     glDrawElements(GL_TRIANGLES,numberOfTriangles*3,GL_UNSIGNED_INT,0);
   }
 }
@@ -222,25 +222,27 @@ void Object::rotate(glm::vec3 basisX,glm::vec3 basisY)
 void Object::updateMatrix()
 {
   // This works.  You can check it yourself.
-  transformMatrix[0] = forward.x;
-  transformMatrix[1] = up.x+xySlew;
-  transformMatrix[2] = right.x;
-  transformMatrix[3] = position.x;
+  // The matrix is done columns, then rows
+  objectData[0] = forward.x;
+  objectData[1] = forward.y;
+  objectData[2] = forward.z;
+  objectData[3] = 0;
 
-  transformMatrix[4] = forward.y;
-  transformMatrix[5] = up.y;
-  transformMatrix[6] = right.y;
-  transformMatrix[7] = position.y;
+  objectData[4] = up.x;
+  objectData[5] = up.y+xySlew;
+  objectData[6] = up.z;
+  objectData[7] = 0;
 
-  transformMatrix[8] = forward.z;
-  transformMatrix[9] = up.z;
-  transformMatrix[10] = right.z;
-  transformMatrix[11] = position.z;
+  objectData[8] = right.x;
+  objectData[9] = right.y;
+  objectData[10] = right.z;
+  objectData[11] = 0;
 
-  transformMatrix[12] = 0;
-  transformMatrix[13] = 0;
-  transformMatrix[14] = 0;
-  transformMatrix[15] = 1;
+  objectData[12] = position.x;
+  objectData[13] = position.y;
+  objectData[14] = position.z;
+  objectData[15] = 1;
+  updateObjectBO();
 }
 
 /// WARNING: Only call this function if you are sure that you will never 
@@ -260,6 +262,14 @@ void Object::freeze()
     delete[] vertexData;
     vertexData = NULL;
   }
+}
+
+void Object::updateObjectBO()
+{
+  objectData[16] = 1;
+  objectData[17] = 1;objectData[18] = 1;objectData[19] = 1;
+  glBindBuffer(GL_UNIFORM_BUFFER, objectBO);
+  glBufferData(GL_UNIFORM_BUFFER, 20*sizeof(float), objectData, GL_DYNAMIC_DRAW);
 }
 
 

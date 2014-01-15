@@ -26,8 +26,7 @@ ShaderProgram::ShaderProgram()
   // If there was an error, let us know
   if (ShaderProgramID == 0) 
     DIE("Error creating new shader program");
-  objectTransformMatrixPosition = (GLuint)-1;
-  materialShinynessPosition = (GLuint)-1;
+  objectDataPosition = (GLuint)-1;
 }
 
 /// Load a shader program from a source file.
@@ -118,25 +117,6 @@ void ShaderProgram::Load()
   glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
 }
 
-/// The object matrix is set so often that looking it up (even in a map) each time
-/// is far too costly.  This function specifically caches that matrix (unlike
-/// setMatrix which does a generic matrix).
-/// @param value The value to set the matrix to.
-void ShaderProgram::setObjectMatrix(float* value)
-{
-  if (objectTransformMatrixPosition==(GLuint)-1)
-    objectTransformMatrixPosition = glGetUniformLocation(ShaderProgramID, "objectMatrix");
-  glUniformMatrix4fv(objectTransformMatrixPosition,1,GL_TRUE,value);
-}
-
-
-void ShaderProgram::setMaterialShinyness(float value)
-{
-  if (materialShinynessPosition==(GLuint)-1)
-    materialShinynessPosition = glGetUniformLocation(ShaderProgramID, "shinyness");
-  glUniform1f(materialShinynessPosition,value);
-}
-
 GLuint ShaderProgram::getVariablePosition(const char* name)
 {
   // A std::string for hasing purposes
@@ -169,4 +149,14 @@ void ShaderProgram::setFloat(const char* varName, float value)
 void ShaderProgram::setVec3(const char* varName, float* value)
 {
   glUniform3f(getVariablePosition(varName),value[0],value[1],value[2]);
+}
+
+void ShaderProgram::setObjectData(GLuint bo)
+{
+  if (objectDataPosition == (GLuint) -1)
+  {
+    objectDataPosition = glGetUniformBlockIndex(ShaderProgramID,"objectData");
+    glUniformBlockBinding(ShaderProgramID, objectDataPosition, 0);
+  }
+  glBindBufferBase(GL_UNIFORM_BUFFER,0,bo);
 }

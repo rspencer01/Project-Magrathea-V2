@@ -1,4 +1,4 @@
-#version 130
+#version 140
 in vec4 ShadowCoord;
 in vec4 col;
 out vec4 FragColor;
@@ -14,9 +14,9 @@ uniform vec3 cameraPos;
 uniform float sunIntensity;
 uniform float shinyness;
 uniform int isShadow;
+
 void main()
 { 
-
   if (isShadow==1)
   {
     FragColor = texture(otherTexture,tex);//  texture(otherTexture,tex);//vec4(vec3(gl_FragCoord.z),texture(otherTexture,tex).w);

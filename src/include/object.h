@@ -82,6 +82,8 @@ class Object
     GLuint vertexVBO;
     /// Vertex buffer for the indexes of each triangle
     GLuint indexVBO;
+    /// Object/Material settings
+    GLuint objectBO;
     /// Have these VBOs been initialised (can I destroy them?)
     bool buffersInitialised;
     /// How many triangles?
@@ -122,6 +124,8 @@ class Object
     void freeze();
     /// How shiny is the material?
     float shinyness;
+    float objectData[20];
+    void updateObjectBO();
   public:
 	  /// Constructs the object with the given coordinates and in the given game
     Object(glm::vec3,Game*);
