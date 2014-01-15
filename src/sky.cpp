@@ -15,6 +15,13 @@ void Sky::Render(int refreshTime, glm::vec3 cameraPos)
   //Make sure that the sun is ALWAYS behind everything, by disabling depth testing
   glDepthMask(false);
   sun->Render(refreshTime,cameraPos);
+  // Do the fog
+  game->mainShader->frameData.fog = 20;
+  game->mainShader->frameData.fogColour[0] = 1;
+  game->mainShader->frameData.fogColour[1] = 1;
+  game->mainShader->frameData.fogColour[2] = 1;
+  game->mainShader->frameData.fogColour[3] = 1;
+  game->mainShader->setFrameData();
   glDepthMask(true);
 }
 

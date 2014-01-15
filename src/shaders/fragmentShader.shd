@@ -16,8 +16,10 @@ layout(shared)uniform frameData
   mat4x4 lightProjectionMatrix;
   vec4 sunDirection;  
   vec4 cameraPos;
+  vec4 fogColour;
   float isShadow;
   float sunIntensity;
+  float fog;
 };
 
 layout(shared)uniform objectData
@@ -89,6 +91,7 @@ void main()
   vis += clamp(dot(normal,sunDirection.xyz),0,0.7);
   vis += spec;
     
+  float fogLevel = clamp(length(cameraPos.xyz - pos)/fog,0,1);
   // The transparancy is taken straight from the texture 
-  FragColor =  vec4(vis * shadow * col.xyz * otherTexFrag.xyz , col.w * otherTexFrag.w); 
+  FragColor =  vec4(vis * shadow * col.xyz * otherTexFrag.xyz * (1-fogLevel) + fogLevel*fogColour.xyz, col.w * otherTexFrag.w); 
 }

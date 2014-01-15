@@ -13,8 +13,10 @@ layout(shared)uniform frameData
   mat4x4 lightProjectionMatrix;
   vec4 sunDirection;  
   vec4 cameraPos;
+  vec4 fogColour;
   float isShadow;
   float sunIntensity;
+  float fog;
 };
 
 layout(shared)uniform objectData
