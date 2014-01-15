@@ -67,7 +67,6 @@ void Cloud::updateTexture()
       data[ind*4+2] = (unsigned char)(d*255);
       data[ind*4+3] = (unsigned char)(p*255);
     }
-    
   glBindTexture(GL_TEXTURE_2D,textureNumber);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize, textureSize, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 }

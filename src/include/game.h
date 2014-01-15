@@ -35,7 +35,7 @@ class Game
     /// The user camera that contains the fps position rotation etc.
     Camera* camera;
     /// A list of regions in the game
-    Region** regions[1024];
+    Region** regions[128];
     /// The sky above our heads
     Sky* sky;
     /// The book of all terrain data.

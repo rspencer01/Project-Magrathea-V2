@@ -79,10 +79,10 @@ Game::Game(bool doGraphics)
   }
   cloud = new Cloud(glm::vec3(0,500,0),this);
   water = new Water(glm::vec3(0,30,0),this);
-  for (unsigned int i = 0;i<1024;i++)
+  for (unsigned int i = 0;i<128;i++)
   {
-    regions[i] = new Region* [1024];
-    for (unsigned int j = 0;j<1024;j++)
+    regions[i] = new Region* [128];
+    for (unsigned int j = 0;j<128;j++)
       regions[i][j] = NULL;
   }
 }
@@ -138,8 +138,8 @@ void Game::run()
 void Game::RenderScene(int refreshTime)
 {
   // Run through the rectangle of regions, and draw each one
-  for (unsigned int i = 0;i<1024;i++)
-    for (unsigned int j = 0;j<1024;j++)
+  for (unsigned int i = 0;i<128;i++)
+    for (unsigned int j = 0;j<128;j++)
       if (regions[i][j]!=NULL)
         regions[i][j]->Render(refreshTime,camera->Position);
   objectManager->Render(refreshTime,camera->Position);
@@ -173,7 +173,6 @@ void Game::display()
   
   // And reset
   shadows->readyForReading(mainShader);
-
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glClearColor((GLclampf)0.813,(GLclampf)0.957,(GLclampf)0.99,(GLclampf)1.0);
@@ -187,7 +186,6 @@ void Game::display()
   
   // Push this to the screen
   glutSwapBuffers();
-
 }
 
 /// Create a first person scene with the camera
@@ -315,8 +313,8 @@ void Game::constructRegions(float x,float y)
 {
   int rx = (int)(x /REGION_SIZE);
   int ry = (int)(y /REGION_SIZE);
-  for (int x = std::max(0,rx-2);x<std::min(1023,rx+2);x++)
-    for (int y = std::max(0,ry-2);y<std::min(1023,ry+2);y++)
+  for (int x = std::max(0,rx-2);x<std::min(127,rx+2);x++)
+    for (int y = std::max(0,ry-2);y<std::min(127,ry+2);y++)
       if (regions[y][x] == NULL)
         regions[y][x] = new Region(glm::vec3(x*REGION_SIZE,0,y*REGION_SIZE),this);
 }

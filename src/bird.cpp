@@ -41,9 +41,10 @@ void Bird::initialiseTriangles()
 
 void Bird::Render(int refreshTime, glm::vec3 cameraPos)
 {
+
   float refreshSeconds = (float)refreshTime/1000.f;
   Object::Render(refreshTime,cameraPos);
-
+  //This is a godforsakenslow bit
   theta    += (float)(refreshSeconds * 3.141592 * 2.0 * 0.7);
   dihedral  = (float)(- sin(theta) - 1/5.0*sin(theta*2) - 1/25.0*sin(theta*3));
   addPoint(1,glm::vec3(0.5,sin(dihedral),cos(dihedral)),glm::vec3(0,1,0),1,1,1);
@@ -66,5 +67,4 @@ void Bird::Render(int refreshTime, glm::vec3 cameraPos)
   rotate(glm::normalize(velocity),upward);
 
   updateTriangleData();
-  
 }
