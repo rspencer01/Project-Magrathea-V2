@@ -29,9 +29,11 @@ Object::Object(glm::vec3 pos,Game* g)
   xySlew = 0;
   shinyness = 0.f;
   
-
   glGenBuffers(1, &objectBO);
-  updateObjectBO();
+  objectData.objectColour[0] = 1;
+  objectData.objectColour[1] = 1;
+  objectData.objectColour[2] = 1;
+  objectData.objectColour[3] = 1;
   updateMatrix();
 }
 
@@ -218,30 +220,40 @@ void Object::rotate(glm::vec3 basisX,glm::vec3 basisY)
   updateMatrix();
 }
 
+/// Sets the global object colour
+void Object::setColour(glm::vec4 col)
+{
+  objectData.objectColour[0] = col.x;
+  objectData.objectColour[1] = col.y;
+  objectData.objectColour[2] = col.z;
+  objectData.objectColour[3] = col.w;
+  updateObjectBO();
+}
+
 /// Updates the object translation and rotation matrix
 void Object::updateMatrix()
 {
   // This works.  You can check it yourself.
   // The matrix is done columns, then rows
-  objectData[0] = forward.x;
-  objectData[1] = forward.y;
-  objectData[2] = forward.z;
-  objectData[3] = 0;
+  objectData.transformMatrix[0] = forward.x;
+  objectData.transformMatrix[1] = forward.y;
+  objectData.transformMatrix[2] = forward.z;
+  objectData.transformMatrix[3] = 0;
 
-  objectData[4] = up.x;
-  objectData[5] = up.y+xySlew;
-  objectData[6] = up.z;
-  objectData[7] = 0;
+  objectData.transformMatrix[4] = up.x;
+  objectData.transformMatrix[5] = up.y+xySlew;
+  objectData.transformMatrix[6] = up.z;
+  objectData.transformMatrix[7] = 0;
 
-  objectData[8] = right.x;
-  objectData[9] = right.y;
-  objectData[10] = right.z;
-  objectData[11] = 0;
+  objectData.transformMatrix[8] = right.x;
+  objectData.transformMatrix[9] = right.y;
+  objectData.transformMatrix[10] = right.z;
+  objectData.transformMatrix[11] = 0;
 
-  objectData[12] = position.x;
-  objectData[13] = position.y;
-  objectData[14] = position.z;
-  objectData[15] = 1;
+  objectData.transformMatrix[12] = position.x;
+  objectData.transformMatrix[13] = position.y;
+  objectData.transformMatrix[14] = position.z;
+  objectData.transformMatrix[15] = 1;
   updateObjectBO();
 }
 
@@ -266,10 +278,9 @@ void Object::freeze()
 
 void Object::updateObjectBO()
 {
-  objectData[16] = 1;
-  objectData[17] = 1;objectData[18] = 1;objectData[19] = 1;
+  
   glBindBuffer(GL_UNIFORM_BUFFER, objectBO);
-  glBufferData(GL_UNIFORM_BUFFER, 20*sizeof(float), objectData, GL_DYNAMIC_DRAW);
+  glBufferData(GL_UNIFORM_BUFFER, 20*sizeof(float), &objectData, GL_DYNAMIC_DRAW);
 }
 
 

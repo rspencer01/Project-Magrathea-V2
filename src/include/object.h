@@ -56,6 +56,12 @@ typedef struct
   float texThree;
 } VertexDatum;
 
+typedef struct
+{
+  float transformMatrix [16];
+  float objectColour [4];
+} ObjectData;
+
 /// \brief An object is anything that occurs in the game space
 ///
 /// This base class contains methods for constructing and rendering an object.
@@ -114,8 +120,8 @@ class Object
     void setPosition(glm::vec3);
     /// Rotates the object so that it matches the new axis
     void rotate(glm::vec3,glm::vec3);
-    /// The transformation matrix for the object's vertices
-    float transformMatrix [16];
+    /// Sets the object colour
+    void setColour(glm::vec4);
     /// The function to populate the above
     void updateMatrix();
     /// Sets a point's mix of textures
@@ -124,7 +130,7 @@ class Object
     void freeze();
     /// How shiny is the material?
     float shinyness;
-    float objectData[20];
+    ObjectData objectData;
     void updateObjectBO();
   public:
 	  /// Constructs the object with the given coordinates and in the given game
