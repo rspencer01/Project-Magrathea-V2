@@ -36,10 +36,10 @@ void ObjectManager::Render(int t, glm::vec3 c)
 {
   camPos = c;
   furthestObject = insertSort(c);
-
-  for (int i = furthestObject-1;i>=0;i--)
+  for (int i = objects.size()-1;i>=0;i--)
     objects[i]->Render(t,c);
-
+  
+  //printf("%lu objects\n",(unsigned long)objects.size());
   // Now add any items we have yet to do
   for (int i = 0;i<10;i++)
   {
@@ -48,13 +48,6 @@ void ObjectManager::Render(int t, glm::vec3 c)
     
     objectRequest req = *requests->begin();
     requests->erase(requests->begin());
-    /*if ((camPos-req.position).length()>100)
-    {
-      req.priority = (camPos-req.position).length();
-      requests->insert(req);
-      continue;
-    }*/
-
 
     switch (req.type)
     {
@@ -66,7 +59,6 @@ void ObjectManager::Render(int t, glm::vec3 c)
       case dynoTree:
       {
         objects.push_back(new DynoTree(req.position,req.game));
-        printf("%lu objects\n",(unsigned long)objects.size());
         break;
       }
       case smallFern:
@@ -94,11 +86,6 @@ int ObjectManager::insertSort(glm::vec3 c)
        objects[i] = objects[i-1];
        objects[i-1] = t;
      }
-  }
-  for (int i = objects.size()-1;i>0;i--)
-  {
-    if (glm::length(c-objects[i]->getPosition()) < 10)
-      return i+1;
   }
   return objects.size();
 }
