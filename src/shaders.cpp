@@ -27,6 +27,12 @@ ShaderProgram::ShaderProgram()
   if (ShaderProgramID == 0) 
     DIE("Error creating new shader program");
   objectDataPosition = (GLuint)-1;
+  frameDataPosition = (GLuint)-1;
+  frameData.colour[0] = 1;
+  frameData.colour[1] = 1;
+  frameData.colour[2] = 1;
+  frameData.colour[3] = 1;
+  glGenBuffers(1, &frameDataBO);
 }
 
 /// Load a shader program from a source file.
@@ -115,6 +121,7 @@ void ShaderProgram::Load()
   glVertexAttribPointerARB(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
   glVertexAttribPointerARB(3,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
   glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
+  setFrameData();
 }
 
 GLuint ShaderProgram::getVariablePosition(const char* name)
@@ -159,4 +166,17 @@ void ShaderProgram::setObjectData(GLuint bo)
     glUniformBlockBinding(ShaderProgramID, objectDataPosition, 0);
   }
   glBindBufferBase(GL_UNIFORM_BUFFER,0,bo);
+}
+
+void ShaderProgram::setFrameData()
+{
+  glBindBuffer(GL_UNIFORM_BUFFER, frameDataBO);
+  glBufferData(GL_UNIFORM_BUFFER, sizeof(frameData), &frameData, GL_DYNAMIC_DRAW);
+
+  if (frameDataPosition == (GLuint) -1)
+  {
+    frameDataPosition = glGetUniformBlockIndex(ShaderProgramID,"frameData");
+    glUniformBlockBinding(ShaderProgramID, frameDataPosition, 1);
+  }
+  glBindBufferBase(GL_UNIFORM_BUFFER,1,frameDataBO);
 }

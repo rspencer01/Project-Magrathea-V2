@@ -10,11 +10,17 @@ uniform mat4 lightTransformMatrix;
 uniform mat4 lightProjectionMatrix;
 uniform vec3 sunDirection;
 uniform int isShadow;
+layout(shared)uniform frameData
+{
+  vec4 frameColour;  
+};
+
 layout(shared)uniform objectData
 {
   mat4x4 objectMatrix;
-  vec4 colo;  
+  vec4 objectColour;  
 };
+
 out vec4 ShadowCoord;
 out vec4 col;
 out vec2 tex;
@@ -28,7 +34,7 @@ void main()
   ShadowCoord = lightProjectionMatrix * lightTransformMatrix * objectMatrix* vec4(inPosition, 1.0);
   
   pos = (objectMatrix* vec4(inPosition, 1.0)).xyz;
-  col = inColour * colo;
+  col = inColour * objectColour * frameColour;
   normal = inNorm;  
   tex = inTex;
   

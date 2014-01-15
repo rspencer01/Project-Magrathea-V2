@@ -13,6 +13,11 @@
 #include <map>
 #include <string>
 
+typedef struct
+{
+  float colour[4];
+} FrameData;
+
 /// A shader program object handles the loading, compiling and executing of shaders (both vertex and fragment)
 /// on the GPU.
 class ShaderProgram
@@ -26,6 +31,9 @@ class ShaderProgram
     std::map<std::string,GLuint> variableLocations;
     /// The position of the object transform matrix (changed often)
     GLuint objectDataPosition;
+    /// The position of the frame information
+    GLuint frameDataPosition;
+    GLuint frameDataBO;
   public:
     /// Construct the program (empty and unloaded)
     ShaderProgram();
@@ -45,6 +53,10 @@ class ShaderProgram
     void setVec3(const char*,float*);
     /// Function to set the object transformation matrix etc.
     void setObjectData(GLuint);
+    /// Function to set the camera transformation matrix etc.
+    void setFrameData();
+    /// Struct containing camera transformation etc
+    FrameData frameData;
 };
 
 #endif
