@@ -239,8 +239,8 @@ void Object::updateMatrix()
   objectData.transformMatrix[2] = forward.z;
   objectData.transformMatrix[3] = 0;
 
-  objectData.transformMatrix[4] = up.x;
-  objectData.transformMatrix[5] = up.y+xySlew;
+  objectData.transformMatrix[4] = up.x+xySlew;
+  objectData.transformMatrix[5] = up.y;
   objectData.transformMatrix[6] = up.z;
   objectData.transformMatrix[7] = 0;
 
