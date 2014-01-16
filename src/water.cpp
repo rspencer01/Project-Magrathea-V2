@@ -38,6 +38,7 @@ Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
 		}
   pushTriangleData();
   objectData.shinyness = 0.05;
+  objectData.objectColour[3] = 0.7;
   objectData.objectType = OT_WATER;
   updateObjectBO();
   reflectiveTexture = textureFromTGA("../assets/MixedGround.tga",false);
@@ -52,6 +53,8 @@ Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
 	// GL_LINEAR does not make sense for depth texture. However, next tutorial shows usage of GL_LINEAR and PCF
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
 	
 	// create a framebuffer object
 	glGenFramebuffersEXT(1, &reflectiveBuffer);

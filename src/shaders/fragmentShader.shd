@@ -51,12 +51,16 @@ void main()
     float sunlight = sunIntensity;
     // Get the reflective component
 	vec2 screenTexCoord = gl_FragCoord.xy / vec2(viewWidth,viewHeight);
-	vec4 reflectiveFrag = texture(waterTexture,screenTexCoord);
+	vec3 flatNormal = vec3(normal.x,0,normal.z);
+	vec4 screenOffset = normalize(projectionMatrix * transformationMatrix * vec4(flatNormal,1))*length(flatNormal);
+	
+	
+	vec4 reflectiveFrag = texture(waterTexture,screenTexCoord+screenOffset.xy/20);
     // A color for the texture
 	
     vec4 otherTexFrag = texture(otherTexture,tex);
 
-    float vis = 0.2+0*clamp(sunIntensity+ambient,0,1);
+    float vis = 0.6+0*clamp(sunIntensity+ambient,0,1);
   
   
     float spec = 0;
@@ -65,13 +69,13 @@ void main()
     vec3 surfaceToCamera = normalize(cameraPos.xyz - pos);
     spec = pow(max(0,dot(surfaceToCamera,reflectionVector)),1.0/shinyness) *pow(sunlight,0.2);
   
-    vis += 0.8*clamp(dot(normal,sunDirection.xyz)*sunIntensity,0,1);
+    vis += 0.2*clamp(dot(normal,sunDirection.xyz)*sunIntensity,0,1);
     vis = clamp(vis,0,1);
     vis += spec;
 
     float fogLevel = clamp(length(cameraPos.xyz - pos)/fog,0,1);
   
-	FragColor =  vec4(reflectiveFrag.xyz * vec3(0.7,1,1),1);
+	FragColor =  vec4( vis *reflectiveFrag.xyz * vec3(0.7,1,1),col.w);
 	return;
   }
   if (doLighting>0.5)
