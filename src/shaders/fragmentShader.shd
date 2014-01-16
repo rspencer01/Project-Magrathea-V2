@@ -21,6 +21,7 @@ layout(shared)uniform frameData
   float sunIntensity;
   float fog;
   float doLighting;
+  int gameTime;
 };
 
 layout(shared)uniform objectData
@@ -91,5 +92,5 @@ void main()
   if (doLighting>0.5)
 	FragColor =  vec4(vis * shadow * col.xyz * otherTexFrag.xyz * (1-fogLevel) + fogLevel*fogColour.xyz, col.w * otherTexFrag.w); 
   else
-	FragColor =  col * otherTexFrag; 
+	FragColor =  col * otherTexFrag;
 }

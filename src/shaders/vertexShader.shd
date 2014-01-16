@@ -18,6 +18,7 @@ layout(shared)uniform frameData
   float sunIntensity;
   float fog;
   float doLighting;
+  int gameTime;
 };
 
 layout(shared)uniform objectData

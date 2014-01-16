@@ -73,6 +73,8 @@ class Game
     Water* water;
     /// Is the mouse being used to control the camera
     bool mouseControl;
+    /// Number of milliseconds since first frame
+    int gameTime;
   public:
     /// Creates a game instance and initialises all variables.  If false is passed as a paramter, the game initialises no graphics
     Game(bool);

@@ -85,6 +85,7 @@ Game::Game(bool doGraphics)
     for (unsigned int j = 0;j<128;j++)
       regions[i][j] = NULL;
   }
+  gameTime = 0;
 }
 
 /// Initialises all the shaders and cameras and shadows associated with this game
@@ -153,6 +154,8 @@ int shadowsDone = 0;
 void Game::display()
 {
   int refreshTime = getFrameTime();
+  mainShader->frameData.gameTime = gameTime;
+  gameTime += refreshTime;
   // log this frame in the framecount
   logFrame();
   // Do all the key stuff
