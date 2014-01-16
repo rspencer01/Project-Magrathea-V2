@@ -314,10 +314,13 @@ void Game::constructRegions(float x,float y)
 {
   int rx = (int)(x /REGION_SIZE);
   int ry = (int)(y /REGION_SIZE);
-  for (int x = std::max(0,rx-2);x<std::min(127,rx+2);x++)
-    for (int y = std::max(0,ry-2);y<std::min(127,ry+2);y++)
+  for (int x = std::max(0,rx-20);x<std::min(127,rx+20);x++)
+    for (int y = std::max(0,ry-20);y<std::min(127,ry+20);y++)
       if (regions[y][x] == NULL)
+      {
         regions[y][x] = new Region(glm::vec3(x*REGION_SIZE,0,y*REGION_SIZE),this);
+        return;
+      }
 }
 
 void Game::renderMenu()

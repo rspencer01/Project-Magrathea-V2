@@ -119,7 +119,7 @@ void ShadowManager::readyForReading(ShaderProgram* mainShader)
 
 void ShadowManager::relocate(glm::vec3 newPos, int refreshTime)
 {
-  theta += refreshTime / 1000.f *3.1415f*2*2.f/600.f * 5;
+  theta += refreshTime / 1000.f *3.1415f*2*2.f/600.f;
   camera->Position.x = newPos.x + 1000*sin(theta);
   camera->Position.y = newPos.y + 1000*cos(theta);
   camera->Position.z = newPos.z;
