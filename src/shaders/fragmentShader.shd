@@ -22,6 +22,8 @@ layout(shared)uniform frameData
   float fog;
   float doLighting;
   int gameTime;
+  int viewWidth;
+  int viewHeight;
 };
 
 layout(shared)uniform objectData
@@ -46,7 +48,8 @@ void main()
     float ambient = 0.2;
     float sunlight = sunIntensity;
     // Get the reflective component
-	vec4 reflectiveFrag = texture(waterTexture,tex);
+	vec2 screenTexCoord = gl_FragCoord.xy / vec2(viewWidth,viewHeight);
+	vec4 reflectiveFrag = texture(waterTexture,screenTexCoord);
     // A color for the texture
 	
     vec4 otherTexFrag = texture(otherTexture,tex);

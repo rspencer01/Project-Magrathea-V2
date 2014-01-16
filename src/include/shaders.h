@@ -28,6 +28,8 @@ typedef struct
   float fog;
   float doLighting;
   int gameTime;
+  int viewWidth;
+  int viewHeight;
 } FrameData;
 
 /// A shader program object handles the loading, compiling and executing of shaders (both vertex and fragment)

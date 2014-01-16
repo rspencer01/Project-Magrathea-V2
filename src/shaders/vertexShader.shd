@@ -19,6 +19,8 @@ layout(shared)uniform frameData
   float fog;
   float doLighting;
   int gameTime;
+  int viewWidth;
+  int viewHeight;
 };
 
 layout(shared)uniform objectData
