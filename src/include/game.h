@@ -63,8 +63,6 @@ class Game
 	  /// Function to show the menu
     // TODO : fixme, wrt shaders
 	  void renderMenu();
-    /// Draws all the things in the world
-    void RenderScene(int);
     /// The shadow manager.  Handles all the shadow shader stuff
     ShadowManager* shadows;
     /// A test cloud
@@ -98,6 +96,8 @@ class Game
     ObjectManager* objectManager;
     /// The shader that runs most of the rendering
     ShaderProgram* mainShader;
+    /// Draws all the things in the world
+    void RenderScene(int);
 };
 
 #endif
