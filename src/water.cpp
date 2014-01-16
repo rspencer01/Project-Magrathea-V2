@@ -48,7 +48,7 @@ Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
   glActiveTexture(GL_TEXTURE4);
 	glGenTextures(1, &reflectiveTexture);
 	glBindTexture(GL_TEXTURE_2D, reflectiveTexture);
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, 500, 500, 0, GL_RGBA, GL_FLOAT, 0);
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, 1024, 1024, 0, GL_RGBA, GL_FLOAT, 0);
 	// GL_LINEAR does not make sense for depth texture. However, next tutorial shows usage of GL_LINEAR and PCF
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -62,7 +62,7 @@ Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
   // create the depthbuffer
   glGenRenderbuffersEXT(1,&reflectiveDepthBuffer);
   glBindRenderbufferEXT(GL_RENDERBUFFER,reflectiveDepthBuffer);
-  glRenderbufferStorageEXT(GL_RENDERBUFFER,GL_DEPTH_COMPONENT,500,500);
+  glRenderbufferStorageEXT(GL_RENDERBUFFER,GL_DEPTH_COMPONENT,1024,1024);
   glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_RENDERBUFFER_EXT,reflectiveDepthBuffer);
 	// check FBO status
 	FBOstatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -76,6 +76,11 @@ Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
 
 void Water::Render(int refreshTime, glm::vec3 cameraPos)
 {
+  // Save our viewport
+  glGetIntegerv(GL_VIEWPORT,oldViewport);
+  // Set the viewport to be the size of the texture
+  glViewport(0,0,1024,1024);
+
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,reflectiveBuffer);
   glActiveTexture(GL_TEXTURE4);
   glBindTexture(GL_TEXTURE_2D,reflectiveTexture);
@@ -94,6 +99,7 @@ void Water::Render(int refreshTime, glm::vec3 cameraPos)
   game->mainShader->setFrameData();
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
 
+  glViewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
   glActiveTexture(GL_TEXTURE4);
   glBindTexture(GL_TEXTURE_2D,reflectiveTexture);
   glActiveTexture(GL_TEXTURE3);

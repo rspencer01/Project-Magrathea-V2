@@ -75,7 +75,7 @@ void main()
 	return;
   }
   if (doLighting>0.5)
-    if (pos.y<cullLevel) 
+    if (pos.y<cullLevel+0.05) 
       discard;
   if (isShadow>0.5)
   {

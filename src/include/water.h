@@ -20,6 +20,7 @@ class Water : public Object
     GLuint reflectiveTexture;
     GLuint reflectiveBuffer;
     GLuint reflectiveDepthBuffer;
+    int oldViewport[4];
   public:
 	  /// Constructs the object
     Water(glm::vec3,Game*);
