@@ -18,6 +18,9 @@ class Object;
 
 #include <shaders.h>
 
+#define OT_STANDARD_OBJECT 0;
+#define OT_WATER 1;
+
 /// \brief Contains all the information passed to the shaders.
 ///
 /// This is passed to the vertex shader via four (currently) vertex attributes, one for each major attribute.
@@ -61,6 +64,7 @@ typedef struct
   float transformMatrix [16];
   float objectColour [4];
   float shinyness;
+  int objectType;
 } ObjectData;
 
 /// \brief An object is anything that occurs in the game space
