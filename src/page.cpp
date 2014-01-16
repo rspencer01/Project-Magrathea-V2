@@ -75,6 +75,13 @@ Page::Page(int x,int y,float(*g)(int,int))
           data[i][j].isFern = true;
           data[i][j].type = soil;
         }
+      if (data[i][j].position.y<10)
+      {
+        data[i][j].type = sand;
+        data[i][j].isFern = false;
+        data[i][j].isTree = false;
+        data[i][j].isGrass = false;
+      }
     }
   // This is **very** buggy fixme soon please
   for (int i = 1;i<PAGE_SIZE-1;i++)

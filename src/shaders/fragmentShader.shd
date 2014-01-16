@@ -18,9 +18,14 @@ layout(shared)uniform frameData
   vec4 cameraPos;
   vec4 fogColour;
   float isShadow;
+  float isReflection;
   float sunIntensity;
   float fog;
   float doLighting;
+  float cullLevel;
+  int gameTime;
+  int viewWidth;
+  int viewHeight;
 };
 
 layout(shared)uniform objectData
@@ -28,12 +33,54 @@ layout(shared)uniform objectData
   mat4x4 objectMatrix;
   vec4 objectColour; 
   float shinyness;  
+  // Object type of 1 indicates water
+  int objectType;
 };
 uniform sampler2D shadowTexture;
 uniform sampler2D otherTexture;
+uniform sampler2D waterTexture;
 
 void main()
 { 
+  // Handle water
+  if (objectType==1)
+  {
+    if (isShadow>0.5)
+      discard;
+    float ambient = 0.2;
+    float sunlight = sunIntensity;
+    // Get the reflective component
+	vec2 screenTexCoord = gl_FragCoord.xy / vec2(viewWidth,viewHeight);
+	vec3 flatNormal = vec3(normal.x,0,normal.z);
+	vec4 screenOffset = normalize(projectionMatrix * transformationMatrix * vec4(flatNormal,1))*length(flatNormal);
+	
+	
+	vec4 reflectiveFrag = texture(waterTexture,screenTexCoord+screenOffset.xy/20);
+    // A color for the texture
+	
+    vec4 otherTexFrag = texture(otherTexture,tex);
+
+    float vis = 0.6+0*clamp(sunIntensity+ambient,0,1);
+  
+  
+    float spec = 0;
+    vec3 incidenceVector = -normalize(sunDirection.xyz);
+    vec3 reflectionVector = normalize(reflect(incidenceVector,normal));
+    vec3 surfaceToCamera = normalize(cameraPos.xyz - pos);
+    spec = pow(max(0,dot(surfaceToCamera,reflectionVector)),1.0/shinyness) *pow(sunlight,0.2);
+  
+    vis += 0.2*clamp(dot(normal,sunDirection.xyz)*sunIntensity,0,1);
+    vis = clamp(vis,0,1);
+    //vis += spec;
+
+    float fogLevel = clamp(length(cameraPos.xyz - pos)/fog,0,1);
+  
+	FragColor =  vec4( vis *reflectiveFrag.xyz * vec3(0.7,1,1),col.w);
+	return;
+  }
+  if (doLighting>0.5)
+    if (pos.y<cullLevel+0.05) 
+      discard;
   if (isShadow>0.5)
   {
     FragColor = texture(otherTexture,tex);//  texture(otherTexture,tex);//vec4(vec3(gl_FragCoord.z),texture(otherTexture,tex).w);
@@ -80,16 +127,20 @@ void main()
   vec3 incidenceVector = -normalize(sunDirection.xyz);
   vec3 reflectionVector = normalize(reflect(incidenceVector,normal));
   vec3 surfaceToCamera = normalize(cameraPos.xyz - pos);
-  spec = pow(max(0,dot(surfaceToCamera,reflectionVector)),1.0/shinyness);
+  spec = pow(max(0,dot(surfaceToCamera,reflectionVector)),1.0/shinyness) *pow(sunlight,0.2);
   
   vis += 0.8*clamp(dot(normal,sunDirection.xyz)*sunIntensity,0,1);
   vis = clamp(vis,0,1);
+  vis += spec;
 
   float fogLevel = clamp(length(cameraPos.xyz - pos)/fog,0,1);
+  
+  if (objectType==1)
+    shadow = 1;
   // The transparancy is taken straight from the texture 
   if (doLighting>0.5)
 	FragColor =  vec4(vis * shadow * col.xyz * otherTexFrag.xyz * (1-fogLevel) + fogLevel*fogColour.xyz, col.w * otherTexFrag.w); 
   else
-	FragColor =  col * otherTexFrag; 
-  
+	FragColor =  col * otherTexFrag;
+  //FragColor = vec4(normal/2+vec3(0.5),1);
 }

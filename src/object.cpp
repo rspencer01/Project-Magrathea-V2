@@ -34,6 +34,7 @@ Object::Object(glm::vec3 pos,Game* g)
   objectData.objectColour[2] = 1;
   objectData.objectColour[3] = 1;
   objectData.shinyness = 0.000001;
+  objectData.objectType = OT_STANDARD_OBJECT;
   updateMatrix();
 }
 
