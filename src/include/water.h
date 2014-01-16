@@ -17,9 +17,11 @@ class Water : public Object
 {
   private:
 	  void initialiseTriangles();
+    GLuint reflectiveTexture;
   public:
 	  /// Constructs the object
     Water(glm::vec3,Game*);
+    void Render(int refreshTime, glm::vec3 cameraPos);
 };
 
 

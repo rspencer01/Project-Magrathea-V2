@@ -34,6 +34,7 @@ layout(shared)uniform objectData
 };
 uniform sampler2D shadowTexture;
 uniform sampler2D otherTexture;
+uniform sampler2D waterTexture;
 
 void main()
 { 
@@ -44,9 +45,10 @@ void main()
       discard;
     float ambient = 0.2;
     float sunlight = sunIntensity;
-    // 16 samples per pixel.
-  
+    // Get the reflective component
+	vec4 reflectiveFrag = texture(waterTexture,tex);
     // A color for the texture
+	
     vec4 otherTexFrag = texture(otherTexture,tex);
 
     float vis = 0.2+0*clamp(sunIntensity+ambient,0,1);
@@ -64,7 +66,8 @@ void main()
 
     float fogLevel = clamp(length(cameraPos.xyz - pos)/fog,0,1);
   
-	FragColor =  vec4(vis * col.xyz * otherTexFrag.xyz * (1-fogLevel) + fogLevel*fogColour.xyz, col.w * otherTexFrag.w); 
+	FragColor =  vec4(vis * col.xyz * reflectiveFrag.xyz * (1-fogLevel) + fogLevel*fogColour.xyz, col.w * otherTexFrag.w); 
+	return;
   }
 	
   if (isShadow>0.5)

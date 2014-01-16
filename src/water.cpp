@@ -40,4 +40,13 @@ Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
   objectData.shinyness = 0.05;
   objectData.objectType = OT_WATER;
   updateObjectBO();
+  reflectiveTexture = textureFromTGA("../assets/MixedGround.tga",false);
+}
+
+void Water::Render(int refreshTime, glm::vec3 cameraPos)
+{
+  glActiveTexture(GL_TEXTURE4);
+  glBindTexture(GL_TEXTURE_2D,reflectiveTexture);
+  glActiveTexture(GL_TEXTURE3);
+  Object::Render(refreshTime,cameraPos);
 }
