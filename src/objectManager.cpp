@@ -34,7 +34,7 @@ void ObjectManager::addObject(objectType type,glm::vec3 pos, Game* parent)
 
 void ObjectManager::Render(int t, glm::vec3 c)
 {
-  return;
+  //return;
   camPos = c;
   furthestObject = insertSort(c);
   for (int i = objects.size()-1;i>=0;i--)

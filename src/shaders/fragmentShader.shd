@@ -71,7 +71,7 @@ void main()
   
     vis += 0.2*clamp(dot(normal,sunDirection.xyz)*sunIntensity,0,1);
     vis = clamp(vis,0,1);
-    vis += spec;
+    //vis += spec;
 
     float fogLevel = clamp(length(cameraPos.xyz - pos)/fog,0,1);
   

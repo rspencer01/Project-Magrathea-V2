@@ -38,7 +38,7 @@ Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
 		}
   pushTriangleData();
   objectData.shinyness = 0.05;
-  objectData.objectColour[3] = 0.7;
+  objectData.objectColour[3] = 1;
   objectData.objectType = OT_WATER;
   updateObjectBO();
   reflectiveTexture = textureFromTGA("../assets/MixedGround.tga",false);
