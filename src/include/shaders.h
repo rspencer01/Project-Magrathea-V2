@@ -24,9 +24,11 @@ typedef struct
   float cameraPos[4];
   float fogColour[4];
   float isShadow;
+  float isReflection;
   float sunIntensity;
   float fog;
   float doLighting;
+  float cullLevel;
   int gameTime;
   int viewWidth;
   int viewHeight;

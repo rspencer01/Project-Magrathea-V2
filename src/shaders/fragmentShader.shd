@@ -18,9 +18,11 @@ layout(shared)uniform frameData
   vec4 cameraPos;
   vec4 fogColour;
   float isShadow;
+  float isReflection;
   float sunIntensity;
   float fog;
   float doLighting;
+  float cullLevel;
   int gameTime;
   int viewWidth;
   int viewHeight;
@@ -69,10 +71,12 @@ void main()
 
     float fogLevel = clamp(length(cameraPos.xyz - pos)/fog,0,1);
   
-	FragColor =  vec4(vis * col.xyz * reflectiveFrag.xyz * (1-fogLevel) + fogLevel*fogColour.xyz, /*col.w * otherTexFrag.w*/1);
+	FragColor =  vec4(reflectiveFrag.xyz * vec3(0.7,1,1),1);
 	return;
   }
-	
+  if (doLighting>0.5)
+    if (pos.y<cullLevel) 
+      discard;
   if (isShadow>0.5)
   {
     FragColor = texture(otherTexture,tex);//  texture(otherTexture,tex);//vec4(vec3(gl_FragCoord.z),texture(otherTexture,tex).w);

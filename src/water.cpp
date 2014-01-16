@@ -80,11 +80,18 @@ void Water::Render(int refreshTime, glm::vec3 cameraPos)
   glActiveTexture(GL_TEXTURE4);
   glBindTexture(GL_TEXTURE_2D,reflectiveTexture);
   // ... which we clear
-  glClearColor(0.5,0.2,1.0,1);
+  glClearColor(0.0,0.0,1.0,1);
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   // Talk about the correct texture
   glActiveTexture(GL_TEXTURE3);
+  game->mainShader->frameData.cullLevel = position.y;
+  game->mainShader->frameData.isReflection = 1;
+  game->mainShader->setFrameData();
+  game->sky->Render(0,game->camera->Position);
   game->RenderScene(0);
+  game->mainShader->frameData.cullLevel = -1000000;
+  game->mainShader->frameData.isReflection = 0;
+  game->mainShader->setFrameData();
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
 
   glActiveTexture(GL_TEXTURE4);

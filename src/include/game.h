@@ -32,12 +32,9 @@
 class Game
 {
   private:
-    /// The user camera that contains the fps position rotation etc.
-    Camera* camera;
+
     /// A list of regions in the game
     Region** regions[128];
-    /// The sky above our heads
-    Sky* sky;
     /// The book of all terrain data.
     Book* data;
     /// Passes all the required functions to glut
@@ -98,6 +95,10 @@ class Game
     ShaderProgram* mainShader;
     /// Draws all the things in the world
     void RenderScene(int);
+    /// The sky above our heads
+    Sky* sky;
+    /// The user camera that contains the fps position rotation etc.
+    Camera* camera;
 };
 
 #endif
