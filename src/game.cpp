@@ -65,7 +65,7 @@ Game::Game(bool doGraphics)
   objectManager = new ObjectManager;
   currentGame = this;
   speed = 0.1f;
-  fpsOn = true;
+  fpsOn = false;
   showMenu = false;
   if (doGraphics)
   {
@@ -78,7 +78,7 @@ Game::Game(bool doGraphics)
     }
   }
   cloud = new Cloud(glm::vec3(0,500,0),this);
-  water = new Water(glm::vec3(0,30,0),this);
+  water = new Water(glm::vec3(0,8,0),this);
   for (unsigned int i = 0;i<128;i++)
   {
     regions[i] = new Region* [128];
@@ -103,7 +103,7 @@ void Game::initialisePipeline()
   // Construct a new camera, linking to the transformationMatrix of the above shader
   camera = new Camera(mainShader,mainShader->frameData.cameraMatrix);
   // Put it somewhere nice to start with
-  camera->Position = glm::vec3(5,1,5);
+  camera->Position = glm::vec3(5,100,5);
   camera->RotateY(-3.1415f/2.f);
   // Initialise the shadows
   shadows = new ShadowManager(mainShader);
@@ -138,14 +138,14 @@ void Game::run()
 /// Draws the entire game
 void Game::RenderScene(int refreshTime)
 {
-  /*
+  
   // Run through the rectangle of regions, and draw each one
   for (unsigned int i = 0;i<128;i++)
     for (unsigned int j = 0;j<128;j++)
       if (regions[i][j]!=NULL)
         regions[i][j]->Render(refreshTime,camera->Position);
   objectManager->Render(refreshTime,camera->Position);
-  */
+  
   water->Render(refreshTime,camera->Position);
 }
 
