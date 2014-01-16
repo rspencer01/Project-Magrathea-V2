@@ -26,6 +26,13 @@ ShaderProgram::ShaderProgram()
   // If there was an error, let us know
   if (ShaderProgramID == 0) 
     DIE("Error creating new shader program");
+  objectDataPosition = (GLuint)-1;
+  frameDataPosition = (GLuint)-1;
+  frameData.colour[0] = 1;
+  frameData.colour[1] = 1;
+  frameData.colour[2] = 1;
+  frameData.colour[3] = 1;
+  glGenBuffers(1, &frameDataBO);
 }
 
 /// Load a shader program from a source file.
@@ -108,19 +115,13 @@ void ShaderProgram::Load()
 {
   // Now load this program
   glUseProgram(ShaderProgramID);
-  variableLocations.clear();
-  objPos = (GLuint)-1;
-}
-
-/// The object matrix is set so often that looking it up (even in a map) each time
-/// is far too costly.  This function specifically caches that matrix (unlike
-/// setMatrix which does a generic matrix).
-/// @param value The value to set the matrix to.
-void ShaderProgram::setObjectMatrix(float* value)
-{
-  if (objPos==(GLuint)-1)
-    objPos = glGetUniformLocation(ShaderProgramID, "objectMatrix");
-  glUniformMatrix4fv(objPos,1,GL_TRUE,value);
+  // Set the attribute locations
+  glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
+  glVertexAttribPointerARB(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));
+  glVertexAttribPointerARB(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
+  glVertexAttribPointerARB(3,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
+  glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
+  setFrameData();
 }
 
 GLuint ShaderProgram::getVariablePosition(const char* name)
@@ -155,4 +156,27 @@ void ShaderProgram::setFloat(const char* varName, float value)
 void ShaderProgram::setVec3(const char* varName, float* value)
 {
   glUniform3f(getVariablePosition(varName),value[0],value[1],value[2]);
+}
+
+void ShaderProgram::setObjectData(GLuint bo)
+{
+  if (objectDataPosition == (GLuint) -1)
+  {
+    objectDataPosition = glGetUniformBlockIndex(ShaderProgramID,"objectData");
+    glUniformBlockBinding(ShaderProgramID, objectDataPosition, 0);
+  }
+  glBindBufferBase(GL_UNIFORM_BUFFER,0,bo);
+}
+
+void ShaderProgram::setFrameData()
+{
+  glBindBuffer(GL_UNIFORM_BUFFER, frameDataBO);
+  glBufferData(GL_UNIFORM_BUFFER, sizeof(frameData), &frameData, GL_DYNAMIC_DRAW);
+
+  if (frameDataPosition == (GLuint) -1)
+  {
+    frameDataPosition = glGetUniformBlockIndex(ShaderProgramID,"frameData");
+    glUniformBlockBinding(ShaderProgramID, frameDataPosition, 1);
+  }
+  glBindBufferBase(GL_UNIFORM_BUFFER,1,frameDataBO);
 }

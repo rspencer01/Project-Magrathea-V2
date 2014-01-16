@@ -3,8 +3,10 @@
 #include <shadow.h>
 #include <graphics.h>
 
-ShadowManager::ShadowManager()
+ShadowManager::ShadowManager(ShaderProgram* mainShader)
 {
+  shader = mainShader;
+
   maxShadowDistance = 1200;
   minShadowDistance = 800;
   shadowBoxSize = 100;
@@ -12,6 +14,7 @@ ShadowManager::ShadowManager()
 	GLenum FBOstatus;
 	
 	// Try to use a texture depth component
+  glActiveTexture(GL_TEXTURE7);
 	glGenTextures(1, &texID);
 	glBindTexture(GL_TEXTURE_2D, texID);
 	
@@ -47,78 +50,78 @@ ShadowManager::ShadowManager()
 
   //BuildPerspProjMat(projMatrix,10,1,3,100);
   projMatrix[0] = 1.f/shadowBoxSize;
-  projMatrix[1] = 0;
-  projMatrix[2] = 0;
-  projMatrix[3] = 0;
-
   projMatrix[4] = 0;
-  projMatrix[5] = 1.f/shadowBoxSize;
-  projMatrix[6] = 0;
-  projMatrix[7] = 0;
-
   projMatrix[8] = 0;
+  projMatrix[12] = 0;
+
+  projMatrix[1] = 0;
+  projMatrix[5] = 1.f/shadowBoxSize;
   projMatrix[9] = 0;
+  projMatrix[13] = 0;
+
+  projMatrix[2] = 0;
+  projMatrix[6] = 0;
   // 4096 is the maximum distance
   projMatrix[10] = -1.f/(maxShadowDistance-minShadowDistance);
 
-  projMatrix[11] = -minShadowDistance/(maxShadowDistance-minShadowDistance);
+  projMatrix[14] = -minShadowDistance/(maxShadowDistance-minShadowDistance);
 
-  projMatrix[12] = 0;
-  projMatrix[13] = 0;
-  projMatrix[14] = 0;
+  projMatrix[3] = 0;
+  projMatrix[7] = 0;
+  projMatrix[11] = 0;
   projMatrix[15] = 1;
 
-
-  shader = new ShaderProgram();
-  shader->LoadShader("../shaders/vertexShadowShader.shd", GL_VERTEX_SHADER);
-  shader->LoadShader("../shaders/fragmentShadowShader.shd", GL_FRAGMENT_SHADER);
-  shader->CompileAll();
-  shader->setMatrix("projectionMatrix",&projMatrix[0]);
-  camera = new Camera(shader,"transformationMatrix");
-  camera->Position = Vector3(0.f,200.f,0.f);
+  camera = new Camera(shader,shader->frameData.lightCameraMatrix);
+  camera->Position = glm::vec3(0.f,200.f,0.f);
   camera->RotateX(-3.1415f/2);
-  sinceLastRefresh = 10000;
-  theta = 0;
-}
 
-int oldViewport[4];
-
-bool ShadowManager::readyForWriting(int refreshTime)
-{
-  sinceLastRefresh += refreshTime;
-  if (sinceLastRefresh<2000)
-    return false;
-  shader->Load();
-  glGetIntegerv(GL_VIEWPORT,oldViewport);
-  glViewport(0,0,TEXTURE_SIZE,TEXTURE_SIZE);
-  shader->setMatrix("projectionMatrix",&projMatrix[0]);
-  shader->setInt("otherTexture",3);
-  camera->Render();
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,fboID);	//Rendering offscreen
+  // Set the shadow texture to this one's texture
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
+  // And set the two samplers and the shadow projection matrix
+  shader->setInt("shadowTexture",7);
+  shader->setInt("otherTexture",3);
+  memcpy(shader->frameData.lightProjectionMatrix,projMatrix,16*sizeof(float));
+  theta = 0.2;
+}
+
+/// Prepare the shadow manager for writing to the shadow texture.
+void ShadowManager::readyForWriting(int refreshTime)
+{
+  // Save our viewport
+  glGetIntegerv(GL_VIEWPORT,oldViewport);
+  // Set the viewport to be the size of the texture
+  glViewport(0,0,TEXTURE_SIZE,TEXTURE_SIZE);
+  // Tell the shader we are rendering shadows
+  shader->frameData.isShadow = 1;
+  // Set the camera matrix
+  camera->Render();
+  // Render offscreen to the texture...
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,fboID);
+  glActiveTexture(GL_TEXTURE7);
+  glBindTexture(GL_TEXTURE_2D,texID);
+  // ... which we clear
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-  sinceLastRefresh = 0;
-  return true;
+  // Talk about the correct texture
+  glActiveTexture(GL_TEXTURE3);
 }
 
 void ShadowManager::readyForReading(ShaderProgram* mainShader)
 {
-  glActiveTexture(GL_TEXTURE7);
-  glBindTexture(GL_TEXTURE_2D,texID);
-  mainShader->Load();
-  mainShader->setMatrix("lightTransformMatrix",camera->getTransformationMatrix());
-  mainShader->setMatrix("lightProjectionMatrix",&projMatrix[0]);
-  mainShader->setInt("shadowTexture",7);
-  mainShader->setInt("otherTexture",3);
+  // We are not rendering shadows anymore
+  shader->frameData.isShadow = 0;
+  shader->setFrameData();
+  // We will use the old viewport
   glViewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
+  // Render to the screen
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
 }
 
-void ShadowManager::relocate(Vector3 newPos, int refreshTime)
+void ShadowManager::relocate(glm::vec3 newPos, int refreshTime)
 {
-  theta += refreshTime / 1000.f *3.1415f*2*2.f/600.f;
+  theta += refreshTime / 1000.f *3.1415f*2*2.f/600.f * 5;
   camera->Position.x = newPos.x + 1000*sin(theta);
   camera->Position.y = newPos.y + 1000*cos(theta);
   camera->Position.z = newPos.z;
-  camera->ViewDir = (newPos-camera->Position).normal();
+  camera->ViewDir = glm::normalize(newPos-camera->Position);
 }

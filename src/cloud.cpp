@@ -1,30 +1,32 @@
 #include <stdio.h>
 #include <math.h>
 #include <cloud.h>
+#include <gtx/random.hpp>
+
 
 /// Initialises the cloud at the position, and constructs it
-Cloud::Cloud(Vector3 pos,Game* g) : Object(pos,g)
+Cloud::Cloud(glm::vec3 pos,Game* g) : Object(pos,g)
 {
   textureSize = 300;
   data = NULL;
   coverage = 1;
   initialiseTriangles();
   updateTexture();
-  drift = randomVector()*0.1f;
+  drift = glm::sphericalRand(0.1f);
   drift.y = 0;
-  offset = randomVector();
+  offset = glm::sphericalRand(1.f);
 }
 
 void Cloud::initialiseTriangles()
 {
   clearTriangleData(4,2);
-  addPoint(0,Vector3(-2000,0,-2000),Vector3(0,1,0),1,1,1);
+  addPoint(0,glm::vec3(-2000,0,-2000),glm::vec3(0,1,0),1,1,1);
   editTextureCoord(0,0,0);
-  addPoint(1,Vector3(-2000,0,2000),Vector3(0,1,0),1,1,1);
+  addPoint(1,glm::vec3(-2000,0,2000),glm::vec3(0,1,0),1,1,1);
   editTextureCoord(1,1,0);
-  addPoint(2,Vector3(2000,0,2000),Vector3(0,1,0),1,1,1);
+  addPoint(2,glm::vec3(2000,0,2000),glm::vec3(0,1,0),1,1,1);
   editTextureCoord(2,1,1);
-  addPoint(3,Vector3(2000,0,-2000),Vector3(0,1,0),1,1,1);
+  addPoint(3,glm::vec3(2000,0,-2000),glm::vec3(0,1,0),1,1,1);
   editTextureCoord(3,0,1);
   addTriangle(0,0,1,3);
   addTriangle(1,1,2,3);
@@ -35,7 +37,7 @@ void Cloud::updateTexture()
 {
   if (data==NULL)
     data = new unsigned char [textureSize*textureSize*4];
-  if (textureNumber == -1)
+  if (textureNumber == 0) //Empty Texture are zero
     textureNumber = newTexture(true);
   for (int i =0;i<textureSize;i++)
     for (int j =0;j<textureSize;j++)
@@ -65,12 +67,11 @@ void Cloud::updateTexture()
       data[ind*4+2] = (unsigned char)(d*255);
       data[ind*4+3] = (unsigned char)(p*255);
     }
-    
   glBindTexture(GL_TEXTURE_2D,textureNumber);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize, textureSize, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 }
 
-void Cloud::Render(int refreshTime, Vector3* cameraPos)
+void Cloud::Render(int refreshTime, glm::vec3 cameraPos)
 {
   position = position+drift*(float)refreshTime/1000.f;
   updateMatrix();

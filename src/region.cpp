@@ -7,30 +7,30 @@
 #include <images.h>
 #include <smallFern.h>
 
-GLuint texture = (GLuint)-1;
+GLuint texture = 0;
 
 /// Constructs a new region at the given position
 /// @param x The x coordinate of the origin
 /// @param y The y coordinate of the origin
 /// @param parent The game that this region is in.
-Region::Region(Vector3 pos,Game* parent) : Object(pos,parent)
+Region::Region(glm::vec3 pos,Game* parent) : Object(pos,parent)
 {
 	printf("New region at %d %d\n",(int)pos.x,(int)pos.z);
-	initialiseTriangles();
+  initialiseTriangles();
   freeze();
   for (int ty = 0;ty<REGION_SIZE;ty++)
     for (int tx = 0;tx<REGION_SIZE;tx++)
     {
       terrainBit here = game->getTerrainBit(tx+(int)pos.x,ty+(int)pos.z);
       if (here.isTree)
-        parent->objectManager->addObject(dynoTree,*(here.position),parent);
+        parent->objectManager->addObject(dynoTree,here.position,parent);
       if (here.isGrass)
-        parent->objectManager->addObject(grass_o,*(here.position),parent);
+        parent->objectManager->addObject(grass_o,here.position,parent);
       if (here.isFern)
-        parent->objectManager->addObject(smallFern,*(here.position),parent);
+        parent->objectManager->addObject(smallFern,here.position,parent);
     }
 
-  if (texture == (GLuint)-1)
+  if (texture == 0)
 	  texture = textureFromTGA("../assets/MixedGround.tga",true);
   textureNumber = texture;
 }
@@ -44,11 +44,11 @@ void Region::initialiseTriangles()
 		for (int x = 0; x<(REGION_SIZE+1);x++)
 		{
       addPoint(y*(REGION_SIZE+1)+x,
-               Vector3((float)x,
-			                 game->getTerrainBit(x+(int)position.x,y+(int)position.z).position->y,
-			                 (float)y),
-                       *(game->getTerrainBit(x+(int)position.x,y+(int)position.z).normal),
-                       1,1,1);
+               glm::vec3((float)x,
+			                   game->getTerrainBit(x+(int)position.x,y+(int)position.z).position.y,
+			                   (float)y),
+                         (game->getTerrainBit(x+(int)position.x,y+(int)position.z).normal),
+                         1,1,1);
       editTextureCoord(y*(REGION_SIZE+1)+x,4.f*x/(REGION_SIZE+1),4.f*y/(REGION_SIZE+1));
       terrainType t = game->getTerrainBit(x+(int)position.x,y+(int)position.z).type;
       if (t==grass)
@@ -59,9 +59,7 @@ void Region::initialiseTriangles()
         setTextureMix(y*(REGION_SIZE+1)+x,1,0,0,0);
       if (t==soil)
         setTextureMix(y*(REGION_SIZE+1)+x,0,0,1,0);
-
 		}
-	
   // Populate one triangle (for now) per block
 	for (int y = 0; y<REGION_SIZE;y++)
 		for (int x = 0; x<REGION_SIZE;x++)

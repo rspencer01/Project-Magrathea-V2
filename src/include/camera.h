@@ -18,21 +18,21 @@ class Camera;
 class Camera
 {
   private:
-    Vector3 UpVector;
+    glm::vec3 UpVector;
     ShaderProgram* shader;
     float RotatedX;	
 	  const char* matrixName;
-    float viewMatrix[16];
+    float* viewMatrix;
   public:
-    Vector3 ViewDir;
+    glm::vec3 ViewDir;
 	  /// The position of the camera
-	  Vector3 Position;
+	  glm::vec3 Position;
 	  /// Initialises the camera
-  	Camera(ShaderProgram*,const char*);				
+  	Camera(ShaderProgram*,float*);				
 	  /// Rotates and translates the scene to the correct position.
   	void Render ( void );							
 	  /// Translate the camera
-  	void Move ( Vector3 Direction );
+  	void Move ( glm::vec3 Direction );
 	  /// Rotate around the x axis
   	void RotateX ( float Angle );
 	  /// Rotate around the y axis

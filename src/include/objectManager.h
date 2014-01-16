@@ -21,7 +21,7 @@ typedef struct
 {
   float priority;
   /// The position of the object to be created
-  Vector3* position;
+  glm::vec3 position;
   /// The parent game
   Game* game;
   /// What type of object?
@@ -34,13 +34,13 @@ class ObjectManager
 {
   private:
     std::vector<Object*> objects;
-    std::set<objectRequest,bool(*)(objectRequest,objectRequest)>* requests;
-    int insertSort(Vector3);
+    std::multiset<objectRequest,bool(*)(objectRequest,objectRequest)>* requests;
+    int insertSort(glm::vec3);
     int furthestObject;
   public:
     ObjectManager();
-    void addObject(objectType,Vector3,Game*);
-    void Render(int,Vector3*);
+    void addObject(objectType,glm::vec3,Game*);
+    void Render(int,glm::vec3);
 };
 
 

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <glm.hpp>
 #include <book.h>
 
 //  The constructor...
@@ -14,8 +15,8 @@ Book::Book(float (*g)(int,int))
   // No pages are initialised yet
   numberOfInitialisedPages = 0;
   // Initialise the null bit
-  nullBit.position = new Vector3();
-  nullBit.normal = new Vector3(0.f,1.f,0.f);
+  nullBit.position = glm::vec3(0.f);
+  nullBit.normal = glm::vec3(0.f);
   nullBit.isTree = false;
   nullBit.isGrass = false;
   nullBit.isFern = false;
@@ -53,7 +54,7 @@ terrainBit Book::getAt(int x, int y)
   {
     pages[px][py] = new Page(px*PAGE_SIZE,py*PAGE_SIZE,generatingFunction);
     numberOfInitialisedPages++;
-    printf("Paging size: %dkB\n",numberOfInitialisedPages*sizeof(Page)/1024);
+    printf("Paging size: %lukB\n",(unsigned long)numberOfInitialisedPages*sizeof(Page)/1024);
   }
   // Ask the page for the terrainBit
   return pages[px][py]->getAt(x%PAGE_SIZE,y%PAGE_SIZE);
@@ -77,7 +78,7 @@ void Book::deleteUnused()
       pages[delI][delJ] = NULL;
       // Some feedback for the user
       numberOfInitialisedPages--;
-      printf("Paging size: %dkB\n",numberOfInitialisedPages*sizeof(Page)/1024);
+      printf("Paging size: %lukB\n",(unsigned long)(numberOfInitialisedPages*sizeof(Page)/1024));
     }
   // Update the indices
   delI++;

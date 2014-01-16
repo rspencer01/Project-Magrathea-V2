@@ -1,8 +1,0 @@
-#version 130
-out vec4 FragColor;
-uniform sampler2D otherTexture;
-in vec2 tex;
-void main()
-{
-  FragColor = vec4(vec3(gl_FragCoord.z),texture(otherTexture,tex).w);
-}

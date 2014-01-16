@@ -35,7 +35,7 @@ class Game
     /// The user camera that contains the fps position rotation etc.
     Camera* camera;
     /// A list of regions in the game
-    std::deque<std::deque<Region*> > regions;
+    Region** regions[128];
     /// The sky above our heads
     Sky* sky;
     /// The book of all terrain data.
@@ -67,8 +67,6 @@ class Game
     void RenderScene(int);
     /// The shadow manager.  Handles all the shadow shader stuff
     ShadowManager* shadows;
-    /// The shader that runs most of the rendering
-    ShaderProgram* mainShader;
     /// A test cloud
     Cloud* cloud;
     /// A test body of water
@@ -94,10 +92,10 @@ class Game
     terrainBit getTerrainBit(int x, int y);
     /// Set the projection matrix.  Called by the resize function
     void setProjectionMatrix(float*);
-    /// This is a pointer the shader that is currently in use.
-    ShaderProgram* currentShader;
     /// The object manager for this game
     ObjectManager* objectManager;
+    /// The shader that runs most of the rendering
+    ShaderProgram* mainShader;
 };
 
 #endif

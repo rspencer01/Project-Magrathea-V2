@@ -1,7 +1,8 @@
 Project-Magrathea-V2
 ====================
-V2.0.5
-----------
+V2.0.6
+------
+
 
 The second generation realistic terrain project.
 The first version ended up dying as a result of too many changes of mind.  This will hopefully be better.

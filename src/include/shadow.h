@@ -18,15 +18,15 @@ class ShadowManager
     float minShadowDistance;
     float shadowBoxSize;
     float projMatrix[16];
-    int sinceLastRefresh;
     float theta;
+    int oldViewport[4];
   public:
-    ShadowManager();
+    ShadowManager(ShaderProgram*);
     Camera* camera;
-    bool readyForWriting(int);
+    void readyForWriting(int);
     void readyForReading(ShaderProgram*);
     ShaderProgram* shader;
-    void relocate(Vector3,int);
+    void relocate(glm::vec3,int);
 };
 
 #endif
