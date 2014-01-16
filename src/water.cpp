@@ -41,10 +41,52 @@ Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
   objectData.objectType = OT_WATER;
   updateObjectBO();
   reflectiveTexture = textureFromTGA("../assets/MixedGround.tga",false);
+
+	GLenum FBOstatus;
+	
+	// Try to use a texture depth component
+  glActiveTexture(GL_TEXTURE4);
+	glGenTextures(1, &reflectiveTexture);
+	glBindTexture(GL_TEXTURE_2D, reflectiveTexture);
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, 500, 500, 0, GL_RGBA, GL_FLOAT, 0);
+	// GL_LINEAR does not make sense for depth texture. However, next tutorial shows usage of GL_LINEAR and PCF
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	
+	// create a framebuffer object
+	glGenFramebuffersEXT(1, &reflectiveBuffer);
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, reflectiveBuffer);
+	// attach the texture to FBO depth attachment point
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, reflectiveTexture, 0);
+
+  // create the depthbuffer
+  glGenRenderbuffersEXT(1,&reflectiveDepthBuffer);
+  glBindRenderbufferEXT(GL_RENDERBUFFER,reflectiveDepthBuffer);
+  glRenderbufferStorageEXT(GL_RENDERBUFFER,GL_DEPTH_COMPONENT,500,500);
+  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_RENDERBUFFER_EXT,reflectiveDepthBuffer);
+	// check FBO status
+	FBOstatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if(FBOstatus != GL_FRAMEBUFFER_COMPLETE)
+		DIE("GL_FRAMEBUFFER_COMPLETE_EXT failed, CANNOT use FBO\n");
+	
+	// switch back to window-system-provided framebuffer
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+
 }
 
 void Water::Render(int refreshTime, glm::vec3 cameraPos)
 {
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,reflectiveBuffer);
+  glActiveTexture(GL_TEXTURE4);
+  glBindTexture(GL_TEXTURE_2D,reflectiveTexture);
+  // ... which we clear
+  glClearColor(0.5,0.2,1.0,1);
+  glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+  // Talk about the correct texture
+  glActiveTexture(GL_TEXTURE3);
+  game->RenderScene(0);
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+
   glActiveTexture(GL_TEXTURE4);
   glBindTexture(GL_TEXTURE_2D,reflectiveTexture);
   glActiveTexture(GL_TEXTURE3);

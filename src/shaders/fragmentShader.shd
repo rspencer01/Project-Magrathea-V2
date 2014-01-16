@@ -69,7 +69,7 @@ void main()
 
     float fogLevel = clamp(length(cameraPos.xyz - pos)/fog,0,1);
   
-	FragColor =  vec4(vis * col.xyz * reflectiveFrag.xyz * (1-fogLevel) + fogLevel*fogColour.xyz, col.w * otherTexFrag.w); 
+	FragColor =  vec4(vis * col.xyz * reflectiveFrag.xyz * (1-fogLevel) + fogLevel*fogColour.xyz, /*col.w * otherTexFrag.w*/1);
 	return;
   }
 	
