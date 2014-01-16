@@ -11,11 +11,12 @@ Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
 		for (int x = 0; x<(50+1);x++)
 		{
       glm::vec3 r = glm::vec3(x,0,y) -glm::vec3(25,0.01,25);
+      float l = glm::length(r);
       addPoint(y*(50+1)+x,
                glm::vec3((float)x,
 			                 0,
 			                 (float)y),
-                       glm::normalize(glm::vec3(cos((float)r.length())*(25-x)/r.length(),1,-cos((float)r.length())*(25-y)/r.length())),
+                       glm::normalize(glm::vec3(cos(l)*(25-x)/l,1,-cos(l)*(25-y)/l)),
                        1,1,1);
       editTextureCoord(y*(50+1)+x,4.f*x/(50+1),4.f*y/(50+1));
 		}
@@ -34,4 +35,6 @@ Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
 			            (y+1)*(50+1) + (x+1));
 		}
   pushTriangleData();
+  objectData.shinyness = 0.05;
+  updateObjectBO();
 }

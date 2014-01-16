@@ -137,12 +137,15 @@ void Game::run()
 /// Draws the entire game
 void Game::RenderScene(int refreshTime)
 {
+  /*
   // Run through the rectangle of regions, and draw each one
   for (unsigned int i = 0;i<128;i++)
     for (unsigned int j = 0;j<128;j++)
       if (regions[i][j]!=NULL)
         regions[i][j]->Render(refreshTime,camera->Position);
   objectManager->Render(refreshTime,camera->Position);
+  */
+  water->Render(refreshTime,camera->Position);
 }
 
 int shadowsDone = 0;

@@ -84,6 +84,7 @@ void main()
   
   vis += 0.8*clamp(dot(normal,sunDirection.xyz)*sunIntensity,0,1);
   vis = clamp(vis,0,1);
+  vis += spec;
 
   float fogLevel = clamp(length(cameraPos.xyz - pos)/fog,0,1);
   // The transparancy is taken straight from the texture 
@@ -91,5 +92,4 @@ void main()
 	FragColor =  vec4(vis * shadow * col.xyz * otherTexFrag.xyz * (1-fogLevel) + fogLevel*fogColour.xyz, col.w * otherTexFrag.w); 
   else
 	FragColor =  col * otherTexFrag; 
-  
 }
