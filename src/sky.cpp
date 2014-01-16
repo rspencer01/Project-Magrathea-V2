@@ -49,7 +49,7 @@ void Sky::Render(int refreshTime, glm::vec3 cameraPos)
   // Move the sky dome
   setPosition(cameraPos);
   // Update the colour...
-  theta += refreshTime / 1000.f *3.1415f*2*2.f / 600.f *5;
+  theta += refreshTime / 1000.f *3.1415f*2*2.f / 600.f;
   float l = pow(3.0*(1.0 - k(k(k(theta/3.1415))))/4.0 + 0.25,1.4);
   objectData.objectColour[0] = l*( k(k(k(sin(theta/2.f))))/20.0 + 0.4);
   objectData.objectColour[1] = l*( 0.6 - k(k(k(sin(theta/2.f))))/9.0);
@@ -96,8 +96,8 @@ Sun::Sun(glm::vec3 pos,Game* parent) : Object(pos,parent)
 
 void Sun::Render(int refreshTime,glm::vec3 cameraPos)
 {
-  position = cameraPos;
-  theta += refreshTime / 1000.f *3.1415f*2*2.f / 600.f *5;
+  setPosition(cameraPos);
+  theta += refreshTime / 1000.f *3.1415f*2*2.f / 600.f;
 
   game->mainShader->frameData.sunDirection[0] = sin(theta);
   game->mainShader->frameData.sunDirection[1] = cos(theta);
@@ -147,7 +147,7 @@ Stars::Stars(Game* parent) : Object(glm::vec3(0),parent)
 void Stars::Render(int refreshTime,glm::vec3 cameraPos)
 {
   setPosition(cameraPos);
-  theta += refreshTime / 1000.f *3.1415f*2*2.f / 600.f *5;
+  theta += refreshTime / 1000.f *3.1415f*2*2.f / 600.f;
   glm::vec3 inc = glm::vec3(0,0,1.f);
   glm::vec3 right = glm::cross(glm::vec3(1.f,0,0),inc);
   glm::vec3 up = glm::cross(inc,right);

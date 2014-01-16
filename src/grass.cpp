@@ -127,6 +127,7 @@ void Grass::makeBunch(glm::vec3 position)
 
 void Grass::Render(int refreshTime, glm::vec3 cameraPos)
 {
+  if (glm::length(cameraPos-position)>50) return;
    theta += refreshTime/1000.f;
    xySlew = 0.5*sin(theta);
    updateMatrix();

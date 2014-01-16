@@ -65,7 +65,7 @@ Game::Game(bool doGraphics)
   objectManager = new ObjectManager;
   currentGame = this;
   speed = 0.1f;
-  fpsOn = true;
+  fpsOn = false;
   showMenu = false;
   if (doGraphics)
   {
@@ -78,13 +78,14 @@ Game::Game(bool doGraphics)
     }
   }
   cloud = new Cloud(glm::vec3(0,500,0),this);
-  water = new Water(glm::vec3(0,30,0),this);
+  water = new Water(glm::vec3(0,8,0),this);
   for (unsigned int i = 0;i<128;i++)
   {
     regions[i] = new Region* [128];
     for (unsigned int j = 0;j<128;j++)
       regions[i][j] = NULL;
   }
+  gameTime = 0;
 }
 
 /// Initialises all the shaders and cameras and shadows associated with this game
@@ -102,7 +103,7 @@ void Game::initialisePipeline()
   // Construct a new camera, linking to the transformationMatrix of the above shader
   camera = new Camera(mainShader,mainShader->frameData.cameraMatrix);
   // Put it somewhere nice to start with
-  camera->Position = glm::vec3(5,1,5);
+  camera->Position = glm::vec3(5,100,5);
   camera->RotateY(-3.1415f/2.f);
   // Initialise the shadows
   shadows = new ShadowManager(mainShader);
@@ -143,6 +144,8 @@ void Game::RenderScene(int refreshTime)
       if (regions[i][j]!=NULL)
         regions[i][j]->Render(refreshTime,camera->Position);
   objectManager->Render(refreshTime,camera->Position);
+  
+  
 }
 
 int shadowsDone = 0;
@@ -150,6 +153,8 @@ int shadowsDone = 0;
 void Game::display()
 {
   int refreshTime = getFrameTime();
+  mainShader->frameData.gameTime = gameTime;
+  gameTime += refreshTime;
   // log this frame in the framecount
   logFrame();
   // Do all the key stuff
@@ -181,6 +186,7 @@ void Game::display()
   camera->Render();
   // Gogogo!
   sky->Render(refreshTime,camera->Position);
+  water->Render(refreshTime,camera->Position);
   //cloud->Render(refreshTime,&(camera->Position));
   RenderScene(refreshTime);
   
@@ -314,10 +320,13 @@ void Game::constructRegions(float x,float y)
 {
   int rx = (int)(x /REGION_SIZE);
   int ry = (int)(y /REGION_SIZE);
-  for (int x = std::max(0,rx-2);x<std::min(127,rx+2);x++)
-    for (int y = std::max(0,ry-2);y<std::min(127,ry+2);y++)
+  for (int x = std::max(0,rx-20);x<std::min(127,rx+20);x++)
+    for (int y = std::max(0,ry-20);y<std::min(127,ry+20);y++)
       if (regions[y][x] == NULL)
+      {
         regions[y][x] = new Region(glm::vec3(x*REGION_SIZE,0,y*REGION_SIZE),this);
+        return;
+      }
 }
 
 void Game::renderMenu()

@@ -32,12 +32,9 @@
 class Game
 {
   private:
-    /// The user camera that contains the fps position rotation etc.
-    Camera* camera;
+
     /// A list of regions in the game
     Region** regions[128];
-    /// The sky above our heads
-    Sky* sky;
     /// The book of all terrain data.
     Book* data;
     /// Passes all the required functions to glut
@@ -63,8 +60,6 @@ class Game
 	  /// Function to show the menu
     // TODO : fixme, wrt shaders
 	  void renderMenu();
-    /// Draws all the things in the world
-    void RenderScene(int);
     /// The shadow manager.  Handles all the shadow shader stuff
     ShadowManager* shadows;
     /// A test cloud
@@ -73,6 +68,8 @@ class Game
     Water* water;
     /// Is the mouse being used to control the camera
     bool mouseControl;
+    /// Number of milliseconds since first frame
+    int gameTime;
   public:
     /// Creates a game instance and initialises all variables.  If false is passed as a paramter, the game initialises no graphics
     Game(bool);
@@ -96,6 +93,12 @@ class Game
     ObjectManager* objectManager;
     /// The shader that runs most of the rendering
     ShaderProgram* mainShader;
+    /// Draws all the things in the world
+    void RenderScene(int);
+    /// The sky above our heads
+    Sky* sky;
+    /// The user camera that contains the fps position rotation etc.
+    Camera* camera;
 };
 
 #endif

@@ -79,8 +79,10 @@ ShadowManager::ShadowManager(ShaderProgram* mainShader)
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
   // And set the two samplers and the shadow projection matrix
+  // The samplers should not be set here... hmm
   shader->setInt("shadowTexture",7);
   shader->setInt("otherTexture",3);
+  shader->setInt("waterTexture",4);
   memcpy(shader->frameData.lightProjectionMatrix,projMatrix,16*sizeof(float));
   theta = 0.2;
 }
@@ -92,6 +94,8 @@ void ShadowManager::readyForWriting(int refreshTime)
   glGetIntegerv(GL_VIEWPORT,oldViewport);
   // Set the viewport to be the size of the texture
   glViewport(0,0,TEXTURE_SIZE,TEXTURE_SIZE);
+  shader->frameData.viewHeight = TEXTURE_SIZE;
+  shader->frameData.viewWidth = TEXTURE_SIZE;
   // Tell the shader we are rendering shadows
   shader->frameData.isShadow = 1;
   // Set the camera matrix
@@ -113,13 +117,15 @@ void ShadowManager::readyForReading(ShaderProgram* mainShader)
   shader->setFrameData();
   // We will use the old viewport
   glViewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
+  shader->frameData.viewWidth = oldViewport[2];
+  shader->frameData.viewHeight = oldViewport[3];
   // Render to the screen
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
 }
 
 void ShadowManager::relocate(glm::vec3 newPos, int refreshTime)
 {
-  theta += refreshTime / 1000.f *3.1415f*2*2.f/600.f * 5;
+  theta += refreshTime / 1000.f *3.1415f*2*2.f/600.f;
   camera->Position.x = newPos.x + 1000*sin(theta);
   camera->Position.y = newPos.y + 1000*cos(theta);
   camera->Position.z = newPos.z;
