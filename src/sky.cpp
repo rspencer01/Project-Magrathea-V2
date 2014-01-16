@@ -96,7 +96,7 @@ Sun::Sun(glm::vec3 pos,Game* parent) : Object(pos,parent)
 
 void Sun::Render(int refreshTime,glm::vec3 cameraPos)
 {
-  position = cameraPos;
+  setPosition(cameraPos);
   theta += refreshTime / 1000.f *3.1415f*2*2.f / 600.f;
 
   game->mainShader->frameData.sunDirection[0] = sin(theta);
