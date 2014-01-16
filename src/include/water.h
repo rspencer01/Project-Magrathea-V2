@@ -19,7 +19,7 @@ class Water : public Object
 	  void initialiseTriangles();
   public:
 	  /// Constructs the object
-    Water(Vector3,Game*);
+    Water(glm::vec3,Game*);
 };
 
 

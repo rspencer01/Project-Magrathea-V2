@@ -2,6 +2,7 @@
 #include <page.h>
 #include <noise.h>
 #include <time.h>
+#include <glm.hpp>
 
 Page::Page(int x,int y,float(*g)(int,int))
 {
@@ -9,48 +10,58 @@ Page::Page(int x,int y,float(*g)(int,int))
   generatingFunction = g;
   origin_x = x;
   origin_y = y;
+/*  for (int i = 0;i<PAGE_SIZE;i++)
+    for (int j = 0;j<PAGE_SIZE;j++)
+    {
+      data[i][j].isFern = data[i][j].isGrass = data[i][j].isTree = false;
+      data[i][j].type = grass;
+      data[i][j].isGrass = true;
+      data[i][j].position = glm::vec3((float)origin_x+i,0,(float)origin_y+j);
+      data[i][j].normal   = glm::vec3(0,1,0);
+    }
+  */
   for (int i = 0;i<PAGE_SIZE;i++)
     for (int j = 0;j<PAGE_SIZE;j++)
-      data[i][j].position = new Vector3((float)origin_x+i,generatingFunction(origin_x+i,origin_y+j),(float)origin_y+j);
+      data[i][j].position = glm::vec3((float)origin_x+i,generatingFunction(origin_x+i,origin_y+j),(float)origin_y+j);
   for (int i = 0;i<PAGE_SIZE;i++)
     for (int j = 0;j<PAGE_SIZE;j++)
     {
       if ((i>0) && (j>0))
       {
-        Vector3 a = *(data[i-1][j].position) - *(data[i][j].position);
-        Vector3 b = *(data[i][j-1].position) - *(data[i][j].position);
-        data[i][j].normal = new Vector3(b.cross(a).normal());
+        glm::vec3 a = (data[i-1][j].position) - (data[i][j].position);
+        glm::vec3 b = (data[i][j-1].position) - (data[i][j].position);
+        data[i][j].normal = glm::normalize(glm::cross(b,a));
       }
       else
       {
         if ((origin_x+i>0) && (origin_y+j>0))
         {
-          Vector3 a = Vector3((float)origin_x+i-1,generatingFunction(origin_x+i-1,origin_y+j),(float)origin_y+j) - *(data[i][j].position);
-          Vector3 b = Vector3((float)origin_x+i,generatingFunction(origin_x+i,origin_y+j-1),(float)origin_y+j-1) - *(data[i][j].position);
-          data[i][j].normal = new Vector3(b.cross(a).normal());
+          glm::vec3 a = glm::vec3((float)origin_x+i-1,generatingFunction(origin_x+i-1,origin_y+j),(float)origin_y+j) - (data[i][j].position);
+          glm::vec3 b = glm::vec3((float)origin_x+i,generatingFunction(origin_x+i,origin_y+j-1),(float)origin_y+j-1) - (data[i][j].position);
+          data[i][j].normal = glm::normalize(glm::cross(b,a));
 
         }
         else
-          data[i][j].normal = new Vector3(0,1,0);
+          data[i][j].normal = glm::vec3(0,1,0);
       }
     }
   for (int i = 0;i<PAGE_SIZE;i++)
     for (int j = 0;j<PAGE_SIZE;j++)
     {
       data[i][j].type = grass;
-      if (data[i][j].normal->y<0.6)
+      if (data[i][j].normal.y<0.6)
         data[i][j].type = stone;
     }
   for (int i = 0;i<PAGE_SIZE;i++)
     for (int j = 0;j<PAGE_SIZE;j++)
     {
-      if (data[i][j].normal->y>0.75)
+      if (data[i][j].normal.y>0.75)
         data[i][j].isGrass = noise(origin_x-i,origin_y-j)<0.98;
       else
         data[i][j].isGrass = false;
       
       data[i][j].isTree = false;
-      if (data[i][j].normal->y>0.9)
+      if (data[i][j].normal.y>0.9)
         if (noise(origin_x+i,origin_y+j)<0.01)
         {
           data[i][j].isTree = true;
@@ -58,7 +69,7 @@ Page::Page(int x,int y,float(*g)(int,int))
         }
 
       data[i][j].isFern = false;  
-      if (data[i][j].normal->y>0.83)
+      if (data[i][j].normal.y>0.83)
         if ((!data[i][j].isTree) && noise(origin_x+i,origin_y+j)<0.15)
         {
           data[i][j].isFern = true;

@@ -12,11 +12,11 @@ class Stars;
 class Sun : public Object
 {
   private:
-    Vector3 centre;
+    glm::vec3 centre;
     float theta;
   public:
-    Sun(Vector3 pos,Game* parent);
-    void Render(int,Vector3*);
+    Sun(glm::vec3 pos,Game* parent);
+    void Render(int,glm::vec3);
 };
 
 class Stars : public Object
@@ -25,7 +25,7 @@ class Stars : public Object
     float theta;
   public:
     Stars(Game* parent);
-    void Render(int,Vector3*);
+    void Render(int,glm::vec3);
 };
 
 class Sky : public Object
@@ -36,7 +36,7 @@ class Sky : public Object
     float theta;
   public:
     Sky(Game* parent);
-    void Render(int,Vector3*);
+    void Render(int,glm::vec3);
 };
 
 #endif

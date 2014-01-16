@@ -29,7 +29,7 @@ class Region : public Object
 	  void initialiseTriangles();
   public:
   	/// Constructs the region with the given coordinates
-    Region(Vector3,Game*);
+    Region(glm::vec3,Game*);
     /// Returns the X coordinate of the origin of this region
     float getOriginX();
     /// Returns the Y coordinate of the origin of this region.  This is its z coordinate in gamespace

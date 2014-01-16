@@ -14,7 +14,7 @@
 
 /// @param pos The position of this object in gamespace
 /// @param g   The game to which this object belongs
-Object::Object(Vector3 pos,Game* g)
+Object::Object(glm::vec3 pos,Game* g)
 {
   position = pos;
   game = g;
@@ -23,12 +23,17 @@ Object::Object(Vector3 pos,Game* g)
   triDat = NULL;
   textureNumber = 0;
   billboard = false;
-  forward = Vector3(1,0,0);
-  up = Vector3(0,1,0);
-  right = Vector3(0,0,1);
+  forward = glm::vec3(1,0,0);
+  up = glm::vec3(0,1,0);
+  right = glm::vec3(0,0,1);
   xySlew = 0;
   shinyness = 0.f;
-  colour[0] = colour[1] = colour[2] = colour[3] = 1;
+  glGenBuffers(1, &objectBO);
+  objectData.objectColour[0] = 1;
+  objectData.objectColour[1] = 1;
+  objectData.objectColour[2] = 1;
+  objectData.objectColour[3] = 1;
+  objectData.shinyness = 0.000001;
   updateMatrix();
 }
 
@@ -47,13 +52,13 @@ Object::~Object()
 }
 
 /// Accesses the position of this object
-Vector3 Object::getPosition()
+glm::vec3 Object::getPosition()
 {
   return position;
 }
 
 /// Changes the position of the object.
-void Object::setPosition(Vector3 pos)
+void Object::setPosition(glm::vec3 pos)
 {
   position = pos;
   updateMatrix();
@@ -64,47 +69,33 @@ void Object::setPosition(Vector3 pos)
 /// functions
 /// @param refreshTime Number of milliseconds since the last rendering
 /// @param cameraPos   Position of the camera in 3-space
-void Object::Render(int refreshTime, Vector3* cameraPos)
+void Object::Render(int refreshTime, glm::vec3 cameraPos)
 {
   // Rotate the object if it is a billboard
   if (billboard)
   {
-    right = (*cameraPos-position).normal().cross(up);
-    forward = up.cross(right);
+    right = glm::cross(glm::normalize(cameraPos-position),up);
+    forward = glm::cross(up,right);
     updateMatrix();
   }
-  
-  // Only do something if we have data	
+  // Only do something if we have data	(THIS IS THE MAIN BOTTLENECK!)
 	if (buffersInitialised)
 	{
-    // Load our transformation matrix
-    game->currentShader->setObjectMatrix(transformMatrix);
-    game->currentShader->setFloat("shinyness",shinyness);
-    game->currentShader->setVec4("objectColour",colour);
-    // Upload this object's texture
-    glActiveTexture(GL_TEXTURE3);
+    // Load our transformation matrix etc
+    game->mainShader->setObjectData(objectBO);
+    // Select this object's texture
     glBindTexture(GL_TEXTURE_2D,textureNumber);
-    glEnableVertexAttribArrayARB(0);
-    glEnableVertexAttribArrayARB(1);
-    glEnableVertexAttribArrayARB(2);
-    glEnableVertexAttribArrayARB(3);
-    glEnableVertexAttribArrayARB(4);
+    // Use our data
 
     glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
-    // Get the position data
+    glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
     glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
     glVertexAttribPointerARB(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));
     glVertexAttribPointerARB(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
     glVertexAttribPointerARB(3,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
     glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
-    glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
     glDrawElements(GL_TRIANGLES,numberOfTriangles*3,GL_UNSIGNED_INT,0);
-    glDisableVertexAttribArrayARB(0);
-    glDisableVertexAttribArrayARB(1);
-    glDisableVertexAttribArrayARB(2);
-    glDisableVertexAttribArrayARB(3);
-    glDisableVertexAttribArrayARB(4);
-	}
+  }
 }
 
 /// Reset the data.  Clear the internal arrays, and the GPU arrays.
@@ -143,7 +134,7 @@ void Object::clearTriangleData(int p, int t)
 /// @param r The red component of the colour
 /// @param b The blue component of the colour
 /// @param g The green component of the colour
-void Object::addPoint(int i,Vector3 point,Vector3 normal, float r, float g, float b)
+void Object::addPoint(int i,glm::vec3 point,glm::vec3 normal, float r, float g, float b)
 {
   // Add it to the internal array
 	vertexData[i].px = point.x;
@@ -219,37 +210,49 @@ void Object::editTextureCoord(int i, float u, float v)
 /// Rotates the object to match the given new axis
 /// @param basisX The new X axis
 /// @param basisY The new Y axis
-void Object::rotate(Vector3 basisX,Vector3 basisY)
+void Object::rotate(glm::vec3 basisX,glm::vec3 basisY)
 {
-  forward = basisX.normal();
-  up = basisY.normal();
-  right = up.cross(forward).normal();
+  forward = glm::normalize(basisX);
+  up = glm::normalize(basisY);
+  right = glm::normalize(glm::cross(up,forward));
   updateMatrix();
+}
+
+/// Sets the global object colour
+void Object::setColour(glm::vec4 col)
+{
+  objectData.objectColour[0] = col.x;
+  objectData.objectColour[1] = col.y;
+  objectData.objectColour[2] = col.z;
+  objectData.objectColour[3] = col.w;
+  updateObjectBO();
 }
 
 /// Updates the object translation and rotation matrix
 void Object::updateMatrix()
 {
   // This works.  You can check it yourself.
-  transformMatrix[0] = forward.x;
-  transformMatrix[1] = up.x+xySlew;
-  transformMatrix[2] = right.x;
-  transformMatrix[3] = position.x;
+  // The matrix is done columns, then rows
+  objectData.transformMatrix[0] = forward.x;
+  objectData.transformMatrix[1] = forward.y;
+  objectData.transformMatrix[2] = forward.z;
+  objectData.transformMatrix[3] = 0;
 
-  transformMatrix[4] = forward.y;
-  transformMatrix[5] = up.y;
-  transformMatrix[6] = right.y;
-  transformMatrix[7] = position.y;
+  objectData.transformMatrix[4] = up.x+xySlew;
+  objectData.transformMatrix[5] = up.y;
+  objectData.transformMatrix[6] = up.z;
+  objectData.transformMatrix[7] = 0;
 
-  transformMatrix[8] = forward.z;
-  transformMatrix[9] = up.z;
-  transformMatrix[10] = right.z;
-  transformMatrix[11] = position.z;
+  objectData.transformMatrix[8] = right.x;
+  objectData.transformMatrix[9] = right.y;
+  objectData.transformMatrix[10] = right.z;
+  objectData.transformMatrix[11] = 0;
 
-  transformMatrix[12] = 0;
-  transformMatrix[13] = 0;
-  transformMatrix[14] = 0;
-  transformMatrix[15] = 1;
+  objectData.transformMatrix[12] = position.x;
+  objectData.transformMatrix[13] = position.y;
+  objectData.transformMatrix[14] = position.z;
+  objectData.transformMatrix[15] = 1;
+  updateObjectBO();
 }
 
 /// WARNING: Only call this function if you are sure that you will never 
@@ -269,6 +272,13 @@ void Object::freeze()
     delete[] vertexData;
     vertexData = NULL;
   }
+}
+
+void Object::updateObjectBO()
+{
+  
+  glBindBuffer(GL_UNIFORM_BUFFER, objectBO);
+  glBufferData(GL_UNIFORM_BUFFER, sizeof(objectData), &objectData, GL_DYNAMIC_DRAW);
 }
 
 

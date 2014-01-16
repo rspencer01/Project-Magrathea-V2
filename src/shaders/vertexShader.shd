@@ -1,15 +1,32 @@
-#version 130
+#version 140
 in vec3 inPosition;
 in vec4 inColour;
 in vec2 inTex;
 in vec3 inNorm;
 in vec4 inTexShades;
-uniform mat4 transformationMatrix;
-uniform mat4 projectionMatrix;
-uniform mat4 lightTransformMatrix;
-uniform mat4 lightProjectionMatrix;
-uniform mat4 objectMatrix;
-uniform vec3 sunDirection;
+layout(shared)uniform frameData
+{
+  vec4 frameColour;  
+  mat4x4 transformationMatrix;
+  mat4x4 projectionMatrix;  
+  mat4x4 lightTransformMatrix;
+  mat4x4 lightProjectionMatrix;
+  vec4 sunDirection;  
+  vec4 cameraPos;
+  vec4 fogColour;
+  float isShadow;
+  float sunIntensity;
+  float fog;
+  float doLighting;
+};
+
+layout(shared)uniform objectData
+{
+  mat4x4 objectMatrix;
+  vec4 objectColour; 
+  float shinyness;  
+};
+
 out vec4 ShadowCoord;
 out vec4 col;
 out vec2 tex;
@@ -18,17 +35,26 @@ out vec3 normal;
 out vec3 pos;
 void main()
 {
-  gl_Position = projectionMatrix * transformationMatrix * objectMatrix* vec4(inPosition, 1.0);
+  gl_Position = projectionMatrix * transformationMatrix * objectMatrix * vec4(inPosition, 1.0);
   
   ShadowCoord = lightProjectionMatrix * lightTransformMatrix * objectMatrix* vec4(inPosition, 1.0);
+  
+  pos = (objectMatrix* vec4(inPosition, 1.0)).xyz;
+  col = inColour * objectColour * frameColour;
+  normal = inNorm;  
+  tex = inTex;
+  
+  texShades = inTexShades;  
+  
+  if (isShadow>0.5)
+  {
+  	gl_Position = ShadowCoord;
+  	return;
+  }
+  
   ShadowCoord.x = ShadowCoord.x*0.5/ShadowCoord.w+0.5;
   ShadowCoord.y = ShadowCoord.y*0.5/ShadowCoord.w+0.5;
   ShadowCoord.z = ShadowCoord.z*0.5/ShadowCoord.w+0.5;
   
-  pos = (objectMatrix* vec4(inPosition, 1.0)).xyz;
-  col = inColour;
-  normal = inNorm;  
-  tex = inTex;
-  
-  texShades = inTexShades;
+
 }

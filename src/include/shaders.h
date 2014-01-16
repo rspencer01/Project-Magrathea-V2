@@ -13,6 +13,22 @@
 #include <map>
 #include <string>
 
+typedef struct
+{
+  float colour[4];
+  float cameraMatrix[16];
+  float projectionMatrix[16];
+  float lightCameraMatrix[16];
+  float lightProjectionMatrix[16];
+  float sunDirection[4];
+  float cameraPos[4];
+  float fogColour[4];
+  float isShadow;
+  float sunIntensity;
+  float fog;
+  float doLighting;
+} FrameData;
+
 /// A shader program object handles the loading, compiling and executing of shaders (both vertex and fragment)
 /// on the GPU.
 class ShaderProgram
@@ -25,7 +41,10 @@ class ShaderProgram
     /// A map to hold the positions in GPU memory of variables (so we don't look them up each time)
     std::map<std::string,GLuint> variableLocations;
     /// The position of the object transform matrix (changed often)
-    GLuint objPos;
+    GLuint objectDataPosition;
+    /// The position of the frame information
+    GLuint frameDataPosition;
+    GLuint frameDataBO;
   public:
     /// Construct the program (empty and unloaded)
     ShaderProgram();
@@ -43,11 +62,12 @@ class ShaderProgram
     void setFloat(const char* varName, float value);
     /// Set some uniform vec3 variable
     void setVec3(const char*,float*);
-    /// Set some uniform vec3 variable
-    void setVec4(const char*,float*);
-    /// Function to set the object transformation matrix
-    void setObjectMatrix(float* value);
-
+    /// Function to set the object transformation matrix etc.
+    void setObjectData(GLuint);
+    /// Function to set the camera transformation matrix etc.
+    void setFrameData();
+    /// Struct containing camera transformation etc
+    FrameData frameData;
 };
 
 #endif

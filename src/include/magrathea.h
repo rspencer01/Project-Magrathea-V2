@@ -27,8 +27,6 @@ class Object;
 class Cloud;
 class ObjectManager;
 
-#include <vector3.h>
-
 #include <object.h>
 #include <noise.h>
 #include <fpscounter.h>

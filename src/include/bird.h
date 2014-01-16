@@ -20,13 +20,13 @@ class Bird : public Object
     float theta;
     float dihedral;
     float turnCoeff;
-    Vector3 velocity;
-    Vector3 forward;
-    Vector3 upward;
+    glm::vec3 velocity;
+    glm::vec3 forward;
+    glm::vec3 upward;
   public:
 	  /// Constructs the tree with the given coordinates
-    Bird(Vector3,Game*);
-    void Render(int,Vector3*);
+    Bird(glm::vec3,Game*);
+    void Render(int,glm::vec3);
 };
 
 #endif

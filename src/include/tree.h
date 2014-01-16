@@ -18,7 +18,7 @@ class Tree : public Object
 	  void initialiseTriangles();
   public:
 	  /// Constructs a cartoon tree with the given coordinates
-    Tree(Vector3,Game*);
+    Tree(glm::vec3,Game*);
 };
 
 

@@ -54,29 +54,35 @@ void initialiseGraphics(Game* sh)
   // Lets not display a cursor
   glutSetCursor(GLUT_CURSOR_NONE);
 
+  // Set up all the vertex attribut arrays for rendering later on...
+  glEnableVertexAttribArrayARB(0);
+  glEnableVertexAttribArrayARB(1);
+  glEnableVertexAttribArrayARB(2);
+  glEnableVertexAttribArrayARB(3);
+  glEnableVertexAttribArrayARB(4);
 }
 
 /// Builds a projection matrix
 void BuildPerspProjMat(float *m, float fov, float aspect, float znear, float zfar)
 {
   m[0]  = (float)(1.f/(aspect * tan(fov*3.141592/360.0)));
-  m[1]  = 0;
-  m[2]  = 0;
-  m[3]  = 0;
-
   m[4]  = 0;
-  m[5]  = (float)(1.f/tan(fov*3.141592/360.0));
-  m[6]  = 0;
-  m[7]  = 0;
-
   m[8]  = 0;
-  m[9]  = 0;
-  m[10] = (-zfar)/(zfar-znear);
-  m[11] = -1;
+  m[12]  = 0;
 
-  m[12] = 0;
-  m[13] = 0;
-  m[14] = -zfar*znear/(zfar-znear);
+  m[1]  = 0;
+  m[5]  = (float)(1.f/tan(fov*3.141592/360.0));
+  m[9]  = 0;
+  m[13]  = 0;
+
+  m[2]  = 0;
+  m[6]  = 0;
+  m[10] = (-zfar)/(zfar-znear);
+  m[14] = -1;
+
+  m[3] = 0;
+  m[7] = 0;
+  m[11] = -zfar*znear/(zfar-znear);
   m[15] = 0;
 }
 
@@ -89,7 +95,7 @@ void resize(int width, int height)
   // Construct the projection matrix ...
   BuildPerspProjMat(projMatrix,20.f, float(width)/height, 2.f, 100.f);
   // ... and push it to the shaders
-  game->setProjectionMatrix(&projMatrix[0]);
+  memcpy(game->mainShader->frameData.projectionMatrix,projMatrix,16*sizeof(float));
 }
 
 
