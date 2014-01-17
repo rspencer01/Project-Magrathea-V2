@@ -28,44 +28,29 @@ class Object;
 /// TODO Pass this in one data stream for GLSL portability
 typedef struct
 {
-  /// The x component of the position of the vertex
-  float px;
-  /// The y component of the position of the vertex
-  float py;
-  /// The z component of the position of the vertex
-  float pz;
-  /// The red component of the vertex colour
-  float red;
-  /// The green component of the vertex colour
-  float green;
-  /// The blue component of the vertex colour
-  float blue;
-  /// The alpha component of the vertex colour
-  float alpha;
-  /// The x component of the normal at the vertex
-  float nx;
-  /// The y component of the normal at the vertex
-  float ny;
-  /// The z component of the normal at the vertex
-  float nz;
-  /// The x coordinates of the vertex texture
-  float texx;
-  /// The y coordinates of the vertex texture
-  float texy;
-  /// Texture mixing parts.  A value of less than 0 in the texZero indicates not texture mixing
-  float texZero;
-  float texOne;
-  float texTwo;
-  float texThree;
+  /// The position of the vertex
+  glm::vec3 position;
+  /// The vertex colour
+  glm::vec4 colour;
+  /// The normal at the vertex
+  glm::vec3 normal;
+  /// Thecoordinates of the texture
+  glm::vec2 texture;
+  /// Texture mixing parts.  A value of less than 0 in the x axis indicates not texture mixing
+  glm::vec4 texMix;
 } VertexDatum;
 
 typedef struct
 {
-  float transformMatrix [16];
-  float objectColour [4];
+  glm::mat4 transformMatrix;
+  glm::vec4 objectColour;
   float shinyness;
   int objectType;
 } ObjectData;
+
+// Check that the above structs are the right size
+static_assert(sizeof(VertexDatum) == sizeof(GLfloat) * 16, "VertexDatum incorrect size");
+static_assert(sizeof(ObjectData) == sizeof(GLfloat) * 21 + sizeof(GLuint), "ObjectData incorrect size");
 
 /// \brief An object is anything that occurs in the game space
 ///
@@ -133,9 +118,9 @@ class Object
     void setTextureMix(int,float,float,float,float);
     /// Free the space of the vertices
     void freeze();
-    /// How shiny is the material?
-    float shinyness;
+    /// The transformation, colour etc for this object
     ObjectData objectData;
+    /// Send all the above to the shader
     void updateObjectBO();
   public:
 	  /// Constructs the object with the given coordinates and in the given game
