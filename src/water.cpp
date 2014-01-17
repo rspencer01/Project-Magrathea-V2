@@ -95,7 +95,7 @@ void Water::Render(int refreshTime, glm::vec3 cameraPos)
   game->mainShader->frameData.cullLevel = position.y;
   game->mainShader->frameData.isReflection = 1;
   game->mainShader->setFrameData();
-  game->sky->Render(0,game->camera->Position);
+  game->sky->Render(0,game->camera->getPosition());
   game->RenderScene(0);
   game->mainShader->frameData.cullLevel = -1000000;
   game->mainShader->frameData.isReflection = 0;

@@ -10,7 +10,7 @@
 class Camera;
 #include <magrathea.h>
 
-/// A helper class that renders the scene according to some camera position and rotation
+/// A class that renders the scene according to some camera position and rotation
 ///
 /// The camera class creates a matrix to move the scene so that it is that of one
 /// rendered by a camera a the given position and orientation.  It also supports basic
@@ -18,19 +18,21 @@ class Camera;
 class Camera
 {
   private:
-    /// The upward direction
-    glm::vec3 UpVector;
-    /// The shader 
-    ShaderProgram* shader;
-    float RotatedX;	
-	  const char* matrixName;
-    float* viewMatrix;
-  public:
-    glm::vec3 ViewDir;
 	  /// The position of the camera
 	  glm::vec3 Position;
+    /// The upward direction
+    glm::vec3 UpVector;
+    /// The direction we are looking 
+    glm::vec3 ViewDir;
+    /// How far around have we rotated (needed for "flat" rotation")
+    float RotatedX;	
+    /// Where should this camera put the matrix upon rendering
+    float* matrixData;
+    /// Where should this camera put its position upon rendering
+    float* positionData;
+  public:
 	  /// Initialises the camera
-  	Camera(ShaderProgram*,float*);				
+  	Camera(float*,float*);				
 	  /// Rotates and translates the scene to the correct position.
   	void Render ( void );							
 	  /// Translate the camera
@@ -45,9 +47,14 @@ class Camera
     void RotateFlat (float Angle);
   	/// Move in the direction the camera is pointing
 	  void MoveForward ( float Distance );
-    /// Return a pointer to the transformation matrix
-    float* getTransformationMatrix();
-
+    /// Accessor for the camera position
+    glm::vec3 getPosition();
+    /// Mutator for the camera position
+    void setPosition(glm::vec3);
+    /// Accessor for the camera viewing direction
+    glm::vec3 getViewDirection();
+    /// Mutator for the camera viewing direction
+    void setViewDirection(glm::vec3);
 };
 
 #endif
