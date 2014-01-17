@@ -18,7 +18,9 @@ class Camera;
 class Camera
 {
   private:
+    /// The upward direction
     glm::vec3 UpVector;
+    /// The shader 
     ShaderProgram* shader;
     float RotatedX;	
 	  const char* matrixName;

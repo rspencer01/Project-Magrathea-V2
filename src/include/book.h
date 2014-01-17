@@ -37,6 +37,7 @@ class Book
 	public:
     /// Construct a new book.  Use the given function to populate
 		Book(float (*g)(int,int));
+    /// Destroys the book and frees up all space
     ~Book();
     /// The function called to get the data
     terrainBit getAt(int,int);
