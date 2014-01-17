@@ -4,7 +4,7 @@
 #include <camera.h>
 #include <shaders.h>
 
-/// Construct a new camera, editing the "transformationMatrix" variable of the given shader program
+/// Construct a new camera, putting its matrix and position in the given locations
 /// @param gm The game in which this camera resides
 /// @param sp The shader to which this camera belongs
 Camera::Camera(float* matrix, float* position)
@@ -102,21 +102,25 @@ void Camera::RotateFlat( float theta )
   RotateX(rx);
 }
 
+/// @return The object of the camera in game space
 glm::vec3 Camera::getPosition()
 {
   return Position;
 }
 
+/// @param The new position of the camera
 void Camera::setPosition(glm::vec3 newPos)
 {
   Position = newPos;
 }
 
+/// @return The direction the camera is looking
 glm::vec3 Camera::getViewDirection()
 {
   return ViewDir;
 }
 
+/// @param The new direction for the camera to look in
 void Camera::setViewDirection(glm::vec3 newDir)
 {
   ViewDir = newDir;

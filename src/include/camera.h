@@ -35,8 +35,6 @@ class Camera
   	Camera(float*,float*);				
 	  /// Rotates and translates the scene to the correct position.
   	void Render ( void );							
-	  /// Translate the camera
-  	void Move ( glm::vec3 Direction );
 	  /// Rotate around the x axis
   	void RotateX ( float Angle );
 	  /// Rotate around the y axis
