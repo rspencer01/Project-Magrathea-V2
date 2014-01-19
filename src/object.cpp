@@ -27,12 +27,8 @@ Object::Object(glm::vec3 pos,Game* g)
   up = glm::vec3(0,1,0);
   right = glm::vec3(0,0,1);
   xySlew = 0;
-  shinyness = 0.f;
   glGenBuffers(1, &objectBO);
-  objectData.objectColour[0] = 1;
-  objectData.objectColour[1] = 1;
-  objectData.objectColour[2] = 1;
-  objectData.objectColour[3] = 1;
+  objectData.objectColour = glm::vec4(1);
   objectData.shinyness = 0.000001;
   objectData.objectType = OT_STANDARD_OBJECT;
   updateMatrix();
@@ -138,29 +134,16 @@ void Object::clearTriangleData(int p, int t)
 void Object::addPoint(int i,glm::vec3 point,glm::vec3 normal, float r, float g, float b)
 {
   // Add it to the internal array
-	vertexData[i].px = point.x;
-	vertexData[i].py = point.y;
-	vertexData[i].pz = point.z;
-	vertexData[i].nx = normal.x;
-	vertexData[i].ny = normal.y;
-	vertexData[i].nz = normal.z;
-	vertexData[i].red = r;
-	vertexData[i].green = g;
-	vertexData[i].blue = b;
-  vertexData[i].alpha = 1.f;
-  vertexData[i].texZero = -1.0;
-  vertexData[i].texOne = -1.0;
-  vertexData[i].texTwo = -1.0;
-  vertexData[i].texThree = -1.0;
+	vertexData[i].position = point;
+	vertexData[i].normal = normal;
+	vertexData[i].colour = glm::vec4(r,g,b,1);
+  vertexData[i].texMix = glm::vec4(-1);
 }
 
 
 void Object::setTextureMix(int point,float a, float b, float c, float d)
 {
-  vertexData[point].texZero = a;
-  vertexData[point].texOne = b;
-  vertexData[point].texTwo = c;
-  vertexData[point].texThree = d;
+  vertexData[point].texMix = glm::vec4(a,b,c,d);
 }
 
 /// Adds a new triangle to the object.  Indexes are the same as the order the points were added
@@ -204,8 +187,7 @@ void Object::updateTriangleData()
 
 void Object::editTextureCoord(int i, float u, float v)
 {
-	vertexData[i].texx = u;
-	vertexData[i].texy = v;
+	vertexData[i].texture = glm::vec2(u,v);
 }
 
 /// Rotates the object to match the given new axis
@@ -222,10 +204,7 @@ void Object::rotate(glm::vec3 basisX,glm::vec3 basisY)
 /// Sets the global object colour
 void Object::setColour(glm::vec4 col)
 {
-  objectData.objectColour[0] = col.x;
-  objectData.objectColour[1] = col.y;
-  objectData.objectColour[2] = col.z;
-  objectData.objectColour[3] = col.w;
+  objectData.objectColour = col;
   updateObjectBO();
 }
 
@@ -233,26 +212,10 @@ void Object::setColour(glm::vec4 col)
 void Object::updateMatrix()
 {
   // This works.  You can check it yourself.
-  // The matrix is done columns, then rows
-  objectData.transformMatrix[0] = forward.x;
-  objectData.transformMatrix[1] = forward.y;
-  objectData.transformMatrix[2] = forward.z;
-  objectData.transformMatrix[3] = 0;
-
-  objectData.transformMatrix[4] = up.x+xySlew;
-  objectData.transformMatrix[5] = up.y;
-  objectData.transformMatrix[6] = up.z;
-  objectData.transformMatrix[7] = 0;
-
-  objectData.transformMatrix[8] = right.x;
-  objectData.transformMatrix[9] = right.y;
-  objectData.transformMatrix[10] = right.z;
-  objectData.transformMatrix[11] = 0;
-
-  objectData.transformMatrix[12] = position.x;
-  objectData.transformMatrix[13] = position.y;
-  objectData.transformMatrix[14] = position.z;
-  objectData.transformMatrix[15] = 1;
+  objectData.transformMatrix = glm::mat4(glm::vec4(forward,0),
+                                         glm::vec4(up,0) + glm::vec4(xySlew,0,0,0),
+                                         glm::vec4(right,0),
+                                         glm::vec4(position,1));
   updateObjectBO();
 }
 
@@ -334,9 +297,9 @@ void Object::loadFromOBJFile(const char* filePath)
       // Parse this string
       std::istringstream iss(line.substr(2,100));
       // x,y,z space separated
-      iss>>vertexData[vertexCount].px>>vertexData[vertexCount].py>>vertexData[vertexCount].pz;
+      iss>>vertexData[vertexCount].position.x>>vertexData[vertexCount].position.y>>vertexData[vertexCount].position.z;
       // Make this thing coloured
-      vertexData[vertexCount].red = vertexData[vertexCount].blue = vertexData[vertexCount].green = vertexData[vertexCount].alpha = 1.f; 
+      vertexData[vertexCount].colour = glm::vec4(1); 
       vertexCount++;
     }
     // A normal

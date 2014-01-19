@@ -6,8 +6,8 @@
 
 Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
 {
-  int waterSize = 600;
-  int detail = 1;
+  int waterSize = 100;
+  float detail = 1.f;
   textureNumber = textureFromTGA("../assets/water.tga",true);
   clearTriangleData((waterSize+1)*(waterSize+1),waterSize*waterSize*2);
 	// There are (size+1)^2 vertices.  Bring in the data
@@ -37,7 +37,7 @@ Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
 			            (y+1)*(waterSize+1) + (x+1));
 		}
   pushTriangleData();
-  objectData.shinyness = 0.05;
+  objectData.shinyness = 0.05f;
   objectData.objectColour[3] = 1;
   objectData.objectType = OT_WATER;
   updateObjectBO();
@@ -95,7 +95,7 @@ void Water::Render(int refreshTime, glm::vec3 cameraPos)
   game->mainShader->frameData.cullLevel = position.y;
   game->mainShader->frameData.isReflection = 1;
   game->mainShader->setFrameData();
-  game->sky->Render(0,game->camera->Position);
+  game->sky->Render(0,game->camera->getPosition());
   game->RenderScene(0);
   game->mainShader->frameData.cullLevel = -1000000;
   game->mainShader->frameData.isReflection = 0;

@@ -97,7 +97,7 @@ void resize(int width, int height)
   // Construct the projection matrix ...
   BuildPerspProjMat(projMatrix,20.f, float(width)/height, 2.f, 100.f);
   // ... and push it to the shaders
-  memcpy(game->mainShader->frameData.projectionMatrix,projMatrix,16*sizeof(float));
+  memcpy(&(game->mainShader->frameData.projectionMatrix),projMatrix,16*sizeof(float));
   game->mainShader->setFrameData();
 }
 

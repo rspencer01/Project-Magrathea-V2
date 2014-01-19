@@ -15,7 +15,7 @@ Sky::Sky(Game* parent) : Object(glm::vec3(),parent)
   for (int i = 0;i<5;i++)
   {
     addPoint(i+1,glm::vec3(sin((63.43)/180*3.1415)*cos(i*3.1415/2.5)     ,cos((63.43)/180*3.1415),sin((63.43)/180*3.1415)*sin(i*3.1415/2.5))*radius,glm::vec3(0,1,0),1,1,1);
-    editTextureCoord(i+1,i/5,i/10);
+    editTextureCoord(i+1,i/5.f,i/10.f);
     addTriangle(i,0,i+1,(i+1)%5 +1);
   }
   addPoint(6,glm::vec3(0,-1,0)*radius,glm::vec3(0,-1,0),1,1,1);
@@ -23,7 +23,7 @@ Sky::Sky(Game* parent) : Object(glm::vec3(),parent)
   for (int i = 0;i<5;i++)
   {
     addPoint(i+7,glm::vec3(sin((63.43)/180*3.1415)*cos((i+0.5)*3.1415/2.5)     ,-cos((63.43)/180*3.1415),sin((63.43)/180*3.1415)*sin((i+0.5)*3.1415/2.5))*radius,glm::vec3(0,-1,0),1,1,1);
-    editTextureCoord(i+7,i/5,i/10);
+    editTextureCoord(i+7,i/5.f,i/10.f);
     addTriangle(i+5,6,i+7,(i+1)%5 + 7);
   }
   for (int i = 0;i<5;i++)
@@ -50,10 +50,10 @@ void Sky::Render(int refreshTime, glm::vec3 cameraPos)
   setPosition(cameraPos);
   // Update the colour...
   theta += refreshTime / 1000.f *3.1415f*2*2.f / 600.f;
-  float l = pow(3.0*(1.0 - k(k(k(theta/3.1415))))/4.0 + 0.25,1.4);
-  objectData.objectColour[0] = l*( k(k(k(sin(theta/2.f))))/20.0 + 0.4);
-  objectData.objectColour[1] = l*( 0.6 - k(k(k(sin(theta/2.f))))/9.0);
-  objectData.objectColour[2] = l*1.0;
+  float l = pow(3.f*(1.f - k(k(k(theta/3.1415f))))/4.f + 0.25f,1.4f);
+  objectData.objectColour[0] = l*( k(k(k(sin(theta/2.f))))/20.f + 0.4f);
+  objectData.objectColour[1] = l*( 0.6f - k(k(k(sin(theta/2.f))))/9.f);
+  objectData.objectColour[2] = l*1.f;
   updateObjectBO();
   // Render stuff
   Object::Render(refreshTime,cameraPos);
@@ -110,7 +110,7 @@ void Sun::Render(int refreshTime,glm::vec3 cameraPos)
   game->mainShader->frameData.sunIntensity=1.0;
   Object::Render(refreshTime,cameraPos);
   // Then light the rest as per usual.
-  game->mainShader->frameData.sunIntensity = pow(3.0*(1.0 - k(k(k(theta/3.1415))))/4.0 + 0.25,1.4);
+  game->mainShader->frameData.sunIntensity = pow(3.f*(1.f - k(k(k(theta/3.1415f))))/4.f + 0.25f,1.4f);
   if (cos(theta)>0)
     game->mainShader->frameData.sunIntensity=cos(theta);
   else
@@ -120,9 +120,9 @@ void Sun::Render(int refreshTime,glm::vec3 cameraPos)
 
 Stars::Stars(Game* parent) : Object(glm::vec3(0),parent)
 {
-  float radius = 400;
-  float starSize = 1.22;
-  float numStars = 2000;
+  float radius = 400.f;
+  float starSize = 1.22f;
+  int numStars = 2000;
   clearTriangleData(numStars*6,numStars*5);
   for (int j = 0;j<numStars;j++)
   {
@@ -152,7 +152,7 @@ void Stars::Render(int refreshTime,glm::vec3 cameraPos)
   glm::vec3 right = glm::cross(glm::vec3(1.f,0,0),inc);
   glm::vec3 up = glm::cross(inc,right);
   rotate(inc,up*sin(-theta)+right*cos(theta));
-  float l = 3.0*(1.0 - k(k(k(theta/3.1415))))/4.0 + 0.25;
+  float l = 3.f*(1.f - k(k(k(theta/3.1415f))))/4.f + 0.25f;
   objectData.objectColour[3] = k((1-l)*(1-l)*(1-l));
   updateObjectBO();
   Object::Render(refreshTime,cameraPos);

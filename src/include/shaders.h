@@ -15,14 +15,14 @@
 
 typedef struct
 {
-  float colour[4];
-  float cameraMatrix[16];
-  float projectionMatrix[16];
-  float lightCameraMatrix[16];
-  float lightProjectionMatrix[16];
-  float sunDirection[4];
-  float cameraPos[4];
-  float fogColour[4];
+  glm::vec4 colour;
+  glm::mat4 cameraMatrix;
+  glm::mat4 projectionMatrix;
+  glm::mat4 lightCameraMatrix;
+  glm::mat4 lightProjectionMatrix;
+  glm::vec4 sunDirection;
+  glm::vec4 cameraPos;
+  glm::vec4 fogColour;
   float isShadow;
   float isReflection;
   float sunIntensity;
@@ -33,6 +33,8 @@ typedef struct
   int viewWidth;
   int viewHeight;
 } FrameData;
+
+static_assert(sizeof(FrameData) == 86 * sizeof(GLfloat) + 3 * sizeof(GLint),"FrameData wrong size");
 
 /// A shader program object handles the loading, compiling and executing of shaders (both vertex and fragment)
 /// on the GPU.
@@ -60,13 +62,7 @@ class ShaderProgram
     /// Actually use this shader
     void Load();
     /// Set some uniform matrix variable
-    void setMatrix(const char*,float*);
-    /// Set some uniform integer variable
     void setInt(const char* varName, unsigned int value);
-    /// Set some uniform float variable
-    void setFloat(const char* varName, float value);
-    /// Set some uniform vec3 variable
-    void setVec3(const char*,float*);
     /// Function to set the object transformation matrix etc.
     void setObjectData(GLuint);
     /// Function to set the camera transformation matrix etc.

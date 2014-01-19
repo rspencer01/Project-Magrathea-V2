@@ -4,10 +4,10 @@
 #include <camera.h>
 #include <shaders.h>
 
-/// Construct a new camera, editing the "transformationMatrix" variable of the given shader program
+/// Construct a new camera, putting its matrix and position in the given locations
 /// @param gm The game in which this camera resides
 /// @param sp The shader to which this camera belongs
-Camera::Camera(ShaderProgram* sp, float* matrix)
+Camera::Camera(glm::mat4* matrix, glm::vec4* position)
 {
   // Initialise to some useful directions
   Position = glm::vec3(0,0,1);
@@ -16,8 +16,8 @@ Camera::Camera(ShaderProgram* sp, float* matrix)
   // No rotation yet
   RotatedX = 0;
   // Remember the environment
-  shader = sp;
-  viewMatrix = matrix;
+  matrixData = matrix;
+  positionData = position;
 }
 
 /// Modifys the game world transform to reflect the postion of the camera.
@@ -32,31 +32,14 @@ void Camera::Render()
   ViewDir = glm::normalize(ViewDir);
 
   // Construct a matrix that transforms the object in the correct way
-  viewMatrix[0] = Right.x;
-  viewMatrix[1] = UpVector.x;
-  viewMatrix[2] = -ViewDir.x;
-  viewMatrix[3] = 0.f;
+  *matrixData = glm::transpose(glm::mat4(
+    glm::vec4(Right,-glm::dot(Right,Position)),
+    glm::vec4(UpVector,-glm::dot(UpVector,Position)),
+    glm::vec4(-ViewDir,glm::dot(ViewDir,Position)),
+    glm::vec4(0.f,0.f,0.f,1.f)));
 
-  viewMatrix[4] = Right.y;
-  viewMatrix[5] = UpVector.y;
-  viewMatrix[6] = -ViewDir.y;
-  viewMatrix[7] = 0.f;
-
-  viewMatrix[8] = Right.z;
-  viewMatrix[9] = UpVector.z;
-  viewMatrix[10] = -ViewDir.z;
-  viewMatrix[11] = 0.f;
-
-  viewMatrix[12] = -glm::dot(Right,Position);
-  viewMatrix[13] = -glm::dot(UpVector,Position);
-  viewMatrix[14] = glm::dot(ViewDir,Position);
-  viewMatrix[15] = 1.f;
-
-  shader->frameData.cameraPos[0] = Position.x;
-  shader->frameData.cameraPos[1] = Position.y;
-  shader->frameData.cameraPos[2] = Position.z;
-  // Now set the matrix of transformation in the shader
-  shader->setFrameData();
+  // Update the position of the camera, also
+  *positionData = glm::vec4(Position,1);
 }
 
 /// Moves the camera in the direction it is facing
@@ -103,8 +86,26 @@ void Camera::RotateFlat( float theta )
   RotateX(rx);
 }
 
-/// Returns a pointer to this camera's transformation matrix
-float* Camera::getTransformationMatrix()
+/// @return The object of the camera in game space
+glm::vec3 Camera::getPosition()
 {
-  return viewMatrix;
+  return Position;
+}
+
+/// @param The new position of the camera
+void Camera::setPosition(glm::vec3 newPos)
+{
+  Position = newPos;
+}
+
+/// @return The direction the camera is looking
+glm::vec3 Camera::getViewDirection()
+{
+  return ViewDir;
+}
+
+/// @param The new direction for the camera to look in
+void Camera::setViewDirection(glm::vec3 newDir)
+{
+  ViewDir = newDir;
 }
