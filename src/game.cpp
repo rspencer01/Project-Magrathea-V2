@@ -322,10 +322,11 @@ terrainBit Game::getTerrainBit(int x,int y)
 /// Constructs regions in an area around the given coordinates.  Does at most one region construction/destruction per call.
 void Game::constructRegions(float x,float y)
 {
+  int numRegions = 4;
   int rx = (int)(x /REGION_SIZE);
   int ry = (int)(y /REGION_SIZE);
-  for (int x = std::max(0,rx-20);x<std::min(127,rx+20);x++)
-    for (int y = std::max(0,ry-20);y<std::min(127,ry+20);y++)
+  for (int x = std::max(0,rx-numRegions);x<std::min(127,rx+numRegions);x++)
+    for (int y = std::max(0,ry-numRegions);y<std::min(127,ry+numRegions);y++)
       if (regions[y][x] == NULL)
       {
         regions[y][x] = new Region(glm::vec3(x*REGION_SIZE,0,y*REGION_SIZE),this);

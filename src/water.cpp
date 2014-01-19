@@ -6,8 +6,8 @@
 
 Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
 {
-  int waterSize = 600;
-  int detail = 1;
+  int waterSize = 100;
+  float detail = 1.f;
   textureNumber = textureFromTGA("../assets/water.tga",true);
   clearTriangleData((waterSize+1)*(waterSize+1),waterSize*waterSize*2);
 	// There are (size+1)^2 vertices.  Bring in the data
