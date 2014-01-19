@@ -27,12 +27,12 @@ class Camera
     /// How far around have we rotated (needed for "flat" rotation")
     float RotatedX;	
     /// Where should this camera put the matrix upon rendering
-    float* matrixData;
+    glm::mat4* matrixData;
     /// Where should this camera put its position upon rendering
-    float* positionData;
+    glm::vec4* positionData;
   public:
 	  /// Initialises the camera
-  	Camera(float*,float*);				
+  	Camera(glm::mat4*,glm::vec4*);				
 	  /// Rotates and translates the scene to the correct position.
   	void Render ( void );							
 	  /// Rotate around the x axis

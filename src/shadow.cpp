@@ -71,7 +71,7 @@ ShadowManager::ShadowManager(ShaderProgram* mainShader)
   projMatrix[11] = 0;
   projMatrix[15] = 1;
 
-  camera = new Camera(shader->frameData.lightCameraMatrix,shader->frameData.cameraPos);
+  camera = new Camera(&shader->frameData.lightCameraMatrix,&shader->frameData.cameraPos);
   camera->setPosition(glm::vec3(0.f,200.f,0.f));
   camera->RotateX(-3.1415f/2);
 
@@ -80,8 +80,8 @@ ShadowManager::ShadowManager(ShaderProgram* mainShader)
   glBindTexture(GL_TEXTURE_2D,texID);
   // And set the shadow projection matrix
 
-  memcpy(shader->frameData.lightProjectionMatrix,projMatrix,16*sizeof(float));
-  theta = 0.2;
+  memcpy(&(shader->frameData.lightProjectionMatrix),projMatrix,16*sizeof(float));
+  theta = 0.2f;
 }
 
 /// Prepare the shadow manager for writing to the shadow texture.

@@ -7,7 +7,7 @@
 /// Construct a new camera, putting its matrix and position in the given locations
 /// @param gm The game in which this camera resides
 /// @param sp The shader to which this camera belongs
-Camera::Camera(float* matrix, float* position)
+Camera::Camera(glm::mat4* matrix, glm::vec4* position)
 {
   // Initialise to some useful directions
   Position = glm::vec3(0,0,1);
@@ -32,30 +32,14 @@ void Camera::Render()
   ViewDir = glm::normalize(ViewDir);
 
   // Construct a matrix that transforms the object in the correct way
-  matrixData[0] = Right.x;
-  matrixData[1] = UpVector.x;
-  matrixData[2] = -ViewDir.x;
-  matrixData[3] = 0.f;
-
-  matrixData[4] = Right.y;
-  matrixData[5] = UpVector.y;
-  matrixData[6] = -ViewDir.y;
-  matrixData[7] = 0.f;
-
-  matrixData[8] = Right.z;
-  matrixData[9] = UpVector.z;
-  matrixData[10] = -ViewDir.z;
-  matrixData[11] = 0.f;
-
-  matrixData[12] = -glm::dot(Right,Position);
-  matrixData[13] = -glm::dot(UpVector,Position);
-  matrixData[14] = glm::dot(ViewDir,Position);
-  matrixData[15] = 1.f;
+  *matrixData = glm::transpose(glm::mat4(
+    glm::vec4(Right,-glm::dot(Right,Position)),
+    glm::vec4(UpVector,-glm::dot(UpVector,Position)),
+    glm::vec4(-ViewDir,glm::dot(ViewDir,Position)),
+    glm::vec4(0.f,0.f,0.f,1.f)));
 
   // Update the position of the camera, also
-  positionData[0] = Position.x;
-  positionData[1] = Position.y;
-  positionData[2] = Position.z;
+  *positionData = glm::vec4(Position,1);
 }
 
 /// Moves the camera in the direction it is facing

@@ -37,7 +37,7 @@ Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
 			            (y+1)*(waterSize+1) + (x+1));
 		}
   pushTriangleData();
-  objectData.shinyness = 0.05;
+  objectData.shinyness = 0.05f;
   objectData.objectColour[3] = 1;
   objectData.objectType = OT_WATER;
   updateObjectBO();
