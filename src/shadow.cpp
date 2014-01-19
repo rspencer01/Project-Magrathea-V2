@@ -78,11 +78,8 @@ ShadowManager::ShadowManager(ShaderProgram* mainShader)
   // Set the shadow texture to this one's texture
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
-  // And set the two samplers and the shadow projection matrix
-  // The samplers should not be set here... hmm
-  shader->setInt("shadowTexture",7);
-  shader->setInt("otherTexture",3);
-  shader->setInt("waterTexture",4);
+  // And set the shadow projection matrix
+
   memcpy(shader->frameData.lightProjectionMatrix,projMatrix,16*sizeof(float));
   theta = 0.2;
 }

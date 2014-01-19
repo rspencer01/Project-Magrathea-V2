@@ -60,13 +60,7 @@ class ShaderProgram
     /// Actually use this shader
     void Load();
     /// Set some uniform matrix variable
-    void setMatrix(const char*,float*);
-    /// Set some uniform integer variable
     void setInt(const char* varName, unsigned int value);
-    /// Set some uniform float variable
-    void setFloat(const char* varName, float value);
-    /// Set some uniform vec3 variable
-    void setVec3(const char*,float*);
     /// Function to set the object transformation matrix etc.
     void setObjectData(GLuint);
     /// Function to set the camera transformation matrix etc.

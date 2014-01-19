@@ -348,8 +348,3 @@ void Game::renderMenu()
   writeString(3,75,"  <x> Speed up");
   writeString(3,71,"  <z> Slow down");
 }
-
-void Game::setProjectionMatrix(float* mat)
-{
-  mainShader->setMatrix("projectionMatrix",mat);
-}

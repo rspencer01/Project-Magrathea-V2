@@ -121,6 +121,9 @@ void ShaderProgram::Load()
   glVertexAttribPointerARB(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
   glVertexAttribPointerARB(3,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
   glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
+  setInt("shadowTexture",7);
+  setInt("otherTexture",3);
+  setInt("waterTexture",4);
   setFrameData();
 }
 
@@ -138,24 +141,9 @@ GLuint ShaderProgram::getVariablePosition(const char* name)
   return variableLocations[vName];
 }
 
-void ShaderProgram::setMatrix(const char* varName, float* value)
-{
-  glUniformMatrix4fv(getVariablePosition(varName),1,GL_TRUE,value);
-}
-
 void ShaderProgram::setInt(const char* varName, unsigned int value)
 {
   glUniform1i(getVariablePosition(varName),value);
-}
-
-void ShaderProgram::setFloat(const char* varName, float value)
-{
-  glUniform1f(getVariablePosition(varName),value);
-}
-
-void ShaderProgram::setVec3(const char* varName, float* value)
-{
-  glUniform3f(getVariablePosition(varName),value[0],value[1],value[2]);
 }
 
 void ShaderProgram::setObjectData(GLuint bo)
