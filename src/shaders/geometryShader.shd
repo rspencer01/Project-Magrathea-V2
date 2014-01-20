@@ -1,0 +1,37 @@
+#version 150
+#extension GL_EXT_geometry_shader4 : enable
+
+layout(triangles) in;
+layout(triangle_strip) out;
+layout(max_vertices = 3) out;
+
+in vec4 vsShadowCoord[];
+in vec4 vsColour[];
+in vec2 vsTexcoord[];
+in vec4 vsTexShades[];
+in vec3 vsNormal[];
+in vec3 vsPosition[];
+
+out vec4 gsShadowCoord;
+out vec4 gsColour;
+out vec2 gsTexcoord;
+out vec4 gsTexShades;
+out vec3 gsNormal;
+out vec3 gsPosition;
+
+void main() 
+{
+  for (int i = 0; i<3 ; i++)
+  {
+	gsShadowCoord = vsShadowCoord[i];
+	gsColour = vsColour[i];
+	gsTexcoord = vsTexcoord[i];
+	gsTexShades = vsTexShades[i];
+	gsNormal = vsNormal[i];
+	gsPosition = vsPosition[i];
+	gl_Position = gl_PositionIn[i];
+	EmitVertex();
+  }
+  
+  EndPrimitive();
+}
