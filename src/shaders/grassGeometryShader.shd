@@ -94,7 +94,10 @@ void makeGrass(vec3 pos,float height)
   {
     gsPosition = pos + height*rot*grass[i];
 	gsNormal = rot*norms[i];
-	gl_Position = projectionMatrix * transformationMatrix * vec4(gsPosition,1);
+	if (isShadow>0.5)
+	  gl_Position = lightProjectionMatrix * lightTransformMatrix * vec4(gsPosition,1);
+	else
+	  gl_Position = projectionMatrix * transformationMatrix * vec4(gsPosition,1);
     EmitVertex();
   }
   EndPrimitive();

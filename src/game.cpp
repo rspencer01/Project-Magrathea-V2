@@ -144,7 +144,7 @@ void Game::RenderScene(int refreshTime)
     for (unsigned int j = 0;j<128;j++)
       if (regions[i][j]!=NULL)
         regions[i][j]->Render(refreshTime,camera->getPosition());
-  //objectManager->Render(refreshTime,camera->getPosition());
+  objectManager->Render(refreshTime,camera->getPosition());
   grassManager->Render(refreshTime,camera->getPosition());
   
 }
