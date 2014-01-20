@@ -46,11 +46,12 @@ typedef struct
   glm::vec4 objectColour;
   float shinyness;
   int objectType;
+  int isGrassy;
 } ObjectData;
 
 // Check that the above structs are the right size
 static_assert(sizeof(VertexDatum) == sizeof(GLfloat) * 16, "VertexDatum incorrect size");
-static_assert(sizeof(ObjectData) == sizeof(GLfloat) * 21 + sizeof(GLuint), "ObjectData incorrect size");
+static_assert(sizeof(ObjectData) == sizeof(GLfloat) * 21 + 2* sizeof(GLuint), "ObjectData incorrect size");
 
 /// \brief An object is anything that occurs in the game space
 ///

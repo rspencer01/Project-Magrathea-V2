@@ -144,8 +144,7 @@ void Game::RenderScene(int refreshTime)
     for (unsigned int j = 0;j<128;j++)
       if (regions[i][j]!=NULL)
         regions[i][j]->Render(refreshTime,camera->getPosition());
-  //objectManager->Render(refreshTime,camera->getPosition());
-  
+  objectManager->Render(refreshTime,camera->getPosition());
   
 }
 
@@ -190,10 +189,8 @@ void Game::display()
   
   // Gogogo!
   sky->Render(refreshTime,camera->getPosition());
-  /*
   water->Render(refreshTime,camera->getPosition());
   //cloud->Render(refreshTime,&(camera->Position));
-  */
   RenderScene(refreshTime);
   
   
@@ -327,9 +324,9 @@ terrainBit Game::getTerrainBit(int x,int y)
 /// Constructs regions in an area around the given coordinates.  Does at most one region construction/destruction per call.
 void Game::constructRegions(float x,float y)
 {
-  int numRegions = 1;
-  int rx = (int)(x /REGION_SIZE)*0;
-  int ry = (int)(y /REGION_SIZE)*0;
+  int numRegions = 5;
+  int rx = (int)(x /REGION_SIZE);
+  int ry = (int)(y /REGION_SIZE);
   for (int x = std::max(0,rx-numRegions);x<std::min(127,rx+numRegions);x++)
     for (int y = std::max(0,ry-numRegions);y<std::min(127,ry+numRegions);y++)
       if (regions[y][x] == NULL)

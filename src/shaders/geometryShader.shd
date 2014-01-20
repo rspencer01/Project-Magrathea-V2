@@ -47,6 +47,7 @@ layout(shared)uniform objectData
   float shinyness;  
   // Object type of 1 indicates water
   int objectType;
+  int isGrassy;
 };
 
 vec4 mapToTexture(vec4 pos)
@@ -147,6 +148,7 @@ void main()
 	EmitVertex();
   }
   EndPrimitive();
+  if (isGrassy==1)
   if (length(triangleCentroid - cameraPos.xyz) < 5)
   {
     for (int i = 0; i<5;i++)
@@ -155,7 +157,7 @@ void main()
   	  float r2 = rand(gl_PositionIn[1].xy+vec2(i));
 	  float r3 = rand(gl_PositionIn[2].xy+vec2(i+1));
       makeGrass((gl_PositionIn[0].xyz*r1 + gl_PositionIn[1].xyz*r2 + gl_PositionIn[2].xyz*r3)/(r1+r2+r3),
-	  0.1+0.2*rand(gl_PositionIn[0].xy+vec2(2*i+7)));
+	  (vsTexShades[0].w*r1 + vsTexShades[1].w*r2 + vsTexShades[2].w*r3)/(r1+r2+r3)*0.3);
     }
   }
 }

@@ -30,6 +30,7 @@ Object::Object(glm::vec3 pos,Game* g)
   glGenBuffers(1, &objectBO);
   objectData.objectColour = glm::vec4(1);
   objectData.shinyness = 0.000001;
+  objectData.isGrassy = 0;
   objectData.objectType = OT_STANDARD_OBJECT;
   updateMatrix();
 }

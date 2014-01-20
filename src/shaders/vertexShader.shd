@@ -32,6 +32,7 @@ layout(shared)uniform objectData
   float shinyness;  
   // Object type of 1 indicates water
   int objectType;
+  int isGrassy;
 };
 
 out vec4 vsColour;
