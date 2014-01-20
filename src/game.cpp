@@ -143,7 +143,7 @@ void Game::RenderScene(int refreshTime)
     for (unsigned int j = 0;j<128;j++)
       if (regions[i][j]!=NULL)
         regions[i][j]->Render(refreshTime,camera->getPosition());
-  objectManager->Render(refreshTime,camera->getPosition());
+  //objectManager->Render(refreshTime,camera->getPosition());
   
   
 }
@@ -168,7 +168,7 @@ void Game::display()
   constructRegions(camera->getPosition().x,camera->getPosition().z);
   // Destroy unused pages
   data->deleteUnused();
-
+  
   // Do the shadow stuff
   shadows->relocate(camera->getPosition(),refreshTime);
 
@@ -178,17 +178,21 @@ void Game::display()
   
   // And reset
   shadows->readyForReading(mainShader);
+  
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   //glClearColor((GLclampf)0.813,(GLclampf)0.957,(GLclampf)0.99,(GLclampf)1.0);
-  glClearColor((GLclampf)1,(GLclampf)0.0,(GLclampf)0.0,(GLclampf)1.0);
+  glClearColor((GLclampf)0,(GLclampf)0.0,(GLclampf)0.0,(GLclampf)1.0);
   
   camera->Render();
   mainShader->setFrameData();
+  
   // Gogogo!
   sky->Render(refreshTime,camera->getPosition());
+  /*
   water->Render(refreshTime,camera->getPosition());
   //cloud->Render(refreshTime,&(camera->Position));
+  */
   RenderScene(refreshTime);
   
   
@@ -322,7 +326,7 @@ terrainBit Game::getTerrainBit(int x,int y)
 /// Constructs regions in an area around the given coordinates.  Does at most one region construction/destruction per call.
 void Game::constructRegions(float x,float y)
 {
-  int numRegions = 4;
+  int numRegions = 1;
   int rx = (int)(x /REGION_SIZE);
   int ry = (int)(y /REGION_SIZE);
   for (int x = std::max(0,rx-numRegions);x<std::min(127,rx+numRegions);x++)
