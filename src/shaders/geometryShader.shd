@@ -3,7 +3,7 @@
 
 layout(triangles) in;
 layout(triangle_strip) out;
-layout(max_vertices = 3) out;
+layout(max_vertices = 40) out;
 
 in vec4 vsColour[];
 in vec2 vsTexcoord[];
@@ -17,6 +17,7 @@ out vec2 gsTexcoord;
 out vec4 gsTexShades;
 out vec3 gsNormal;
 out vec3 gsPosition;
+out float gsDoTexture;
 
 layout(shared)uniform frameData
 {
@@ -52,7 +53,58 @@ vec4 mapToTexture(vec4 pos)
 {
  return vec4(pos.xyz * 0.5 /pos.w + 0.5,1);
 }
+float rand(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
 
+vec3 grass1 [7] = vec3[7] ( vec3(0,0,0),
+                            vec3(0.1,0,0),
+							vec3(0.055,0.3,0.02),
+							vec3(0.13,0.3,0.03),
+							
+							vec3(0.12,0.47,0.07),
+							vec3(0.17,0.45,0.08),
+							vec3(0.2,0.6,0.12));
+vec3 norms1 [7] = vec3[7] ( normalize(vec3(0,0,1)),
+                            normalize(vec3(0,0.05,1)),
+							normalize(vec3(0,0.1,1)),
+							normalize(vec3(0,0.1,1)),
+							
+							normalize(vec3(0,0.5,0.9)),
+							normalize(vec3(0,0.5,0.8)),
+							normalize(vec3(0,0.5,0.5)));
+
+							
+
+void makeGrass(vec3 pos,float height)
+{
+  float yRot = rand(pos.xz) * 3.1415 * 2;
+  mat3 yRotm = mat3(cos(yRot),0,sin(yRot),
+                   0,1,0,
+				   sin(yRot),0,cos(yRot));
+  float xRot = rand(pos.xz+vec2(0,0.1)) * 3.1415 * 0.2;
+  mat3 xRotm = mat3(1,0,0,
+                   0,cos(xRot),sin(xRot),
+				   0,sin(xRot),cos(xRot));
+				   
+
+  gsColour = vec4(0.2,0.3,0.13,1);
+  gsDoTexture = 0;
+  
+
+  for (int i = 0; i<7;i++)
+  {
+    gsNormal = yRotm*xRotm*norms1[i];
+    gsPosition = pos + yRotm*xRotm*grass1[i];
+    gsShadowCoord = mapToTexture(lightProjectionMatrix * lightTransformMatrix * vec4(gsPosition,1));
+    if (isShadow>0.5)
+      gl_Position = lightProjectionMatrix * lightTransformMatrix * vec4(gsPosition,1);
+    else
+      gl_Position = projectionMatrix * transformationMatrix * vec4(gsPosition,1);
+    EmitVertex();
+  }
+  EndPrimitive();
+}
 
 void main() 
 {
@@ -64,6 +116,7 @@ void main()
 	gsNormal = vsNormal[i];
 	gsPosition = vsPosition[i];
 	gsShadowCoord = mapToTexture(lightProjectionMatrix * lightTransformMatrix * gl_PositionIn[i]);
+	gsDoTexture = 1;
     if (isShadow>0.5)
       gl_Position = lightProjectionMatrix * lightTransformMatrix * gl_PositionIn[i];
 	else
@@ -71,4 +124,13 @@ void main()
 	EmitVertex();
   }
   EndPrimitive();
+  
+  for (int i = 0; i<5;i++)
+  {
+    float r1 = rand(gl_PositionIn[0].xy);
+	float r2 = rand(gl_PositionIn[0].xy+vec2(i));
+	float r3 = rand(gl_PositionIn[0].xy+vec2(i+1));
+    makeGrass((gl_PositionIn[0].xyz*r1 + gl_PositionIn[1].xyz*r2 + gl_PositionIn[2].xyz*r3)/(r1+r2+r3),
+	rand(gl_PositionIn[0].xy));
+  }
 }

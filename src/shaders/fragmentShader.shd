@@ -5,6 +5,7 @@ in vec2 gsTexcoord;
 in vec4 gsTexShades;
 in vec3 gsNormal;
 in vec3 gsPosition;
+in float gsDoTexture;
 
 out vec4 FragColor;
 
@@ -231,18 +232,21 @@ void main()
   }
   
   // A color for the texture
-  vec4 otherTexFrag = vec4(0);
+  vec4 otherTexFrag = vec4(1);
   
-  // Determine if the multi-texture mode is disabled
-  if (gsTexShades.x<0)
-    otherTexFrag = texture(otherTexture,gsTexcoord);
-  // Otherwise, sample the multi-texture.
-  else
+  if (gsDoTexture > 0.5)
   {
-    otherTexFrag += gsTexShades.x * texture(otherTexture,mod(gsTexcoord,vec2(1.0))/2              );
-    otherTexFrag += gsTexShades.y * texture(otherTexture,mod(gsTexcoord,vec2(1.0))/2+vec2(0  ,0.5));
-    otherTexFrag += gsTexShades.z * texture(otherTexture,mod(gsTexcoord,vec2(1.0))/2+vec2(0.5,0)  );
-    otherTexFrag += gsTexShades.w * texture(otherTexture,mod(gsTexcoord,vec2(1.0))/2+vec2(0.5,0.5));
+	  // Determine if the multi-texture mode is disabled
+	  if (gsTexShades.x<0)
+		otherTexFrag = texture(otherTexture,gsTexcoord);
+	  // Otherwise, sample the multi-texture.
+	  else
+	  {
+		otherTexFrag = gsTexShades.x * texture(otherTexture,mod(gsTexcoord,vec2(1.0))/2              );
+		otherTexFrag += gsTexShades.y * texture(otherTexture,mod(gsTexcoord,vec2(1.0))/2+vec2(0  ,0.5));
+		otherTexFrag += gsTexShades.z * texture(otherTexture,mod(gsTexcoord,vec2(1.0))/2+vec2(0.5,0)  );
+		otherTexFrag += gsTexShades.w * texture(otherTexture,mod(gsTexcoord,vec2(1.0))/2+vec2(0.5,0.5));
+	  }
   }
   
 
