@@ -1,7 +1,9 @@
 #include <grassManager.h>
+#include <gtc\noise.hpp>
 
 GrassManager::GrassManager(Game* parent)
 {
+  printf("New grass manager\n");
   game = parent;
   shader = new ShaderProgram();
   shader->LoadShader("../shaders/grassVertexShader.shd", GL_VERTEX_SHADER);
@@ -14,10 +16,10 @@ GrassManager::GrassManager(Game* parent)
   for (int i = 0;i<GRASS_SIZE;i++)
     for (int j = 0;j<GRASS_SIZE;j++)
     {
-      vertexData[i*GRASS_SIZE+j].colour = glm::vec4(0.7,0.7,0.7,1);
+      vertexData[i*GRASS_SIZE+j].colour = glm::vec4(0.2,0.4,0.13,1);
       vertexData[i*GRASS_SIZE+j].normal = glm::vec3(0,1,0);
-      vertexData[i*GRASS_SIZE+j].position = glm::vec3(i,0,j);
-      vertexData[i*GRASS_SIZE+j].texMix = glm::vec4(-1);
+      vertexData[i*GRASS_SIZE+j].position = glm::vec3(i,0,j)*0.3f;
+      vertexData[i*GRASS_SIZE+j].texMix = glm::vec4(glm::perlin(glm::vec2((float)i,(float)j)*0.1f)/2.f+0.5f);
       vertexData[i*GRASS_SIZE+j].texture = glm::vec2(-1);
     }
   glGenBuffersARB(1,&vertexPositionBO);

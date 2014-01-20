@@ -29,5 +29,5 @@ layout(shared)uniform frameData
 
 void main()
 { 
-  FragColor = vec4(gsColour.xyz,1);
+  FragColor = vec4(gsColour.xyz * dot(sunDirection.xyz,gsNormal),1);
 }

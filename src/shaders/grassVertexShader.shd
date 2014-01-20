@@ -5,6 +5,7 @@ in vec2 inTex;
 in vec3 inNorm;
 in vec4 inTexShades;
 out vec4 vsColour;
+out float vsGrassiness;
 layout(shared)uniform frameData
 {
   vec4 frameColour;  
@@ -30,4 +31,5 @@ void main()
 {
   gl_Position = vec4(inPosition,1);
   vsColour = inColour;
+  vsGrassiness = inTexShades.x;
 }

@@ -13,7 +13,7 @@
 #include <vector>
 #include <set>
 
-#define GRASS_SIZE 100
+#define GRASS_SIZE 300
 
 class GrassManager
 {
