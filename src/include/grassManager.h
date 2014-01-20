@@ -13,11 +13,15 @@
 #include <vector>
 #include <set>
 
+#define GRASS_SIZE 100
+
 class GrassManager
 {
   private:
     Game* game;
     ShaderProgram* shader;
+    GLuint vertexPositionBO;
+    VertexDatum* vertexData;
   public:
     GrassManager(Game*);
     void Render(int,glm::vec3);

@@ -51,8 +51,9 @@ class ShaderProgram
     GLuint objectDataPosition;
     /// The position of the frame information
     GLuint frameDataPosition;
-    GLuint frameDataBO;
+    
   public:
+    GLuint frameDataBO;
     /// Construct the program (empty and unloaded)
     ShaderProgram();
     /// Add an object

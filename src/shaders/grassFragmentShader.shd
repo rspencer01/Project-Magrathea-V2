@@ -1,0 +1,34 @@
+#version 140
+in vec4 ShadowCoord;
+in vec4 col;
+out vec4 FragColor;
+in vec2 tex;
+in vec4 texShades;
+in vec3 normal;
+in vec3 camPos;
+in vec3 pos;
+layout(shared)uniform frameData
+{
+  vec4 frameColour;  
+  mat4x4 transformationMatrix;
+  mat4x4 projectionMatrix;  
+  mat4x4 lightTransformMatrix;
+  mat4x4 lightProjectionMatrix;
+  vec4 sunDirection;  
+  vec4 cameraPos;
+  vec4 fogColour;
+  float isShadow;
+  float isReflection;
+  float sunIntensity;
+  float fog;
+  float doLighting;
+  float cullLevel;
+  int gameTime;
+  int viewWidth;
+  int viewHeight;
+};
+
+void main()
+{ 
+  FragColor = vec4(0,0,0,1);
+}
