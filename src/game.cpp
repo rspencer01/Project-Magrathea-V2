@@ -140,10 +140,10 @@ void Game::run()
 void Game::RenderScene(int refreshTime)
 {
   // Run through the rectangle of regions, and draw each one
-  /*for (unsigned int i = 0;i<128;i++)
+  for (unsigned int i = 0;i<128;i++)
     for (unsigned int j = 0;j<128;j++)
       if (regions[i][j]!=NULL)
-        regions[i][j]->Render(refreshTime,camera->getPosition());*/
+        regions[i][j]->Render(refreshTime,camera->getPosition());
   //objectManager->Render(refreshTime,camera->getPosition());
   grassManager->Render(refreshTime,camera->getPosition());
   

@@ -16,10 +16,27 @@ GrassManager::GrassManager(Game* parent)
   for (int i = 0;i<GRASS_SIZE;i++)
     for (int j = 0;j<GRASS_SIZE;j++)
     {
+      terrainBit a = game->getTerrainBit(int(i*0.3f),int(j*0.3f));
+      terrainBit b = game->getTerrainBit(int(i*0.3f),int(j*0.3f)+1);
+      terrainBit c = game->getTerrainBit(int(i*0.3f)+1,int(j*0.3f));
+      terrainBit d = game->getTerrainBit(int(i*0.3f)+1,int(j*0.3f)+1);
+      terrainBit h;
+      h.position = glm::mix(glm::mix(a.position,b.position,j*0.3f-int(j*0.3f)),
+                            glm::mix(c.position,d.position,j*0.3f-int(j*0.3f)),i*0.3f-int(i*0.3f));
+      float grassyness = (1.f-i*0.3f+int(i*0.3f))*
+                         ((1.f-j*0.3f+int(j*0.3f))*(a.type==grass)+
+                         (j*0.3f-int(j*0.3f))*(b.type==grass))+
+                         (i*0.3f-int(i*0.3f))*
+                         ((1.f-j*0.3f+int(j*0.3f))*(c.type==grass)+
+                         (j*0.3f-int(j*0.3f))*(d.type==grass))
+                         ;
+
       vertexData[i*GRASS_SIZE+j].colour = glm::vec4(0.2,0.4,0.13,1);
       vertexData[i*GRASS_SIZE+j].normal = glm::vec3(0,1,0);
-      vertexData[i*GRASS_SIZE+j].position = glm::vec3(i,0,j)*0.3f;
-      vertexData[i*GRASS_SIZE+j].texMix = glm::vec4(glm::perlin(glm::vec2((float)i,(float)j)*0.1f)/2.f+0.5f);
+      vertexData[i*GRASS_SIZE+j].position = glm::vec3(i*0.3f,
+                                                     h.position.y,
+                                                     j*0.3f);
+      vertexData[i*GRASS_SIZE+j].texMix = glm::vec4(grassyness);
       vertexData[i*GRASS_SIZE+j].texture = glm::vec2(-1);
     }
   glGenBuffersARB(1,&vertexPositionBO);

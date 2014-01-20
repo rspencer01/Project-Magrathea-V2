@@ -56,10 +56,9 @@ void Sky::Render(int refreshTime, glm::vec3 cameraPos)
   objectData.objectColour[2] = l*1.f;
   updateObjectBO();
   // Render stuff
-  //Object::Render(refreshTime,cameraPos);
+  Object::Render(refreshTime,cameraPos);
   sun->Render(refreshTime,cameraPos);
-
-  //stars->Render(refreshTime,cameraPos);
+  stars->Render(refreshTime,cameraPos);
   // Reinstate rendering
   // Do the fog
   game->mainShader->frameData.fog = 16000;
@@ -107,7 +106,7 @@ void Sun::Render(int refreshTime,glm::vec3 cameraPos)
   updateTriangleData();
   // We want to be fully lit.
   game->mainShader->frameData.sunIntensity=1.0;
-  //Object::Render(refreshTime,cameraPos);
+  Object::Render(refreshTime,cameraPos);
   // Then light the rest as per usual.
   game->mainShader->frameData.sunIntensity = pow(3.f*(1.f - k(k(k(theta/3.1415f))))/4.f + 0.25f,1.4f);
   if (cos(theta)>0)
