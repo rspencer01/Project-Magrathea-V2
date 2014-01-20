@@ -144,7 +144,7 @@ void Game::RenderScene(int refreshTime)
     for (unsigned int j = 0;j<128;j++)
       if (regions[i][j]!=NULL)
         regions[i][j]->Render(refreshTime,camera->getPosition());
-  objectManager->Render(refreshTime,camera->getPosition());
+  //objectManager->Render(refreshTime,camera->getPosition());
   
 }
 
@@ -189,7 +189,7 @@ void Game::display()
   
   // Gogogo!
   sky->Render(refreshTime,camera->getPosition());
-  water->Render(refreshTime,camera->getPosition());
+  //water->Render(refreshTime,camera->getPosition());
   //cloud->Render(refreshTime,&(camera->Position));
   RenderScene(refreshTime);
   
