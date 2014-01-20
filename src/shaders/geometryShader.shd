@@ -5,7 +5,6 @@ layout(triangles) in;
 layout(triangle_strip) out;
 layout(max_vertices = 3) out;
 
-in vec4 vsShadowCoord[];
 in vec4 vsColour[];
 in vec2 vsTexcoord[];
 in vec4 vsTexShades[];
@@ -19,19 +18,57 @@ out vec4 gsTexShades;
 out vec3 gsNormal;
 out vec3 gsPosition;
 
+layout(shared)uniform frameData
+{
+  vec4 frameColour;  
+  mat4x4 transformationMatrix;
+  mat4x4 projectionMatrix;  
+  mat4x4 lightTransformMatrix;
+  mat4x4 lightProjectionMatrix;
+  vec4 sunDirection;  
+  vec4 cameraPos;
+  vec4 fogColour;
+  float isShadow;
+  float isReflection;
+  float sunIntensity;
+  float fog;
+  float doLighting;
+  float cullLevel;
+  int gameTime;
+  int viewWidth;
+  int viewHeight;
+};
+
+layout(shared)uniform objectData
+{
+  mat4x4 objectMatrix;
+  vec4 objectColour; 
+  float shinyness;  
+  // Object type of 1 indicates water
+  int objectType;
+};
+
+vec4 mapToTexture(vec4 pos)
+{
+ return vec4(pos.xyz * 0.5 /pos.w + 0.5,1);
+}
+
+
 void main() 
 {
   for (int i = 0; i<3 ; i++)
   {
-	gsShadowCoord = vsShadowCoord[i];
 	gsColour = vsColour[i];
 	gsTexcoord = vsTexcoord[i];
 	gsTexShades = vsTexShades[i];
 	gsNormal = vsNormal[i];
 	gsPosition = vsPosition[i];
-	gl_Position = gl_PositionIn[i];
+	gsShadowCoord = mapToTexture(lightProjectionMatrix * lightTransformMatrix * gl_PositionIn[i]);
+    if (isShadow>0.5)
+      gl_Position = lightProjectionMatrix * lightTransformMatrix * gl_PositionIn[i];
+	else
+	  gl_Position = projectionMatrix * transformationMatrix * gl_PositionIn[i];
 	EmitVertex();
   }
-  
   EndPrimitive();
 }
