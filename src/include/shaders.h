@@ -51,9 +51,8 @@ class ShaderProgram
     GLuint objectDataPosition;
     /// The position of the frame information
     GLuint frameDataPosition;
-    
-  public:
     GLuint frameDataBO;
+  public:
     /// Construct the program (empty and unloaded)
     ShaderProgram();
     /// Add an object
@@ -70,6 +69,8 @@ class ShaderProgram
     void setFrameData();
     /// Struct containing camera transformation etc
     FrameData frameData;
+    /// An accessor to get the buffer index
+    GLuint getFrameDataBufferNumber();
 };
 
 #endif

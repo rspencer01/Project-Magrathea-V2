@@ -5,6 +5,7 @@ GrassManager::GrassManager(Game* parent)
   game = parent;
   shader = new ShaderProgram();
   shader->LoadShader("../shaders/grassVertexShader.shd", GL_VERTEX_SHADER);
+  shader->LoadShader("../shaders/grassGeometryShader.shd", GL_GEOMETRY_SHADER);
   shader->LoadShader("../shaders/grassFragmentShader.shd", GL_FRAGMENT_SHADER);
   // Compile and load them
   shader->CompileAll();
@@ -13,7 +14,7 @@ GrassManager::GrassManager(Game* parent)
   for (int i = 0;i<GRASS_SIZE;i++)
     for (int j = 0;j<GRASS_SIZE;j++)
     {
-      vertexData[i*GRASS_SIZE+j].colour = glm::vec4(0,0,0,1);
+      vertexData[i*GRASS_SIZE+j].colour = glm::vec4(0.7,0.7,0.7,1);
       vertexData[i*GRASS_SIZE+j].normal = glm::vec3(0,1,0);
       vertexData[i*GRASS_SIZE+j].position = glm::vec3(i,0,j);
       vertexData[i*GRASS_SIZE+j].texMix = glm::vec4(-1);
@@ -27,7 +28,7 @@ GrassManager::GrassManager(Game* parent)
 void GrassManager::Render(int,glm::vec3)
 {
   shader->Load();
-  glBindBufferBase(GL_UNIFORM_BUFFER,1,game->mainShader->frameDataBO);
+  glBindBufferBase(GL_UNIFORM_BUFFER,1,game->mainShader->getFrameDataBufferNumber());
   glBindBufferARB(GL_ARRAY_BUFFER,vertexPositionBO);
   glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
   glVertexAttribPointerARB(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));

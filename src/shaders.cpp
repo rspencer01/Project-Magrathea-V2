@@ -168,3 +168,8 @@ void ShaderProgram::setFrameData()
   }
   glBindBufferBase(GL_UNIFORM_BUFFER,1,frameDataBO);
 }
+
+GLuint ShaderProgram::getFrameDataBufferNumber()
+{
+  return frameDataBO;
+}
