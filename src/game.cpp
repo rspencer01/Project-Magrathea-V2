@@ -97,7 +97,6 @@ void Game::initialisePipeline()
   mainShader = new ShaderProgram();
   // Load in our shaders
   mainShader->LoadShader("../shaders/vertexShader.shd", GL_VERTEX_SHADER);
-  mainShader->LoadShader("../shaders/geometryShader.shd", GL_GEOMETRY_SHADER);
   mainShader->LoadShader("../shaders/fragmentShader.shd", GL_FRAGMENT_SHADER);
   // Compile and load them
   mainShader->CompileAll();
