@@ -77,3 +77,9 @@ Any weirdnesss with a half grass half rock portion of land will hopefully be bru
 In practice, the fragment shader is passed a texture with 4 squares or blocks in it.  It is also passed a `vec4` of weightings to take from each block.  It gets the weighted average pixel and outputs that.
 
 This is orders of magnitude ( `O(1)` vs `O(n^2)` ) better than the previous method.
+
+Complexity
+----------
+A massive problem when rendering natural scenes is the complexity.  Let us analyse this.
+
+At maximum detail we would want about 21 blades of grass per 20^2cm ~ 500 blades per square meter.  A level of detail like this for 10^2m gives 50 000 blades.  This is reasonable.  If we make each region 5m on a side and render the four nearest at max detail we should be fine.  This would mean a max size of Magrathea of 500^2m with the current region rendering method.

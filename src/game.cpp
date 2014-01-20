@@ -183,7 +183,7 @@ void Game::display()
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   //glClearColor((GLclampf)0.813,(GLclampf)0.957,(GLclampf)0.99,(GLclampf)1.0);
-  glClearColor((GLclampf)0,(GLclampf)0.0,(GLclampf)0.0,(GLclampf)1.0);
+  glClearColor((GLclampf)1,(GLclampf)1.0,(GLclampf)1.0,(GLclampf)1.0);
   
   camera->Render();
   mainShader->setFrameData();
@@ -217,7 +217,7 @@ void Game::setCameraFPS()
 						interpolate(getTerrainBit((int)camera->getPosition().x,(int)camera->getPosition().z+1).position.y,
 									getTerrainBit((int)camera->getPosition().x+1,(int)camera->getPosition().z+1).position.y,
 									fx),
-						fy) + 0.63f,
+						fy) + 1.63f,
             camera->getPosition().z));
 }
 
@@ -328,8 +328,8 @@ terrainBit Game::getTerrainBit(int x,int y)
 void Game::constructRegions(float x,float y)
 {
   int numRegions = 1;
-  int rx = (int)(x /REGION_SIZE);
-  int ry = (int)(y /REGION_SIZE);
+  int rx = (int)(x /REGION_SIZE)*0;
+  int ry = (int)(y /REGION_SIZE)*0;
   for (int x = std::max(0,rx-numRegions);x<std::min(127,rx+numRegions);x++)
     for (int y = std::max(0,ry-numRegions);y<std::min(127,ry+numRegions);y++)
       if (regions[y][x] == NULL)

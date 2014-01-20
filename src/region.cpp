@@ -38,41 +38,43 @@ Region::Region(glm::vec3 pos,Game* parent) : Object(pos,parent)
 /// Constructs the triangles
 void Region::initialiseTriangles()
 {
-  clearTriangleData((REGION_SIZE+1)*(REGION_SIZE+1),REGION_SIZE*REGION_SIZE*2);
-	// There are (size+1)^2 vertices.  Bring in the data
-	for (int y = 0; y<(REGION_SIZE+1);y++)
-		for (int x = 0; x<(REGION_SIZE+1);x++)
+  // This does a Very High Detail rendering: 10cm to a side of a square
+  clearTriangleData((REGION_SIZE*10+1)*(REGION_SIZE*10+1),REGION_SIZE*10*REGION_SIZE*10*2);
+	// There are (size*10+1)^2 vertices.  Bring in the data
+	for (int y = 0; y<(REGION_SIZE*10+1);y++)
+		for (int x = 0; x<(REGION_SIZE*10+1);x++)
 		{
-      addPoint(y*(REGION_SIZE+1)+x,
-               glm::vec3((float)x,
+      addPoint(y*(REGION_SIZE*10+1)+x,
+               glm::vec3((float)x/10.f,
 			                   game->getTerrainBit(x+(int)position.x,y+(int)position.z).position.y,
-			                   (float)y),
+			                   (float)y/10.f),
                          (game->getTerrainBit(x+(int)position.x,y+(int)position.z).normal),
                          1,1,1);
-      editTextureCoord(y*(REGION_SIZE+1)+x,4.f*x/(REGION_SIZE+1),4.f*y/(REGION_SIZE+1));
+      editTextureCoord(y*(REGION_SIZE*10+1)+x,4.f*x/(REGION_SIZE*10+1),4.f*y/(REGION_SIZE*10+1));
       terrainType t = game->getTerrainBit(x+(int)position.x,y+(int)position.z).type;
       if (t==grass)
-        setTextureMix(y*(REGION_SIZE+1)+x,0,0,0,1);
+        setTextureMix(y*(REGION_SIZE*10+1)+x,0,0,0,1);
       if (t==stone)
-        setTextureMix(y*(REGION_SIZE+1)+x,0,1,0,0);
+        setTextureMix(y*(REGION_SIZE*10+1)+x,0,1,0,0);
       if (t==sand)
-        setTextureMix(y*(REGION_SIZE+1)+x,1,0,0,0);
+        setTextureMix(y*(REGION_SIZE*10+1)+x,1,0,0,0);
       if (t==soil)
-        setTextureMix(y*(REGION_SIZE+1)+x,0,0,1,0);
+        setTextureMix(y*(REGION_SIZE*10+1)+x,0,0,1,0);
 		}
   // Populate one triangle (for now) per block
-	for (int y = 0; y<REGION_SIZE;y++)
-		for (int x = 0; x<REGION_SIZE;x++)
+	for (int y = 0; y<REGION_SIZE*10;y++)
+		for (int x = 0; x<REGION_SIZE*10;x++)
 		{
-      addTriangle((y*REGION_SIZE+x)*2,
-                  y*(REGION_SIZE+1) + x,
-			            (y+1)*(REGION_SIZE+1) + x,
-			            y*(REGION_SIZE+1) + (x+1));
-      addTriangle((y*REGION_SIZE+x)*2+1,
-                  y*(REGION_SIZE+1) + x+1,
-			            (y+1)*(REGION_SIZE+1) + x,
-			            (y+1)*(REGION_SIZE+1) + (x+1));
+      addTriangle((y*REGION_SIZE*10+x)*2,
+                  y*(REGION_SIZE*10+1) + x,
+			            (y+1)*(REGION_SIZE*10+1) + x,
+			            y*(REGION_SIZE*10+1) + (x+1));
+      addTriangle((y*REGION_SIZE*10+x)*2+1,
+                  y*(REGION_SIZE*10+1) + x+1,
+			            (y+1)*(REGION_SIZE*10+1) + x,
+			            (y+1)*(REGION_SIZE*10+1) + (x+1));
 		}
+  //numberOfTriangles = 1;
   pushTriangleData();
 }
 
