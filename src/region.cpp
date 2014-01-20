@@ -3,7 +3,6 @@
 #include <region.h>
 #include <game.h>
 #include <dynotree.h>
-#include <grass.h>
 #include <images.h>
 #include <smallFern.h>
 
@@ -24,8 +23,6 @@ Region::Region(glm::vec3 pos,Game* parent) : Object(pos,parent)
       terrainBit here = game->getTerrainBit(tx+(int)pos.x,ty+(int)pos.z);
       if (here.isTree)
         parent->objectManager->addObject(dynoTree,here.position,parent);
-      if (here.isGrass)
-        parent->objectManager->addObject(grass_o,here.position,parent);
       if (here.isFern)
         parent->objectManager->addObject(smallFern,here.position,parent);
     }

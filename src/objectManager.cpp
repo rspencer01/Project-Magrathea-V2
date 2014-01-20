@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <dynotree.h>
 #include <smallFern.h>
-#include <grass.h>
 #include <vector>
 
 glm::vec3 camPos = glm::vec3();
@@ -67,12 +66,6 @@ void ObjectManager::Render(int t, glm::vec3 c)
         objects.push_back(new SmallFern(req.position,req.game));
         break;
       }
-      case grass_o:
-      {
-        objects.push_back(new Grass(req.position,req.game));
-        break;
-      }
-
     }
   }
 }
