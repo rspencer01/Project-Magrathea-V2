@@ -26,6 +26,7 @@ class Camera;
 class Object;
 class Cloud;
 class ObjectManager;
+class GrassManager;
 
 #include <object.h>
 #include <noise.h>
