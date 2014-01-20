@@ -3,7 +3,6 @@
 #include <region.h>
 #include <game.h>
 #include <dynotree.h>
-#include <grass.h>
 #include <images.h>
 #include <smallFern.h>
 
@@ -24,8 +23,6 @@ Region::Region(glm::vec3 pos,Game* parent) : Object(pos,parent)
       terrainBit here = game->getTerrainBit(tx+(int)pos.x,ty+(int)pos.z);
       if (here.isTree)
         parent->objectManager->addObject(dynoTree,here.position,parent);
-      if (here.isGrass)
-        parent->objectManager->addObject(grass_o,here.position,parent);
       if (here.isFern)
         parent->objectManager->addObject(smallFern,here.position,parent);
     }
@@ -33,13 +30,16 @@ Region::Region(glm::vec3 pos,Game* parent) : Object(pos,parent)
   if (texture == 0)
 	  texture = textureFromTGA("../assets/MixedGround.tga",true);
   textureNumber = texture;
+  objectData.isGrassy = 1;
+  updateObjectBO();
 }
 
 /// Constructs the triangles
 void Region::initialiseTriangles()
 {
+  // This does a Very High Detail rendering: 10cm to a side of a square
   clearTriangleData((REGION_SIZE+1)*(REGION_SIZE+1),REGION_SIZE*REGION_SIZE*2);
-	// There are (size+1)^2 vertices.  Bring in the data
+	// There are (size*10+1)^2 vertices.  Bring in the data
 	for (int y = 0; y<(REGION_SIZE+1);y++)
 		for (int x = 0; x<(REGION_SIZE+1);x++)
 		{
@@ -73,6 +73,7 @@ void Region::initialiseTriangles()
 			            (y+1)*(REGION_SIZE+1) + x,
 			            (y+1)*(REGION_SIZE+1) + (x+1));
 		}
+  //numberOfTriangles = 1;
   pushTriangleData();
 }
 

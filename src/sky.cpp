@@ -70,7 +70,6 @@ void Sky::Render(int refreshTime, glm::vec3 cameraPos)
   game->mainShader->frameData.doLighting = 1;
   game->mainShader->setFrameData();
   glDepthMask(true);
-
 }
 
 Sun::Sun(glm::vec3 pos,Game* parent) : Object(pos,parent)

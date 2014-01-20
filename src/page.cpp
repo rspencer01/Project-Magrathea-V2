@@ -10,7 +10,8 @@ Page::Page(int x,int y,float(*g)(int,int))
   generatingFunction = g;
   origin_x = x;
   origin_y = y;
-/*  for (int i = 0;i<PAGE_SIZE;i++)
+  /*
+  for (int i = 0;i<PAGE_SIZE;i++)
     for (int j = 0;j<PAGE_SIZE;j++)
     {
       data[i][j].isFern = data[i][j].isGrass = data[i][j].isTree = false;

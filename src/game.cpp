@@ -96,6 +96,7 @@ void Game::initialisePipeline()
   mainShader = new ShaderProgram();
   // Load in our shaders
   mainShader->LoadShader("../shaders/vertexShader.shd", GL_VERTEX_SHADER);
+  mainShader->LoadShader("../shaders/geometryShader.shd", GL_GEOMETRY_SHADER);
   mainShader->LoadShader("../shaders/fragmentShader.shd", GL_FRAGMENT_SHADER);
   // Compile and load them
   mainShader->CompileAll();
@@ -145,7 +146,6 @@ void Game::RenderScene(int refreshTime)
         regions[i][j]->Render(refreshTime,camera->getPosition());
   objectManager->Render(refreshTime,camera->getPosition());
   
-  
 }
 
 int shadowsDone = 0;
@@ -168,7 +168,7 @@ void Game::display()
   constructRegions(camera->getPosition().x,camera->getPosition().z);
   // Destroy unused pages
   data->deleteUnused();
-
+  
   // Do the shadow stuff
   shadows->relocate(camera->getPosition(),refreshTime);
 
@@ -178,13 +178,15 @@ void Game::display()
   
   // And reset
   shadows->readyForReading(mainShader);
+  
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   //glClearColor((GLclampf)0.813,(GLclampf)0.957,(GLclampf)0.99,(GLclampf)1.0);
-  glClearColor((GLclampf)1,(GLclampf)0.0,(GLclampf)0.0,(GLclampf)1.0);
+  glClearColor((GLclampf)1,(GLclampf)1.0,(GLclampf)1.0,(GLclampf)1.0);
   
   camera->Render();
   mainShader->setFrameData();
+  
   // Gogogo!
   sky->Render(refreshTime,camera->getPosition());
   water->Render(refreshTime,camera->getPosition());
@@ -212,7 +214,7 @@ void Game::setCameraFPS()
 						interpolate(getTerrainBit((int)camera->getPosition().x,(int)camera->getPosition().z+1).position.y,
 									getTerrainBit((int)camera->getPosition().x+1,(int)camera->getPosition().z+1).position.y,
 									fx),
-						fy) + 0.63f,
+						fy) + 1.63f,
             camera->getPosition().z));
 }
 
@@ -322,7 +324,7 @@ terrainBit Game::getTerrainBit(int x,int y)
 /// Constructs regions in an area around the given coordinates.  Does at most one region construction/destruction per call.
 void Game::constructRegions(float x,float y)
 {
-  int numRegions = 4;
+  int numRegions = 5;
   int rx = (int)(x /REGION_SIZE);
   int ry = (int)(y /REGION_SIZE);
   for (int x = std::max(0,rx-numRegions);x<std::min(127,rx+numRegions);x++)
