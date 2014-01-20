@@ -1,12 +1,11 @@
 #version 140
-in vec4 ShadowCoord;
-in vec4 col;
+
 out vec4 FragColor;
-in vec2 tex;
-in vec4 texShades;
-in vec3 normal;
-in vec3 camPos;
-in vec3 pos;
+
+in vec3 gsPosition;
+in vec3 gsNormal;
+in vec4 gsColour;
+
 layout(shared)uniform frameData
 {
   vec4 frameColour;  
@@ -30,5 +29,5 @@ layout(shared)uniform frameData
 
 void main()
 { 
-  FragColor = vec4(0,0,0,1);
+  FragColor = vec4(gsColour.xyz,1);
 }

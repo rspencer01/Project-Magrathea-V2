@@ -4,6 +4,7 @@ in vec4 inColour;
 in vec2 inTex;
 in vec3 inNorm;
 in vec4 inTexShades;
+out vec4 vsColour;
 layout(shared)uniform frameData
 {
   vec4 frameColour;  
@@ -27,5 +28,6 @@ layout(shared)uniform frameData
 
 void main()
 {
-  gl_Position = projectionMatrix * transformationMatrix * vec4(inPosition,1);
+  gl_Position = vec4(inPosition,1);
+  vsColour = inColour;
 }
