@@ -55,7 +55,7 @@ void Camera::RotateY( float theta )
 {
   // Calculate the right hand vector
   glm::vec3 rightDir = glm::normalize(glm::cross(ViewDir,UpVector));
-  ViewDir = glm::normalize(ViewDir*cos(theta) - rightDir*sin(theta));
+  ViewDir = glm::normalize(ViewDir*(float)cos(theta) - rightDir*(float)sin(theta));
 }
 
 /// Rotates the camera about the X axis (vertical)
@@ -64,7 +64,7 @@ void Camera::RotateX( float theta )
 {
   // Calculate the right hand vector
   glm::vec3 rightDir = glm::normalize(glm::cross(ViewDir,UpVector));
-  ViewDir = ViewDir*cos(theta) + UpVector*sin(theta);
+  ViewDir = ViewDir*(float)cos(theta) + UpVector*(float)sin(theta);
   UpVector = glm::cross(rightDir,ViewDir);
   ViewDir  = glm::normalize(ViewDir);
   UpVector = glm::normalize(UpVector);
