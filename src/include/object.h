@@ -123,6 +123,8 @@ class Object
     ObjectData objectData;
     /// Send all the above to the shader
     void updateObjectBO();
+    /// The Vertex Array Object
+    GLuint VAO;
   public:
 	  /// Constructs the object with the given coordinates and in the given game
     Object(glm::vec3,Game*);
