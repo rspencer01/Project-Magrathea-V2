@@ -50,7 +50,7 @@ void initialiseGraphics(Game* sh)
   }
 
   //Enable Callback function
-  glDebugMessageCallbackARB(glDebugMessageCallbackFunction, NULL);
+  glDebugMessageCallbackARB((GLDEBUGPROCARB) glDebugMessageCallbackFunction, NULL);
 
   //Create Dummy VAO
   GLuint vao;
