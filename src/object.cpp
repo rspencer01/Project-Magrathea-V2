@@ -28,6 +28,7 @@ Object::Object(glm::vec3 pos,Game* g)
   right = glm::vec3(0,0,1);
   xySlew = 0;
   glGenBuffers(1, &objectBO);
+  VAO = (GLuint)-1;
   objectData.objectColour = glm::vec4(1);
   objectData.shinyness = 0.000001;
   objectData.isGrassy = 0;
@@ -85,13 +86,7 @@ void Object::Render(int refreshTime, glm::vec3 cameraPos)
     glBindTexture(GL_TEXTURE_2D,textureNumber);
     // Use our data
 
-    glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
-    glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER,indexVBO);
-    glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
-    glVertexAttribPointerARB(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));
-    glVertexAttribPointerARB(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
-    glVertexAttribPointerARB(3,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
-    glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
+    glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES,numberOfTriangles*3,GL_UNSIGNED_INT,0);
   }
 }
@@ -163,27 +158,54 @@ void Object::addTriangle(int i, int a,int b, int c)
 /// Constructs new VBOs and pushes all the data to the GPU
 void Object::pushTriangleData()
 {
+  // Make our VAO.  Not sure why leaving this out stops the first region from rendering... does the vao need to know about glBufferData?
+  if (VAO==(GLuint)-1)
+    glGenVertexArrays(1,&VAO);
+  glBindVertexArray(VAO);
 	// set it as the current one,
 	glBindBufferARB(GL_ARRAY_BUFFER, vertexVBO);
 	// ... and blit the data in.
 	glBufferDataARB(GL_ARRAY_BUFFER, numberOfPoints*sizeof(VertexDatum),vertexData,GL_STATIC_DRAW);
 
 	// set it as the current one,
-	glBindBufferARB(GL_ARRAY_BUFFER, indexVBO);
+	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
 	// ... and blit the data in.
-	glBufferDataARB(GL_ARRAY_BUFFER, numberOfTriangles*3*sizeof(int),triDat,GL_STATIC_DRAW);
-
+  glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER, numberOfTriangles*3*sizeof(int),triDat,GL_STATIC_DRAW);
+  
+  updateVAO();
 	// Finally set the variables that need setting
 	buffersInitialised = true;
 }
 
+void Object::updateVAO()
+{
+  if (VAO==(GLuint)-1)
+    glGenVertexArrays(1,&VAO);
+  glBindVertexArray(VAO);
+  glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
+  glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
+  glEnableVertexAttribArray(1);
+  glVertexAttribPointerARB(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));
+  glEnableVertexAttribArray(2);
+  glVertexAttribPointerARB(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
+  glEnableVertexAttribArray(3);
+  glVertexAttribPointerARB(3,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
+  glEnableVertexAttribArray(4);
+  glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
+  glBindVertexArray(0);
+}
+
 void Object::updateTriangleData()
 {
+
   glDeleteBuffersARB(1,&vertexVBO);
   glGenBuffersARB(1,&vertexVBO);
   glBindBufferARB(GL_ARRAY_BUFFER,vertexVBO);
-  //glBufferSubDataARB(GL_ARRAY_BUFFER,0,numberOfPoints*sizeof(VertexDatum),vertexData);
   glBufferDataARB(GL_ARRAY_BUFFER, numberOfPoints*sizeof(VertexDatum),vertexData,GL_STATIC_DRAW);
+
+  updateVAO();
 }
 
 void Object::editTextureCoord(int i, float u, float v)

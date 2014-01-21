@@ -148,7 +148,6 @@ void Game::RenderScene(int refreshTime)
   
 }
 
-int shadowsDone = 0;
 /// Actually calls the functions to display stuff to the screen.
 void Game::display()
 {
