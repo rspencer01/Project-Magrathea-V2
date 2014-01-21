@@ -94,6 +94,8 @@ void makeGrass(vec3 pos,float height)
   {
     gsPosition = pos + height*rot*grass[i];
 	gsNormal = rot*norms[i];
+	if (isReflection>0.5)
+	  gsPosition.y = 2*cullLevel-gsPosition.y;
 	if (isShadow>0.5)
 	  gl_Position = lightProjectionMatrix * lightTransformMatrix * vec4(gsPosition,1);
 	else
@@ -105,7 +107,7 @@ void makeGrass(vec3 pos,float height)
 
 void main()
 {
-  if (length(gl_PositionIn[0].xyz-cameraPos.xyz) < 30)
+  if (length(gl_PositionIn[0].xyz-cameraPos.xyz) < 100)
   {
     if (vsGrassiness[0]<0.1)
 	  return;

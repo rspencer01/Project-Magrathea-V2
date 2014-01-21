@@ -190,7 +190,7 @@ void Game::display()
   
   // Gogogo!
   sky->Render(refreshTime,camera->getPosition());
-  //water->Render(refreshTime,camera->getPosition());
+  water->Render(refreshTime,camera->getPosition());
   //cloud->Render(refreshTime,&(camera->Position));
   RenderScene(refreshTime);
   
