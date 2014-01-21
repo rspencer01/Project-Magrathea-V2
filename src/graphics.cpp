@@ -51,6 +51,11 @@ void initialiseGraphics(Game* sh)
 
   //Enable Callback function
   glDebugMessageCallbackARB(glDebugMessageCallbackFunction, NULL);
+
+  //Create Dummy VAO
+  GLuint vao;
+  glGenVertexArrays(1, &vao);
+  glBindVertexArray(vao);
 	
   // Enable all the standard pipeline things we want.  This should eventually be replaced with custom shaders
   glEnable(GL_DEPTH_TEST);
