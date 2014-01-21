@@ -1,8 +1,8 @@
 #include <testobj.h>
 #include <images.h>
 #include <cmath>
-#include <gtx\random.hpp>
-#include <gtc\noise.hpp>
+#include <gtx/random.hpp>
+#include <gtc/noise.hpp>
 
 Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
 {

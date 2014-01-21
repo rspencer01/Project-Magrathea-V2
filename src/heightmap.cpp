@@ -1,6 +1,6 @@
 #include <magrathea.h>
 #include <heightmap.h>
-#include <gtx\noise.hpp>
+#include <gtx/noise.hpp>
 
 /// Nothing is done here.  In the future this may include some preprocessing
 void initialiseHeightmap()

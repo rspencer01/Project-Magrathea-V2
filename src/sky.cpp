@@ -2,7 +2,7 @@
 #include <sky.h>
 #include <images.h>
 #include <GL/glut.h>
-#include <gtx\random.hpp>
+#include <gtx/random.hpp>
 
 Sky::Sky(Game* parent) : Object(glm::vec3(),parent)
 {
