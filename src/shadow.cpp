@@ -24,19 +24,19 @@ ShadowManager::ShadowManager(ShaderProgram* mainShader)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	
 	// Remove artefact on the edges of the shadowmap
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 	
 	// No need to force GL_DEPTH_COMPONENT24, drivers usually give you the max precision if available 
   glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, TEXTURE_SIZE, TEXTURE_SIZE, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	
 	// create a framebuffer object
-	glGenFramebuffersEXT(1, &fboID);
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fboID);
+	glGenFramebuffers(1, &fboID);
+	glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
 	// attach the texture to FBO depth attachment point
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texID, 0);
 	// Instruct openGL that we won't bind a color texture with the currently binded FBO
 	glDrawBuffer(GL_NONE);
   glReadBuffer(GL_NONE);
@@ -44,10 +44,10 @@ ShadowManager::ShadowManager(ShaderProgram* mainShader)
 	// check FBO status
 	FBOstatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if(FBOstatus != GL_FRAMEBUFFER_COMPLETE)
-		printf("GL_FRAMEBUFFER_COMPLETE_EXT failed, CANNOT use FBO\n");
+		printf("GL_FRAMEBUFFER_COMPLETE failed, CANNOT use FBO\n");
 	
 	// switch back to window-system-provided framebuffer
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
   //BuildPerspProjMat(projMatrix,10,1,3,100);
   projMatrix[0] = 1.f/shadowBoxSize;
@@ -100,7 +100,7 @@ void ShadowManager::readyForWriting(int refreshTime)
   camera->Render();
   shader->setFrameData();
   // Render offscreen to the texture...
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,fboID);
+  glBindFramebuffer(GL_FRAMEBUFFER,fboID);
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
   // ... which we clear
@@ -119,7 +119,7 @@ void ShadowManager::readyForReading(ShaderProgram* mainShader)
   shader->frameData.viewWidth = oldViewport[2];
   shader->frameData.viewHeight = oldViewport[3];
   // Render to the screen
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+  glBindFramebuffer(GL_FRAMEBUFFER,0);
 }
 
 void ShadowManager::relocate(glm::vec3 newPos, int refreshTime)
