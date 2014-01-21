@@ -1,13 +1,22 @@
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <stdio.h>
 #include <math.h>
+#include <cstring>
+#include <iostream>
 
 #include <graphics.h>
 #include <shaders.h>
 
 Game* game;
 float projMatrix[16];
+
+//Callback function
+void glDebugMessageCallbackFunction( GLenum source, GLenum type, GLuint id,
+                   GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam)
+{
+  std::cerr << "GL_ERROR : " << message << std::endl;
+}
 
 /// Performs all the opengl and glut funtions to initialise the 
 /// graphics.  Sets screen size, position and title bar as well
@@ -23,6 +32,8 @@ void initialiseGraphics(Game* sh)
   // Initialise GLUT with these false parameters
   glutInit(&argc,argv);
   // We want to use RGBA and a depth test
+  glutInitContextVersion(3, 3);
+  glutInitContextFlags(GLUT_CORE_PROFILE | GLUT_DEBUG);
   glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH);
   // A begginning window size and position.  This will eventualy be full screen
 	glutInitWindowSize(500,500);
@@ -30,12 +41,21 @@ void initialiseGraphics(Game* sh)
 	glutCreateWindow("Magrathea");
 
   // Initialise glew.  If there is an error, report it
+  glewExperimental=GL_TRUE;
   GLenum res = glewInit();
   if (res != GLEW_OK)
   {
     fprintf(stderr, "Error: '%s'\n", glewGetErrorString(res));
     return;
   }
+
+  //Enable Callback function
+  glDebugMessageCallbackARB((GLDEBUGPROCARB) glDebugMessageCallbackFunction, NULL);
+
+  //Create Dummy VAO
+  GLuint vao;
+  glGenVertexArrays(1, &vao);
+  glBindVertexArray(vao);
 	
   // Enable all the standard pipeline things we want.  This should eventually be replaced with custom shaders
   glEnable(GL_DEPTH_TEST);
@@ -44,9 +64,6 @@ void initialiseGraphics(Game* sh)
   // Lets enable alpha blending
   glEnable (GL_BLEND);
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  // Draw all transparancies except completely invisibles
-  glAlphaFunc ( GL_GREATER, (GLclampf)0.01 ) ;
-  glEnable ( GL_ALPHA_TEST ) ;
 
   // Fill the polygons, please
   glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
@@ -55,11 +72,11 @@ void initialiseGraphics(Game* sh)
   glutSetCursor(GLUT_CURSOR_NONE);
 
   // Set up all the vertex attribut arrays for rendering later on...
-  glEnableVertexAttribArrayARB(0);
-  glEnableVertexAttribArrayARB(1);
-  glEnableVertexAttribArrayARB(2);
-  glEnableVertexAttribArrayARB(3);
-  glEnableVertexAttribArrayARB(4);
+  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+  glEnableVertexAttribArray(2);
+  glEnableVertexAttribArray(3);
+  glEnableVertexAttribArray(4);
 }
 
 /// Builds a projection matrix

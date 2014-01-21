@@ -1,7 +1,7 @@
 # The g++ compiler.
 CC = g++
 # Flags passed to the compiler
-CFLAGS = -c -Wall -Werror -g
+CFLAGS = -c --std=c++11 -Wall -Werror -g -I /usr/include/glm
 IDIR = include
 ODIR = obj
 SRCS := $(shell find . -name '*.cpp')

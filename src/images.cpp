@@ -10,8 +10,6 @@ GLuint newTexture(bool smoothTexture)
   glGenTextures(1,&returnValue);
 	glBindTexture(GL_TEXTURE_2D,returnValue);
 
-  glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_MODULATE );
-
   // Set the samplers for the smooth and solid versions
   if (smoothTexture)
   {

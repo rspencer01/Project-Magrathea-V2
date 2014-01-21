@@ -46,14 +46,14 @@ void Bird::Render(int refreshTime, glm::vec3 cameraPos)
   Object::Render(refreshTime,cameraPos);
   //This is a godforsakenslow bit
   theta    += (float)(refreshSeconds * 3.141592 * 2.0 * 0.7);
-  dihedral  = (float)(- sin(theta) - 1/5.0*sin(theta*2) - 1/25.0*sin(theta*3));
-  addPoint(1,glm::vec3(0.5,sin(dihedral),cos(dihedral)),glm::vec3(0,1,0),1,1,1);
-  addPoint(2,glm::vec3(0.5,sin(dihedral),-cos(dihedral)),glm::vec3(0,1,0),1,1,1);
+  dihedral  = (float)(- (float)sin(theta) - 1/5.0*(float)sin(theta*2) - 1/25.0*(float)sin(theta*3));
+  addPoint(1,glm::vec3(0.5,(float)sin(dihedral),(float)cos(dihedral)),glm::vec3(0,1,0),1,1,1);
+  addPoint(2,glm::vec3(0.5,(float)sin(dihedral),-(float)cos(dihedral)),glm::vec3(0,1,0),1,1,1);
 
   velocity = velocity - velocity*0.05f*refreshSeconds;
   velocity = velocity + glm::vec3(0.f,-0.98f,0.f)*refreshSeconds;
 
-  float fs = (float)(cos(theta)+1/5.0*cos(theta*2));
+  float fs = (float)((float)cos(theta)+1/5.0*(float)cos(theta*2));
   if (fs<0.f)
     fs = 0.f;
 

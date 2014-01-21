@@ -60,7 +60,7 @@ void Cloud::updateTexture()
       d *= p;
       d = 1-d;
 
-      p = 0.5f * (float)(sin((p-0.5)*3.1415)+1);
+      p = 0.5f * ((float)sin((p-0.5)*3.1415)+1);
 
       data[ind*4  ] = (unsigned char)(d*255);
       data[ind*4+1] = (unsigned char)(d*255);

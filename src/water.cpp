@@ -1,8 +1,8 @@
 #include <testobj.h>
 #include <images.h>
 #include <cmath>
-#include <gtx\random.hpp>
-#include <gtc\noise.hpp>
+#include <gtx/random.hpp>
+#include <gtc/noise.hpp>
 
 Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
 {
@@ -53,27 +53,27 @@ Water::Water(glm::vec3 pos,Game* parent) : Object(pos,parent)
 	// GL_LINEAR does not make sense for depth texture. However, next tutorial shows usage of GL_LINEAR and PCF
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+  	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 	
 	// create a framebuffer object
-	glGenFramebuffersEXT(1, &reflectiveBuffer);
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, reflectiveBuffer);
+	glGenFramebuffers(1, &reflectiveBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, reflectiveBuffer);
 	// attach the texture to FBO depth attachment point
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, reflectiveTexture, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, reflectiveTexture, 0);
 
   // create the depthbuffer
-  glGenRenderbuffersEXT(1,&reflectiveDepthBuffer);
-  glBindRenderbufferEXT(GL_RENDERBUFFER,reflectiveDepthBuffer);
-  glRenderbufferStorageEXT(GL_RENDERBUFFER,GL_DEPTH_COMPONENT,1024,1024);
-  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_RENDERBUFFER_EXT,reflectiveDepthBuffer);
+  glGenRenderbuffers(1,&reflectiveDepthBuffer);
+  glBindRenderbuffer(GL_RENDERBUFFER,reflectiveDepthBuffer);
+  glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT,1024,1024);
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,reflectiveDepthBuffer);
 	// check FBO status
 	FBOstatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if(FBOstatus != GL_FRAMEBUFFER_COMPLETE)
-		DIE("GL_FRAMEBUFFER_COMPLETE_EXT failed, CANNOT use FBO\n");
+		DIE("GL_FRAMEBUFFER_COMPLETE failed, CANNOT use FBO\n");
 	
 	// switch back to window-system-provided framebuffer
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 }
 
@@ -84,7 +84,7 @@ void Water::Render(int refreshTime, glm::vec3 cameraPos)
   // Set the viewport to be the size of the texture
   glViewport(0,0,1024,1024);
 
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,reflectiveBuffer);
+  glBindFramebuffer(GL_FRAMEBUFFER,reflectiveBuffer);
   glActiveTexture(GL_TEXTURE4);
   glBindTexture(GL_TEXTURE_2D,reflectiveTexture);
   // ... which we clear
@@ -100,7 +100,7 @@ void Water::Render(int refreshTime, glm::vec3 cameraPos)
   game->mainShader->frameData.cullLevel = -1000000;
   game->mainShader->frameData.isReflection = 0;
   game->mainShader->setFrameData();
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+  glBindFramebuffer(GL_FRAMEBUFFER,0);
 
   glViewport(oldViewport[0],oldViewport[1],oldViewport[2],oldViewport[3]);
   glActiveTexture(GL_TEXTURE4);
