@@ -64,9 +64,6 @@ void initialiseGraphics(Game* sh)
   // Lets enable alpha blending
   glEnable (GL_BLEND);
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  // Draw all transparancies except completely invisibles
-  glAlphaFunc ( GL_GREATER, (GLclampf)0.01 ) ;
-  glEnable ( GL_ALPHA_TEST ) ;
 
   // Fill the polygons, please
   glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
