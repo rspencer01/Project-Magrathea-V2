@@ -2,6 +2,7 @@
 #include <math.h>
 #include <shadow.h>
 #include <graphics.h>
+#include <cstring>
 
 ShadowManager::ShadowManager(ShaderProgram* mainShader)
 {

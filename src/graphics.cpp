@@ -2,6 +2,7 @@
 #include <GL/glut.h>
 #include <stdio.h>
 #include <math.h>
+#include <cstring>
 
 #include <graphics.h>
 #include <shaders.h>
