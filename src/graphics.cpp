@@ -24,6 +24,8 @@ void initialiseGraphics(Game* sh)
   // Initialise GLUT with these false parameters
   glutInit(&argc,argv);
   // We want to use RGBA and a depth test
+  glutInitContextVersion(3, 3);
+  glutInitContextFlags(GLUT_CORE_PROFILE | GLUT_DEBUG);
   glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH);
   // A begginning window size and position.  This will eventualy be full screen
 	glutInitWindowSize(500,500);
@@ -31,6 +33,7 @@ void initialiseGraphics(Game* sh)
 	glutCreateWindow("Magrathea");
 
   // Initialise glew.  If there is an error, report it
+  glewExperimental=GL_TRUE;
   GLenum res = glewInit();
   if (res != GLEW_OK)
   {
