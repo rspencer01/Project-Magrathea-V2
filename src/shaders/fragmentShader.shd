@@ -213,6 +213,8 @@ void main()
   if (isShadow>0.5)
   {
     FragColor = texture(otherTexture,gsTexcoord);
+	if (FragColor.w < 0.1)
+	  discard;
     return;
   }
   float ambient = 0.2;
@@ -269,6 +271,7 @@ void main()
   if (objectType==1)
     shadow = 1;
   // The transparancy is taken straight from the texture 
+
   if (doLighting>0.5)
 	FragColor =  vec4(vis * shadow * gsColour.xyz * otherTexFrag.xyz * (1-fogLevel) + fogLevel*fogColour.xyz, gsColour.w * otherTexFrag.w); 
   else
