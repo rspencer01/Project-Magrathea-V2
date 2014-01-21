@@ -3,12 +3,20 @@
 #include <stdio.h>
 #include <math.h>
 #include <cstring>
+#include <iostream>
 
 #include <graphics.h>
 #include <shaders.h>
 
 Game* game;
 float projMatrix[16];
+
+//Callback function
+void glDebugMessageCallbackFunction( GLenum source, GLenum type, GLuint id,
+                   GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam)
+{
+  std::cerr << "GL_ERROR : " << message << std::endl;
+}
 
 /// Performs all the opengl and glut funtions to initialise the 
 /// graphics.  Sets screen size, position and title bar as well
@@ -40,6 +48,9 @@ void initialiseGraphics(Game* sh)
     fprintf(stderr, "Error: '%s'\n", glewGetErrorString(res));
     return;
   }
+
+  //Enable Callback function
+  glDebugMessageCallbackARB(glDebugMessageCallbackFunction, NULL);
 	
   // Enable all the standard pipeline things we want.  This should eventually be replaced with custom shaders
   glEnable(GL_DEPTH_TEST);
