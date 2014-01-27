@@ -71,7 +71,7 @@ void ShaderProgram::LoadShader(const char* shaderPath, GLenum shaderType)
   if (success==0) 
   {
     GLchar InfoLog[1024];
-    glGetProgramInfoLog(ShaderObj, 1024, NULL, InfoLog);
+    glGetShaderInfoLog(ShaderObj, 1024, NULL, InfoLog);
     DIE3("Error compiling shader",shaderPath, InfoLog);
   }
   // Attach the compiled object to the program
@@ -167,4 +167,9 @@ void ShaderProgram::setFrameData()
     glUniformBlockBinding(ShaderProgramID, frameDataPosition, 1);
   }
   glBindBufferBase(GL_UNIFORM_BUFFER,1,frameDataBO);
+}
+
+GLuint ShaderProgram::getFrameDataBufferNumber()
+{
+  return frameDataBO;
 }

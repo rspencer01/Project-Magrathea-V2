@@ -8,6 +8,7 @@
 #include <graphics.h>
 #include <shaders.h>
 
+
 Game* game;
 float projMatrix[16];
 
@@ -51,7 +52,7 @@ void initialiseGraphics(Game* sh)
 
   //Enable Callback function
   glDebugMessageCallbackARB((GLDEBUGPROCARB) glDebugMessageCallbackFunction, NULL);
-
+  
   //Create Dummy VAO
   GLuint vao;
   glGenVertexArrays(1, &vao);

@@ -69,6 +69,8 @@ class ShaderProgram
     void setFrameData();
     /// Struct containing camera transformation etc
     FrameData frameData;
+    /// An accessor to get the buffer index
+    GLuint getFrameDataBufferNumber();
 };
 
 #endif

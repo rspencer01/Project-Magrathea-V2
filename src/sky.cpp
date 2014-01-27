@@ -58,7 +58,6 @@ void Sky::Render(int refreshTime, glm::vec3 cameraPos)
   // Render stuff
   Object::Render(refreshTime,cameraPos);
   sun->Render(refreshTime,cameraPos);
-
   stars->Render(refreshTime,cameraPos);
   // Reinstate rendering
   // Do the fog

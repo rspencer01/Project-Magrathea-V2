@@ -71,8 +71,8 @@ ShadowManager::ShadowManager(ShaderProgram* mainShader)
   projMatrix[7] = 0;
   projMatrix[11] = 0;
   projMatrix[15] = 1;
-
-  camera = new Camera(&shader->frameData.lightCameraMatrix,&shader->frameData.cameraPos);
+  glm::vec4* discard = new glm::vec4;
+  camera = new Camera(&shader->frameData.lightCameraMatrix,discard);
   camera->setPosition(glm::vec3(0.f,200.f,0.f));
   camera->RotateX(-3.1415f/2);
 

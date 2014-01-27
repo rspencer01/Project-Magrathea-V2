@@ -62,6 +62,7 @@ Game::Game(bool doGraphics)
     initialisePipeline();
   }
   data = new Book(getHeightmapData);
+  grassManager = new GrassManager(this);
   currentGame = this;
   speed = 0.1f;
   fpsOn = false;
@@ -89,7 +90,6 @@ void Game::initialisePipeline()
   mainShader = new ShaderProgram();
   // Load in our shaders
   mainShader->LoadShader("../shaders/vertexShader.shd", GL_VERTEX_SHADER);
-  mainShader->LoadShader("../shaders/geometryShader.shd", GL_GEOMETRY_SHADER);
   mainShader->LoadShader("../shaders/fragmentShader.shd", GL_FRAGMENT_SHADER);
   // Compile and load them
   mainShader->CompileAll();
@@ -137,6 +137,7 @@ void Game::RenderScene(int refreshTime)
     for (unsigned int j = 0;j<128;j++)
       if (regions[i][j]!=NULL)
         regions[i][j]->Render(refreshTime,camera->getPosition());
+  grassManager->Render(refreshTime,camera->getPosition());
 }
 
 /// Actually calls the functions to display stuff to the screen.

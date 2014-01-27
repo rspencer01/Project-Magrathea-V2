@@ -23,6 +23,7 @@
 #include <bird.h>
 #include <cloud.h>
 #include <objectManager.h>
+#include <grassManager.h>
 #include <water.h>
 
 /// The gameops class contains all the methods to do with gameplay
@@ -32,7 +33,6 @@
 class Game
 {
   private:
-
     /// A list of regions in the game
     Region** regions[128];
     /// The book of all terrain data.
@@ -70,6 +70,8 @@ class Game
     bool mouseControl;
     /// Number of milliseconds since first frame
     int gameTime;
+    /// The grass manager
+    GrassManager* grassManager;
   public:
     /// Creates a game instance and initialises all variables.  If false is passed as a paramter, the game initialises no graphics
     Game(bool);

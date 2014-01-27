@@ -147,16 +147,4 @@ void main()
 	EmitVertex();
   }
   EndPrimitive();
-  if (isGrassy==1)
-  if (length(triangleCentroid - cameraPos.xyz) < 15)
-  {
-    for (int i = 0; i<5;i++)
-    {
-      float r1 = rand(vsPosition[0].xy+vec2(2*i+7));
-  	  float r2 = rand(vsPosition[1].xy+vec2(i));
-	  float r3 = rand(vsPosition[2].xy+vec2(i+1));
-      makeGrass((vsPosition[0].xyz*r1 + vsPosition[1].xyz*r2 + vsPosition[2].xyz*r3)/(r1+r2+r3),
-	  (vsTexShades[0].w*r1 + vsTexShades[1].w*r2 + vsTexShades[2].w*r3)/(r1+r2+r3)*1);
-    }
-  }
 }
