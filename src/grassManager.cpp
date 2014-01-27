@@ -3,7 +3,7 @@
 
 GrassManager::GrassManager(Game* parent)
 {
-  printf("New grass manager\n");
+  logi.log("New grass manager");
   game = parent;
   shader = new ShaderProgram();
   shader->LoadShader("../shaders/grassVertexShader.shd", GL_VERTEX_SHADER);

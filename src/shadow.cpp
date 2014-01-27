@@ -44,7 +44,7 @@ ShadowManager::ShadowManager(ShaderProgram* mainShader)
 	// check FBO status
 	FBOstatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if(FBOstatus != GL_FRAMEBUFFER_COMPLETE)
-		printf("GL_FRAMEBUFFER_COMPLETE failed, CANNOT use FBO\n");
+		loge.log("GL_FRAMEBUFFER_COMPLETE failed, CANNOT use FBO\n");
 	
 	// switch back to window-system-provided framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

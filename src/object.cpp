@@ -272,7 +272,7 @@ void Object::updateObjectBO()
 void Object::loadFromOBJFile(const char* filePath)
 {
   // Let the user know what we are doing
-  printf("Loading model from \"%s\"\n",filePath);
+  logi.log("Loading model from \"%s\"",filePath);
   // Do all the stuff to set this up as new
   if (triDat!=NULL)
     delete triDat;
@@ -399,7 +399,7 @@ void Object::loadFromOBJFile(const char* filePath)
 
   }
   numberOfTriangles = tri.size();
-  printf("File has %d vertices and %d triangles\n",numberOfPoints,numberOfTriangles);
+  logi.log("File has %d vertices and %d triangles",numberOfPoints,numberOfTriangles);
 	triDat = new int[numberOfTriangles*3];
 	for (int i = 0; i<numberOfTriangles;i++)
 		addTriangle(i,tri[i][0]-1,tri[i][1]-1,tri[i][2]-1);

@@ -3,10 +3,11 @@
 #include <noise.h>
 #include <time.h>
 #include <glm.hpp>
+#include <log.h>
 
 Page::Page(int x,int y,float(*g)(int,int))
 {
-  printf("New page at %d %d\n",x,y);
+  logi.log("New page at %d %d",x,y);
   generatingFunction = g;
   origin_x = x;
   origin_y = y;

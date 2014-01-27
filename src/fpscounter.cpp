@@ -1,5 +1,6 @@
 #include <magrathea.h>
 #include <cstdio>
+#include <log.h>
 
 float fps = 0.0;
 int currentTime;
@@ -23,7 +24,8 @@ void logFrame()
     // Reset the counters
     previousTime = currentTime;
     frameCount = 0;
-    printf("FPS %f\n",fps);
+    char buffer[80]; sprintf(buffer,"Project Magrathea II (%.2f FPS)",fps);
+    glutSetWindowTitle(buffer);
   }
   previousFrame = currentTime;
 }
