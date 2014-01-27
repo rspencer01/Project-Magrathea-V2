@@ -115,12 +115,7 @@ void ShaderProgram::Load()
 {
   // Now load this program
   glUseProgram(ShaderProgramID);
-  // Set the attribute locations
-  glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
-  glVertexAttribPointer(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));
-  glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
-  glVertexAttribPointer(3,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
-  glVertexAttribPointer(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
+  // Set the uniform samplers
   setInt("shadowTexture",7);
   setInt("otherTexture",3);
   setInt("waterTexture",4);
