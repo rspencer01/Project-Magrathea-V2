@@ -17,14 +17,15 @@ Region::Region(glm::vec3 pos,Game* parent) : Object(pos,parent)
 	printf("New region at %d %d\n",(int)pos.x,(int)pos.z);
   initialiseTriangles();
   freeze();
+  objectManager = new ObjectManager;
   for (int ty = 0;ty<REGION_SIZE;ty++)
     for (int tx = 0;tx<REGION_SIZE;tx++)
     {
       terrainBit here = game->getTerrainBit(tx+(int)pos.x,ty+(int)pos.z);
       if (here.isTree)
-        parent->objectManager->addObject(dynoTree,here.position,parent);
+        objectManager->addObject(dynoTree,here.position,parent);
       if (here.isFern)
-        parent->objectManager->addObject(smallFern,here.position,parent);
+        objectManager->addObject(smallFern,here.position,parent);
     }
 
   if (texture == 0)
@@ -76,6 +77,13 @@ void Region::initialiseTriangles()
   //numberOfTriangles = 1;
   pushTriangleData();
 }
+
+void Region::Render(int refreshTime, glm::vec3 cameraPos)
+{
+  Object::Render(refreshTime,cameraPos);
+  objectManager->Render(refreshTime,cameraPos);
+}
+
 
 /// Returns the x coordinate
 float Region::getOriginX()

@@ -62,7 +62,6 @@ Game::Game(bool doGraphics)
     initialisePipeline();
   }
   data = new Book(getHeightmapData);
-  objectManager = new ObjectManager;
   currentGame = this;
   speed = 0.1f;
   fpsOn = false;
@@ -70,12 +69,6 @@ Game::Game(bool doGraphics)
   if (doGraphics)
   {
     sky = new Sky(this); 
-    for (int i = 0; i<30;i++)
-    {
-      glm::vec3 t = glm::sphericalRand(150.f);
-      t.y = 0;
-      objectManager->addObject(bird,glm::vec3(200)+t,this);
-    }
   }
   cloud = new Cloud(glm::vec3(0,500,0),this);
   water = new Water(glm::vec3(0,8,0),this);
@@ -144,8 +137,6 @@ void Game::RenderScene(int refreshTime)
     for (unsigned int j = 0;j<128;j++)
       if (regions[i][j]!=NULL)
         regions[i][j]->Render(refreshTime,camera->getPosition());
-  objectManager->Render(refreshTime,camera->getPosition());
-  
 }
 
 /// Actually calls the functions to display stuff to the screen.

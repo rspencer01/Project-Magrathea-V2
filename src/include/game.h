@@ -87,8 +87,6 @@ class Game
     void mouse(int button, int state, int x, int y);
     /// Returns data about a single point
     terrainBit getTerrainBit(int x, int y);
-    /// The object manager for this game
-    ObjectManager* objectManager;
     /// The shader that runs most of the rendering
     ShaderProgram* mainShader;
     /// Draws all the things in the world
