@@ -1,5 +1,6 @@
 #include <magrathea.h>
 #include <cstdio>
+#include <log.h>
 
 float fps = 0.0;
 int currentTime;
@@ -23,7 +24,7 @@ void logFrame()
     // Reset the counters
     previousTime = currentTime;
     frameCount = 0;
-    printf("FPS %f\n",fps);
+    logi.log("FPS %f",fps);
   }
   previousFrame = currentTime;
 }
