@@ -30,7 +30,7 @@ GLuint newTexture(bool smoothTexture)
 
 GLuint textureFromBMP(const char* filePath)
 {
-	printf("Loading texture %s\n",filePath);
+	logi.log("Loading texture %s",filePath);
 	FILE* fp = fopen(filePath,"rb");
   if (fp==NULL)
     DIE2("Texture path doesn't exist:",filePath);
@@ -65,7 +65,7 @@ GLuint textureFromBMP(const char* filePath)
 
 GLuint textureFromRAW(const char* filePath)
 {
-	printf("Loading texture %s\n",filePath);
+	logi.log("Loading texture %s",filePath);
 	FILE* fp = fopen(filePath,"rb");
   if (fp==NULL)
     DIE2("Texture path doesn't exist:",filePath);
@@ -96,7 +96,7 @@ GLuint textureFromRAW(const char* filePath)
 
 GLuint textureFromTGA(const char* filePath, bool smoothTexture)
 {
-	printf("Loading texture %s\n",filePath);
+	logi.log("Loading texture %s",filePath);
 	FILE* fp = fopen(filePath,"rb");
   if (fp==NULL)
     DIE2("Texture path doesn't exist:",filePath);
@@ -118,7 +118,7 @@ GLuint textureFromTGA(const char* filePath, bool smoothTexture)
   fread(&inp,1,1,fp);
   if (inp!=32)
   {
-    fprintf(stderr,"Error loading texture:  All TGA files must be 32 bit.\n");
+    loge.log("Error loading texture:  All TGA files must be 32 bit.\n");
     return -1;
   }
   fread(&inp,1,1,fp);

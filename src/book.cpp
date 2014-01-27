@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <glm.hpp>
 #include <book.h>
+#include <log.h>
 
 //  The constructor...
 /// @param g The function that the book should call in order to populate the data range
 Book::Book(float (*g)(int,int))
 {
-  printf("Initialising book\n");
+  logi.log("Initialising book");
   generatingFunction = g;
   // Initialise all the pages to nothingness
   for (int i = 0;i<PAGE_COUNT;i++)
@@ -54,7 +55,7 @@ terrainBit Book::getAt(int x, int y)
   {
     pages[px][py] = new Page(px*PAGE_SIZE,py*PAGE_SIZE,generatingFunction);
     numberOfInitialisedPages++;
-    printf("Paging size: %lukB\n",(unsigned long)numberOfInitialisedPages*sizeof(Page)/1024);
+    logi.log("Paging size: %lukB",(unsigned long)numberOfInitialisedPages*sizeof(Page)/1024);
   }
   // Ask the page for the terrainBit
   return pages[px][py]->getAt(x%PAGE_SIZE,y%PAGE_SIZE);
@@ -78,7 +79,7 @@ void Book::deleteUnused()
       pages[delI][delJ] = NULL;
       // Some feedback for the user
       numberOfInitialisedPages--;
-      printf("Paging size: %lukB\n",(unsigned long)(numberOfInitialisedPages*sizeof(Page)/1024));
+      logi.log("Paging size: %lukB",(unsigned long)(numberOfInitialisedPages*sizeof(Page)/1024));
     }
   // Update the indices
   delI++;

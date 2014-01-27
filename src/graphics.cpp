@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <math.h>
 #include <cstring>
-#include <iostream>
 
 #include <graphics.h>
 #include <shaders.h>
@@ -16,7 +15,7 @@ float projMatrix[16];
 void glDebugMessageCallbackFunction( GLenum source, GLenum type, GLuint id,
                    GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam)
 {
-  std::cerr << "GL_ERROR : " << message << std::endl;
+  loge.log("%s",message);
 }
 
 /// Performs all the opengl and glut funtions to initialise the 
@@ -25,7 +24,7 @@ void glDebugMessageCallbackFunction( GLenum source, GLenum type, GLuint id,
 void initialiseGraphics(Game* sh)
 {
   game = sh;
-  printf("Initialising graphics\n");
+  logi.log("Initialising graphics");
   // Initialise false command line parameters
   int argc = 0;
   char arg[10] =  "magrathea";
@@ -46,7 +45,7 @@ void initialiseGraphics(Game* sh)
   GLenum res = glewInit();
   if (res != GLEW_OK)
   {
-    fprintf(stderr, "Error: '%s'\n", glewGetErrorString(res));
+    loge.log("Error: '%s'", glewGetErrorString(res));
     return;
   }
 

@@ -52,7 +52,7 @@ inline float interpolate(float a, float b, float t)
 /// @param doGraphics Should this game initialise graphics?
 Game::Game(bool doGraphics)
 {
-  printf("New game\n");
+  logi.log("New game");
   initialiseHeightmap();
   if (doGraphics)
   {
@@ -85,7 +85,7 @@ Game::Game(bool doGraphics)
 /// Initialises all the shaders and cameras and shadows associated with this game
 void Game::initialisePipeline()
 {
-  printf("Initialising pipeline\n");
+  logi.log("Initialising pipeline");
   // Construct the main shader program
   mainShader = new ShaderProgram();
   // Load in our shaders
@@ -109,7 +109,7 @@ void Game::initialisePipeline()
 /// file to their relevent events.
 void Game::initialiseCallbacks()
 {
-  printf("Initialising callbacks\n");
+  logi.log("Initialising callbacks");
   // The display function should be called whenever possible
   glutDisplayFunc(displayCurrentGame);
   glutIdleFunc(displayCurrentGame);
@@ -125,7 +125,7 @@ void Game::initialiseCallbacks()
 /// Run the game
 void Game::run()
 {
-  printf("Running game...\n");
+  logi.log("Running game...");
   glutMainLoop();
 }
 
@@ -211,7 +211,7 @@ void Game::setCameraFPS()
 
 void Game::initialiseKeyops()
 {
-  printf("Initialising keyops\n");
+  logi.log("Initialising keyops");
   for (int i = 0; i<=255; i++)
     keyDown[i] = false;
 }

@@ -14,7 +14,7 @@ GLuint texture = 0;
 /// @param parent The game that this region is in.
 Region::Region(glm::vec3 pos,Game* parent) : Object(pos,parent)
 {
-	printf("New region at %d %d\n",(int)pos.x,(int)pos.z);
+	logi.log("New region at %d %d",(int)pos.x,(int)pos.z);
   initialiseTriangles();
   freeze();
   objectManager = new ObjectManager;
