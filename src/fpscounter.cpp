@@ -24,7 +24,8 @@ void logFrame()
     // Reset the counters
     previousTime = currentTime;
     frameCount = 0;
-    logi.log("FPS %f",fps);
+    char buffer[80]; sprintf(buffer,"Project Magrathea II (%.2f FPS)",fps);
+    glutSetWindowTitle(buffer);
   }
   previousFrame = currentTime;
 }
