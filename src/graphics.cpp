@@ -31,9 +31,12 @@ void initialiseGraphics(Game* sh)
   char** argv = (char**)&arg;
   // Initialise GLUT with these false parameters
   glutInit(&argc,argv);
-  // We want to use RGBA and a depth test
+  // Only do this in linux.  This breaks gDEBugger
+#ifndef WIN32
   glutInitContextVersion(3, 3);
   glutInitContextFlags(GLUT_CORE_PROFILE | GLUT_DEBUG);
+#endif
+  // We want to use RGBA and a depth test
   glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH);
   // A begginning window size and position.  This will eventualy be full screen
 	glutInitWindowSize(500,500);
