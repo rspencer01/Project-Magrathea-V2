@@ -1,13 +1,22 @@
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <stdio.h>
 #include <math.h>
+#include <cstring>
 
 #include <graphics.h>
 #include <shaders.h>
 
+
 Game* game;
 float projMatrix[16];
+
+//Callback function
+void glDebugMessageCallbackFunction( GLenum source, GLenum type, GLuint id,
+                   GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam)
+{
+  loge.log("%s",message);
+}
 
 /// Performs all the opengl and glut funtions to initialise the 
 /// graphics.  Sets screen size, position and title bar as well
@@ -15,13 +24,18 @@ float projMatrix[16];
 void initialiseGraphics(Game* sh)
 {
   game = sh;
-  printf("Initialising graphics\n");
+  logi.log("Initialising graphics");
   // Initialise false command line parameters
   int argc = 0;
   char arg[10] =  "magrathea";
   char** argv = (char**)&arg;
   // Initialise GLUT with these false parameters
   glutInit(&argc,argv);
+  // Only do this in linux.  This breaks gDEBugger
+#ifndef WIN32
+  glutInitContextVersion(3, 3);
+  glutInitContextFlags(GLUT_CORE_PROFILE | GLUT_DEBUG);
+#endif
   // We want to use RGBA and a depth test
   glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH);
   // A begginning window size and position.  This will eventualy be full screen
@@ -30,12 +44,21 @@ void initialiseGraphics(Game* sh)
 	glutCreateWindow("Magrathea");
 
   // Initialise glew.  If there is an error, report it
+  glewExperimental=GL_TRUE;
   GLenum res = glewInit();
   if (res != GLEW_OK)
   {
-    fprintf(stderr, "Error: '%s'\n", glewGetErrorString(res));
+    loge.log("Error: '%s'", glewGetErrorString(res));
     return;
   }
+
+  //Enable Callback function
+  glDebugMessageCallbackARB((GLDEBUGPROCARB) glDebugMessageCallbackFunction, NULL);
+  
+  //Create Dummy VAO
+  GLuint vao;
+  glGenVertexArrays(1, &vao);
+  glBindVertexArray(vao);
 	
   // Enable all the standard pipeline things we want.  This should eventually be replaced with custom shaders
   glEnable(GL_DEPTH_TEST);
@@ -44,9 +67,6 @@ void initialiseGraphics(Game* sh)
   // Lets enable alpha blending
   glEnable (GL_BLEND);
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  // Draw all transparancies except completely invisibles
-  glAlphaFunc ( GL_GREATER, (GLclampf)0.01 ) ;
-  glEnable ( GL_ALPHA_TEST ) ;
 
   // Fill the polygons, please
   glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
@@ -55,11 +75,11 @@ void initialiseGraphics(Game* sh)
   glutSetCursor(GLUT_CURSOR_NONE);
 
   // Set up all the vertex attribut arrays for rendering later on...
-  glEnableVertexAttribArrayARB(0);
-  glEnableVertexAttribArrayARB(1);
-  glEnableVertexAttribArrayARB(2);
-  glEnableVertexAttribArrayARB(3);
-  glEnableVertexAttribArrayARB(4);
+  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+  glEnableVertexAttribArray(2);
+  glEnableVertexAttribArray(3);
+  glEnableVertexAttribArray(4);
 }
 
 /// Builds a projection matrix
@@ -97,7 +117,7 @@ void resize(int width, int height)
   // Construct the projection matrix ...
   BuildPerspProjMat(projMatrix,20.f, float(width)/height, 2.f, 100.f);
   // ... and push it to the shaders
-  memcpy(game->mainShader->frameData.projectionMatrix,projMatrix,16*sizeof(float));
+  memcpy(&(game->mainShader->frameData.projectionMatrix),projMatrix,16*sizeof(float));
   game->mainShader->setFrameData();
 }
 

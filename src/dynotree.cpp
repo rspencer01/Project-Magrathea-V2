@@ -51,10 +51,10 @@ int DynoTree::makeRing(glm::vec3 pos, glm::vec3 basisA, glm::vec3 basisB, float 
     // And add this point
  		addPoint(numberOfPoints,
               pos+
-              basisA*width*sin(theta)+
-              basisB*width*cos(theta),
-              basisA*sin(theta)+
-              basisB*cos(theta),
+              basisA*width*(float)sin(theta)+
+              basisB*width*(float)cos(theta),
+              basisA*(float)sin(theta)+
+              basisB*(float)cos(theta),
               0.58f	,0.35f,0.09f);
     // Add the texture coordinate, inverting if required
     editTextureCoord(numberOfPoints,y*0.0345f,swapTex?1.f:0.f);

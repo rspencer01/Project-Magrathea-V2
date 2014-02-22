@@ -1,0 +1,33 @@
+#version 140
+
+out vec4 FragColor;
+
+in vec3 gsPosition;
+in vec3 gsNormal;
+in vec4 gsColour;
+
+layout(shared)uniform frameData
+{
+  vec4 frameColour;  
+  mat4x4 transformationMatrix;
+  mat4x4 projectionMatrix;  
+  mat4x4 lightTransformMatrix;
+  mat4x4 lightProjectionMatrix;
+  vec4 sunDirection;  
+  vec4 cameraPos;
+  vec4 fogColour;
+  float isShadow;
+  float isReflection;
+  float sunIntensity;
+  float fog;
+  float doLighting;
+  float cullLevel;
+  int gameTime;
+  int viewWidth;
+  int viewHeight;
+};
+
+void main()
+{ 
+  FragColor = vec4(gsColour.xyz * dot(sunDirection.xyz,gsNormal),1);
+}

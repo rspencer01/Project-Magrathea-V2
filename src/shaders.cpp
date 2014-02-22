@@ -22,7 +22,7 @@ void sanatiseShader(char* program, int size)
 ShaderProgram::ShaderProgram()
 {
   // Construct the program we are going to use
-  ShaderProgramID = glCreateProgramObjectARB();
+  ShaderProgramID = glCreateProgram();
   // If there was an error, let us know
   if (ShaderProgramID == 0) 
     DIE("Error creating new shader program");
@@ -41,7 +41,7 @@ ShaderProgram::ShaderProgram()
 void ShaderProgram::LoadShader(const char* shaderPath, GLenum shaderType)
 {
   // Create us a new shader
-  GLuint ShaderObj = glCreateShaderObjectARB(shaderType);
+  GLuint ShaderObj = glCreateShader(shaderType);
   // If something went wrong, tell us about it
   if (ShaderObj == 0) 
     DIE("Error creating shader object");
@@ -59,19 +59,19 @@ void ShaderProgram::LoadShader(const char* shaderPath, GLenum shaderType)
   // Sanatise the shader
   sanatiseShader((char*)progSource,fileSize);
   // And tell opengl that it is the source code
-  glShaderSourceARB(ShaderObj, 1, &progSource, &fileSize);
+  glShaderSource(ShaderObj, 1, &progSource, &fileSize);
   // Now we are done with these, get rid of them
   delete progSource;
   fclose(fp);
   // Attempt to compile the shader
-  glCompileShaderARB(ShaderObj);
+  glCompileShader(ShaderObj);
   // If there is an error, tell us about it
   GLint success;
   glGetObjectParameterivARB(ShaderObj, GL_OBJECT_COMPILE_STATUS_ARB, &success);
   if (success==0) 
   {
     GLchar InfoLog[1024];
-    glGetInfoLogARB(ShaderObj, 1024, NULL, InfoLog);
+    glGetShaderInfoLog(ShaderObj, 1024, NULL, InfoLog);
     DIE3("Error compiling shader",shaderPath, InfoLog);
   }
   // Attach the compiled object to the program
@@ -115,12 +115,10 @@ void ShaderProgram::Load()
 {
   // Now load this program
   glUseProgram(ShaderProgramID);
-  // Set the attribute locations
-  glVertexAttribPointerARB(0,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),0);
-  glVertexAttribPointerARB(1,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(3*sizeof(float)));
-  glVertexAttribPointerARB(2,2,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(10*sizeof(float)));
-  glVertexAttribPointerARB(3,3,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(7*sizeof(float)));
-  glVertexAttribPointerARB(4,4,GL_FLOAT,GL_FALSE,sizeof(VertexDatum),(void*)(12*sizeof(float)));
+  // Set the uniform samplers
+  setInt("shadowTexture",7);
+  setInt("otherTexture",3);
+  setInt("waterTexture",4);
   setFrameData();
 }
 
@@ -138,24 +136,9 @@ GLuint ShaderProgram::getVariablePosition(const char* name)
   return variableLocations[vName];
 }
 
-void ShaderProgram::setMatrix(const char* varName, float* value)
-{
-  glUniformMatrix4fv(getVariablePosition(varName),1,GL_TRUE,value);
-}
-
 void ShaderProgram::setInt(const char* varName, unsigned int value)
 {
   glUniform1i(getVariablePosition(varName),value);
-}
-
-void ShaderProgram::setFloat(const char* varName, float value)
-{
-  glUniform1f(getVariablePosition(varName),value);
-}
-
-void ShaderProgram::setVec3(const char* varName, float* value)
-{
-  glUniform3f(getVariablePosition(varName),value[0],value[1],value[2]);
 }
 
 void ShaderProgram::setObjectData(GLuint bo)
@@ -179,4 +162,9 @@ void ShaderProgram::setFrameData()
     glUniformBlockBinding(ShaderProgramID, frameDataPosition, 1);
   }
   glBindBufferBase(GL_UNIFORM_BUFFER,1,frameDataBO);
+}
+
+GLuint ShaderProgram::getFrameDataBufferNumber()
+{
+  return frameDataBO;
 }

@@ -2,6 +2,7 @@
 #include <math.h>
 #include <shadow.h>
 #include <graphics.h>
+#include <cstring>
 
 ShadowManager::ShadowManager(ShaderProgram* mainShader)
 {
@@ -23,19 +24,19 @@ ShadowManager::ShadowManager(ShaderProgram* mainShader)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	
 	// Remove artefact on the edges of the shadowmap
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 	
 	// No need to force GL_DEPTH_COMPONENT24, drivers usually give you the max precision if available 
   glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, TEXTURE_SIZE, TEXTURE_SIZE, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	
 	// create a framebuffer object
-	glGenFramebuffersEXT(1, &fboID);
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fboID);
+	glGenFramebuffers(1, &fboID);
+	glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
 	// attach the texture to FBO depth attachment point
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texID, 0);
 	// Instruct openGL that we won't bind a color texture with the currently binded FBO
 	glDrawBuffer(GL_NONE);
   glReadBuffer(GL_NONE);
@@ -43,10 +44,10 @@ ShadowManager::ShadowManager(ShaderProgram* mainShader)
 	// check FBO status
 	FBOstatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if(FBOstatus != GL_FRAMEBUFFER_COMPLETE)
-		printf("GL_FRAMEBUFFER_COMPLETE_EXT failed, CANNOT use FBO\n");
+		loge.log("GL_FRAMEBUFFER_COMPLETE failed, CANNOT use FBO\n");
 	
 	// switch back to window-system-provided framebuffer
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
   //BuildPerspProjMat(projMatrix,10,1,3,100);
   projMatrix[0] = 1.f/shadowBoxSize;
@@ -70,21 +71,18 @@ ShadowManager::ShadowManager(ShaderProgram* mainShader)
   projMatrix[7] = 0;
   projMatrix[11] = 0;
   projMatrix[15] = 1;
-
-  camera = new Camera(shader,shader->frameData.lightCameraMatrix);
-  camera->Position = glm::vec3(0.f,200.f,0.f);
+  glm::vec4* discard = new glm::vec4;
+  camera = new Camera(&shader->frameData.lightCameraMatrix,discard);
+  camera->setPosition(glm::vec3(0.f,200.f,0.f));
   camera->RotateX(-3.1415f/2);
 
   // Set the shadow texture to this one's texture
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
-  // And set the two samplers and the shadow projection matrix
-  // The samplers should not be set here... hmm
-  shader->setInt("shadowTexture",7);
-  shader->setInt("otherTexture",3);
-  shader->setInt("waterTexture",4);
-  memcpy(shader->frameData.lightProjectionMatrix,projMatrix,16*sizeof(float));
-  theta = 0.2;
+  // And set the shadow projection matrix
+
+  memcpy(&(shader->frameData.lightProjectionMatrix),projMatrix,16*sizeof(float));
+  theta = 0.2f;
 }
 
 /// Prepare the shadow manager for writing to the shadow texture.
@@ -100,8 +98,9 @@ void ShadowManager::readyForWriting(int refreshTime)
   shader->frameData.isShadow = 1;
   // Set the camera matrix
   camera->Render();
+  shader->setFrameData();
   // Render offscreen to the texture...
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,fboID);
+  glBindFramebuffer(GL_FRAMEBUFFER,fboID);
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D,texID);
   // ... which we clear
@@ -120,14 +119,12 @@ void ShadowManager::readyForReading(ShaderProgram* mainShader)
   shader->frameData.viewWidth = oldViewport[2];
   shader->frameData.viewHeight = oldViewport[3];
   // Render to the screen
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+  glBindFramebuffer(GL_FRAMEBUFFER,0);
 }
 
 void ShadowManager::relocate(glm::vec3 newPos, int refreshTime)
 {
   theta += refreshTime / 1000.f *3.1415f*2*2.f/600.f;
-  camera->Position.x = newPos.x + 1000*sin(theta);
-  camera->Position.y = newPos.y + 1000*cos(theta);
-  camera->Position.z = newPos.z;
-  camera->ViewDir = glm::normalize(newPos-camera->Position);
+  camera->setPosition(newPos+1000.f * glm::vec3(sin(theta),cos(theta),0));
+  camera->setViewDirection(glm::normalize(newPos-camera->getPosition()));
 }

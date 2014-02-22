@@ -3,7 +3,6 @@
 #include <region.h>
 #include <game.h>
 #include <dynotree.h>
-#include <grass.h>
 #include <images.h>
 #include <smallFern.h>
 
@@ -15,31 +14,33 @@ GLuint texture = 0;
 /// @param parent The game that this region is in.
 Region::Region(glm::vec3 pos,Game* parent) : Object(pos,parent)
 {
-	printf("New region at %d %d\n",(int)pos.x,(int)pos.z);
+	logi.log("New region at %d %d",(int)pos.x,(int)pos.z);
   initialiseTriangles();
   freeze();
+  objectManager = new ObjectManager;
   for (int ty = 0;ty<REGION_SIZE;ty++)
     for (int tx = 0;tx<REGION_SIZE;tx++)
     {
       terrainBit here = game->getTerrainBit(tx+(int)pos.x,ty+(int)pos.z);
       if (here.isTree)
-        parent->objectManager->addObject(dynoTree,here.position,parent);
-      if (here.isGrass)
-        parent->objectManager->addObject(grass_o,here.position,parent);
+        objectManager->addObject(dynoTree,here.position,parent);
       if (here.isFern)
-        parent->objectManager->addObject(smallFern,here.position,parent);
+        objectManager->addObject(smallFern,here.position,parent);
     }
 
   if (texture == 0)
 	  texture = textureFromTGA("../assets/MixedGround.tga",true);
   textureNumber = texture;
+  objectData.isGrassy = 1;
+  updateObjectBO();
 }
 
 /// Constructs the triangles
 void Region::initialiseTriangles()
 {
+  // This does a Very High Detail rendering: 10cm to a side of a square
   clearTriangleData((REGION_SIZE+1)*(REGION_SIZE+1),REGION_SIZE*REGION_SIZE*2);
-	// There are (size+1)^2 vertices.  Bring in the data
+	// There are (size*10+1)^2 vertices.  Bring in the data
 	for (int y = 0; y<(REGION_SIZE+1);y++)
 		for (int x = 0; x<(REGION_SIZE+1);x++)
 		{
@@ -73,8 +74,16 @@ void Region::initialiseTriangles()
 			            (y+1)*(REGION_SIZE+1) + x,
 			            (y+1)*(REGION_SIZE+1) + (x+1));
 		}
+  //numberOfTriangles = 1;
   pushTriangleData();
 }
+
+void Region::Render(int refreshTime, glm::vec3 cameraPos)
+{
+  Object::Render(refreshTime,cameraPos);
+  objectManager->Render(refreshTime,cameraPos);
+}
+
 
 /// Returns the x coordinate
 float Region::getOriginX()

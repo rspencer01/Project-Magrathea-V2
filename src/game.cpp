@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <gtx/random.hpp>
 
 #include <game.h>
@@ -52,7 +52,7 @@ inline float interpolate(float a, float b, float t)
 /// @param doGraphics Should this game initialise graphics?
 Game::Game(bool doGraphics)
 {
-  printf("New game\n");
+  logi.log("New game");
   initialiseHeightmap();
   if (doGraphics)
   {
@@ -62,7 +62,7 @@ Game::Game(bool doGraphics)
     initialisePipeline();
   }
   data = new Book(getHeightmapData);
-  objectManager = new ObjectManager;
+  grassManager = new GrassManager(this);
   currentGame = this;
   speed = 0.1f;
   fpsOn = false;
@@ -70,12 +70,6 @@ Game::Game(bool doGraphics)
   if (doGraphics)
   {
     sky = new Sky(this); 
-    for (int i = 0; i<30;i++)
-    {
-      glm::vec3 t = glm::sphericalRand(150.f);
-      t.y = 0;
-      objectManager->addObject(bird,glm::vec3(200)+t,this);
-    }
   }
   cloud = new Cloud(glm::vec3(0,500,0),this);
   water = new Water(glm::vec3(0,8,0),this);
@@ -91,7 +85,7 @@ Game::Game(bool doGraphics)
 /// Initialises all the shaders and cameras and shadows associated with this game
 void Game::initialisePipeline()
 {
-  printf("Initialising pipeline\n");
+  logi.log("Initialising pipeline");
   // Construct the main shader program
   mainShader = new ShaderProgram();
   // Load in our shaders
@@ -101,9 +95,9 @@ void Game::initialisePipeline()
   mainShader->CompileAll();
   mainShader->Load();
   // Construct a new camera, linking to the transformationMatrix of the above shader
-  camera = new Camera(mainShader,mainShader->frameData.cameraMatrix);
+  camera = new Camera(&mainShader->frameData.cameraMatrix,&mainShader->frameData.cameraPos);
   // Put it somewhere nice to start with
-  camera->Position = glm::vec3(5,100,5);
+  camera->setPosition(glm::vec3(5,100,5));
   camera->RotateY(-3.1415f/2.f);
   // Initialise the shadows
   shadows = new ShadowManager(mainShader);
@@ -115,7 +109,7 @@ void Game::initialisePipeline()
 /// file to their relevent events.
 void Game::initialiseCallbacks()
 {
-  printf("Initialising callbacks\n");
+  logi.log("Initialising callbacks");
   // The display function should be called whenever possible
   glutDisplayFunc(displayCurrentGame);
   glutIdleFunc(displayCurrentGame);
@@ -131,7 +125,7 @@ void Game::initialiseCallbacks()
 /// Run the game
 void Game::run()
 {
-  printf("Running game...\n");
+  logi.log("Running game...");
   glutMainLoop();
 }
 
@@ -142,13 +136,10 @@ void Game::RenderScene(int refreshTime)
   for (unsigned int i = 0;i<128;i++)
     for (unsigned int j = 0;j<128;j++)
       if (regions[i][j]!=NULL)
-        regions[i][j]->Render(refreshTime,camera->Position);
-  objectManager->Render(refreshTime,camera->Position);
-  
-  
+        regions[i][j]->Render(refreshTime,camera->getPosition());
+  grassManager->Render(refreshTime,camera->getPosition());
 }
 
-int shadowsDone = 0;
 /// Actually calls the functions to display stuff to the screen.
 void Game::display()
 {
@@ -165,12 +156,12 @@ void Game::display()
     setCameraFPS();
   
   // Make whatever regions are required
-  constructRegions(camera->Position.x,camera->Position.z);
+  constructRegions(camera->getPosition().x,camera->getPosition().z);
   // Destroy unused pages
   data->deleteUnused();
-
+  
   // Do the shadow stuff
-  shadows->relocate(camera->Position,refreshTime);
+  shadows->relocate(camera->getPosition(),refreshTime);
 
   shadows->readyForWriting(refreshTime);
   // Create the shadow texture
@@ -178,15 +169,18 @@ void Game::display()
   
   // And reset
   shadows->readyForReading(mainShader);
+  
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   //glClearColor((GLclampf)0.813,(GLclampf)0.957,(GLclampf)0.99,(GLclampf)1.0);
-  glClearColor((GLclampf)1,(GLclampf)0.0,(GLclampf)0.0,(GLclampf)1.0);
+  glClearColor((GLclampf)1,(GLclampf)1.0,(GLclampf)1.0,(GLclampf)1.0);
   
   camera->Render();
+  mainShader->setFrameData();
+  
   // Gogogo!
-  sky->Render(refreshTime,camera->Position);
-  water->Render(refreshTime,camera->Position);
+  sky->Render(refreshTime,camera->getPosition());
+  water->Render(refreshTime,camera->getPosition());
   //cloud->Render(refreshTime,&(camera->Position));
   RenderScene(refreshTime);
   
@@ -199,22 +193,25 @@ void Game::display()
 void Game::setCameraFPS()
 {
   // Get the integer coordinates of the camera position
-	float fx = camera->Position.x - (int)camera->Position.x;
-	float fy = camera->Position.z - (int)camera->Position.z;
+	float fx = camera->getPosition().x - (int)camera->getPosition().x;
+	float fy = camera->getPosition().z - (int)camera->getPosition().z;
   // Now do the horrible interpolating to get the altitude of the camera
-	camera->Position.y = interpolate(
-						interpolate(getTerrainBit((int)camera->Position.x,(int)camera->Position.z).position.y,
-									getTerrainBit((int)camera->Position.x+1,(int)camera->Position.z).position.y,
+	camera->setPosition(
+    glm::vec3(camera->getPosition().x,
+             interpolate(
+						interpolate(getTerrainBit((int)camera->getPosition().x,(int)camera->getPosition().z).position.y,
+									getTerrainBit((int)camera->getPosition().x+1,(int)camera->getPosition().z).position.y,
 									fx),
-						interpolate(getTerrainBit((int)camera->Position.x,(int)camera->Position.z+1).position.y,
-									getTerrainBit((int)camera->Position.x+1,(int)camera->Position.z+1).position.y,
+						interpolate(getTerrainBit((int)camera->getPosition().x,(int)camera->getPosition().z+1).position.y,
+									getTerrainBit((int)camera->getPosition().x+1,(int)camera->getPosition().z+1).position.y,
 									fx),
-						fy) + 0.63f;
+						fy) + 1.63f,
+            camera->getPosition().z));
 }
 
 void Game::initialiseKeyops()
 {
-  printf("Initialising keyops\n");
+  logi.log("Initialising keyops");
   for (int i = 0; i<=255; i++)
     keyDown[i] = false;
 }
@@ -318,10 +315,11 @@ terrainBit Game::getTerrainBit(int x,int y)
 /// Constructs regions in an area around the given coordinates.  Does at most one region construction/destruction per call.
 void Game::constructRegions(float x,float y)
 {
+  int numRegions = 5;
   int rx = (int)(x /REGION_SIZE);
   int ry = (int)(y /REGION_SIZE);
-  for (int x = std::max(0,rx-20);x<std::min(127,rx+20);x++)
-    for (int y = std::max(0,ry-20);y<std::min(127,ry+20);y++)
+  for (int x = std::max(0,rx-numRegions);x<std::min(127,rx+numRegions);x++)
+    for (int y = std::max(0,ry-numRegions);y<std::min(127,ry+numRegions);y++)
       if (regions[y][x] == NULL)
       {
         regions[y][x] = new Region(glm::vec3(x*REGION_SIZE,0,y*REGION_SIZE),this);
@@ -334,7 +332,7 @@ void Game::renderMenu()
   glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
   glColor4f(0,0,0,0.85f);
-  glTranslatef(camera->Position.x,camera->Position.y,camera->Position.z);
+  //glTranslatef(camera->getPosition().x,camera->Position.y,camera->Position.z);
   glutSolidSphere(0.25,10,10);
   writeString(3,95,"PROJECT MAGRATHEA V2");
   writeString(3,91, "====================");
@@ -343,9 +341,4 @@ void Game::renderMenu()
   writeString(3,79,"  <o> Toggle first person");
   writeString(3,75,"  <x> Speed up");
   writeString(3,71,"  <z> Slow down");
-}
-
-void Game::setProjectionMatrix(float* mat)
-{
-  mainShader->setMatrix("projectionMatrix",mat);
 }

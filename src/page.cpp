@@ -3,14 +3,16 @@
 #include <noise.h>
 #include <time.h>
 #include <glm.hpp>
+#include <log.h>
 
 Page::Page(int x,int y,float(*g)(int,int))
 {
-  printf("New page at %d %d\n",x,y);
+  logi.log("New page at %d %d",x,y);
   generatingFunction = g;
   origin_x = x;
   origin_y = y;
-/*  for (int i = 0;i<PAGE_SIZE;i++)
+  /*
+  for (int i = 0;i<PAGE_SIZE;i++)
     for (int j = 0;j<PAGE_SIZE;j++)
     {
       data[i][j].isFern = data[i][j].isGrass = data[i][j].isTree = false;

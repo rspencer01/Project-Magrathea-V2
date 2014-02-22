@@ -10,11 +10,11 @@ Cloud::Cloud(glm::vec3 pos,Game* g) : Object(pos,g)
   textureSize = 300;
   data = NULL;
   coverage = 1;
-  initialiseTriangles();
-  updateTexture();
   drift = glm::sphericalRand(0.1f);
   drift.y = 0;
   offset = glm::sphericalRand(1.f);
+  initialiseTriangles();
+  updateTexture();
 }
 
 void Cloud::initialiseTriangles()
@@ -60,7 +60,7 @@ void Cloud::updateTexture()
       d *= p;
       d = 1-d;
 
-      p = 0.5f * (float)(sin((p-0.5)*3.1415)+1);
+      p = 0.5f * ((float)sin((p-0.5)*3.1415)+1);
 
       data[ind*4  ] = (unsigned char)(d*255);
       data[ind*4+1] = (unsigned char)(d*255);
@@ -71,9 +71,9 @@ void Cloud::updateTexture()
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize, textureSize, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 }
 
+/// Renders the object.  Just basically moves it and draws it.
 void Cloud::Render(int refreshTime, glm::vec3 cameraPos)
 {
-  position = position+drift*(float)refreshTime/1000.f;
-  updateMatrix();
+  setPosition(position+drift*(float)refreshTime/1000.f);
   Object::Render(refreshTime,cameraPos);
 }
